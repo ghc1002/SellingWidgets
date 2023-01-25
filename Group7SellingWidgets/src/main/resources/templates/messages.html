@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Messages</title>
+
+<link th:href="@{/styles/messages.css}" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<style>
+	header {
+		margin-bottom: 96px;
+	}
+	th {
+		border: 2px solid #002147;
+		background-color: #e9ecef;
+		height: 20px;
+	}
+	td {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		border: 2px solid #002147;
+		margin-bottom: .5em;
+		height: 20px;
+	  
+	}
+
+	table.center {
+		margin-left: auto; 
+		margin-right: auto;
+	}
+</style>
+</head>
+
+<!-- NAV BAR -->
+<header> 
+<!-- if no user is logged in... -->
+	<nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)" th:if="${user == null}" >
+		<div class="container-fluid">
+			<!-- Left justified unordered list -->
+			<ul class="navbar nav">
+				<li class="nav-item"> <a class="navbar-brand" th:href="@{/index}">
+					<img src="/images/university_depot_icon.png" 
+						alt="Home" 
+						style="width:64px; height:64px;"></img></a></li>
+			</ul>
+			<!-- Right justified unordered list -->
+			<ul class="navbar nav ms-md-auto">
+				<li class="nav-item ms-md-auto"><a class="nav-link text-white" 
+													style="font-family:'Gemunu Libre'; font-size: 1.5em" 
+													th:href="@{/newUser}">Sign Up</a></li>
+				<li class="nav-item ms-md-auto"><a class="nav-link text-white" 
+													style="font-family:'Gemunu Libre'; font-size: 1.5em" 
+													th:href="@{/homePage}">Log In</a></li>
+			</ul>
+		</div>
+	</nav>
+<!-- if a user is logged in... -->
+	<nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)" th:unless="${user == null}">
+		<div class="container-fluid">
+			<!-- Left justified unordered list -->
+			<ul class="navbar nav">
+				<li class="nav-item"> <a class="navbar-brand" th:href="@{/homePage}">
+					<img src="/images/university_depot_icon.png" 
+						alt="Home" 
+						style="width:64px; height:64px;"></img></a></li>
+			</ul>
+			<!-- Right justified unordered list -->
+			<ul class="navbar nav ms-md-auto">
+				<li class="nav-item">
+					<div class="dropdown"> 
+						<a class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+							<img th:if="${user.userImage == null}" src="/images/default_user_icon.png" alt="Blank user avatar" style="width:32px; height:32px"></img>
+							<img th:unless="${user.userImage == null}" th:src="@{/images/userImages/{image}(image = ${user.userImage})}" alt="User avatar" style="width:32px; height:32px"></img>
+						</a>
+						
+						<ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+							<li><h5 class="dropdown-header">My Account</h5></li>
+							<li><a class="dropdown-item" th:href="@{/userDetails}">Personal Info</a></li>
+							<li><a class="dropdown-item" th:href="@{/userDetails/paymentDetails}">Payment Info</a></li>
+							<li><hr class="dropdown-divider"></hr></li>
+							<li><a class="dropdown-item" href="/do_the_logout">Log Out</a></li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</nav>		
+</header>
+<!-- END NAV BAR -->
+
+<body>
+<div id="page">
+<!-- SIDE NAV BAR -->
+	<div id="sidebar">
+		<ul class="nav nav-pills flex-column mb-auto bg-dark" style="height: 300%;">
+	    	<li class="nav-item">
+	        	<a th:if="${page == 'home'}" class="submit4 nav-link active pb-3" th:href="@{/messages}" ><span>Inbox</span></a>
+	        	<a th:unless="${page == 'home'}" class="submit4 pb-3" th:href="@{/messages}" ><span>Inbox</span></a>
+	        </li>
+	        <li class="nav-item">
+	        	<a th:if="${page == 'outbox'}" class="submit4 nav-link active pb-3" th:href="@{/outbox}" ><span>Sent</span></a>
+	        	<a th:unless="${page == 'outbox'}" class="submit4 pb-3" th:href="@{/outbox}" ><span>Sent</span></a>
+	        </li>
+	        <li class="nav-item">
+		        <a th:if="${page == 'trashBox'}" class="submit4 nav-link active pb-3" th:href="@{/trashbox}" ><span>Trash</span></a>
+		        <a th:unless="${page == 'trashBox'}" class="submit4 active pb-3" th:href="@{/trashbox}" ><span>Trash</span></a>
+	        </li>
+	        <li class="nav-item">
+				<a class="submit4 pb-3" type="button" data-bs-toggle="modal" data-bs-target="#modalCompose">Compose</a>
+			</li>
+			<li class="nav-item">
+				<a class="submit4" style="cursor: pointer" onclick="history.back()"><span>Back</span></a>
+			</li>
+		</ul>
+	</div>
+<!-- END SIDE NAV BAR -->
+
+	<div class="container-fluid align-items-center" style="background-color: rgb(212,183,145)">
+		<div class="row" style="background-color: white">
+			<h1 class="d-flex justify-content-center">Message Center</h1>
+		</div>
+		
+  
+<th:block th:switch="${view}">
+<div th:case="false">
+
+<th:block th:switch="${page}">
+  	
+  	<!-- 
+  		The following section controls the "folder" look. This is accomplished using the grid system in Bootstrap 5.  
+  		The current folder gets the "border-bottom-0" class to give the illusion that it is in front of the other folders.
+  	 -->
+  	 
+	<!-- IF IN INBOX -->
+	<div th:case="home" class="row" >
+    	<div class="col-1 border border-2 border-bottom-0 border-dark" style="background-color: rgb(212,183,145)">
+    		<span class="d-flex justify-content-center" style="font-size:24px;"> Inbox </span>
+    	</div>
+    	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
+    		<span class="d-flex justify-content-center" style="font-size:24px;"> Sent </span>
+    	</div>
+    	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
+    		<span class="d-flex justify-content-center" style="font-size:24px;"> Trash </span>
+    	</div> 
+    	<div class="col-1 border border-2 border-start-0 border-top-0 border-end-0 border-dark d-flex flex-fill" 
+    		style="background-color: white"></div>
+  	</div>
+  	<!-- IF IN SENT -->
+  	<div th:case="outbox" class="row" >
+    	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216,189,154)">
+    		<span class="d-flex justify-content-center" style="font-size:24px;"> Inbox </span>
+    	</div>
+    	<div class="col-1 border border-2 border-bottom-0 border-dark" style="background-color: rgb(212,183,145)">
+    		<span class="d-flex justify-content-center" style="font-size:24px;"> Sent </span>
+    	</div>
+    	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
+    		<span class="d-flex justify-content-center" style="font-size:24px;"> Trash </span>
+    	</div> 
+    	<div class="col-1 border border-2 border-start-0 border-top-0 border-end-0 border-dark d-flex flex-fill" 
+    		style="background-color: white"></div>
+    </div>
+    <!-- IF IN TRASH -->
+    <div th:case="trashBox" class="row" >
+    	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
+    		<span class="d-flex justify-content-center" style="font-size:24px;"> Inbox </span>
+    	</div>
+    	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
+    		<span class="d-flex justify-content-center" style="font-size:24px;"> Sent </span>
+    	</div>
+    	<div class="col-1 border border-2 border-bottom-0 border-dark" style="background-color: rgb(212,183,145)">
+    		<span class="d-flex justify-content-center" style="font-size:24px;"> Trash </span>
+    	</div> 
+    	<div class="col-1 border border-2 border-start-0 border-top-0 border-end-0 border-dark d-flex flex-fill" 
+    		style="background-color: white"></div>
+    </div>
+    <!-- IF IN SPAM -->
+    <div th:case="spamBox" class="row">
+    	<div class="col-3" style="background-color: white"></div>
+    	<div class="col-1 border border-2 border-bottom-0 border-dark">
+    		<span class="d-flex justify-content-center" style="font-size:24px;"> Spam </span>
+    	</div> <div class="col-1 d-flex flex-fill" style="background-color: white"></div>
+    </div> 
+
+
+	<!-- "Compose Message" Modal -->
+	<div class="modal fade" id="modalCompose">
+		<div class="modal-dialog">
+	    	<div class="modal-content">
+	      		<!-- Header -->
+	      		<div class="modal-header">
+	        		<h4 class="modal-title">Compose a Message</h4>
+	        		<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	      		</div>
+	
+	      		<!-- Body -->
+	      		<div class="modal-body">
+	        		<form th:action="@{/sendmail}" onsubmit="lockSend()" method="post" id="sendForm">
+						<table class="center" style="background-color: #faf0e6; border: 2px solid #002147;width:75%;">
+	  						<tr>
+	  							<td><div><label> To : <input type="text" name="recipient"/> </label></div></td>
+	  						</tr>
+	            			<tr>
+	            				<td><div><label> Subject : <input type="text" name="subject"/> </label></div></td>
+	            			</tr>
+	            			<tr>
+	            				<td><div><label> Message: </label></div>
+	           							<textarea id="message" name="message" rows="4" cols="50"></textarea>
+	  
+	            			</tr>
+	      				</table>
+					</form>
+	      		</div>
+	     		 <!-- Modal footer -->
+	      		<div class="modal-footer">
+	        		<button type="submit" form="sendForm" id="mysendmailbutton" class="btn btn-success">Send</button>
+	    		</div>
+	  		</div>
+		</div>
+	</div>
+	<!-- END MODAL -->
+	
+	            	<table class="center" style="background-color: #faf0e6; border: 2px solid #002147;margin-top:20px;margin-bottom:20px;width:50%;">
+	    </th:block>
+	    <tr>
+	            <th:block th:switch="${page2}">
+	            <div th:case="sent">
+	            <th style="background-color: #0d6efd;"> Message Sent Successfully </th>
+	            </div>
+	            </th:block>
+	            <th:block th:switch="${page2}">
+	            <div th:case="fail">
+	            <th style="background-color: #dc3545;"> That is not a valid username </th>
+	            </div>
+	            </th:block>
+	            <th:block th:switch="${page4}">
+	            <div th:case="recoverFromSpam">
+	            <th style="background-color: #0d6efd;"> Message Recovered From Spam</th>
+	            </div>
+	            </th:block>
+	             <th:block th:switch="${page4}">
+	            <div th:case="recoverFromTrash">
+	            <th style="background-color: #0d6efd;"> Message Recovered From Trash</th>
+	            </div>
+	            </th:block>
+	            <th:block th:switch="${page4}">
+	            <div th:case="sentToSpam">
+	            <th style="background-color: #dc3545;"> Message Sent To Spam </th>
+	            </div>
+	            </th:block>
+	                       <th:block th:switch="${page4}">
+	            <div th:case="sentToTrash">
+	            <th style="background-color: #dc3545;"> Message Sent To Trash </th>
+	            </div>
+	            </th:block>
+	                       <th:block th:switch="${page4}">
+	            <div th:case="deleteFromSpam">
+	            <th style="background-color: #dc3545;"> Message Was Permanently Deleted </th>
+	            </div>
+	            </th:block>
+	                       <th:block th:switch="${page4}">
+	            <div th:case="deleteFromTrash">
+	            <th style="background-color: #dc3545;"> Message Was Permanently Deleted </th>
+	            </div>
+	            </th:block>
+	   </tr>
+	</table>
+	        <script>
+	          function lockSend() {
+	
+		document.getElementById('mysendmailbutton').setAttribute('disabled', 'disabled');
+	}
+	       
+	          var count = 0;
+	          function myFunction(id, color) {
+	          	console.log(id);
+	          var element = document.getElementById(id);
+	          console.log(element.style.backgroundColor);
+	          document.getElementById("trashButton").style.visibility = "visible";
+	          document.getElementById("trashButton2").style.visibility = "visible";
+	          document.getElementById("spamButton").style.visibility = "visible";
+	          document.getElementById("spamButton2").style.visibility = "visible";
+	
+	          if(element.style.backgroundColor == "rgb(220, 53, 69)"){
+	            count = count-1;
+	            element.style.backgroundColor = '#0B53C3';
+	            document.getElementById(id).className += "submit2";
+	            
+	          }
+	          else{
+	            element.style.backgroundColor = '#dc3545';
+	            count = count +1;
+	
+	            }
+	            if(count == 0){
+	          	  document.getElementById("trashButton").style.visibility = "hidden";
+	          	  document.getElementById("trashButton2").style.visibility = "hidden";
+	          	  document.getElementById("spamButton").style.visibility = "hidden";
+	          	  document.getElementById("spamButton2").style.visibility = "hidden";
+	            }
+	            
+	          console.log(element.style.backgroundColor);
+	          console.log(count);
+	
+	          }
+	         
+	          </script>
+	    <!--      	<form action="/spamButton" method="post">
+								<button type="submit" class="submit">spam</button>-->
+	 <form th:action="@{/trash}" method="post">
+	<th:block th:switch="${page}">
+	            <div th:case="trashBox">
+	
+	           
+	     <input id ="trashButton" th:formaction="@{/trashDelete}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Permanently Delete"/>
+	 
+	   <input id ="trashButton2" th:formaction="@{/recoverFromTrash}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Recover From Trash"/>
+	    <p id ="spamButton" style="visibility: hidden;" ></p>
+	    <p id ="spamButton2" style="visibility: hidden;" ></p>
+	            </div>	
+	           <div th:case="spamBox">
+	
+	       
+	     <input id ="spamButton" th:formaction="@{/spamDelete}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Permanently Delete"/>
+	 
+	   <input id ="spamButton2" th:formaction="@{/recoverFromSpam}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Recover From Spam"/>
+	        <p id ="trashButton" style="visibility: hidden;" ></p>
+	    <p id ="trashButton2" style="visibility: hidden;" ></p>
+	            </div>	
+	            <div th:case="home">
+	            <p id ="trashButton2" style="visibility: hidden;" ></p>
+	            <p id ="spamButton2" style="visibility: hidden;" ></p>
+	            </div>
+	            <div th:case="outbox">
+	            <p id ="trashButton2" style="visibility: hidden;" ></p>
+	            <p id ="spamButton2" style="visibility: hidden;" ></p>
+	            </div>
+	            </th:block>					
+	
+	     <input id ="trashButton" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Send  to Trash"/>
+	     <input id ="spamButton" th:formaction="@{/spam}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Send to Spam"/>
+		<table class="fixed center" style="width:75%;">
+	
+	  <tr>
+	  
+	  		<th:block th:switch="${page}">
+	  		<th style="width:40px"> <input type="checkbox"/></th>
+	  		
+	  			
+			<th> Open Message </th>
+		
+	    	<div th:case="home">
+	    		<th > From</th>
+	    	</div>
+	    	<div th:case="sent">
+	    		<th > From</th>
+	    	</div>
+	    	
+	    	<div th:case="trashBox">
+	    		<th> From</th>
+	    	</div>
+	    	
+	    	<div th:case="spamBox">
+	    		<th> From</th>
+	    	</div>
+	    
+	    	<div th:case="outbox">
+	    		<th > Sent To</th>
+	    	</div>
+	    
+	    	</th:block>
+	    <th>Subject</th>
+	    <th > Date</th>
+	  </tr>
+	  
+	
+	<th:block  th:each="mailbox : ${mailbox}">
+	<tr  th:id="${mailbox.id}"class= "submit2"> 
+			<th  th:id="${mailbox.id}"> <input type="checkbox" name="id" th:value="${mailbox.id}"th:onclick="myFunction([[${mailbox.id}]],'red')"/> </th>
+			<th:block th:switch="${page}">
+			<td>
+			<a  style="color:black;"th:href="@{/openMessage/{id}(id = ${mailbox.id})}" >Open</a>
+			</td>
+	  		<td >
+	    	<div th:case="home">
+	    		<p  th:text="${mailbox.sender}"></p>
+	    	</div>
+	    	<div th:case="sent">
+	    		<p  th:text="${mailbox.sender}"></p>
+	    	</div>
+	    	
+	    	<div th:case="trashBox">
+	    		<p   th:text="${mailbox.sender}"></p>
+	    	</div>
+	    	
+	    	    	<div th:case="spamBox">
+	    		<p   th:text="${mailbox.sender}"></p>
+	    	</div>
+	    
+	    	<div th:case="outbox">
+	    		<p   th:text="${mailbox.receiverName}"></p>
+	    	</div>
+	    	</td>
+	    	</th:block>
+	    	
+	        <td >
+	        <p  th:text="${mailbox.subject}"></p>
+	         </td>
+	                <td >
+	        <p   th:text="${mailbox.msgDate}"></p>
+	         </td>
+	
+	
+	    </tr>
+	    </th:block>
+	
+	
+	</table>
+	
+	
+	</form>
+	</div>
+	<div th:case="true">
+	<table class="center" style="border: 2px solid #002147;margin-top:20px;margin-bottom:20px;width:80%;">
+	<tr>
+	<th colspan="2"> View Message </th>
+	</tr>
+	<tr>
+	<td><h4> From: </h4></td>
+	<td><h4 th:text="${sentFrom}">			</h4>
+	</tr>
+	<tr>
+	<td><h4> Date: </h4></td>
+	<td><h4 th:text="${sentDate}">			</h4>
+	</tr>
+	<tr>
+	<td><h4> Subject: </h4></td>
+	<td><h4 th:text="${sentSubject}">			</h4>
+	</tr>
+	<tr>
+	<td><h4> Message: </h4></td>
+	<td><h4 th:text="${msg}">			</h4>
+	</tr>
+	
+	
+	</table>
+	
+	<button  class="submit" ><a style="color:black;"  th:href="@{/replyButton}" ><span>Reply</span></a></button><br>
+	
+	<th:block th:switch="${page}">
+	<div th:case="reply">
+	<table class="center" style="background-color: #faf0e6; border: 2px solid #002147;margin-top:20px;margin-bottom:20px;width:50%;">
+	<form th:action="@{/sendmail}" onsubmit="lockSend()" method="post">
+	      
+	        	<tr>
+	    			<th style="font-size:24px;height:50px;" >Compose Message</th>
+	  			</tr>
+	  			<tr>
+	  			<td><div><label> To : <input type="text" name="recipient" th:value = "${sentFrom}"/> </label></div></td>
+	  			</tr>
+	            <tr>
+	            <td><div><label> Subject : <input type="text" name="subject" th:value = "${sentSubject}"/> </label></div></td>
+	            </tr>
+	            <tr>
+	            <td><div><label> Message: </label></div>
+	           <textarea id="message" name="message" rows="4" cols="50"></textarea>
+	            <div><input id = "mysendmailbutton" type="submit" class="submit" value="Send"/></div></td>
+	            </tr>
+	            </form>
+	            
+	            </th:block>
+	</table>
+	
+	
+	            	<table class="center" style="background-color: #faf0e6; border: 2px solid #002147;margin-top:20px;margin-bottom:20px;width:50%;">
+	    </th:block>
+	              <th:block th:switch="${page3}">
+	            <div th:case="sent">
+	            <th style="background-color: #0d6efd;"> Reply Sent Successfully </th>
+	            </div>
+	            </th:block>
+	            <th:block th:switch="${page3}">
+	            <div th:case="fail">
+	            <th style="background-color: #dc3545;"> That is not a valid username </th>
+	            </div>
+	            </th:block>
+	</table>
+	<!-- <button class="submit" ><a  th:href="@{/closeMessage}" ><span>Inbox</span></a></button><br>  -->
+	</div>
+	</th:block>
+	  
+	  
+	  </div>
+	
+	
+	
+	
+	</div>
+	
+</div>
+</body>
+</html>
+
+<!-- <th:block th:switch="${page2}">
+ <div th:case="ticket">
+  
+  	<img align="left" th:src="@{images/widgits_logo.png}" style="width:200px;height:80px;"/>
+  	<H3> Sorry to hear your getting spam, would you care to elaborate or just send? </H3>
+  	<a class="submit" th:href="@{/elaborate}" ><span>Explain</span></a>
+	<a class="submit" th:href="@{/justSend}" ><span>Just Send It</span></a>
+
+</div>
+<div th:case="elaborate">
+  <p>choose category</p>
+  <p>feedback</p>
+ 
+
+</div>
+</th:block>		
+-->	
+<!--  <form action="/trash">						
+<button type="submit"id ="trashButton" style = "color:red; visibility: hidden;width: 300px;" class="submit" ><span>Send Selected To Trash</span></button>
+</form>-->
+  

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Login</title>
+        <link th:href="@{/styles/login.css}" rel="stylesheet" />
+    </head>
+    <body>
+    
+    
+    <div class="grid-container">
+
+
+
+
+ 	<div class="grid-item item1">
+ 	    
+		<th:block th:switch="${page}">
+
+  		<div th:case="wronguser">
+ 		 <h2> Incorrect user name</h2>
+ 		    <form th:action="@{/verify}" method="post">
+            <div><label> User Name : <input type="text" name="username" th:value ="${username}"/> </label></div>
+            <div><label> Verification Code: <input type="text" name="verification" th:value ="${verification}"/> </label></div>
+            <input type="submit" class="submit" value="Verify Email"> <br/>
+        <a class="submit" th:href="@{/index}" > <span>Return to Index</span></a>
+        </form>
+ 		 </div>
+    	<div th:case="alreadyverified">
+    	<h2>This account is already verified, you may now log in</h2>
+    	<a class="submit" th:href="@{/index}" > <span>Return to Index</span></a>
+    	</div>
+      	<div th:case="verifysuccess">
+      	<h2>Verification successful you may now log in</h2>
+      	<a class="submit" th:href="@{/index}" > <span>Return to Index</span></a>
+      	</div>
+        <div th:case="wrongcode">
+        <h2>That is not the correct verification code</h2>
+                <form th:action="@{/verify}" method="post">
+            <div><label> User Name : <input type="text" name="username" th:value ="${username}"/> </label></div>
+            <div><label> Verification Code: <input type="text" name="verification" th:value ="${verification}"/> </label></div>
+            <input type="submit" class="submit" value="Verify Email"> <br/>
+        <a class="submit" th:href="@{/index}" > <span>Return to Index</span></a>
+        </form>
+        </div>
+  
+  
+  <div th:case="startverify">
+        <form th:action="@{/verify}" method="post">
+            <div><label> User Name : <input type="text" name="username"/> </label></div>
+            <div><label> Verification Code: <input type="text" name="verification"/> </label></div>
+            <input type="submit" class="submit" value="Verify Email"> <br/>
+        <a class="submit" th:href="@{/index}" > <span>Return to Index</span></a>
+        </form>
+        </div>
+ 	</div>
+ 	 	
+ 	 	
+ 	 	</div>
+
+    </body>
+</html>

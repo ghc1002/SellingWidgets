@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Employee Center</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+        crossorigin="anonymous">
+  <link th:href="@{/styles/employee_page.css}" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gemunu%20Libre">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet"
+        href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script th:inline="javascript">
+    var real_data = /*[[${names}]]*/'noValue';
+    var real_data2 = /*[[${widgetNames}]]*/'noValue';
+    $(document).ready(function () {
+      $("#nameInput").autocomplete({
+        minLength: 1,
+        source: real_data,
+        select: function (e, ui) {
+          $("#nameOutput").text('You have selected : ' + ui.item.value);
+          return ui.item.value;
+        }
+      })
+      $("#widgetNameInput").autocomplete({
+        minLength: 1,
+        source: real_data2,
+        select: function (e, ui) {
+          $("#nameOutput2").text('You have selected : ' + ui.item.value);
+          return ui.item.value;
+        }
+      })
+    });
+  </script>
+</head>
+
+<!-- NAV BAR -->
+<header>
+  <nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)">
+    <div class="container-fluid">
+      <!-- Left justified unordered list -->
+      <ul class="navbar nav">
+        <li class="nav-item"><a class="navbar-brand" th:href="@{/homePage}">
+          <img src="/images/university_depot_icon.png"
+               alt="Home"
+               style="width:64px; height:64px;"></img></a></li>
+      </ul>
+      <!-- Right justified unordered list -->
+      <ul class="navbar nav ms-md-auto">
+        <li class="nav-item ms-md-auto"><a class="nav-link text-white"
+                                           style="font-family:'Gemunu Libre'; font-size: 1.5em"
+                                           href="/do_the_logout">Log Out</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<!-- END NAV BAR -->
+
+<!-- ROLE_ADMIN SIDEBAR -->
+  <th:block th:switch="${user.role}">
+    <nav class="navbar bg-dark align-items-start">
+    	<div th:case="ROLE_ADMIN" class="container-fluid">
+        	<ul class="nav nav-pills">
+				<li class="nav-item">
+					<a th:if="${page == 'ticket'}" class="submit4 nav-link active" th:href="@{/searchTickets}"><span>Search Tickets</span></a>
+					<a th:unless="${page == 'ticket'}" class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page == 'create'}" class="submit4 nav-link active" th:href="@{/createButton}"><span>Add Employee</span></a>
+					<a th:unless="${page == 'create'}" class="submit4" th:href="@{/createButton}"><span>Add Employee</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page == 'search'}" class="submit4 nav-link active" th:href="@{/searchButton}"><span>Search Users</span></a>
+					<a th:unless="${page == 'search'}" class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page =='searchWidgetSellerMarketListing'}" class="submit4 nav-link active" th:href="@{/searchWidgetButton}"><span>Search Items</span></a>
+					<a th:unless="${page =='searchWidgetSellerMarketListing'}" class="submit4" th:href="@{/searchWidgetButton}"><span>Search Items</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page == 'widgetsInfo'}" class="submit4 nav-link active" th:href="@{/widgetsInfo}"><span>Items Info</span></a>
+					<a th:unless="${page == 'widgetsInfo'}" class="submit4" th:href="@{/widgetsInfo}"><span>Items Info</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page == 'searchMessage'}" class="submit4 nav-link active" th:href="@{/searchMessageButton}"><span>View a Message</span></a>
+					<a th:unless="${page == 'searchMessage'}" class="submit4" th:href="@{/searchMessageButton}"><span>View a Message</span></a>
+				</li>
+				<li class="nav-item"><a class="submit4 nav-link" th:href="@{/messages}"><span>My Messages</span></a></li>
+	        </ul>
+      	</div>
+      	
+      <div th:case="ROLE_ADMIN_SHADOW">
+        <ul>
+          <li><a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/searchMessageButton}"><span>View a Message</span></a><br></li>
+          <li><a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br></li>
+          <!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
+        </ul>
+      </div>
+    </nav>
+    <div th:case="ROLE_TECHNICALSERVICE">
+      <div class="grid-item item3">
+        <ul>
+          <li><a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/searchMessageButton}"><span>View a Message</span></a><br></li>
+          <li><a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br></li>
+          <!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
+        </ul>
+      </div>
+    </div>
+    <div th:case="ROLE_CUSTOMERSERVICE">
+      <div class="grid-item item3">
+        <ul>
+          <li><a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/searchMessageButton}"><span>View a Message</span></a><br></li>
+          <li><a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br></li>
+          <!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
+        </ul>
+      </div>
+    </div>
+    <div th:case="ROLE_SECURITY">
+      <div class="grid-item item3">
+        <ul>
+          <li><a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/searchMessageButton}"><span>View a Message</span></a><br></li>
+          <li><a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br></li>
+          <!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
+        </ul>
+      </div>
+    </div>
+    <div th:case="ROLE_SALES">
+      <div class="grid-item item3">
+        <ul>
+          <li><a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/statButton}"><span>Statistics</span></a><br></li>
+          <li><a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br></li>
+          <li><a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br></li>
+          <!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
+        </ul>
+      </div>
+    </div>
+    <div th:case="ROLE_HIRINGMANAGER">
+      <div class="grid-item item3">
+        <ul>
+          <li><a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchApplicationsButton(id = ${1})}"><span>New Applications</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchApplicationsButton(id = ${2})}"><span>Reviewed Applications</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br></li>
+          <!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
+        </ul>
+      </div>
+    </div>
+    <div th:case="ROLE_HELPDESK_ADMIN">
+      <div class="grid-item item3">
+        <ul>
+          <li><a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/searchMessageButton}"><span>View a Message</span></a><br></li>
+          <li><a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br></li>
+          <!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
+        </ul>
+      </div>
+    </div>
+    <div th:case="ROLE_HELPDESK_REGULAR">
+      <div class="grid-item item3">
+        <ul>
+          <li><a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a><br>
+          </li>
+          <li><a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br></li>
+          <li><a class="submit4"
+                 th:href="@{/searchMessageButton}"><span>View a Message</span></a><br></li>
+          <li><a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br></li>
+          <!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
+        </ul>
+      </div>
+    </div>
+  </th:block>
+
+<body style="display: flex; margin-top: 96px">
+  <div class="d-flex">
+    <th:block th:switch="${masterPage}">
+      <div th:case="base">
+        <th:block th:switch="${page}">
+          <div th:case="begin">
+            <table class="center">
+              <tr>
+                <th> Welcome to the Employee Home Page</th>
+              </tr>
+              <tr>
+                <td> Click the buttons on the left hand side to get started</td>
+              </tr>
+              <tr>
+                <th> Clicking the <i>University Depot</i> logo in the top bar will bring you back to this screen</th>
+              </tr>
+              <tr>
+                <td> Various employee roles share this workspace. Depending on your role you may not
+                  have proper authority to access everything that you click on. In that case, you
+                  may see a screen saying you do not have the proper authority. To get back, either
+                  click home or one of the other buttons on the side bar
+                </td>
+              </tr>
+              <tr>
+                <th> If you get up from your computer make sure to lock it with ctrl+L</th>
+              </tr>
+              <tr>
+                <td> For more information, look in your employee handbook or the website
+                  user/technical manual
+                </td>
+              </tr>
+            </table>
+          </div>
+        </th:block>
+      </div>
+      <div th:case="query">
+
+        <th:block th:switch="${page}">
+          <div th:case="notAuthorized">
+            <table class="center">
+              <tr>
+                <th> You do not have the proper authority to view this page</th>
+              </tr>
+            </table>
+          </div>
+          <div th:case="searchMarketListing">
+            <form th:action="@{/searchListing}" method="post">
+
+              <label for="widgetName">Enter widget name</label>
+
+              <input type="text" name="widgetName" id="widgetNameInput"><br>
+
+              <input type="submit" class="submit" value="Search">
+
+            </form>
+          </div>
+          <div th:case="ticket">
+            <table class="center">
+              <tr>
+                <th:block th:if="${user.role == 'ROLE_ADMIN'}">
+                  <th colspan="15">Tickets</th>
+                </th:block>
+                <th:block th:unless="${user.role == 'ROLE_ADMIN'}">
+                  <th colspan="11">Tickets</th>
+                </th:block>
+              </tr>
+              <tr>
+                <th colspan="1">Ticket ID</th>
+                <th colspan="2">Reporter</th>
+                <th colspan="2">Currently Assigned To</th>
+                <th colspan="2">User Level</th>
+                <th:block th:if="${user.role == 'ROLE_ADMIN'}">
+                  <th colspan="4">Update Assignee</th>
+                </th:block>
+                <th colspan="2">State</th>
+                <th colspan="2">Ticket Actions</th>
+              </tr>
+              <th:block th:each="ticket: ${tickets}">
+                <tr>
+                  <td><a th:href="@{/searchTickets/{id}(id = ${ticket.id})}"
+                         th:text="${ticket.id}"></a></td>
+                  <td colspan="2"><a th:href="@{/searchUser/{id}(id = ${ticket.createdBy.id})}"
+                         th:text="${ticket.createdBy.username}"></a></td>
+                  <!-- Null Pointer Check - https://stackoverflow.com/questions/20636456/using-thymeleaf-when-the-value-is-null -->
+                  <td colspan="2"><p
+                      th:text="${ticket.assignedTo} ? ${ticket.assignedTo.username} : 'None'"></p>
+                  </td>
+                  <td colspan="2"><p
+                      th:text="${ticket.assignedTo} ? ${ticket.assignedTo.role} : 'None'"></p>
+                  </td>
+                  <th:block th:if="${user.role == 'ROLE_ADMIN'}">
+                    <td colspan="4">
+                      <th:block th:if="${!ticket.isResolved()}">
+                        <form method="post" th:action="@{/assignTicket/{id}(id = ${ticket.id})}">
+                          <select th:name="username" style="max-width: 70%">
+                            <option th:each="assignuser : ${users}"
+                                    th:value="${assignuser.username}"
+                                    th:text="${assignuser.username != user.username} ? ${assignuser.role} + ' - ' + ${assignuser.username} : 'Assign To Me'"></option>
+                          </select>
+                          <input type="submit" value="submit"/>
+                        </form>
+                      </th:block>
+                      <th:block th:unless="${!ticket.isResolved()}"><p>None</p></th:block>
+                    </td>
+                  </th:block>
+                  <td colspan="2"><p th:text="${ticket.state}"></p></td>
+                  <td colspan="2">
+                    <th:block
+                        th:if="${!ticket.isResolved() && ticket.assignedTo != null ? ticket.assignedTo.username == user.username : false}">
+                      <form method="post" th:action="@{/resolveTicket/{id}(id = ${ticket.id})}">
+                        <input type="submit" value="Resolve Ticket"/>
+                      </form>
+                    </th:block>
+                    <th:block
+                        th:unless="${!ticket.isResolved() && ticket.assignedTo != null ? ticket.assignedTo.username == user.username : false}">
+                      <p>None</p></th:block>
+                  </td>
+                </tr>
+              </th:block>
+            </table>
+
+          </div>
+
+          <div th:case="ticketdetail">
+            <table class="center" th:object="${ticket}">
+              <tr>
+                <th colspan="2">Ticket Detail</th>
+              </tr>
+              <tr>
+                <td><p>Ticket ID</p></td>
+                <td><p th:text="${ticket.id}"></p></td>
+              </tr>
+              <tr>
+                <td><p>Ticket Subject</p></td>
+                <td><p th:text="${ticket.subject}"></p></td>
+              </tr>
+              <tr>
+                <td><p>Reporter</p></td>
+                <td><p th:text="${ticket.createdBy.username}"></td>
+              </tr>
+              <tr>
+                <td><p>State</p></td>
+                <td><p th:text="${ticket.state}"></p></td>
+              </tr>
+              <tr>
+                <td><p>Created At</p></td>
+                <td><p th:text="${ticket.createdAt}"></p></td>
+              </tr>
+              <tr>
+                <td><p>Assigned At</p></td>
+                <td><p th:text="${ticket.assignedAt} ? ${ticket.assignedAt} : 'NULL'"></p></td>
+              </tr>
+              <tr>
+                <td><p>Updated At</p></td>
+                <td><p th:text="${ticket.updatedAt}"></p></td>
+              </tr>
+              <tr>
+                <td><p>Resolved At</p></td>
+                <td><p th:text="${ticket.resolvedAt} ? ${ticket.resolvedAt} : 'NULL'"></p></td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <p>
+                  <h2>Ticket Messages</h2></p>
+                  <th:block th:each="message : ${ticket.messages}">
+                    <span style="white-space: pre-wrap"
+                          th:text="${message.sender} + ' : ' + ${message.content} + ' (' + ${message.msgDate} + ')'"></span><br>
+                  </th:block>
+                  <br>
+                  <th:block
+                      th:if="${!ticket.isResolved() && ticket.assignedTo != null ? ticket.assignedTo.username == user.username : false}">
+                    <form method="post" th:action="@{/reply/{id}(id = ${ticket.id})}"
+                          th:object="${message}">
+                      <label for="reply">Reply : </label>
+                      <input type="text" id="reply" name="reply" width="300" placeholder="Reply to the ticket" th:field="*{content}"/>
+                      <input type="submit" class="btn btn-primary btn-sm" value="submit"/>
+                    </form>
+                  </th:block>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+
+          <div th:case="resolvedTickets">
+            <table class="center">
+              <th:block th:switch="${pageSuccess}">
+                <div th:case="ticketMovedToUnresolved">
+                  <tr>
+                    <th colspan="3" style="background-color: rgb(128, 128, 192);"> Ticket was moved
+                      back to unresolved
+                    </th>
+                  </tr>
+                </div>
+                <div th:case="ticketEscalated">
+                  <tr>
+                    <th colspan="3" style="background-color: rgb(128, 128, 192);"> Ticket was
+                      escalated
+                    </th>
+                  </tr>
+                </div>
+              </th:block>
+              <tr>
+                <th colspan="9"> Tickets</th>
+              </tr>
+              <tr>
+                <th> Reporter</th>
+                <th> Offender</th>
+                <th> Ticket Category</th>
+                <th> Feedback</th>
+                <th> Date Created</th>
+                <th> Resolve Tickets</th>
+                <th colspan="3"> Escalate Tickets</th>
+              </tr>
+              <th:block th:each="tickets: ${tickets}">
+                <tr>
+
+                  <td><a th:href="@{/searchUser(userName = ${tickets.spamReporter})}"
+                         th:text="${tickets.spamReporter}"></a></td>
+                  <td><a th:href="@{/searchUser(userName = ${tickets.offender})}"
+                         th:text="${tickets.offender}"></a></td>
+                  <td><p th:text="${tickets.ticketCategory}"></p></td>
+                  <td><p th:text="${tickets.userFeedback}"></p></td>
+                  <td><p th:text="${tickets.dateSentToTrashOwner}"></p></td>
+                  <td><a class="submit7" style="width:75%;height:50%"
+                         th:href="@{/escalateTicket(id = ${tickets.id}, id2 = ${6})}">Un-Resolve</a>
+                  </td>
+                  <th:block th:switch="${user.role}">
+                    <div th:case="ROLE_CUSTOMERSERVICE">
+                      <td><a class="submit" style="width:75%;height:50%"
+                             th:href="@{/escalateTicket(id = ${tickets.id}, id2 = ${1})}">Escalate
+                        To Technical Support</a></td>
+                      <td><a class="submit5" style="width:75%;height:50%"
+                             th:href="@{/escalateTicket(id = ${tickets.id}, id2 = ${2})}">Escalate
+                        To Manager</a></td>
+                      <td><a class="submit7" style="width:75%;height:50%"
+                             th:href="@{/escalateTicket(id = ${tickets.id}, id2 = ${4})}">Escalate
+                        To Security</a></td>
+                    </div>
+                    <div th:case="ROLE_ADMIN">
+                      <td><a class="submit" style="width:75%;height:50%"
+                             th:href="@{/escalateTicket(id = ${tickets.id}, id2 = ${1})}">Escalate
+                        To Technical Support</a></td>
+                      <td><a class="submit5" style="width:75%;height:50%"
+                             th:href="@{/escalateTicket(id = ${tickets.id}, id2 = ${3})}">Escalate
+                        To Customer Service</a></td>
+                      <td><a class="submit7" style="width:75%;height:50%"
+                             th:href="@{/escalateTicket(id = ${tickets.id}, id2 = ${4})}">Escalate
+                        To Security</a></td>
+                    </div>
+                    <div th:case="ROLE_TECHNICALSERVICE">
+                      <td><a class="submit" style="width:75%;height:50%"
+                             th:href="@{/escalateTicket(id = ${tickets.id}, id2 = ${3})}">Escalate
+                        To Customer Service</a></td>
+                      <td><a class="submit5" style="width:75%;height:50%"
+                             th:href="@{/escalateTicket(id = ${tickets.id}, id2 = ${2})}">Escalate
+                        To Manager</a></td>
+                      <td><a class="submit7" style="width:75%;height:50%"
+                             th:href="@{/escalateTicket(id = ${tickets.id}, id2 = ${4})}">Escalate
+                        To Security</a></td>
+                    </div>
+                    <div th:case="ROLE_SECURITY">
+                      <td><a class="submit" style="width:75%;height:50%"
+                             th:href="@{/escalateTicket(id = ${tickets.id}, id2 = ${1})}">Escalate
+                        To Technical Support</a></td>
+                      <td><a class="submit5" style="width:75%;height:50%"
+                             th:href="@{/escalateTicket(id = ${tickets.id}, id2 = ${2})}">Escalate
+                        To Manager</a></td>
+                      <td><a class="submit" style="width:75%;height:50%"
+                             th:href="@{/escalateTicket(id = ${tickets.id}, id2 = ${3})}">Escalate
+                        To Customer Service</a></td>
+                    </div>
+                  </th:block>
+                </tr>
+              </th:block>
+            </table>
+
+          </div>
+          <div th:case="statistics">
+            <form th:action="@{/lookupStatistics}" method="post">
+              <table class="center">
+                <tr>
+                  <th> Select statistic type</th>
+
+                </tr>
+                <tr>
+                  <td>
+                    <div><select name="category">
+                      <option th:each="catList : ${catList}" th:text="${catList}"/>
+                    </select></div>
+                  </td>
+
+                </tr>
+                <tr>
+                  <th> Select date to filter by</th>
+
+                </tr>
+                <tr>
+                  <td>
+                    <div><select name="date">
+                      <option th:each="dateList : ${dateList}" th:text="${dateList}"/>
+                    </select></div>
+                  </td>
+
+                </tr>
+                <tr>
+                  <td><input type="submit" class="submit" value="lookUpStats"></td>
+
+                </tr>
+              </table>
+
+
+            </form>
+          </div>
+          <div th:case="listingResult">
+
+            <table class="center">
+              <tr>
+                <th> Widget Id</th>
+                <th> Name</th>
+                <th> Description</th>
+                <th> Category</th>
+                <th> Listing Id</th>
+                <th> Listing Seller</th>
+                <th> Listing Quantity</th>
+                <th> Listing Price</th>
+                <th> Edit Widget</th>
+
+
+              </tr>
+              <tr>
+                <td th:text="${searchedWidget.id}"></td>
+
+                <td th:text="${searchedWidget.name}"></td>
+
+                <td th:text="${searchedWidget.description}"></td>
+
+                <td th:text="${searchedWidget.category}"></td>
+
+                <td th:text="${searchedMarket.id}"></td>
+
+                <td th:text="${seller.username}"></td>
+
+                <td th:text="${searchedMarket.qtyAvailable}"></td>
+
+                <td th:text="${searchedMarket.pricePerItem}"></td>
+
+                <td><a th:href="@{/viewListing/{id}(id = ${user.id})}">Edit Listing</a></td>
+              </tr>
+            </table>
+          </div>
+          <div th:case="createfail">
+            <h1>Employee Creation Failed</h1>
+          </div>
+          <div th:case="create">
+            <th:block th:switch="${page2}">
+              <div th:case="create">
+                <table class="center">
+                  <tr>
+
+                    <th colspan="3" style="background-color: rgb(4, 179, 87);"> Creation
+                      Successful
+                    </th>
+                  </tr>
+                </table>
+              </div>
+              <div th:case="createFail">
+                <table class="center">
+                  <tr>
+
+                    <th colspan="3" style="background-color: red;"> Creation Fail</th>
+
+                  </tr>
+                  <tr>
+
+                    <th colspan="3" style="background-color: red;"><p
+                        th:text="${createStringError}"></p></th>
+
+                  </tr>
+
+                </table>
+              </div>
+            </th:block>
+            <form th:action="@{/createEmployee}" th:object="${useradd}" method="post">
+              <table class="center">
+                <tr>
+                  <th colspan="2"> Create an Employee</th>
+                </tr>
+                <tr>
+                  <td><label for="userName">Username:</label></td>
+                  <td><input type="text" th:field="*{username}" id="username"></td>
+
+                </tr>
+                <tr>
+                  <td><label for="password">Password:</label></td>
+                  <td><input type="text" th:field="*{password}" id="password"></td>
+
+                </tr>
+                <tr>
+                  <td><label for="email">Email: </label></td>
+                  <td><input type="text" th:field="*{email}" id="email"></td>
+
+                </tr>
+                <tr>
+                  <td>
+                    <div>Select Role :</div>
+                  </td>
+                  <td>
+                    <div><select th:field="*{role}">
+                      <option th:each="role : ${roleList}" th:text="${role}" th:value="${role}"/>
+                    </select></div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="submit" class="submit" style="width:75%;height:75%"
+                             value="Add Employee"></td>
+
+                  <td><a class="submit7 " style="width:70%;height:70%" th:href="@{/employee}"><span>Cancel</span></a>
+                  </td>
+                </tr>
+
+
+              </table>
+              <span style="color:red" th:if="${#fields.hasErrors('username')}"
+                    th:errors="*{username}"></span>
+              <span style="color:red" th:if="${#fields.hasErrors('password')}"
+                    th:errors="*{password}"></span>
+              <span style="color:red" th:if="${#fields.hasErrors('email')}"
+                    th:errors="*{email}"></span>
+            </form>
+          </div>
+          <div th:case="searchWidgetSellerMarketListing">
+            <th:block th:switch="${page2}">
+              <div th:case="widget">
+                <table class="center" style="float: left;">
+                  <tr>
+
+                    <th colspan="3" style="background-color: rgb(4, 179, 87);"> Search Successful
+                    </th>
+                  </tr>
+                </table>
+              </div>
+              <div th:case="widgetSearchFailed">
+                <table class="center" style="float: left;">
+                  <tr>
+
+                    <th colspan="3" style="background-color: red;"> Search Provided No Results</th>
+                  </tr>
+                </table>
+              </div>
+            </th:block>
+
+            <form th:action="@{/viewWidgetListing}" method="post">
+              <table class="left" style="float: left;">
+
+                <tr>
+                  <th colspan="4"> Search Widgets</th>
+                </tr>
+                <tr>
+                  <td colspan="4"><label for="name">Search by Widget Name</label></td>
+                </tr>
+                <tr>
+                  <th colspan="4"> Widgets</th>
+                </tr>
+                <tr>
+                  <th>View Listing</th>
+                  <th>Widget Name</th>
+                  <th>Widget Description</th>
+                  <th>Widget Category</th>
+
+                </tr>
+                <th:block th:each="searchedWidgets: ${allWidgets}">
+                  <tr>
+
+                    <td><a th:href="@{/viewOneListing/{id}(id = ${searchedWidgets.id})}">View</a>
+                    </td>
+                    <td><p th:text="${searchedWidgets.name}"></p></td>
+                    <td><p th:text="${searchedWidgets.description}"></p></td>
+                    <td><p th:text="${searchedWidgets.category}"></p></td>
+                  </tr>
+                </th:block>
+              </table>
+              <table class="middle" style="float: left;">
+                <tr>
+                  <th colspan="1"> Sellers</th>
+                </tr>
+                <tr>
+                  <td colspan="1"><input type="text" id="widgetNameInput" name="name"></td>
+                </tr>
+                <tr>
+                  <th colspan="1"> Sellers</th>
+                </tr>
+                <tr>
+
+                  <th>Seller Username</th>
+
+
+                </tr>
+                <th:block th:each="sellers: ${allSellers}">
+                  <tr>
+
+                    <td><p th:text="${sellers.username}"></p></td>
+
+
+                  </tr>
+                </th:block>
+              </table>
+              <table class="right" style="float: left;">
+                <tr>
+                  <th colspan="3"> and Market Listings</th>
+                </tr>
+                <tr>
+                  <td colspan="3"><input type="submit"
+                                         style="width:75%;height:75%;margin-bottom:-5px"
+                                         class="submit" value="Search"></td>
+
+                </tr>
+                <tr>
+                  <th colspan="3"> and Market Listings</th>
+                </tr>
+                <tr>
+
+                  <th>Market Listing ID</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+
+                </tr>
+                <th:block th:each="searchedMarkets: ${allMarketListings}">
+                  <tr>
+                    <td><p th:text="${searchedMarkets.id}"></p></td>
+                    <td><p th:text="${searchedMarkets.qtyAvailable}"></p></td>
+                    <td><p th:text="${searchedMarkets.pricePerItem}"></p></td>
+                  </tr>
+
+                </th:block>
+              </table>
+            </form>
+          </div>
+
+          <div th:case="widgetsInfo">
+            <table class="left" style="float: left;">
+              <div class="card h-100 w-80">
+                <div class="card-header d-flex justify-content-center">
+                  <h1>Widgets Info</h1>
+                </div>
+                <div class="card-body">
+                  <div class="card w-50" style="margin-left: auto; margin-right: auto;">
+                    <div class="card-header d-flex justify-content-center">
+                      <h2>Select a Widget Category</h2>
+                    </div>
+                    <div class="card-body d-flex justify-content-center">
+                      <form action="#" th:action="@{/widgetsInfoCategory}" method="post">
+                        <input type="radio" class="btn-check" name="category" id="electronic"
+                               value="electronic" checked>
+                        <label class="btn btn-outline-primary" for="electronic">Electronics</label>
+                        <input type="radio" class="btn-check" name="category" id="appliance"
+                               value="appliance">
+                        <label class="btn btn-outline-primary" for="appliance">Appliances</label>
+                        <input type="radio" class="btn-check" name="category" id="vehicle"
+                               value="vehicle">
+                        <label class="btn btn-outline-primary" for="vehicle">Vehicles</label>
+                        <input type="radio" class="btn-check" name="category" id="lawnCare"
+                               value="lawnCare">
+                        <label class="btn btn-outline-primary" for="lawnCare">Lawn Care</label>
+                        <input class="btn btn-success" type="submit" value="Next">
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </table>
+          </div>
+
+          <div th:case="widgetsInfoCategory">
+            <table class="left" style="float: left;">
+              <div class="card h-100 w-80">
+                <div class="card-header d-flex justify-content-center">
+                  <h1>Widgets Info</h1>
+                </div>
+                <div class="card-body">
+                  <div class="card w-50" style="margin-left: auto; margin-right: auto;">
+                    <div class="card-header d-flex justify-content-center">
+                      <h2>Select a Widget Category</h2>
+                    </div>
+                    <th:block th:switch="${page2}">
+                      <div th:case="electronic" class="card-body d-flex justify-content-center">
+                        <form action="#" th:action="@{/widgetsInfoSubCategory}" method="post"
+                              class="form">
+                          <input type="radio" class="btn-check" name="subCategory" id="computer"
+                                 value="computer" checked>
+                          <label class="btn btn-outline-primary" for="computer">Computer</label>
+                          <input type="radio" class="btn-check" name="subCategory" id="videoGame"
+                                 value="videoGame">
+                          <label class="btn btn-outline-primary" for="videoGame">Video Game</label>
+                          <input class="btn btn-success" type="submit" value="Next">
+                        </form>
+                      </div>
+                      <div th:case="appliance" class="card-body d-flex justify-content-center">
+                        <form action="#" th:action="@{/widgetsInfoSubCategory}" method="post"
+                              class="form">
+                          <input type="radio" class="btn-check" name="subCategory" id="dryer"
+                                 value="dryer" checked>
+                          <label class="btn btn-outline-primary" for="dryer">Dryer</label>
+                          <input type="radio" class="btn-check" name="subCategory" id="blender"
+                                 value="blender" checked>
+                          <label class="btn btn-outline-primary" for="blender">Blender</label>
+                          <input type="radio" class="btn-check" name="subCategory" id="microwave"
+                                 value="microwave">
+                          <label class="btn btn-outline-primary" for="microwave">Microwave</label>
+                          <input type="radio" class="btn-check" name="subCategory" id="refrigerator"
+                                 value="refrigerator">
+                          <label class="btn btn-outline-primary"
+                                 for="refrigerator">Refrigerator</label>
+                          <input type="radio" class="btn-check" name="subCategory" id="washer"
+                                 value="washer">
+                          <label class="btn btn-outline-primary" for="washer">Washer</label>
+                          <input class="btn btn-success" type="submit" value="Next">
+                        </form>
+                      </div>
+                      <div th:case="vehicle" class="card-body d-flex justify-content-center">
+                        <form action="#" th:action="@{/widgetsInfoSubCategory}" method="post"
+                              class="form">
+                          <input type="radio" class="btn-check" name="subCategory" id="car"
+                                 value="car" checked>
+                          <label class="btn btn-outline-primary" for="car">Car</label>
+                          <input class="btn btn-success" type="submit" value="Next">
+                        </form>
+                      </div>
+                      <div th:case="lawnCare" class="card-body d-flex justify-content-center">
+                        <form action="#" th:action="@{/widgetsInfoSubCategory}" method="post"
+                              class="form">
+                          <input type="radio" class="btn-check" name="subCategory" id="lawnMower"
+                                 value="lawnMower" checked>
+                          <label class="btn btn-outline-primary" for="lawnMower">Lawn Mower</label>
+                          <input class="btn btn-success" type="submit" value="Next">
+                        </form>
+                      </div>
+                    </th:block>
+                  </div>
+                </div>
+              </div>
+            </table>
+          </div>
+
+          <div th:case="widgetsInfoSubCategory">
+            <table class="center">
+              <form action="#" th:action="@{/updateWidgetsInfo}" th:object="${widgetsInfos}"
+                    method="post">
+                <tr>
+                  <th colspan="3">Widget Sub Category Details</th>
+                </tr>
+              </form>
+              <tr>
+                <td><p>Download Data File</p></td>
+                <form method="get" th:action="@{/downloadDataFile}" enctype="multipart/form-data">
+                  <input hidden type="text" th:name="subCategory" th:value="${subCategory}">
+                  <td colspan="2">
+                    <button class="button button4" type="submit" th:text="'Download ' + ${subCategory} + ' Data File'"></button>
+                  </td>
+                </form>
+              </tr>
+            </table>
+          </div>
+
+          <div th:case="search">
+
+
+            <table class="center">
+              <tr>
+                <th colspan="7"> Search For Users</th>
+              </tr>
+              <tr>
+                <form th:action="@{/searchUser}" method="post">
+                  <td colspan="2"><label for="userName">Search By Username</label></td>
+                  <td colspan="3"><input type="text" id="nameInput" name="userName"></td>
+                  <td colspan="2"><input type="submit" style="width:75%;height:75%" class="submit"
+                                         value="Search"></td>
+                </form>
+              </tr>
+              <tr>
+                <th colspan="7"> All User's Information</th>
+              </tr>
+              <tr>
+                <th> User Name</th>
+                <th> Email Address</th>
+                <th> View Inbox</th>
+                <th> View Outbox</th>
+                <th> View Trash</th>
+                <th> Edit User</th>
+                <th> View User's Market Listings</th>
+              </tr>
+              <th:block th:each="user: ${users}">
+                <tr>
+                  <td><a th:href="@{/searchUser/{id}(id = ${user.id})}"
+                         th:text="${user.username}"></a></td>
+                  <td><p th:text="${user.email}"></p></td>
+                  <td><a th:href="@{/viewSpecificUserInbox/{id}(id = ${user.id})}">Inbox</a></td>
+                  <td><a th:href="@{/viewSpecificUserOutbox/{id}(id = ${user.id})}">Outbox</a></td>
+                  <td><a th:href="@{/viewSpecificUserTrash/{id}(id = ${user.id})}">Trash</a></td>
+                  <td><a th:href="@{/editUserButton/{id}(id = ${user.id})}">Edit User</a></td>
+                  <td><a th:href="@{/viewListing/{id}(id = ${user.id})}">View User's Market
+                    Listings</a></td>
+                </tr>
+              </th:block>
+            </table>
+
+          </div>
+          <div th:case="userSearchfailed">
+            <table class="center">
+              <tr>
+                <th colspan="7"> Search Returned No Results</th>
+              </tr>
+              <tr>
+                <form th:action="@{/searchUser}" method="post">
+                  <td colspan="2"><label for="userName">Search By Username</label></td>
+                  <td colspan="2"><input id="nameInput" type="text" name="userName"></td>
+                  <td colspan="2"><input type="submit" style="width:75%;height:75%" class="submit"
+                                         value="Search"></td>
+                  <td colspan="1"><a class="submit" style="width:65%;height:50%"
+                                     th:href="@{/searchButton}"><span>Go Back</span></a><br></td>
+                </form>
+            </table>
+          </div>
+          <div th:case="userResult">
+
+
+            <table class="center">
+              <tr>
+                <th colspan="7"> Searched For User's Information</th>
+              </tr>
+              <tr>
+                <form th:action="@{/searchUser}" method="post">
+                  <td colspan="2"><label for="userName">Search By Username</label></td>
+                  <td colspan="2"><input id="nameInput" type="text" name="userName"></td>
+                  <td colspan="2"><input type="submit" style="width:75%;height:75%" class="submit"
+                                         value="Search"></td>
+                  <td colspan="1"><a class="submit" style="width:65%;height:50%"
+                                     th:href="@{/searchButton}"><span>Go Back</span></a><br></td>
+                </form>
+              </tr>
+              <tr>
+
+              </tr>
+              <tr>
+                <th colspan="7"> Searched User Results</th>
+              </tr>
+              <tr>
+                <th> User Name</th>
+                <th> Email Address</th>
+                <th> View Inbox</th>
+                <th> View Outbox</th>
+                <th> View Trash</th>
+                <th> Edit User</th>
+                <th> View User's Market Listings</th>
+              </tr>
+              <th:block th:each="myusers: ${myusers}">
+                <tr>
+                  <td><a th:href="@{/searchUser/{id}(id = ${myusers?.id})}"
+                         th:text="${myusers?.username}"></a></td>
+                  <td><p th:text="${myusers?.email}"></p></td>
+                  <td><a th:href="@{/viewSpecificUserInbox/{id}(id = ${myusers?.id})}">Inbox</a>
+                  </td>
+                  <td><a th:href="@{/viewSpecificUserOutbox/{id}(id = ${myusers?.id})}">Outbox</a>
+                  </td>
+                  <td><a th:href="@{/viewSpecificUserTrash/{id}(id = ${myusers?.id})}">Trash</a>
+                  </td>
+                  <td><a th:href="@{/editUserButton/{id}(id = ${myusers?.id})}">Edit User</a></td>
+                  <td><a th:href="@{/viewListing/{id}(id = ${myusers?.id})}">View User's Market
+                    Listings</a></td>
+                </tr>
+              </th:block>
+            </table>
+
+
+          </div>
+          <div th:case="singleUserResult">
+
+            <table class="center">
+              <tr>
+                <th colspan="4"> Single User View</th>
+                <th colspan="3"><a class="submit" style="width:65%;height:50%"
+                                   th:href="@{/searchButton}"><span>Go Back</span></a><br></th>
+              </tr>
+              <tr>
+                <th> User Name</th>
+                <th> Email Address</th>
+                <th> View Inbox</th>
+                <th> View Outbox</th>
+                <th> View Trash</th>
+                <th> Edit User</th>
+                <th> View User's Market Listings</th>
+              </tr>
+
+              <tr>
+                <td><a th:href="@{/searchUser/{id}(id = ${searchedUser.id})}"
+                       th:text="${searchedUser.username}"></a></td>
+                <td><p th:text="${searchedUser.email}"></p></td>
+                <td><a th:href="@{/viewSpecificUserInbox/{id}(id = ${searchedUser.id})}">Inbox</a>
+                </td>
+                <td><a th:href="@{/viewSpecificUserOutbox/{id}(id = ${searchedUser.id})}">Outbox</a>
+                </td>
+                <td><a th:href="@{/viewSpecificUserTrash/{id}(id = ${searchedUser.id})}">Trash</a>
+                </td>
+                <td><a th:href="@{/editUserButton/{id}(id = ${searchedUser.id})}">Edit User</a></td>
+                <td><a th:href="@{/viewListing/{id}(id = ${searchedUser.id})}">View User's Market
+                  Listings</a></td>
+              </tr>
+
+            </table>
+
+
+          </div>
+          <div th:case="searchMessage">
+            <table class="center">
+              <tr>
+                <th> User Name</th>
+                <th> Email Address</th>
+                <th> View Inbox</th>
+                <th> View Outbox</th>
+                <th> View Trash</th>
+              </tr>
+              <th:block th:each="user: ${users}">
+                <tr>
+                  <td><p th:text="${user.username}"></p></td>
+                  <td><p th:text="${user.email}"></p></td>
+                  <td><a th:href="@{/viewSpecificUserInbox/{id}(id = ${user.id})}">Inbox</a></td>
+                  <td><a th:href="@{/viewSpecificUserOutbox/{id}(id = ${user.id})}">Outbox</a></td>
+                  <td><a th:href="@{/viewSpecificUserTrash/{id}(id = ${user.id})}">Trash</a></td>
+                </tr>
+              </th:block>
+            </table>
+          </div>
+          <div th:case="applications">
+            <table class="center">
+              <th:block th:switch="${pageSuccess}">
+                <div th:case="reviewedApplication">
+                  <tr>
+                    <th colspan="3" style="background-color: #0d6efd;"> Application Was Reviewed!
+                    </th>
+                  </tr>
+                </div>
+              </th:block>
+              <tr>
+                <th colspan="13"> Applications</th>
+              </tr>
+              <tr>
+                <th>Applicant Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Email Address</th>
+                <th>Application Date</th>
+                <th>Role Applied For</th>
+                <th>Answer 1</th>
+                <th>Answer 2</th>
+                <th>Answer 3</th>
+                <th>Answer 4</th>
+                <th>Accept</th>
+                <th>Decline</th>
+
+              </tr>
+              <th:block th:each="applicants: ${applicants}">
+
+                <tr>
+                  <td><p th:text="${applicants.id}"></p></td>
+                  <td><p th:text="${applicants.firstName}"></p></td>
+                  <td><p th:text="${applicants.lastName}"></p></td>
+                  <td><p th:text="${applicants.phoneNumber}"></p></td>
+                  <td><p th:text="${applicants.email}"></p></td>
+                  <td><p th:text="${applicants.applicationDate}"></p></td>
+                  <td><p th:text="${applicants.roleAppliedfor}"></p></td>
+                  <td><p th:text="${applicants.answer1}"></p></td>
+                  <td><p th:text="${applicants.answer2}"></p></td>
+                  <td><p th:text="${applicants.answer3}"></p></td>
+                  <td><p th:text="${applicants.answer4}"></p></td>
+                  <td><a class="submit" style="width:75%;height:50%"
+                         th:href="@{/escalateApplication(id = ${applicants.id},id2 = ${1})}">Accept</a>
+                  </td>
+                  <td><a class="submit7" style="width:75%;height:50%"
+                         th:href="@{/escalateApplication(id = ${applicants.id},id2 = ${2})}">Decline</a>
+                  </td>
+                </tr>
+              </th:block>
+            </table>
+          </div>
+
+
+          <!-- Add more here -->
+
+
+        </th:block>
+      </div>
+
+
+      <div th:case="result">
+        <th:block th:switch="${page}">
+          <div th:case="notAuthorized">
+            <h1> You do not have the proper authority to view this page</h1>
+          </div>
+        </th:block>
+        <th:block th:switch="${page2}">
+          <div th:case="user">
+            <form th:action="@{/editUser}" method="post">
+              <th:block th:switch="${page3}">
+                <div th:case="editSuccess">
+                  <table class="center" style="float: left;">
+                    <tr>
+
+                      <th colspan="3" style="background-color: rgb(4, 179, 87);"> Edit Successful
+                      </th>
+                    </tr>
+                  </table>
+                </div>
+                <div th:case="editFail">
+                  <table class="center" style="float: left;">
+                    <tr>
+
+                      <th colspan="3" style="background-color: red;"> Edit Failed</th>
+                      <th colspan="3" style="background-color: red;"><p th:text="${error}"></p></th>
+                    </tr>
+                  </table>
+                </div>
+              </th:block>
+              <table class="center">
+                <tr>
+                  <th colspan="4"> Edit User:</th>
+                </tr>
+                <tr>
+                  <th>ID</th>
+                  <th>Username</th>
+                  <th>Password</th>
+                  <th>Password Confirmation</th>
+                </tr>
+                <tr>
+                  <td><input type="text" name="id" th:value="${searchedUser.id}"></td>
+                  <td><input type="text" name="userName" th:value=${searchedUser.username}></td>
+                  <td><input type="text" name="password" th:value=${searchedUser.password}></td>
+                  <td><input type="text" name="passwordConf" th:value=${searchedUser.passwordconf}>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Email Address</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Phone Number</th>
+                </tr>
+                <tr>
+                  <td><input type="text" name="email" th:value=${searchedUser.email}></td>
+                  <td><input type="text" name="fName" th:value=${searchedUser.firstName}></td>
+                  <td><input type="text" name="lName" th:value=${searchedUser.lastName}></td>
+                  <td><input type="text" name="phoneNumber" th:value=${searchedUser.phoneNumber}>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Country Code</th>
+                  <th>Role</th>
+                  <th>Email Verification</th>
+                </tr>
+                <tr>
+
+                  <td><input type="text" name="cc" th:value=${searchedUser.countryCode}></td>
+                  <td><input type="text" name="role" th:value=${searchedUser.role}></td>
+                  <td><input type="text" name="emailVerification"
+                             th:value=${searchedUser.emailVerification}></td>
+                </tr>
+                <tr>
+                  <th>Display Name</th>
+                  <th>User Description</th>
+                  <th>Creation Date</th>
+                </tr>
+                <tr>
+
+                  <td><input type="text" name="dispName" th:value=${searchedUser.displayName}></td>
+                  <td><input type="text" name="userDesc" th:value=${searchedUser.userDescription}>
+                  </td>
+                  <td><input type="text" name="creationDate" th:value=${searchedUser.creationDate}>
+                  </td>
+
+                </tr>
+                <!-- change seller rating? -->
+
+
+              </table>
+              <table class="center" style="width:75%;">
+                <tr>
+                  <th colspan="8"><input type="submit" class="submit" value="Save Changes"/></th>
+                </tr>
+                <tr>
+                  <th colspan="8"><a class="submit7" th:href="@{/backButton}"><span>Go Back To Search</span></a>
+                  </th>
+                </tr>
+              </table>
+            </form>
+          </div>
+          <div th:case="stats">
+
+            <table class="center">
+              <tr>
+                <th colspan="3"><a class="submit7" th:href="@{/backButton}"><span>Go Back</span></a><br>
+                </th>
+              </tr>
+              <tr>
+                <th colspan="3"><p th:text="${cat}"></p> Statistics for <p th:text="${date}"></p>
+                </th>
+              </tr>
+              <tr>
+                <td> Value total:</td>
+                <td colspan="2"><p th:text="${total}"></p></td>
+              </tr>
+              <tr>
+                <th>Description</th>
+                <th>Value</th>
+                <th>Date</th>
+
+
+              </tr>
+
+              <th:block th:each="allStats: ${allStats}">
+                <tr>
+                  <td><p th:text="${allStats.description}"></p></td>
+                  <td><p th:text="${allStats.value}"></p></td>
+                  <td><p th:text="${allStats.date}"></p></td>
+
+                </tr>
+              </th:block>
+
+            </table>
+          </div>
+        </th:block>
+
+        <th:block th:switch="${mailpage}">
+          <div th:case="inboxPage">
+            <table class="center">
+              <tr>
+                <th colspan="5"><a class="submit7" th:href="@{/backButton}"><span>Go Back</span></a><br>
+                </th>
+              </tr>
+              <tr>
+                <th colspan="5"><p th:text="${searchedUser.username}">'s</p> Inbox</th>
+              </tr>
+              <tr>
+                <th> Sender</th>
+                <th> Receiver</th>
+                <th> Subject</th>
+                <th> Content</th>
+                <th> Date</th>
+              </tr>
+              <th:block th:each="inbox: ${inbox}">
+                <tr>
+                  <td><p th:text="${inbox.sender}"></p></td>
+                  <td><p th:text="${inbox.receiverName}"></p></td>
+                  <td><p th:text="${inbox.subject}"></p></td>
+                  <td><p th:text="${inbox.content}"></p></td>
+                  <td><p th:text="${inbox.msgDate}"></p></td>
+                </tr>
+              </th:block>
+            </table>
+          </div>
+          <div th:case="outboxPage">
+
+            <table class="center">
+              <tr>
+                <th colspan="5"><a class="submit7" th:href="@{/backButton}"><span>Go Back</span></a><br>
+                </th>
+              </tr>
+              <tr>
+                <th colspan="5"><p th:text="${searchedUser.username}">'s</p> OutBox</th>
+              </tr>
+              <tr>
+                <th> Sender</th>
+                <th> Receiver</th>
+                <th> Subject</th>
+                <th> Content</th>
+                <th> Date</th>
+              </tr>
+              <th:block th:each="outbox: ${outbox}">
+                <tr>
+                  <td><p th:text="${outbox.sender}"></p></td>
+                  <td><p th:text="${outbox.receiverName}"></p></td>
+                  <td><p th:text="${outbox.subject}"></p></td>
+                  <td><p th:text="${outbox.content}"></p></td>
+                  <td><p th:text="${outbox.msgDate}"></p></td>
+                </tr>
+              </th:block>
+            </table>
+          </div>
+          <div th:case="trashPage">
+            <table class="center">
+              <tr>
+                <th colspan="5"><a class="submit7" th:href="@{/backButton}"><span>Go Back</span></a><br>
+                </th>
+              </tr>
+              <tr>
+                <th colspan="5"><p th:text="${searchedUser.username}">'s</p> Trash</th>
+              </tr>
+              <tr>
+                <th> Sender</th>
+                <th> Receiver</th>
+                <th> Subject</th>
+                <th> Content</th>
+                <th> Date</th>
+              </tr>
+              <th:block th:each="trash: ${trash}">
+                <tr>
+                  <td><p th:text="${trash.sender}"></p></td>
+                  <td><p th:text="${trash.receiverName}"></p></td>
+                  <td><p th:text="${trash.subject}"></p></td>
+                  <td><p th:text="${trash.content}"></p></td>
+                  <td><p th:text="${trash.msgDate}"></p></td>
+                </tr>
+              </th:block>
+            </table>
+          </div>
+          <div th:case="searchMarketListing">
+            <form th:action="@{/editWidgetHere}" method="post">
+
+              <th:block th:switch="${page3}">
+                <div th:case="editWidgetSuccess">
+                  <table class="center" style="float: left;">
+                    <tr>
+
+                      <th colspan="3" style="background-color: rgb(4, 179, 87);"> Edit Successful
+                      </th>
+                    </tr>
+                  </table>
+                </div>
+                <div th:case="editWidgetFail">
+                  <table class="center" style="float: left;">
+                    <tr>
+
+                      <th colspan="3" style="background-color: red;"> Edit Failed</th>
+                      <th colspan="3" style="background-color: red;"><p th:text="${error}"></p></th>
+                    </tr>
+                  </table>
+                </div>
+              </th:block>
+              <table class="left" style="float: left;">
+
+                <tr>
+                  <th colspan="4"> Widgets</th>
+                </tr>
+                <tr>
+                  <th>Widget ID</th>
+                  <th>Widget Name</th>
+                  <th>Widget Description</th>
+                  <th>Widget Category</th>
+
+                </tr>
+                <th:block th:each="searchedWidgets: ${searchedWidgets}">
+                  <tr>
+                    <td><input type="text" name="widgetId" th:value=${searchedWidgets.id}></td>
+
+                    <td><input type="text" name="widgetName" th:value=${searchedWidgets.name}></td>
+
+                    <td><input type="text" name="widgetDesc"
+                               th:value=${searchedWidgets.description}></td>
+
+                    <td><input type="text" name="widgetCat" th:value=${searchedWidgets.category}>
+                    </td>
+
+                  </tr>
+                </th:block>
+              </table>
+
+              <table class="middle" style="float: left;">
+                <tr>
+                  <th colspan="1"> Sellers</th>
+                </tr>
+                <tr>
+
+                  <th>Seller Username</th>
+
+
+                </tr>
+                <th:block th:each="sellers: ${sellers}">
+                  <tr>
+
+
+                    <td><input type="text" name="sellerName" th:value=${sellers.username}></td>
+
+
+                  </tr>
+                </th:block>
+
+              </table>
+              <table class="right" style="float: left;">
+                <tr>
+                  <th colspan="3"> and Market Listings</th>
+                </tr>
+                <tr>
+
+                  <th>Market Listing ID</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+
+                </tr>
+                <th:block th:each="searchedMarkets: ${searchedMarkets}">
+                  <tr>
+
+
+                    <td><input type="text" name="marketId" th:value=${searchedMarkets.id}></td>
+
+                    <td><input type="text" name="marketQty"
+                               th:value=${searchedMarkets.qtyAvailable}></td>
+
+                    <td><input type="text" name="marketPrice"
+                               th:value=${searchedMarkets.pricePerItem}></td>
+                  </tr>
+
+                </th:block>
+
+              </table>
+              <table class="left" style="float: left;width:75%;">
+                <tr>
+                  <th colspan="8"><input type="submit" class="submit" value="Save Changes"/></th>
+                </tr>
+                <tr>
+                  <th colspan="8"><a class="submit7" th:href="@{/backButton}"><span>Go Back To Search</span></a><br>
+                  </th>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </th:block>
+
+      </div>
+    </th:block>
+  </div>
+  </th:block>
+
+
+</div>
+</body>
+</html>

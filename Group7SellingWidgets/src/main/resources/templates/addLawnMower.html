@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http:www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>Add Widget</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+		<style>
+			header {
+				margin-bottom: 96px;
+			}
+			#page {
+				display: flex;
+				height: calc(100vh - 60px);
+			}
+			
+			#sidebar {
+				width: 140px;
+				border-color: white;
+			}
+			
+			#website-title {
+				margin-left: 8px;
+				margin-right: 8px;
+				font-size: 12px;
+			}
+			
+	</style>
+	</head>
+	
+	<!-- NAV BAR -->
+	<header> 
+	<!-- if no user is logged in... -->
+		<nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)" th:if="${user == null}" >
+			<div class="container-fluid">
+				<!-- Left justified unordered list -->
+				<ul class="navbar nav">
+					<li class="nav-item"> <a class="navbar-brand" th:href="@{/index}">
+						<img src="/images/university_depot_icon.png" 
+							alt="Home" 
+							style="width:64px; height:64px;"></img></a></li>
+				</ul>
+				<!-- Right justified unordered list -->
+				<ul class="navbar nav ms-md-auto">
+					<li class="nav-item ms-md-auto"><a class="nav-link text-white" 
+														style="font-family:'Gemunu Libre'; font-size: 1.5em" 
+														th:href="@{/newUser}">Sign Up</a></li>
+					<li class="nav-item ms-md-auto"><a class="nav-link text-white" 
+														style="font-family:'Gemunu Libre'; font-size: 1.5em" 
+														th:href="@{/homePage}">Log In</a></li>
+				</ul>
+			</div>
+		</nav>
+	<!-- if a user is logged in... -->
+		<nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)" th:unless="${user == null}">
+			<div class="container-fluid">
+				<!-- Left justified unordered list -->
+				<ul class="navbar nav">
+					<li class="nav-item"> <a class="navbar-brand" th:href="@{/homePage}">
+						<img src="/images/university_depot_icon.png" 
+							alt="Home" 
+							style="width:64px; height:64px;"></img></a></li>
+				</ul>
+				<!-- Right justified unordered list -->
+				<ul class="navbar nav ms-md-auto">
+					<li class="nav-item">
+						<div class="dropdown"> 
+							<a class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+								<img th:if="${user.userImage == null}" src="/images/default_user_icon.png" alt="Blank user avatar" style="width:32px; height:32px"></img>
+								<img th:unless="${user.userImage == null}" th:src="@{/images/userImages/{image}(image = ${user.userImage})}" alt="User avatar" style="width:32px; height:32px"></img>
+							</a>
+							
+							<ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+								<li><h5 class="dropdown-header">My Account</h5></li>
+								<li><a class="dropdown-item" th:href="@{/userDetails}">Personal Info</a></li>
+								<li><a class="dropdown-item" th:href="@{/userDetails/paymentDetails}">Payment Info</a></li>
+								<li><hr class="dropdown-divider"></hr></li>
+								<li><a class="dropdown-item" href="/do_the_logout">Log Out</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>		
+	</header>
+	<!-- END NAV BAR -->
+	
+	<body class="pageBody">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+		<div id="page">
+			<div id="sidebar">
+		            <ul class="nav nav-pills flex-column mb-auto bg-dark" style="height: 100%;">
+		                <li class="nav-item">
+		                    <a href="#" class="nav-link active">
+		                    	Sell Items
+		                    </a>
+		                </li>
+		            </ul>
+			</div>
+			<div class="card h-100 w-100">
+				<div class="card-header d-flex justify-content-center">
+					<h1>Create a Widget</h1>
+				</div>
+				<div class="card-body">
+					<div class="card w-50" style="margin-left: auto; margin-right: auto;">
+						<div class="card-header d-flex justify-content-center">
+							<h2>Create a Lawn Mower</h2>
+						</div>
+						<div class="card-body d-flex justify-content-center">
+							<div class="row">
+								<form action="#" th:action="@{/createLawnMower}" th:object="${mower}" method="post" class="form">
+									<div class="row">
+										<div class="form-group col-sm-6">
+											<label for="widgetName" >Widget Title</label>
+											<input class="form-control" type="text" th:field="*{name}" id="widgetName" placeholder="name">
+											<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+										</div>
+										<div class="form-group col-sm-6">
+											<label for="widgetDesc" >Description</label>
+											<input class="form-control" type="text" th:field="*{description}" id="widgetDesc" placeholder="description">
+											<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-sm-6">
+											<label for="yardSize" >Yard Size</label>
+											<input class="form-control" type="text" th:field="*{yardSize}" id="yardSize" name="yardSize">
+										</div>
+										<div class="form-group col-sm-6">
+											<label for="toolType" >Tool Type</label>
+											<input class="form-control" type="text" th:field="*{toolType}" id="toolType" name="toolType">
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-sm-6">
+											<label for="brand" >Brand</label>
+											<input class="form-control" type="text" th:field="*{brand}" id="brand" name="brand">
+										</div>
+										<div class="form-group col-sm-6">
+											<label for="powerSource" >Power Source</label>
+											<input class="form-control" type="text" th:field="*{powerSource}" id="powerSource" name="powerSource">
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-sm-6">
+											<label for="bladeWidth" >Blade Width (Inches)</label>
+											<input class="form-control" type="text" th:field="*{bladeWidth}" id="bladeWidth" name="bladeWidth">
+										</div>
+									</div>
+									<div class="row justify-content-around my-3">
+										<a class="btn btn-danger col-sm-4" href="/addLawnCare">Back</a>
+										<a class="btn btn-danger col-sm-4" href="/homePage">Cancel</a>
+										<input class="btn btn-success col-sm-4" type="submit" value="Next">
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="card-footer d-flex justify-content-center">
+							<form method="post" th:action="@{/uploadLawnMowerDataFile}" enctype="multipart/form-data">
+								<span>Upload Lawn Mower Data File : </span>
+								<input type="file" name="file" accept=".csv">
+								<button class="button button4" type="submit">Upload</button>
+							</form>
+							<form method="post" th:action="@{/uploadMarketListingDataFile}" enctype="multipart/form-data">
+								<span>Upload Market Listing Data File : </span>
+								<input type="file" name="file" accept=".csv">
+								<button class="button button4" type="submit">Upload</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

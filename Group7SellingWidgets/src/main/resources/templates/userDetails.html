@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http:www.thymeleaf.org">
+<head>
+	<meta charset="ISO-8859-1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gemunu%20Libre">
+	<title>My Account</title>
+	<style>
+		header {
+			margin-bottom: 96px;
+		}
+		#page {
+			display: flex;
+			height: calc(100vh - 60px);
+		}
+		
+		#sidebar {
+			width: 140px;
+			border-color: white;
+		}
+		
+		#website-title {
+			margin-left: 8px;
+			margin-right: 8px;
+			font-size: 12px;
+		}
+	</style>
+</head>
+
+	<!-- NAV BAR -->
+	<header> 
+	<!-- if no user is logged in... -->
+		<nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)" th:if="${user == null}" >
+			<div class="container-fluid">
+				<!-- Left justified unordered list -->
+				<ul class="navbar nav">
+					<li class="nav-item"> <a class="navbar-brand" th:href="@{/index}">
+						<img src="/images/university_depot_icon.png" 
+							alt="Home" 
+							style="width:64px; height:64px;"></img></a></li>
+				</ul>
+				<!-- Right justified unordered list -->
+				<ul class="navbar nav ms-md-auto">
+					<li class="nav-item ms-md-auto"><a class="nav-link text-white" 
+														style="font-family:'Gemunu Libre'; font-size: 1.5em" 
+														th:href="@{/newUser}">Sign Up</a></li>
+					<li class="nav-item ms-md-auto"><a class="nav-link text-white" 
+														style="font-family:'Gemunu Libre'; font-size: 1.5em" 
+														th:href="@{/homePage}">Log In</a></li>
+				</ul>
+			</div>
+		</nav>
+	<!-- if a user is logged in... -->
+		<nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)" th:unless="${user == null}">
+			<div class="container-fluid">
+				<!-- Left justified unordered list -->
+				<ul class="navbar nav">
+					<li class="nav-item"> <a class="navbar-brand" th:href="@{/homePage}">
+						<img src="/images/university_depot_icon.png" 
+							alt="Home" 
+							style="width:64px; height:64px;"></img></a></li>
+				</ul>
+				<!-- Right justified unordered list -->
+				<ul class="navbar nav ms-md-auto">
+					<li class="nav-item">
+						<div class="dropdown"> 
+							<a class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+								<img th:if="${currUser.userImage == null}" src="/images/default_user_icon.png" alt="Blank user avatar" style="width:32px; height:32px"></img>
+								<img th:unless="${currUser.userImage == null}" th:src="@{/images/userImages/{image}(image = ${user.userImage})}" alt="User avatar" style="width:32px; height:32px"></img>
+							</a>
+							
+							<ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+								<li><h5 class="dropdown-header">My Account</h5></li>
+								<li><a class="dropdown-item" th:href="@{/userDetails}">Personal Info</a></li>
+								<li><a class="dropdown-item" th:href="@{/userDetails/paymentDetails}">Payment Info</a></li>
+								<li><hr class="dropdown-divider"></hr></li>
+								<li><a class="dropdown-item" href="/do_the_logout">Log Out</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>		
+	</header>
+	<!-- END NAV BAR -->
+
+<body class="pageBody">
+	<!-- Paypal Delete popup -->
+	<div class="modal fade" id="paypalDetailsModal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="paypalDetailsModal">Delete PayPal Details</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>This will delete your currently saved PayPal details - are you sure?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					<form method="post" action="#"
+						th:action="@{/submitPaypalDetailsAction}" th:object="${paypalDetails}">
+						<button type="submit" class="btn btn-danger" name="delete">Delete</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- CC Delete popup -->
+	<div class="modal fade" id="paymentDetailsModal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="paymentDetailsModal">Delete Card Details</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>This will delete your currently saved card details - are you sure?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					<form method="post" action="#"
+						th:action="@{/submitPaymentDetailsAction}" th:object="${paymentDetails}">
+						<button type="submit" class="btn btn-danger" name="delete">Delete</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Direct deposit delete popup -->
+	<div class="modal fade" id="depositDetailsModal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="depositDetailsModal">Delete Direct Deposit Details</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>This will delete your currently saved direct deposit details - are you sure?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					<form method="post" action="#"
+						th:action="@{/submitDepositDetailsAction}" th:object="${depositDetails}">
+							<button type="submit" class="btn btn-danger" name="delete">Delete</button>
+						</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Main content -->
+	<div id="page">
+		<!-- Side bar -->
+		<div id="sidebar" th:if="${selectedMenu != T(edu.sru.cpsc.webshopping.controller.SUB_MENU).USER_DETAILS}">
+            <ul class="nav nav-pills flex-column mb-auto bg-dark" style="height: 100%;">
+				<li class="nav-item">
+	            	<a href="/homePage" class="nav-link">Home</a>
+	            </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}">
+                        Card Info
+                    </a>
+                    <a th:href="@{/userDetails/paymentDetails}" class="nav-link" th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}">
+                        Card Info
+                    </a>
+                </li>
+                <li class="nav-item">
+                	<a href="#" class="nav-link active" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYPAL_DETAILS}">
+                		PayPal
+                	</a>
+                	<a th:href="@{/userDetails/paypalDetails}" class="nav-link" th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYPAL_DETAILS}">
+                		PayPal
+                	</a>
+                </li>
+                <li class="nav-item">
+                	<a href="#" class="nav-link active" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}">
+                		Direct Deposit
+                	</a>
+                	<a th:href="@{/userDetails/depositDetails}" class="nav-link" th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}">
+                		Direct Deposit
+                	</a>
+                </li>
+                <li class="nav-item">
+                	<a class="nav-link" style="cursor: pointer" onclick="history.back()">Back</a>
+                </li>
+            </ul>
+		</div>
+	
+		<div class="card h-100 w-100">
+			<div class="card-header d-flex justify-content-center">
+				<h1 th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).USER_DETAILS}">Personal Info</h1>
+				<h1 th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}">Card Info</h1>
+				<h1 th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYPAL_DETAILS}">PayPal Info</h1>
+				<h1 th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}">Direct Deposit Info</h1>
+			</div>
+			
+			<div class="card-body">
+				<div th:if="${errMessage != null}" th:text="${errMessage}" class="alert alert-danger d-flex justify-content-center h3">
+				</div>
+					
+				<!-- User account details submenu -->
+				<form th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).USER_DETAILS}"
+					action="#" th:action="@{/updateUser}" enctype="multipart/form-data" method="post">
+					<div class="row my-2">
+						<div class="col-sm-2">
+							<div class="card my-2 h-100">
+								<img th:if="${user.userImage == null}" class="card-img-bottom" src="https://previews.123rf.com/images/kritchanut/kritchanut1406/kritchanut140600093/29213195-.jpg?fj=1" alt="Blank user avatar">
+								<img th:unless="${user.userImage == null}" class="card-img-bottom" th:src="@{/images/userImages/{image}(image = ${user.userImage})}" alt="User avatar">
+							</div>
+						</div>
+						
+						<div class="col-sm-5">
+							<div class="card my-2 h-100">
+								<div class="card-body d-flex justify-content-center">
+									<ul class="list-group w-100">
+										<li class="list-group-item">Name: 
+											<span th:if="${currUser.displayName != null && !currUser.displayName.isEmpty()}" th:text="${currUser.displayName}"></span>
+											<span th:unless="${currUser.displayName != null && !currUser.displayName.isEmpty()}" th:text="${currUser.username}"></span>
+										</li>
+										<li class="list-group-item">Rating: <span th:text="${sellerRating.RatingName}"></span></li>
+										<li class="list-group-item">Created: <span th:text="${creationDate}"></span></li>
+									</ul>	
+								</div>
+							</div>
+						</div>
+	
+						<div class="col-sm-5">
+							<div class="card w-100 my-2 h-100" >
+								<div class="card-header">
+									User Description
+								</div>
+								<div class="card-body">
+									<p th:text="${userDescription}"></p>
+								</div>
+							</div>
+						</div>		
+					</div>
+					
+					<div class="row mb-3">
+						<div class="col-sm-6">
+							<label class="form-label" for="username">Username:</label>
+							<input class="form-control" type="text" name="username" th:value="${userName}" id="username" maxlength="20">
+						</div>
+						<div class="col-sm-6">
+							<label class="form-label" for="display">Display Name:</label>
+							<input class="form-control" type="text" name="displayName" th:value="${displayName}" id="display" maxlength="20">
+						</div>
+						<div class="col-sm-6">
+						<label class="form-label" for="userID">User ID:</label>
+						<input class="form-control" type="text" name="displayUserID" th:value="${displayUserID}" id="userID" maxlength="10">
+						</div>
+					</div>
+	
+					<div class="mb-3">
+						<label class="form-label" for="desc">User Description</label>
+						<textarea class="form-control" name="description" th:text="${userDescription}" id="desc" rows="4" cols="5" maxlength="250"
+							style="resize: none;"></textarea>
+					</div>
+					<div class="mb-3">
+						<label class="form-label" for="email">Email Address</label>
+						<input class="form-control" type="text" name="email" id="email" th:value="${email}" maxlength="50">
+					</div>
+						<br>
+					<div class="mb-3">
+						<label for="fileUpload">Choose a image to change profile picture:</label>
+						<input type="file" id="fileUpload" name="imageName" accept=".jpg,.img,.png">
+					</div>
+					<div class="d-flex justify-content-evenly mb-3">
+						<a class="btn btn-lg btn-danger" href="/homePage">Return Home</a>
+						<button type="submit" name="submit" class="btn btn-lg btn-success" value="Update Information">Update</button>
+					</div>
+				</form>
+				
+				<!-- Payment details submenu -->
+				<form method="post" action="#" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}"
+					th:action="@{/submitPaymentDetailsAction}" th:object="${paymentDetails}">
+					<div class="d-flex justify-content-center">
+						<h2>Update Payment Details</h2>
+					</div>
+					
+					<div class="row">
+						<div class="mb-3 col-sm-6">
+							<label for="cardType" class="form-label">Card Type</label>
+							<select class="form-select" id="cardType" name="cardType">
+								<option th:each="type : ${cardTypes}"
+									th:value="${type.cardType}" th:text="${type.cardType}">
+								</option>
+							</select>
+						</div>
+						<div class="mb-3 col-sm-6">
+							<label for="cardholderName" class="form-label">Cardholder Name</label>
+							<input type="text" class="form-control" th:field="*{cardholderName}"></input>
+							<p th:if="${#fields.hasErrors('cardholderName')}" th:errors="*{cardholderName}">
+							</p>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="mb-3 col-sm-6">
+							<label for="cardNumber" class="form-label">Card Number</label>
+							<input type="number" class="form-control" th:field="*{cardNumber}"></input>
+							<p th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}">
+							</p>
+						</div>
+						<div class="mb-3 col-sm-6">
+							<label for="expirationDate" class="form-label">Expiration Date</label>
+							<input type="date" class="form-control" th:field="*{expirationDate}"></input>
+							<p th:if="${#fields.hasErrors('expirationDate')}" th:errors="*{expirationDate}">
+							</p>
+							<p th:if="${cardExpiredError}" th:text="${cardExpiredError}"></p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="mb-3 col-sm-6">
+							<label for="securityCode" class="form-label">Security Code</label>
+							<input type="number" class="form-control" name="securityCode" id="securityCode" th:field="*{securityCode}"></input>
+							<p th:if="${#fields.hasErrors('securityCode')}" th:errors="*{securityCode}">
+							</p>
+						</div>
+						<div class="mb-3 col-sm-6">
+							<label for="postalCode" class="form-label">Postal Code</label>
+							<input type="number" class="form-control" name="postalCode" id="postalCode" th:field="*{postalCode}"></input>
+							<p th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}">
+							</p>
+						</div>
+					</div>
+	
+					<div class="d-flex justify-content-evenly mb-3">
+						<button type="submit" name="submit" class="btn btn-lg btn-success">Update</button>
+						<button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" 
+								data-bs-target="#paymentDetailsModal"
+								th:if="${currUser.paymentDetails != null}">Delete Existing</button>
+						<button type="button" class="btn btn-lg btn-danger" disabled
+								th:if="${currUser.paymentDetails == null}">No Payment Details Added</button>
+					</div>
+				</form>
+				
+				<!-- Paypal submenu -->
+				<form method="post" action="#" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYPAL_DETAILS}"
+					th:action="@{/submitPaypalDetailsAction}" th:object="${paypalDetails}">
+					<div class="d-flex justify-content-center">
+						<h2>Update Paypal Details</h2>
+					</div>
+					<div class="mb-3">
+						<label class="form-label" for="paypalLogin">
+							Paypal Email
+						</label>
+						<input class="form-control" type="email" th:field="*{paypalLogin}">
+						<p th:if="${#fields.hasErrors('paypalLogin')}" th:errors="*{paypalLogin}">
+					</div>
+					<div class="mb-3">
+						<label class="form-label" for="paypalPassword">Paypal Password</label>
+						<input class="form-control" type="password" th:field="*{paypalPassword}">
+						<p th:if="${#fields.hasErrors('paypalPassword')}" th:errors="*{paypalPassword}">
+					</div>
+					<div class="d-flex justify-content-evenly mb-3">
+						<button type="submit" name="submit" class="btn btn-lg btn-success">Update</button>
+						<button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" 
+								data-bs-target="#paypalDetailsModal"
+								th:if="${currUser.paypal != null}">Delete Existing</button>
+						<button type="button" class="btn btn-lg btn-danger" disabled
+								th:if="${currUser.paypal == null}">No Paypal Account Added</button>
+					</div>
+				</form>
+					
+				<!-- Deposit details submenu -->
+				<form method="post" action="#" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}"
+					th:action="@{/submitDepositDetailsAction}" th:object="${directDepositDetails}">
+					<div class="d-flex justify-content-center">
+						<h2>Update Direct Deposit Details</h2>
+					</div>
+					<div class="mb-3">
+						<label class="form-label" for="accountholderName">Accountholder Name</label>
+						<input class="form-control" type="text" th:field="*{accountholderName}"></input>
+						<p th:if="${#fields.hasErrors('accountholderName')}" th:errors="*{accountholderName}">
+						</p>
+					</div>
+					<div class="mb-3">
+						<label class="form-label" for="routingNumber">Routing Number</label>
+						<input class="form-control" type="number" th:field="*{routingNumber}"></input>
+						<p th:if="${#fields.hasErrors('routingNumber')}" th:errors="*{routingNumber}">
+						</p>
+					</div>
+					<div class="mb-3">
+						<label class="form-label" for="accountNumber">Account Number</label>
+						<input class="form-control" type="number" th:field="*{accountNumber}"></input>
+						<p th:if="${#fields.hasErrors('accountNumber')}" th:errors="*{accountNumber}">
+						</p>
+					</div>
+					<div class="mb-3">
+						<label class="form-label" for="bankName">Bank Name</label>
+						<input class="form-control" type="text" th:field="*{bankName}"></input>
+						<p th:if="${#fields.hasErrors('bankName')}" th:errors="*{bankName}"></p>
+					</div>
+					<div class="d-flex justify-content-evenly mb-3">
+						<button type="submit" name="submit" class="btn btn-lg btn-success">Update</button>
+						<button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" 
+								data-bs-target="#depositDetailsModal"
+								th:if="${currUser.directDepositDetails != null}">Delete Existing</button>
+						<button type="button" class="btn btn-lg btn-danger" disabled
+								th:if="${currUser.directDepositDetails == null}">No Deposit Details Added</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html> 

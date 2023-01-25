@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" style="height: 100%;">
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+        crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        
+  <meta charset="ISO-8859-1">
+  <!-- Later, the title should hold the name of the Widget the MarketListing was made for -->
+  <title>Market Listing</title>
+  <style>
+  	header {
+  		margin-bottom: 96px;
+  	}
+    #page {
+      display: flex;
+      height: 100vh;
+    }
+
+    #sidebar {
+      width: 140px;
+      border-color: white;
+    }
+
+    #website-title {
+      margin-left: 8px;
+      margin-right: 8px;
+      font-size: 12px;
+    }
+
+  </style>
+</head>
+
+<!-- NAV BAR -->
+	<header> 
+	<!-- if no user is logged in... -->
+		<nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)" th:if="${user == null}" >
+			<div class="container-fluid">
+				<!-- Left justified unordered list -->
+				<ul class="navbar nav">
+					<li class="nav-item"> <a class="navbar-brand" th:href="@{/index}">
+						<img src="/images/university_depot_icon.png" 
+							alt="Home" 
+							style="width:64px; height:64px;"></img></a></li>
+				</ul>
+				<!-- Right justified unordered list -->
+				<ul class="navbar nav ms-md-auto">
+					<li class="nav-item ms-md-auto"><a class="nav-link text-white" 
+														style="font-family:'Gemunu Libre'; font-size: 1.5em" 
+														th:href="@{/newUser}">Sign Up</a></li>
+					<li class="nav-item ms-md-auto"><a class="nav-link text-white" 
+														style="font-family:'Gemunu Libre'; font-size: 1.5em" 
+														th:href="@{/homePage}">Log In</a></li>
+				</ul>
+			</div>
+		</nav>
+	<!-- if a user is logged in... -->
+		<nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)" th:unless="${user == null}">
+			<div class="container-fluid">
+				<!-- Left justified unordered list -->
+				<ul class="navbar nav">
+					<li class="nav-item"> <a class="navbar-brand" th:href="@{/homePage}">
+						<img src="/images/university_depot_icon.png" 
+							alt="Home" 
+							style="width:64px; height:64px;"></img></a></li>
+				</ul>
+				<!-- Right justified unordered list -->
+				<ul class="navbar nav ms-md-auto">
+					<li class="nav-item">
+						<div class="dropdown"> 
+							<a class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+								<img th:if="${user.userImage == null}" th:src="@{/images/default_user_icon.png}" alt="Blank user avatar" style="width:32px; height:32px"></img>
+								<img th:unless="${user.userImage == null}" th:src="@{/images/userImages/{image}(image = ${user.userImage})}" alt="User avatar" style="width:32px; height:32px"></img>
+							</a>
+							
+							<ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+								<li><h5 class="dropdown-header">My Account</h5></li>
+								<li><a class="dropdown-item" th:href="@{/userDetails}">Personal Info</a></li>
+								<li><a class="dropdown-item" th:href="@{/userDetails/paymentDetails}">Payment Info</a></li>
+								<li><hr class="dropdown-divider"></hr></li>
+								<li><a class="dropdown-item" href="/do_the_logout">Log Out</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>		
+	</header>
+	<!-- END NAV BAR -->
+
+<body>
+<!-- Delete confirmation popup -->
+<div class="modal fade" id="deletePopup" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deletePopup">Update Listing</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>This will delete your listing - are you sure?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <form method="post" action="#"
+              th:action="@{/viewMarketListing/deleteListing}" th:object="${paymentDetails}">
+          <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page">
+  <div id="sidebar">
+    <ul class="nav nav-pills flex-column mb-auto bg-dark" style="height: 200%;">
+    	<li class="nav-item">
+    		<a class="nav-link" href="/homePage">Home</a>
+    	</li>
+      <li class="nav-item">
+        <a th:if="${page == 'openMessage'}"
+           th:href="@{/viewMarketListing/{listingId}(listingId=${currListing.id})}"
+           class="nav-link">
+          Purchase
+        </a>
+        <a th:if="${page != 'openMessage'}" href="#" class="nav-link active">
+          Purchase
+        </a>
+      </li>
+      <li class="nav-item">
+        <a th:href="@{/viewUserProfile/{userId}(userId=${currListing.seller.id})}" class="nav-link">
+          Seller Profile
+        </a>
+      </li>
+      <li class="nav-item">
+        <a th:if="${page != 'openMessage' && isBuyer}" th:href="@{/viewMarketListing/openMessage}"
+           class="nav-link">
+          Message
+        </a>
+        <a th:if="${page == 'openMessage' && isBuyer}" href="#" class="nav-link active">
+          Message
+        </a>
+      </li>
+      <li class="nav-item">
+      	<a class="nav-link" onclick="history.back()" style="cursor: pointer">Back</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card mx-auto h-100 w-100">
+    <div class="card-header d-flex justify-content-center">
+      <h1 th:text="${widget.name}"></h1>
+    </div>
+    <div class="card-body">
+
+      <div class="row">
+        <div class="col-sm-6 my-2">
+          <div class="d-flex justify-content-center">
+            <h2>Seller Information</h2>
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item">Seller Name:
+              <span th:if="${seller.displayName != null && !seller.displayName.isEmpty()}"
+                    th:text="${seller.displayName}"></span>
+              <span th:unless="${seller.displayName != null && !seller.displayName.isEmpty()}"
+                    th:text="${seller.username}"></span>
+            </li>
+            <li class="list-group-item">Seller Rating: <span
+                th:text="${sellerRating.RatingName}"></span></li>
+          </ul>
+        </div>
+        <div class="col-sm-6 my-2">
+          <div class="d-flex justify-content-center">
+            <h2>Listing Details</h2>
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item">Number Available: <span
+                th:text="${currListing.qtyAvailable}"></span></li>
+            <li class="list-group-item">Price: $<span th:text="${currListing.pricePerItem}"></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Test listing info is based on bicycle examples from ebay: https://www.ebay.com/itm/302758849970 -->
+      <div th:if="${page != 'openMessage'}" class="row">
+        <div class="col-sm-6 my-2">
+          <!--
+          <div class="d-flex justify-content-center">
+            <h2>Product Image</h2>
+          </div>-->
+          <div class="card h-100"
+               th:if="${currListing.imageName != null && !currListing.imageName.isEmpty()}">
+            <img class="card-img-bottom" style="width:400px;"
+                 th:src="@{/listingImages/{image}(image = ${currListing.getImageName})}"/>
+          </div>
+          <div class="card h-100"
+               th:unless="${currListing.imageName != null && !currListing.imageName.isEmpty()}">
+            <div class="d-flex justify-content-center card-header">
+              <h2>No Image Provided</h2>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 my-2" th:if="${widget.category} == appliance">
+          <div class="d-flex justify-content-center">
+            <h2>Product Information</h2>
+          </div>
+          <ul class="list-group" th:if="${widget.subCategory} == 'washer'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Length: <span th:text="${appliance.length}"></span> Inches
+            </li>
+            <li class="list-group-item">Width: <span th:text="${appliance.width}"></span> Inches
+            </li>
+            <li class="list-group-item">Height: <span th:text="${appliance.height}"></span> Inches
+            </li>
+            <li class="list-group-item">Color: <span th:text="${appliance.color}"></span></li>
+            <li class="list-group-item">Condition: <span
+                th:text="${appliance.itemCondition}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${washer.model}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${washer.brand}"></span></li>
+            <li class="list-group-item">Material: <span th:text="${washer.material}"></span></li>
+          </ul>
+          <ul class="list-group" th:if="${widget.subCategory} == 'dryer'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Length: <span th:text="${appliance.length}"></span> Inches
+            </li>
+            <li class="list-group-item">Width: <span th:text="${appliance.width}"></span> Inches
+            </li>
+            <li class="list-group-item">Height: <span th:text="${appliance.height}"></span> Inches
+            </li>
+            <li class="list-group-item">Color: <span th:text="${appliance.color}"></span></li>
+            <li class="list-group-item">Condition: <span
+                th:text="${appliance.itemCondition}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${dryer.model}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${dryer.brand}"></span></li>
+            <li class="list-group-item">Material: <span th:text="${dryer.material}"></span></li>
+          </ul>
+          <ul class="list-group" th:if="${widget.subCategory} == 'blender'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Length: <span th:text="${appliance.length}"></span> Inches
+            </li>
+            <li class="list-group-item">Width: <span th:text="${appliance.width}"></span> Inches
+            </li>
+            <li class="list-group-item">Height: <span th:text="${appliance.height}"></span> Inches
+            </li>
+            <li class="list-group-item">Color: <span th:text="${appliance.color}"></span></li>
+            <li class="list-group-item">Condition: <span
+                th:text="${appliance.itemCondition}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${blender.model}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${blender.brand}"></span></li>
+            <li class="list-group-item">Material: <span th:text="${blender.material}"></span></li>
+          </ul>
+          <ul class="list-group" th:if="${widget.subCategory} == 'fridge'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Length: <span th:text="${appliance.length}"></span> Inches
+            </li>
+            <li class="list-group-item">Width: <span th:text="${appliance.width}"></span> Inches
+            </li>
+            <li class="list-group-item">Height: <span th:text="${appliance.height}"></span> Inches
+            </li>
+            <li class="list-group-item">Color: <span th:text="${appliance.color}"></span></li>
+            <li class="list-group-item">Condition: <span
+                th:text="${appliance.itemCondition}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${fridge.model}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${fridge.brand}"></span></li>
+            <li class="list-group-item">Material: <span th:text="${fridge.material}"></span></li>
+          </ul>
+          <ul class="list-group" th:if="${widget.subCategory} == 'microwave'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Length: <span th:text="${appliance.length}"></span> Inches
+            </li>
+            <li class="list-group-item">Width: <span th:text="${appliance.width}"></span> Inches
+            </li>
+            <li class="list-group-item">Height: <span th:text="${appliance.height}"></span> Inches
+            </li>
+            <li class="list-group-item">Color: <span th:text="${appliance.color}"></span></li>
+            <li class="list-group-item">Condition: <span
+                th:text="${appliance.itemCondition}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${microwave.model}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${microwave.brand}"></span></li>
+            <li class="list-group-item">Material: <span th:text="${microwave.material}"></span></li>
+          </ul>
+        </div>
+
+        <div class="col-sm-6 my-2" th:if="${widget.category} == 'appliance_parts'">
+          <div class="d-flex justify-content-center">
+            <h2>Product Information</h2>
+          </div>
+          <ul class="list-group" th:if="${widget.subCategory} == 'blender_parts'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Part Name: <span
+                th:text="${appliance_parts.partName}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${appliance_parts.model}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${appliance_parts.brand}"></span></li>
+            <li class="list-group-item">Color: <span th:text="${appliance_parts.color}"></span></li>
+            <li class="list-group-item">Made In: <span th:text="${appliance_parts.madeIn}"></span>
+            </li>
+            <li class="list-group-item">Material: <span th:text="${blender_parts.material}"></span>
+            </li>
+            <li class="list-group-item">Warranty: <span th:text="${blender_parts.warranty}"></span>
+            </li>
+            <li class="list-group-item">Condition: <span
+                th:text="${blender_parts.condition}"></span></li>
+          </ul>
+          <ul class="list-group" th:if="${widget.subCategory} == 'dryer_parts'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Part Name: <span
+                th:text="${appliance_parts.partName}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${appliance_parts.model}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${appliance_parts.brand}"></span></li>
+            <li class="list-group-item">Color: <span th:text="${appliance_parts.color}"></span></li>
+            <li class="list-group-item">Made In: <span th:text="${appliance_parts.madeIn}"></span>
+            </li>
+            <li class="list-group-item">Material: <span th:text="${dryer_parts.material}"></span>
+            </li>
+            <li class="list-group-item">Warranty: <span th:text="${dryer_parts.warranty}"></span>
+            </li>
+            <li class="list-group-item">Condition: <span
+                th:text="${dryer_parts.condition}"></span></li>
+          </ul>
+          <ul class="list-group" th:if="${widget.subCategory} == 'microwave_parts'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Part Name: <span
+                th:text="${appliance_parts.partName}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${appliance_parts.model}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${appliance_parts.brand}"></span></li>
+            <li class="list-group-item">Color: <span th:text="${appliance_parts.color}"></span></li>
+            <li class="list-group-item">Made In: <span th:text="${appliance_parts.madeIn}"></span>
+            </li>
+            <li class="list-group-item">Material: <span th:text="${microwave_parts.material}"></span>
+            </li>
+            <li class="list-group-item">Warranty: <span th:text="${microwave_parts.warranty}"></span>
+            </li>
+            <li class="list-group-item">Condition: <span
+                th:text="${microwave_parts.condition}"></span></li>
+          </ul>
+          <ul class="list-group" th:if="${widget.subCategory} == 'refrigerator_parts'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Part Name: <span
+                th:text="${appliance_parts.partName}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${appliance_parts.model}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${appliance_parts.brand}"></span></li>
+            <li class="list-group-item">Color: <span th:text="${appliance_parts.color}"></span></li>
+            <li class="list-group-item">Made In: <span th:text="${appliance_parts.madeIn}"></span>
+            </li>
+            <li class="list-group-item">Material: <span th:text="${refrigerator_parts.material}"></span>
+            </li>
+            <li class="list-group-item">Warranty: <span th:text="${refrigerator_parts.warranty}"></span>
+            </li>
+            <li class="list-group-item">Condition: <span
+                th:text="${refrigerator_parts.condition}"></span></li>
+          </ul>
+          <ul class="list-group" th:if="${widget.subCategory} == 'washer_parts'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Part Name: <span
+                th:text="${appliance_parts.partName}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${appliance_parts.model}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${appliance_parts.brand}"></span></li>
+            <li class="list-group-item">Color: <span th:text="${appliance_parts.color}"></span></li>
+            <li class="list-group-item">Made In: <span th:text="${appliance_parts.madeIn}"></span>
+            </li>
+            <li class="list-group-item">Material: <span th:text="${washer_parts.material}"></span>
+            </li>
+            <li class="list-group-item">Warranty: <span th:text="${washer_parts.warranty}"></span>
+            </li>
+            <li class="list-group-item">Condition: <span
+                th:text="${washer_parts.condition}"></span></li>
+          </ul>
+        </div>
+
+        <div class="col-sm-6 my-2" th:if="${widget.category} == 'electronic'">
+          <div class="d-flex justify-content-center">
+            <h2>Product Information</h2>
+          </div>
+          <ul class="list-group" th:if="${widget.subCategory} == 'computer'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">For Office Use?: <span
+                th:text="${electronic.officeUse}"></span></li>
+            <li class="list-group-item">For Entertainment Use?: <span
+                th:text="${electronic.entertainmentUse}"></span></li>
+            <li class="list-group-item">Memory: <span th:text="${computer.memory}"></span> GB</li>
+            <li class="list-group-item">Storage: <span th:text="${computer.storage}"></span></li>
+            <li class="list-group-item">Processor: <span th:text="${computer.processor}"></span>
+            </li>
+            <li class="list-group-item">GPU: <span th:text="${computer.gpu}"></span></li>
+          </ul>
+          <ul class="list-group" th:if="${widget.subCategory} == 'videoGame'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">For Office Use?: <span
+                th:text="${electronic.officeUse}"></span></li>
+            <li class="list-group-item">For Entertainment Use?: <span
+                th:text="${electronic.entertainmentUse}"></span></li>
+            <li class="list-group-item">Developer: <span th:text="${videoGame.developer}"></span>
+            </li>
+            <li class="list-group-item">Title: <span th:text="${videoGame.title}"></span></li>
+            <li class="list-group-item">Console: <span th:text="${videoGame.console}"></span></li>
+            <li class="list-group-item">Condition: <span
+                th:text="${videoGame.itemCondition}"></span></li>
+          </ul>
+        </div>
+
+        <div class="col-sm-6 my-2" th:if="${widget.category} == 'electronic_parts'">
+          <div class="d-flex justify-content-center">
+            <h2>Product Information</h2>
+          </div>
+          <ul class="list-group" th:if="${widget.subCategory} == 'computer_parts'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Part Name: <span
+                th:text="${electronic_parts.partName}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${electronic_parts.model}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${electronic_parts.brand}"></span></li>
+            <li class="list-group-item">Color: <span th:text="${electronic_parts.color}"></span></li>
+            <li class="list-group-item">Made In: <span th:text="${electronic_parts.madeIn}"></span>
+            </li>
+            <li class="list-group-item">Material: <span th:text="${computer_parts.material}"></span>
+            </li>
+            <li class="list-group-item">Warranty: <span th:text="${computer_parts.warranty}"></span>
+            </li>
+            <li class="list-group-item">Condition: <span
+                th:text="${computer_parts.condition}"></span></li>
+          </ul>
+          <ul class="list-group" th:if="${widget.subCategory} == 'videoGame_parts'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Part Name: <span
+                th:text="${electronic_parts.partName}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${electronic_parts.model}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${electronic_parts.brand}"></span></li>
+            <li class="list-group-item">Color: <span th:text="${electronic_parts.color}"></span></li>
+            <li class="list-group-item">Made In: <span th:text="${electronic_parts.madeIn}"></span>
+            </li>
+            <li class="list-group-item">Material: <span th:text="${videoGame_parts.material}"></span>
+            </li>
+            <li class="list-group-item">Warranty: <span th:text="${videoGame_parts.warranty}"></span>
+            </li>
+            <li class="list-group-item">Condition: <span
+                th:text="${videoGame_parts.condition}"></span></li>
+          </ul>
+        </div>
+
+        <div class="col-sm-6 my-2" th:if="${widget.category} == 'lawnCare'">
+          <div class="d-flex justify-content-center">
+            <h2>Product Information</h2>
+          </div>
+          <ul class="list-group" th:if="${widget.subCategory} == 'lawnMower'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Yard Size: <span th:text="${lawnCare.yardSize}"></span></li>
+            <li class="list-group-item">Tool Type: <span th:text="${lawnCare.toolType}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${mower.brand}"></span></li>
+            <li class="list-group-item">Power Source: <span th:text="${mower.powerSource}"></span>
+            </li>
+            <li class="list-group-item">Blade Width: <span th:text="${mower.bladeWidth}"></span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-sm-6 my-2" th:if="${widget.category} == 'lawnCare_parts'">
+          <div class="d-flex justify-content-center">
+            <h2>Product Information</h2>
+          </div>
+          <ul class="list-group" th:if="${widget.subCategory} == 'mower_parts'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Part Name: <span
+                th:text="${lawnCare_parts.partName}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${lawnCare_parts.model}"></span></li>
+            <li class="list-group-item">Brand: <span th:text="${lawnCare_parts.brand}"></span></li>
+            <li class="list-group-item">Color: <span th:text="${lawnCare_parts.color}"></span></li>
+            <li class="list-group-item">Made In: <span th:text="${lawnCare_parts.madeIn}"></span>
+            </li>
+            <li class="list-group-item">Material: <span th:text="${mower_parts.material}"></span>
+            </li>
+            <li class="list-group-item">Warranty: <span th:text="${mower_parts.warranty}"></span>
+            </li>
+            <li class="list-group-item">Condition: <span
+                th:text="${mower_parts.condition}"></span></li>
+          </ul>
+        </div>
+
+        <div class="col-sm-6 my-2" th:if="${widget.category} == 'vehicle'">
+          <div class="d-flex justify-content-center">
+            <h2>Product Information</h2>
+          </div>
+          <ul class="list-group" th:if="${widget.subCategory} == 'car'">
+            <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+            </li>
+            <li class="list-group-item">Terrain: <span th:text="${vehicle.terrain}"></span></li>
+            <li class="list-group-item">Is it Road Safe?: <span
+                th:text="${vehicle.roadSafe}"></span></li>
+            <li class="list-group-item">Vehicle Condition: <span
+                th:text="${vehicle.condition}"></span></li>
+            <li class="list-group-item">Wheel Drive: <span th:text="${car.wheelDrive}"></span></li>
+            <li class="list-group-item">Transmission Type: <span
+                th:text="${car.transmissionType}"></span></li>
+            <li class="list-group-item">Model: <span th:text="${car.model}"></span></li>
+            <li class="list-group-item">Make: <span th:text="${car.make}"></span></li>
+            <li class="list-group-item">Year: <span th:text="${car.year}"></span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-sm-6 my-2" th:if="${widget.category} == 'vehicle_parts'">
+        <div class="d-flex justify-content-center">
+          <h2>Product Information</h2>
+        </div>
+        <ul class="list-group" th:if="${widget.subCategory} == 'car_parts'">
+          <li class="list-group-item">Description: <span th:text="${widget.description}"></span>
+          </li>
+          <li class="list-group-item">Part Name: <span
+              th:text="${vehicle_parts.partName}"></span></li>
+          <li class="list-group-item">Model: <span th:text="${vehicle_parts.model}"></span></li>
+          <li class="list-group-item">Brand: <span th:text="${vehicle_parts.brand}"></span></li>
+          <li class="list-group-item">Color: <span th:text="${vehicle_parts.color}"></span></li>
+          <li class="list-group-item">Made In: <span th:text="${vehicle_parts.madeIn}"></span>
+          </li>
+          <li class="list-group-item">Material: <span th:text="${car_parts.material}"></span>
+          </li>
+          <li class="list-group-item">Warranty: <span th:text="${car_parts.warranty}"></span>
+          </li>
+          <li class="list-group-item">Condition: <span
+              th:text="${car_parts.condition}"></span></li>
+        </ul>
+      </div>
+
+      <th:block th:switch="${page}">
+        <div th:case="openMessage" class="d-flex justify-content-center">
+          <form th:action="@{/marketSendMail}"
+                class="w-75" method="post">
+            <div class="d-flex justify-content-center my-2">
+              <h2>Send a Message</h2>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Subject : </label>
+              <input class="form-input" type="text" name="subject"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Message: </label>
+              <textarea class="form-control" id="message" name="message" rows="4" cols="50"
+                        style="resize: none;"></textarea>
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+              <a class="btn btn-outline-primary"
+                 th:href="@{/viewMarketListing/closeMessage}">Cancel</a>
+              <button type="submit" class="btn btn-outline-primary">Send Message</button>
+            </div>
+          </form>
+        </div>
+      </th:block>
+
+      <form th:if="${isBuyer && page != 'openMessage'}" id="buy-product"
+            class="row g-3 d-flex justify-content-center my-2" action="#"
+            th:action="@{/viewMarketListing/attemptPurchase}" th:object=${newTransaction}
+            method="post">
+        <div class="col-auto">
+          <label for="qtyBought" class="col-form-label">Number to Buy</label>
+        </div>
+        <div class="col-auto">
+          <input id="qtyBought" class="form-control" name="qtyBought" type="number"
+                 th:field="*{qtyBought}" placeholder="Number to Buy" min="1"
+                 th:max="${currListing.qtyAvailable}" value="0" required></input>
+        </div>
+        <div class="col-auto">
+          <input th:if="${user.paypal != null || user.paymentDetails != null}"
+                 class="btn btn-success" id="buyProduct"
+                 name="buyProduct" type="submit" value="Purchase Items"></input>
+          <input th:unless="${user.paypal != null || user.paymentDetails != null}"
+                 class="btn btn-danger" id="buyProduct"
+                 name="buyProduct" type="submit" value="Need Payment Method to Purchase" disabled>
+        </div>
+        <div class="d-flex justify-content-center mt-1">
+          <a class="btn btn-danger" href="javascript:window.history.back()">Back</a>
+        </div>
+      </form>
+      <form th:if="${!isBuyer}" id="update-listing"
+            class="row g-3 d-flex justify-content-center my-2" action="#"
+            th:action="@{/viewMarketListing/editListing}" th:object=${currListing} method="post">
+
+        <input type="hidden" th:field="*{id}">
+        <!--  default price must be set to current listing price -->
+        <div class="row d-flex justify-content-center">
+          <a class="btn btn-danger col-sm-1" data-bs-toggle="modal"
+             data-bs-target="#deletePopup">
+            Delete Listing
+          </a>
+          <div class="col-sm-1">
+            <label for="pricePerItem" class="col-form-label">New Price</label>
+          </div>
+          <div class="col-sm-2">
+            <input id="pricePerItem" class="form-control" name="pricePerItem"
+                   th:field="*{pricePerItem}" type="number" placeholder="New Price" min="0.0"
+                   value="0.0" step="0.01" required></input>
+          </div>
+          <div class="col-sm-1">
+            <label for="qtyAvailable" class="col-form-label">New Quantity</label>
+          </div>
+          <div class="col-sm-2">
+            <input id="qtyAvailable" class="form-control" name="qtyAvailable"
+                   th:field="*{qtyAvailable}" type="number" placeholder="New Quantity" min="0"
+                   value="0" required></input>
+          </div>
+          <!--  default quantity must be set to current listing quantity -->
+          <div class="col-sm-2">
+            <input class="btn btn-primary" id="updateListing" name="updateListing" type="submit"
+                   value="Update">
+          </div>
+        </div>
+        <div class="d-flex justify-content-center mt-1">
+          <a class="btn btn-danger" href="javascript:window.history.back()">Back</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

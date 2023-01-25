@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1"/>
+  <title>Ticketing System</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gemunu%20Libre">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+  <link th:href="@{/styles/tickets.css}" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+          crossorigin="anonymous"></script>
+</head>
+<!-- NAV BAR -->
+<header>
+  <!-- if no user is logged in... -->
+  <nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)"
+       th:if="${user == null}">
+    <div class="container-fluid">
+      <!-- Left justified unordered list -->
+      <ul class="navbar nav">
+        <li class="nav-item"><a class="navbar-brand" th:href="@{/index}">
+          <img src="/images/university_depot_icon.png"
+               alt="Home"
+               style="width:64px; height:64px;"></img></a></li>
+      </ul>
+      <!-- Right justified unordered list -->
+      <ul class="navbar nav ms-md-auto">
+        <li class="nav-item ms-md-auto"><a class="nav-link text-white"
+                                           style="font-family:'Gemunu Libre'; font-size: 1.5em"
+                                           th:href="@{/newUser}">Sign Up</a></li>
+        <li class="nav-item ms-md-auto"><a class="nav-link text-white"
+                                           style="font-family:'Gemunu Libre'; font-size: 1.5em"
+                                           th:href="@{/homePage}">Log In</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- if a user is logged in... -->
+  <nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)"
+       th:unless="${user == null}">
+    <div class="container-fluid">
+      <!-- Left justified unordered list -->
+      <ul class="navbar nav">
+        <li class="nav-item"><a class="navbar-brand" th:href="@{/homePage}">
+          <img src="/images/university_depot_icon.png"
+               alt="Home"
+               style="width:64px; height:64px;"></img></a></li>
+      </ul>
+      <!-- Right justified unordered list -->
+      <ul class="navbar nav ms-md-auto">
+        <li class="nav-item">
+          <div class="dropdown">
+            <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+              <img th:if="${user.userImage == null}" src="/images/default_user_icon.png"
+                   alt="Blank user avatar" style="width:32px; height:32px"></img>
+              <img th:unless="${user.userImage == null}"
+                   th:src="@{/images/userImages/{image}(image = ${user.userImage})}"
+                   alt="User avatar" style="width:32px; height:32px"></img>
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+              <li><h5 class="dropdown-header">My Account</h5></li>
+              <li><a class="dropdown-item" th:href="@{/userDetails}">Personal Info</a></li>
+              <li><a class="dropdown-item" th:href="@{/userDetails/paymentDetails}">Payment Info</a>
+              </li>
+              <li>
+                <hr class="dropdown-divider"></hr>
+              </li>
+              <li><a class="dropdown-item" href="/do_the_logout">Log Out</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<!-- END NAV BAR -->
+<body>
+<div class="d-flex">
+  <div id="sidebar">
+    <ul class="nav nav-pills flex-column bg-dark" style="padding-bottom: 600px">
+      <li class="nav-item">
+        <a href="/homePage" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item">
+        <a th:if="${page == 'tickets'}" class="nav-link active" th:href="@{/tickets}"><span>My Tickets</span></a>
+        <a th:unless="${page == 'tickets'}" class="nav-link"
+           th:href="@{/tickets}"><span>My Tickets</span></a>
+      </li>
+      <li class="nav-item">
+        <a th:if="${page == 'createTickets'}" class="nav-link active"
+           th:href="@{/createTickets}"><span>Add Ticket</span></a>
+        <a th:unless="${page == 'createTickets'}" class="nav-link"
+           th:href="@{/createTickets}"><span>Add Ticket</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="cursor: pointer" onclick="history.back()"><span>Back</span></a>
+      </li>
+    </ul>
+  </div>
+  <th:block th:switch="${page}">
+    <!-- MY TICKETS -->
+    <div th:case="tickets">
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr class="table-primary" style="border: 1px solid black">
+          <th colspan="2">Ticket ID</th>
+          <th colspan="4">Subject</th>
+          <th colspan="2">State</th>
+          <th colspan="2">Created At</th>
+          <th colspan="2">Assigned At</th>
+          <th colspan="2">Updated At</th>
+          <th colspan="2">Resolved At</th>
+          <th colspan="2">Ticket Actions</th>
+        </tr>
+        </thead>
+        <th:block th:each="ticket: ${tickets}">
+          <tr>
+            <td colspan="2"><a th:href="@{/tickets/{id}(id = ${ticket.id})}"
+                               th:text="${ticket.id}"></a></td>
+            <td colspan="4"><p th:text="${ticket.subject}"></p></td>
+            <td colspan="2"><p th:text="${ticket.state}"></p></td>
+            <td colspan="2"><p th:text="${ticket.createdAt}"></p></td>
+            <td colspan="2"><p th:text="${ticket.assignedAt} ? ${ticket.assignedAt} : 'NULL'"></p>
+            </td>
+            <td colspan="2"><p th:text="${ticket.updatedAt}"></p></td>
+            <td colspan="2"><p th:text="${ticket.resolvedAt} ? ${ticket.resolvedAt} : 'NULL'"></p>
+            </td>
+            <td colspan="2">
+              <th:block th:if="${ticket.isResolved()}">
+                <form method="post" th:action="@{/reopenTicket/{id}(id = ${ticket.id})}">
+                  <input type="submit" value="Reopen Ticket"/>
+                </form>
+              </th:block>
+              <th:block th:unless="${ticket.isResolved()}"><p>None</p></th:block>
+            </td>
+          </tr>
+        </th:block>
+      </table>
+    </div>
+
+    <!-- CREATE TICKETS -->
+    <div th:case="createTickets">
+      <form th:action="@{/createTickets}" th:object="${ticket}" method="post">
+        <table class="table table-bordered">
+          <tr>
+            <th colspan="2">Create a Ticket</th>
+          </tr>
+          <tr>
+            <td><label for="subject">Ticket Subject : </label></td>
+            <td><input type="text" th:field="*{subject}" id="subject"/></td>
+          </tr>
+          <!-- For Nested Objects Binding in form input https://stackoverflow.com/questions/38635850/nested-objects-in-thymeleaf -->
+          <tr>
+            <td><label for="message">Ticket Description : </label></td>
+            <td>
+              <th:block th:each="message, stat : *{messages}">
+              <textarea th:field="*{messages[__${stat.index}__].content}"
+                        id="message"></textarea>
+              </th:block>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="submit" class="btn btn-primary btn-sm" value="Create Ticket"></td>
+            <td><a class="btn btn-danger btn-sm" th:href="@{/tickets}"><span>Cancel Ticket</span></a>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+    <div th:case="ticketdetails">
+      <table class="table table-bordered d-flex justify-content-center">
+        <tr class="table-primary" style="border: 1px solid black">
+          <th colspan="2">Ticket Details</th>
+        </tr>
+        <th:block th:object="${ticketdetail}">
+          <tr>
+            <td><p>Ticket ID : </p></td>
+            <td><p th:text="${ticketdetail.id}"></p></td>
+          </tr>
+          <tr>
+            <td><p>Ticket Subject : </p></td>
+            <td><p th:text="${ticketdetail.subject}"></p></td>
+          </tr>
+          <tr>
+            <td><p>State : </p></td>
+            <td><p th:text="${ticketdetail.state}"></p></td>
+          </tr>
+          <tr>
+            <td><p>Created At : </p></td>
+            <td><p th:text="${ticketdetail.createdAt}"></p></td>
+          </tr>
+          <tr>
+            <td><p>Assigned At : </p></td>
+            <td><p th:text="${ticketdetail.assignedAt} ? ${ticketdetail.assignedAt} : 'NULL'"></p>
+            </td>
+          </tr>
+          <tr>
+            <td><p>Updated At : </p></td>
+            <td><p th:text="${ticketdetail.updatedAt}"></p></td>
+          </tr>
+          <tr>
+            <td><p>Resolved At : </p></td>
+            <td><p th:text="${ticketdetail.resolvedAt} ? ${ticketdetail.resolvedAt} : 'NULL'"></p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <p>Ticket Messages</p>
+              <th:block th:each="message : ${ticketdetail.messages}">
+              <span style="white-space: pre-wrap"
+                    th:text="${message.sender} + ' : ' + ${message.content} + ' (' + ${message.msgDate} + ')'"></span><br>
+              </th:block>
+              <br>
+              <th:block th:if="${!ticketdetail.isResolved()}">
+                <form method="post" th:action="@{/replyTicket/{id}(id = ${ticketdetail.id})}"
+                      th:object="${message}">
+                  <label for="reply">Reply : </label>
+                  <input type="text" id="reply" name="reply" width="300" placeholder="Reply to the ticket" th:field="*{content}"/>
+                  <input type="submit" class="btn btn-primary btn-sm" value="submit"/>
+                </form>
+              </th:block>
+            </td>
+          </tr>
+        </th:block>
+      </table>
+    </div>
+
+  </th:block>
+</div>
+</body>
+</html>
