@@ -103,6 +103,10 @@
 	        	<a th:unless="${page == 'outbox'}" class="submit4 pb-3" th:href="@{/outbox}" ><span>Sent</span></a>
 	        </li>
 	        <li class="nav-item">
+	        	<a th:if="${page == 'spamBox'}" class="submit4 nav-link active pb-3" th:href="@{/spambox}" ><span>Spam</span></a>
+	        	<a th:unless="${page == 'spamBox'}" class="submit4 pb-3" th:href="@{/spamBox}" ><span>Spam</span></a>
+	        </li>
+	        <li class="nav-item">
 		        <a th:if="${page == 'trashBox'}" class="submit4 nav-link active pb-3" th:href="@{/trashbox}" ><span>Trash</span></a>
 		        <a th:unless="${page == 'trashBox'}" class="submit4 active pb-3" th:href="@{/trashbox}" ><span>Trash</span></a>
 	        </li>
@@ -138,10 +142,13 @@
     		<span class="d-flex justify-content-center" style="font-size:24px;"> Inbox </span>
     	</div>
     	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
-    		<span class="d-flex justify-content-center" style="font-size:24px;"> Sent </span>
+    		<a class="d-flex justify-content-center" style="font-size:24px; color: black; text-decoration: none;" th:href="@{/outbox}"> Sent </a>
     	</div>
     	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
-    		<span class="d-flex justify-content-center" style="font-size:24px;"> Trash </span>
+    		<a class="d-flex justify-content-center" style="font-size:24px; color: black; text-decoration: none;" th:href="@{/spambox}"> Spam </a>
+    	</div> 
+    	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)" >
+    		<a class="d-flex justify-content-center" style="font-size:24px; color: black; text-decoration: none;" th:href="@{/trashbox}"> Trash </a>
     	</div> 
     	<div class="col-1 border border-2 border-start-0 border-top-0 border-end-0 border-dark d-flex flex-fill" 
     		style="background-color: white"></div>
@@ -149,13 +156,16 @@
   	<!-- IF IN SENT -->
   	<div th:case="outbox" class="row" >
     	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216,189,154)">
-    		<span class="d-flex justify-content-center" style="font-size:24px;"> Inbox </span>
+    		<a class="d-flex justify-content-center" style="font-size:24px; color: black; text-decoration: none;" th:href="@{/messages}"> Inbox </a>
     	</div>
     	<div class="col-1 border border-2 border-bottom-0 border-dark" style="background-color: rgb(212,183,145)">
     		<span class="d-flex justify-content-center" style="font-size:24px;"> Sent </span>
     	</div>
     	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
-    		<span class="d-flex justify-content-center" style="font-size:24px;"> Trash </span>
+    		<a class="d-flex justify-content-center" style="font-size:24px; color: black; text-decoration: none;" th:href="@{/spambox}"> Spam </a>
+    	</div> 
+    	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
+    		<a class="d-flex justify-content-center" style="font-size:24px; color: black; text-decoration: none;" th:href="@{/trashbox}"> Trash </a>
     	</div> 
     	<div class="col-1 border border-2 border-start-0 border-top-0 border-end-0 border-dark d-flex flex-fill" 
     		style="background-color: white"></div>
@@ -163,11 +173,14 @@
     <!-- IF IN TRASH -->
     <div th:case="trashBox" class="row" >
     	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
-    		<span class="d-flex justify-content-center" style="font-size:24px;"> Inbox </span>
+    		<a class="d-flex justify-content-center" style="font-size:24px; color: black; text-decoration: none;" th:href="@{/messages}"> Inbox </a>
     	</div>
     	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
-    		<span class="d-flex justify-content-center" style="font-size:24px;"> Sent </span>
+    		<a class="d-flex justify-content-center" style="font-size:24px; color: black; text-decoration: none;" th:href="@{/outbox}"> Sent </a>
     	</div>
+    	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
+    		<a class="d-flex justify-content-center" style="font-size:24px; color: black; text-decoration: none;" th:href="@{/spambox}"> Spam </a>
+    	</div> 
     	<div class="col-1 border border-2 border-bottom-0 border-dark" style="background-color: rgb(212,183,145)">
     		<span class="d-flex justify-content-center" style="font-size:24px;"> Trash </span>
     	</div> 
@@ -505,7 +518,7 @@
  <div th:case="ticket">
   
   	<img align="left" th:src="@{images/widgits_logo.png}" style="width:200px;height:80px;"/>
-  	<H3> Sorry to hear your getting spam, would you care to elaborate or just send? </H3>
+  	<H3> Sorry to hear you're getting spam, would you care to elaborate or just send? </H3>
   	<a class="submit" th:href="@{/elaborate}" ><span>Explain</span></a>
 	<a class="submit" th:href="@{/justSend}" ><span>Just Send It</span></a>
 
