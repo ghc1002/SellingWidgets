@@ -205,8 +205,14 @@
 					<div class="row my-2">
 						<div class="col-sm-2">
 							<div class="card my-2 h-100">
-								<img th:if="${user.userImage == null}" class="card-img-bottom" src="https://previews.123rf.com/images/kritchanut/kritchanut1406/kritchanut140600093/29213195-.jpg?fj=1" alt="Blank user avatar">
-								<img th:unless="${user.userImage == null}" class="card-img-bottom" th:src="@{/images/userImages/{image}(image = ${user.userImage})}" alt="User avatar">
+								<img th:if="${user.userImage == null}" 
+								class="card-img-bottom" 
+								src="https://previews.123rf.com/images/kritchanut/kritchanut1406/kritchanut140600093/29213195-.jpg?fj=1" 
+								alt="Blank user avatar">
+								<img th:unless="${user.userImage == null}" 
+								class="card-img-bottom" 
+								th:src="@{/images/userImages/{image}(image = ${user.userImage})}" 
+								alt="User avatar">
 							</div>
 						</div>
 						
@@ -215,7 +221,8 @@
 								<div class="card-body d-flex justify-content-center">
 									<ul class="list-group w-100">
 										<li class="list-group-item">Name: 
-											<span th:if="${currUser.displayName != null && !currUser.displayName.isEmpty()}" th:text="${currUser.displayName}"></span>
+											<span th:if="${currUser.displayName != null && !currUser.displayName.isEmpty()}" 
+											th:text="${currUser.displayName}"></span>
 											<span th:unless="${currUser.displayName != null && !currUser.displayName.isEmpty()}" th:text="${currUser.username}"></span>
 										</li>
 										<li class="list-group-item">Rating: <span th:text="${sellerRating.RatingName}"></span></li>
