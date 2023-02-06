@@ -127,37 +127,41 @@
         <div class="card-header d-flex justify-content-center">
           <h2>Choose an Appliance Subcategory</h2>
         </div>
-        <div class="card-body d-flex justify-content-center">
+
           <form action="#" th:action="@{/createAppliance}" method="post" class="form">
-            <a class="btn btn-danger" href="/homePage">Cancel</a>
-            <a class="btn btn-danger" href="/addWidget">Back</a>
-            <th:block th:if="${#lists.contains(subCategories, 'dryer')}">
-              <input type="radio" class="btn-check" name="subCategory" id="dryer" value="dryer"
-                     checked>
-              <label class="btn btn-outline-primary" for="dryer">Dryer</label>
-            </th:block>
-            <th:block th:if="${#lists.contains(subCategories, 'blender')}">
+          <div class="card-body row">
+            <!--<th:block th:if="${#lists.contains(subCategories, 'dryer')}">-->
+            <!--</th:block>-->
+            <!--<th:block th:if="${#lists.contains(subCategories, 'blender')}">-->
               <input type="radio" class="btn-check" name="subCategory" id="blender" value="blender"
                      checked>
-              <label class="btn btn-outline-primary" for="blender">Blender</label>
-            </th:block>
-            <th:block th:if="${#lists.contains(subCategories, 'microwave')}">
+              <label class="btn btn-outline-primary w-100 m-2" for="blender">Blender</label>
+              <input type="radio" class="btn-check" name="subCategory" id="dryer" value="dryer"
+                     checked>
+              <label class="btn btn-outline-primary w-100 m-2" for="dryer">Dryer</label>
+            <!--</th:block>-->
+            <!--<th:block th:if="${#lists.contains(subCategories, 'microwave')}">-->
               <input type="radio" class="btn-check" name="subCategory" id="microwave"
                      value="microwave">
-              <label class="btn btn-outline-primary" for="microwave">Microwave</label>
-            </th:block>
-            <th:block th:if="${#lists.contains(subCategories, 'refrigerator')}">
+              <label class="btn btn-outline-primary w-100 m-2" for="microwave">Microwave</label>
+            <!--</th:block>-->
+            <!--<th:block th:if="${#lists.contains(subCategories, 'refrigerator')}">-->
               <input type="radio" class="btn-check" name="subCategory" id="refridgerator"
                      value="refridgerator">
-              <label class="btn btn-outline-primary" for="refridgerator">Refrigerator</label>
-            </th:block>
-            <th:block th:if="${#lists.contains(subCategories, 'washer')}">
+              <label class="btn btn-outline-primary w-100 m-2" for="refridgerator">Refrigerator</label>
+            <!--</th:block>-->
+            <!--<th:block th:if="${#lists.contains(subCategories, 'washer')}">-->
               <input type="radio" class="btn-check" name="subCategory" id="washer" value="washer">
-              <label class="btn btn-outline-primary" for="washer">Washer</label>
-            </th:block>
-            <input class="btn btn-success" type="submit" value="Next">
+              <label class="btn btn-outline-primary w-100 m-2" for="washer">Washer</label>
+           <!-- </th:block>-->
+            </div>
+            <div class="card-footer justify-content-center d-flex">
+        					<a class="btn btn-danger w-25 mx-4" href="/addWidget">Back</a>
+        					<a class="btn btn-danger w-25 mx-4" href="/homePage">Cancel</a>
+            				<input class="btn btn-success w-25 mx-4" type="submit" value="Next">
+        				</div>
           </form>
-        </div>
+
       </div>
     </div>
   </div>

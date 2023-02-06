@@ -351,18 +351,18 @@
 	    <p id ="trashButton2" style="visibility: hidden;" ></p>
 	            </div>	
 	            <div th:case="home">
+	            <input id ="trashButton" th:formaction="@{/trash}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Send  to Trash"/> 
+	       		<input id ="spamButton" th:formaction="@{/spam}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Send to Spam" /> 
 	            <p id ="trashButton2" style="visibility: hidden;" ></p>
 	            <p id ="spamButton2" style="visibility: hidden;" ></p>
 	            </div>
 	            <div th:case="outbox">
+	            <input id ="trashButton" th:formaction="@{/trash}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Send  to Trash" /> 
 	            <p id ="trashButton2" style="visibility: hidden;" ></p>
 	            <p id ="spamButton2" style="visibility: hidden;" ></p>
 	            </div>
 				
-		<!--  <div th:case="outbox"> -->
-	       <input id ="trashButton" th:formaction="@{/trash}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Send  to Trash" /> <!-- Send message to trash and then reload the page -->
-	       <input id ="spamButton" th:formaction="@{/spam}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Send to Spam" /> <!-- Send message to spam and then reload the page -->
-	       <!--  </div> -->
+
 	       </th:block>	
 		<table class="fixed center" style="width:75%;">
 	

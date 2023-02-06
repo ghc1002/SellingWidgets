@@ -162,15 +162,15 @@
 											<input class="form-control" type="text" th:field="*{material}" id="material" name="material">
 										</div>
 									</div>
-									<div class="row justify-content-around my-3">
-										<a class="btn btn-danger col-sm-4" href="/addAppliance">Back</a>
-										<a class="btn btn-danger col-sm-4" href="/homePage">Cancel</a>
-										<input class="btn btn-success col-sm-4" type="submit" value="Next">
+									<div class="card-footer d-flex justify-content-center">
+										<a class="btn btn-danger w-25 mx-4" href="/addAppliance">Back</a>
+										<a class="btn btn-danger w-25 mx-4" href="/homePage">Cancel</a>
+										<input class="btn btn-success w-25 mx-4" type="submit" value="Submit">
 									</div>
 								</form>
 							</div>
 						</div>
-						<div class="card-footer d-flex justify-content-center">
+						<!--<div class="card-footer d-flex justify-content-center">
 							<form method="post" th:action="@{/uploadMicrowaveDataFile}" enctype="multipart/form-data">
 								<span>Upload Microwave Data File : </span>
 								<input type="file" name="file" accept=".csv">
@@ -181,7 +181,7 @@
 								<input type="file" name="file" accept=".csv">
 								<button class="button button4" type="submit">Upload</button>
 							</form>
-						</div>
+						</div>-->
 					</div>
 				</div>
 			</div>

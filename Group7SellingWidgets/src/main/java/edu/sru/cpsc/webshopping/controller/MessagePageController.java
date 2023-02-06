@@ -245,6 +245,7 @@ public class MessagePageController {
 			   msgcontrol.addMessageToTrash(tempMessage, user);
 
 			   }
+		   setPage("home");
 		   setPage4("sentToTrash");
 			//setMailbox(msgcontrol.getUserTrash(user));
 			Message[] tempBox = getMailbox();
@@ -396,7 +397,6 @@ return "messages";
 			Message[] tempBox = getMailbox();
 			Message[] tempBox2 = getMailbox();
 
-			//setPage("spamBox");
 			setPage4("sentToSpam");
 			setViewMessage(false);
 			model.addAttribute("mailbox",getMailbox());
