@@ -105,9 +105,10 @@
 						<div class="card-header d-flex justify-content-center">
 							<h2>Create a Listing</h2>
 						</div>
-						<div class="card-body d-flex justify-content-center">
-							<div class="row">
+						
 								<form action="#" th:action="@{/addListing}" th:object="${listing}" method="post" class="form" enctype="multipart/form-data">
+								<div class="card-body d-flex justify-content-center">
+									<div class="row">
 									<div class="form-group">
 									
 										<label for="price">Price</label>
@@ -118,8 +119,8 @@
 										<p style="color:red">Please enter a valid price per item</p>
 										</div>
 										</th:block>
-										</div>
 									</div>
+									
 									<p th:if="${#fields.hasErrors('pricePerItem')}" th:errors="*{pricePerItem}"></p>
 									<div class="form-group">
 										<label for="quantity">How Many?</label>
@@ -130,34 +131,39 @@
 										<p style="color:red">Please enter a valid quantity</p>
 										</div>
 										</th:block>
-										</div>
-										
 									</div>
+										
+									
 									<p  th:if="${#fields.hasErrors('qtyAvailable')}" th:errors="*{qtyAvailable}"></p>
-									<div class="form-group">
+									<div class="form-group w-35">
 										<label for="fileUpload">Choose a image to upload:</label>
 										<input type="file" class="form-control" id="fileUpload" name="imageUpload" accept=".jpg,.img,.png,.jpeg">
 								
 									</div>
-									<div class="row justify-content-around my-3">
+									</div>
+									</div>
+									<div class="card-footer d-flex justify-content-center">
 										<th:block th:switch="${page}">
 										<div th:case="error">
 										<p style="color:red">Upload at least one picture</p>
 										</div>
 										</th:block>
-										<a th:if="${subCategory == 'blender'}" class="btn btn-danger col-sm-4" href="/addBlender">Back</a>
-										<a th:if="${subCategory == 'dryer'}" class="btn btn-danger col-sm-4" href="/addDryer">Back</a>
-										<a th:if="${subCategory == 'microwave'}" class="btn btn-danger col-sm-4" href="/addMicrowave">Back</a>
-										<a th:if="${subCategory == 'refridgerator'}" class="btn btn-danger col-sm-4" href="/addFridge">Back</a>
-										<a th:if="${subCategory == 'washer'}" class="btn btn-danger col-sm-4" href="/addWasher">Back</a>
-										<a th:if="${subCategory == 'computer'}" class="btn btn-danger col-sm-4" href="/addComputer">Back</a>
-										<a th:if="${subCategory == 'videoGame'}" class="btn btn-danger col-sm-4" href="/addVideoGame">Back</a>
-										<a th:if="${subCategory == 'lawnMower'}" class="btn btn-danger col-sm-4" href="/addLawnMower">Back</a>
-										<a th:if="${subCategory == 'car'}" class="btn btn-danger col-sm-4" href="/addCar">Back</a>
+										<a th:if="${subCategory == 'blender'}" class="btn btn-danger mx-4 col-sm-3" href="/addBlender">Back</a>
+										<a th:if="${subCategory == 'dryer'}" class="btn btn-danger mx-4 col-sm-3" href="/addDryer">Back</a>
+										<a th:if="${subCategory == 'microwave'}" class="btn btn-danger mx-4 col-sm-3" href="/addMicrowave">Back</a>
+										<a th:if="${subCategory == 'refridgerator'}" class="btn btn-danger mx-4 col-sm-3" href="/addFridge">Back</a>
+										<a th:if="${subCategory == 'washer'}" class="btn btn-danger mx-4 col-sm-3" href="/addWasher">Back</a>
+										<a th:if="${subCategory == 'computer'}" class="btn btn-danger mx-4 col-sm-3" href="/addComputer">Back</a>
+										<a th:if="${subCategory == 'videoGame'}" class="btn btn-danger mx-4 col-sm-3" href="/addVideoGame">Back</a>
+										<a th:if="${subCategory == 'lawnMower'}" class="btn btn-danger mx-4 col-sm-" href="/addLawnMower">Back</a>
+										<a th:if="${subCategory == 'car'}" class="btn btn-danger mx-4 col-sm-3" href="/addCar">Back</a>
 
-										<a class="btn btn-danger col-sm-4" href="/homePage">Cancel</a>
-										<input class="btn btn-success col-sm-4" type="submit" value="Create Listing">
+										
+										<a class="btn btn-danger mx-4 col-sm-3" href="/homePage">Cancel</a>
+										<input class="btn btn-success mx-4 col-sm-3" type="submit" value="Create Listing">
+										
 									</div>
+						
 								</form>
 							</div>
 						</div>

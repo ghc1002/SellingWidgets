@@ -691,6 +691,7 @@
             </th:block>
 
             <form th:action="@{/viewWidgetListing}" method="post">
+
               <table class="left" style="float: left;">
 
                 <tr>
@@ -774,6 +775,7 @@
 
                 </th:block>
               </table>
+
             </form>
           </div>
 
@@ -1352,7 +1354,7 @@
             </table>
           </div>
           <div th:case="searchMarketListing">
-            <form th:action="@{/editWidgetHere}" method="post">
+            <form th:action="@{/viewMarketListing/deleteListing}" method="post">
 
               <th:block th:switch="${page3}">
                 <div th:case="editWidgetSuccess">
@@ -1388,14 +1390,13 @@
                 </tr>
                 <th:block th:each="searchedWidgets: ${searchedWidgets}">
                   <tr>
-                    <td><input type="text" name="widgetId" th:value=${searchedWidgets.id}></td>
+                    <td><p th:text=${searchedWidgets.id}></p></td>
 
-                    <td><input type="text" name="widgetName" th:value=${searchedWidgets.name}></td>
+                    <td><p th:text=${searchedWidgets.name}></p></td>
 
-                    <td><input type="text" name="widgetDesc"
-                               th:value=${searchedWidgets.description}></td>
+                    <td><p th:text=${searchedWidgets.description}></p></td>
 
-                    <td><input type="text" name="widgetCat" th:value=${searchedWidgets.category}>
+                    <td><p th:text=${searchedWidgets.category}></p>
                     </td>
 
                   </tr>
@@ -1416,7 +1417,7 @@
                   <tr>
 
 
-                    <td><input type="text" name="sellerName" th:value=${sellers.username}></td>
+                    <td><p th:text=${sellers.username}></p></td>
 
 
                   </tr>
@@ -1438,13 +1439,11 @@
                   <tr>
 
 
-                    <td><input type="text" name="marketId" th:value=${searchedMarkets.id}></td>
+                    <td><p th:text=${searchedMarkets.id}></p></td>
 
-                    <td><input type="text" name="marketQty"
-                               th:value=${searchedMarkets.qtyAvailable}></td>
+                    <td><p th:text=${searchedMarkets.qtyAvailable}></p></td>
 
-                    <td><input type="text" name="marketPrice"
-                               th:value=${searchedMarkets.pricePerItem}></td>
+                     <td><p th:text=${searchedMarkets.pricePerItem}></p></td>
                   </tr>
 
                 </th:block>
@@ -1452,7 +1451,7 @@
               </table>
               <table class="left" style="float: left;width:75%;">
                 <tr>
-                  <th colspan="8"><input type="submit" class="submit" value="Save Changes"/></th>
+                  <th colspan="8"><input type="submit" class="submit" value="Delete Listing"/></th>
                 </tr>
                 <tr>
                   <th colspan="8"><a class="submit7" th:href="@{/backButton}"><span>Go Back To Search</span></a><br>

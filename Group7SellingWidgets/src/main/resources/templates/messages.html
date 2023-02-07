@@ -103,8 +103,8 @@
 	        	<a th:unless="${page == 'outbox'}" class="submit4 pb-3" th:href="@{/outbox}" ><span>Sent</span></a>
 	        </li>
 	        <li class="nav-item">
-	        	<a th:if="${page == 'spamBox'}" class="submit4 nav-link active pb-3" th:href="@{/spambox}" ><span>Spam</span></a>
-	        	<a th:unless="${page == 'spamBox'}" class="submit4 pb-3" th:href="@{/spamBox}" ><span>Spam</span></a>
+	        	<a th:if="${page == 'spamBox'}" class="submit4 nav-link active pb-3" th:href="@{/spambox}"><span>Spam</span></a>
+	        	<a th:unless="${page == 'spamBox'}" class="submit4 pb-3" th:href="@{/spambox}" ><span>Spam</span></a>
 	        </li>
 	        <li class="nav-item">
 		        <a th:if="${page == 'trashBox'}" class="submit4 nav-link active pb-3" th:href="@{/trashbox}" ><span>Trash</span></a>
@@ -189,10 +189,20 @@
     </div>
     <!-- IF IN SPAM -->
     <div th:case="spamBox" class="row">
-    	<div class="col-3" style="background-color: white"></div>
-    	<div class="col-1 border border-2 border-bottom-0 border-dark">
+    	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
+    		<a class="d-flex justify-content-center" style="font-size:24px; color: black; text-decoration: none;" th:href="@{/messages}"> Inbox </a>
+    	</div>
+    	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
+    		<a class="d-flex justify-content-center" style="font-size:24px; color: black; text-decoration: none;" th:href="@{/outbox}"> Sent </a>
+    	</div>
+    	<div class="col-1 border border-2 border-bottom-0 border-dark" style="background-color: rgb(212,183,145)">
     		<span class="d-flex justify-content-center" style="font-size:24px;"> Spam </span>
-    	</div> <div class="col-1 d-flex flex-fill" style="background-color: white"></div>
+    	</div>
+    	<div class="col-1 border border-2 border-dark" style="background-color: rgb(216, 189, 154)">
+    		<a class="d-flex justify-content-center" style="font-size:24px; color: black; text-decoration: none;" th:href="@{/trashbox}"> Trash </a>
+    	</div> 
+    	<div class="col-1 border border-2 border-start-0 border-top-0 border-end-0 border-dark d-flex flex-fill" 
+    		style="background-color: white"></div>
     </div> 
 
 
@@ -325,33 +335,35 @@
 	            <div th:case="trashBox">
 	
 	           
-	     <input id ="trashButton" th:formaction="@{/trashDelete}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Permanently Delete"/>
+	     <input id ="trashButton" th:formaction="@{/trashDelete}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Permanently Delete" />
 	 
-	   <input id ="trashButton2" th:formaction="@{/recoverFromTrash}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Recover From Trash"/>
+	   <input id ="trashButton2" th:formaction="@{/recoverFromTrash}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Recover From Trash" />
 	    <p id ="spamButton" style="visibility: hidden;" ></p>
 	    <p id ="spamButton2" style="visibility: hidden;" ></p>
 	            </div>	
 	           <div th:case="spamBox">
 	
 	       
-	     <input id ="spamButton" th:formaction="@{/spamDelete}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Permanently Delete"/>
+	     <input id ="spamButton" th:formaction="@{/spamDelete}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Permanently Delete"  />
 	 
-	   <input id ="spamButton2" th:formaction="@{/recoverFromSpam}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Recover From Spam"/>
+	   <input id ="spamButton2" th:formaction="@{/recoverFromSpam}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Recover From Spam"  />
 	        <p id ="trashButton" style="visibility: hidden;" ></p>
 	    <p id ="trashButton2" style="visibility: hidden;" ></p>
 	            </div>	
 	            <div th:case="home">
+	            <input id ="trashButton" th:formaction="@{/trash}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Send  to Trash"/> 
+	       		<input id ="spamButton" th:formaction="@{/spam}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Send to Spam" /> 
 	            <p id ="trashButton2" style="visibility: hidden;" ></p>
 	            <p id ="spamButton2" style="visibility: hidden;" ></p>
 	            </div>
 	            <div th:case="outbox">
+	            <input id ="trashButton" th:formaction="@{/trash}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Send  to Trash" /> 
 	            <p id ="trashButton2" style="visibility: hidden;" ></p>
 	            <p id ="spamButton2" style="visibility: hidden;" ></p>
 	            </div>
-	            </th:block>					
-	
-	     <input id ="trashButton" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Send  to Trash"/>
-	     <input id ="spamButton" th:formaction="@{/spam}" style = "width: 300px; bottom: 0px; visibility: hidden; z-index: 101;" class="submit3" type="submit" value="Send to Spam"/>
+				
+
+	       </th:block>	
 		<table class="fixed center" style="width:75%;">
 	
 	  <tr>
@@ -498,7 +510,7 @@
 	            </div>
 	            </th:block>
 	</table>
-	<!-- <button class="submit" ><a  th:href="@{/closeMessage}" ><span>Inbox</span></a></button><br>  -->
+	<!-- <button class="submit" ><a  th:href="@{/closeMessage}" ><span></span></a></button><br>  -->
 	</div>
 	</th:block>
 	  

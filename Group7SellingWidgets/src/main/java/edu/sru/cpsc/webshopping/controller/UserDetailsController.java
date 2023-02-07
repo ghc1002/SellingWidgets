@@ -192,7 +192,7 @@ public class UserDetailsController {
 			System.out.println(file.getOriginalFilename());
 			System.out.println(tempImageName);
 			try {
-				String fileLocation = new File("src\\main\\resources\\static\\images\\userImages").getAbsolutePath() + "\\" + tempImageName;
+				String fileLocation = new File("src/main/resources/static/images/userImages").getAbsolutePath() + "/" + tempImageName;
 				FileOutputStream output = new FileOutputStream(fileLocation);
 				output.write(file.getBytes());
 				output.close();

@@ -822,13 +822,13 @@ CREATE TABLE `user` (
   `credentials_expired` bit(1) NOT NULL,
   `disabled_account` bit(1) NOT NULL,
   `display_name` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL UNIQUE,
+  `email` varchar(255) DEFAULT NULL,
   `email_verification` varchar(255) DEFAULT NULL,
   `enabled` bit(1) NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `role` varchar(255) DEFAULT NULL,
   `user_description` varchar(255) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL UNIQUE,
+  `username` varchar(255) DEFAULT NULL,
   `seller_rating_id` bigint DEFAULT NULL,
   `user_role_id` bigint DEFAULT NULL,
   `payment_details_id` bigint DEFAULT NULL,
@@ -1184,4 +1184,3 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-02 10:49:00
