@@ -615,6 +615,7 @@ public class LandingPageController {
       MarketListing tempListing) {
     User user = userController.getCurrently_Logged_In();
     listingModel.addAttribute("sellerRating", userController.getSellerRating());
+    listingModel.addAttribute("user", user);
     List<Widget> widgets = new ArrayList<Widget>();
     List<MarketListing> listings = new ArrayList<MarketListing>();
     List<Widget> allWidgets = new ArrayList<Widget>();
