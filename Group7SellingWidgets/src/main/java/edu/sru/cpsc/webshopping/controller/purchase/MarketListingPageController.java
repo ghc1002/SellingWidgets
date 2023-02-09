@@ -1,6 +1,7 @@
 package edu.sru.cpsc.webshopping.controller.purchase;
 
 import edu.sru.cpsc.webshopping.controller.EmailController;
+
 import edu.sru.cpsc.webshopping.controller.MarketListingDomainController;
 import edu.sru.cpsc.webshopping.controller.MessageDomainController;
 import edu.sru.cpsc.webshopping.controller.TransactionController;
@@ -40,6 +41,8 @@ import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Vehicle_Car_Parts;
 import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Widget_Vehicles;
 import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Widget_Vehicles_Parts;
 import java.math.BigDecimal;
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -330,16 +333,16 @@ public class MarketListingPageController {
   }
 
   /**
-   * Disables visibility of the MarketListing
+   * Deletes a market listing
    *
    * @return returns to the index
    */
-  @RequestMapping({"/viewMarketListing/deleteListing"})
-  public String deleteListing(Model model) {
-    heldListing.setDeleted(true);
-    marketListingController.editMarketListing(heldListing);
-    // temporary redirection - change to return to market listings search page later on
-    return "redirect:/homePage";
+  @RequestMapping({"/viewMarketListing/deleteListing/{id}"})
+  public String deleteListing(@PathVariable long id, Model model) {
+    // go to marketListingController and delete the listing (it has the repository there)
+	marketListingController.deleteMarketListing(id);
+    // redirect back to the browse
+    return "redirect:/BrowseWidgetsButton";
   }
 
   @RequestMapping({"/viewMarketListing/openMessage"})
