@@ -132,7 +132,7 @@
        					<!-- ...if row contains both categories, create a column for each with 100% button sizing -->
        						<th:block th:if="${#lists.contains(categories, 'electronics') && #lists.contains(categories, 'electronic_parts')}">
        							<div class="col">
-	              					<input type="radio" class="btn-check" name="category" id="electronic" value="electronic" checked>
+	              					<input type="radio" class="btn-check" name="category" id="electronic" value="electronic">
 	              					<label class="btn btn-outline-primary w-100 m-2" for="electronic">Electronics</label>
 	            				</div>
 		            			<div class="col">
@@ -142,6 +142,18 @@
        						</th:block>
 	            			<!-- ...if row does not contain this category, create column for other category with 50% button sizing and center it -->
        						<!--<th:block th:unless="${#lists.contains(categories, 'electronics')}">-->
+       						<div class="col d-flex justify-content-center">
+            						<input type="radio" class="btn-check" name="category" id="appliance" value="appliance">
+            						<label class="btn btn-outline-primary w-50 m-2" for="appliance">Appliances</label>
+            					</div>
+	            				<div class="col d-flex justify-content-center">
+            						<input type="radio" class="btn-check" name="category" id="appliance_parts" value="appliance_parts">
+            						<label class="btn btn-outline-primary w-50 m-2" for="appliance_parts">Appliances Parts</label>
+            					</div>
+            					<div class="col d-flex justify-content-center">
+	              					<input type="radio" class="btn-check" name="category" id="electronic" value="electronic">
+	              					<label class="btn btn-outline-primary w-50 m-2" for="electronic">Electronics</label>
+	            				</div>
        							<div class="col d-flex justify-content-center">
             						<input type="radio" class="btn-check" name="category" id="electronic_parts" value="electronic_parts">
             						<label class="btn btn-outline-primary w-50 m-2" for="electronic_parts">Electronics Parts</label>
@@ -149,10 +161,7 @@
 		            		<!--</th:block>-->
 		            		<!-- ...if row does not contain this category, create column for other category with 50% button sizing and center it -->
        						<!--<th:block th:unless="${#lists.contains(categories, 'electronic_parts')}">-->
-       							<div class="col d-flex justify-content-center">
-	              					<input type="radio" class="btn-check" name="category" id="electronic" value="electronic" checked>
-	              					<label class="btn btn-outline-primary w-50 m-2" for="electronic">Electronics</label>
-	            				</div>
+       							
        						<!--</th:block>-->
 	            		<!--</div>-->
 	            		
@@ -170,24 +179,10 @@
 	            				</div>
 	            			</th:block>
 	            			<!--<th:block th:unless="${#lists.contains(categories, 'appliance_parts')}">-->
-	            				<div class="col d-flex justify-content-center">
-            						<input type="radio" class="btn-check" name="category" id="vehicle" value="vehicle">
-            						<label class="btn btn-outline-primary w-50 m-2" for="vehicle">Vehicles</label>
-            					</div>
-	            				<div class="col d-flex justify-content-center">
-            						<input type="radio" class="btn-check" name="category" id="vehicle_parts" value="vehicle_parts">
-            						<label class="btn btn-outline-primary w-50 m-2" for="vehicle_parts">Vehicles Parts</label>
-	            				</div>
+	            				
 	            			<!--</th:block>-->
 	            			<!--<th:block th:unless="${#lists.contains(categories, 'vehicle_parts')}">-->
-	            				<div class="col d-flex justify-content-center">
-            						<input type="radio" class="btn-check" name="category" id="appliance" value="appliance">
-            						<label class="btn btn-outline-primary w-50 m-2" for="appliance">Appliances</label>
-            					</div>
-	            				<div class="col d-flex justify-content-center">
-            						<input type="radio" class="btn-check" name="category" id="appliance_parts" value="appliance_parts">
-            						<label class="btn btn-outline-primary w-50 m-2" for="appliance_parts">Appliances Parts</label>
-            					</div>
+	            				
 	            			<!--</th:block>-->
        					<!--</div>-->
        					<div class="col d-flex justify-content-center">
@@ -196,7 +191,16 @@
             						<input type="radio" class="btn-check" name="category" id="lawnCare_parts" value="lawnCare_parts">
             						<label class="btn btn-outline-primary w-50 m-2" for="lawnCare_parts">Lawn Care Parts</label>
             					<!--</th:block>	-->
+            					
        						</div>
+       						<div class="col d-flex justify-content-center">
+            						<input type="radio" class="btn-check" name="category" id="vehicle" value="vehicle">
+            						<label class="btn btn-outline-primary w-50 m-2" for="vehicle">Vehicles</label>
+            					</div>
+	            				<div class="col d-flex justify-content-center">
+            						<input type="radio" class="btn-check" name="category" id="vehicle_parts" value="vehicle_parts">
+            						<label class="btn btn-outline-primary w-50 m-2" for="vehicle_parts">Vehicles Parts</label>
+	            				</div>
        						<div class="col"> <!-- Hidden button keeps the row with one visible button even. -->
 	            				<button class="btn w-100" visible="hidden"></button>
 	            			</div>

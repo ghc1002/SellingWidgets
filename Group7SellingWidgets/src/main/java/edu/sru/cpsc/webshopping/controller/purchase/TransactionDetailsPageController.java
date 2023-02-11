@@ -197,8 +197,11 @@ public class TransactionDetailsPageController {
 	 * @return true if the form is invalid, false if it is valid
 	 */
 	public boolean ShippingConstraintsInvalid(Shipping form) {
+		LocalDate today = LocalDate.now();
+
 		return (form.getArrivalDate().compareTo(form.getShippingDate()) < 0)
 				 || form.getArrivalDate() == null || form.getShippingDate() == null
+				 || form.getArrivalDate().toLocalDate().compareTo(today.plusYears(1)) > 0
 				 || form.getCarrier() == null || form.getCarrier().length() == 0;
 	}
 	
