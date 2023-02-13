@@ -198,10 +198,10 @@ public class TransactionDetailsPageController {
 	 */
 	public boolean ShippingConstraintsInvalid(Shipping form) {
 
-		return (form.getArrivalDate().compareTo(form.getShippingDate()) < 0)
-				 || form.getArrivalDate() == null || form.getShippingDate() == null
-				 || form.getArrivalDate().toLocalDate().compareTo(form.getToday().plusMonths(7)) > 0
-				 || form.getCarrier() == null || form.getCarrier().length() == 0;
+		return (form.getArrivalDate().compareTo(form.getShippingDate()) < 0) //arrival must be after shipping date
+				 || form.getArrivalDate() == null || form.getShippingDate() == null //needs an arrival and shipping date
+				 || form.getArrivalDate().toLocalDate().compareTo(form.getToday().plusMonths(7)) > 0 //widget must be set to arrive within 7 months of purchase
+				 || form.getCarrier() == null || form.getCarrier().length() == 0; //must have a carrier
 	}
 	
 	/**

@@ -243,6 +243,10 @@
 								{
 									document.getElementById("carSelect").style.display = "none";
 								}
+								if(element.value == "carPart")
+								{
+									document.getElementById("carPartSelect").style.display = "none";
+								}
 							  
 							}
 							if(count != 1){
@@ -290,6 +294,10 @@
 								{
 									document.getElementById("carSelect").style.display = "block";
 								}
+								if(element.value == "carPart")
+								{
+									document.getElementById("carPartSelect").style.display = "block";
+								}
 								count = 2;
 							}
 							count = count -1;
@@ -312,6 +320,9 @@
 								  },
 								  "vehicle" :{
 									"car" :[]
+								  },
+								  "vehiclePart" :{
+									  "carPart" :[]
 								  }
 								}
 								
@@ -485,6 +496,24 @@
 										  			carOp.style.display='none';
 										  		}
 										  }
+									  if(subCatSel.value == "carPart")
+									  {
+										 	var carPartOp = document.getElementById('carPartSelect');
+										  	var displaySetting = carPartOp.style.display;
+										  	if (displaySetting == 'none')
+										  		{
+										  			carPartOp.style.display='block';
+										  		}
+									  }
+									  else
+										  {
+										 	var carPartOp = document.getElementById('carPartSelect');
+										  	var displaySetting = carPartOp.style.display;
+										  	if (displaySetting == 'block')
+										  		{
+										  			carPartOp.style.display='none';
+										  		}
+										  }
 								  }
 								}
 						
@@ -551,6 +580,13 @@
 									<select id="blenderMake" class="form-select" name="brand">
 										<option value="">None</option>
 										<option th:each="make : ${blender_make}" th:value="${make}" th:text="${make}"></option>
+									</select>
+								</div>
+								<div class="col-2">
+									<label class="form-label" for="blenderCapacity">Capacity:</label>
+									<select id="blenderCapacity" class="form-select" name="capacity">
+										<option value="">None</option>
+										<option th:each="capacity : ${blender_capacity}" th:value="${capacity}" th:text="${capacity}"></option>
 									</select>
 								</div>
 								</div>
@@ -877,6 +913,52 @@
 									<select id="carYear" class="form-select" name="year">
 										<option value="">None</option>
 										<option th:each="year : ${car_year}" th:value="${year}" th:text="${year}"></option>
+									</select>
+								</div>
+								</div>
+							</div>
+							<div style="display:none;" id="carPartSelect">
+								<div class="row">
+								<div class="col-4">
+									<label class="form-label" for="carPartModel">Model:</label>
+									<select id="carPartModel" class="form-select" name="model">
+										<option value="">None</option>
+										<option th:each="model : ${car_part_model}" th:value="${model}" th:text="${model}"></option>
+									</select>
+								</div>
+								<div class="col-4">
+									<label class="form-label" for="carPartBrand">Brand:</label>
+									<select id="carPartBrand" class="form-select" name="brand">
+										<option value="">None</option>
+										<option th:each="brand : ${car_part_brand}" th:value="${brand}" th:text="${brand}"></option>
+									</select>
+								</div>
+								<div class="col-4">
+									<label class="form-label" for="carPartMadeIn">Made In:</label>
+									<select id="carPartMadeIn" class="form-select" name="madeIn">
+										<option value="">None</option>
+										<option th:each="madeIn : ${car_part_madeIn}" th:value="${madeIn}" th:text="${madeIn}"></option>
+									</select>
+								</div>
+								<div class="col-4">
+									<label class="form-label" for="carPartMaterial">Material:</label>
+									<select id="carPartMaterial" class="form-select" name="material">
+										<option value="">None</option>
+										<option th:each="material : ${car_part_material}" th:value="${material}" th:text="${material}"></option>
+									</select>
+								</div>
+								<div class="col-4">
+									<label class="form-label" for="carPartWarranty">warranty:</label>
+									<select id="carPartWarranty" class="form-select" name="warranty">
+										<option value="">None</option>
+										<option th:each="warranty : ${car_part_warranty}" th:value="${warranty}" th:text="${warranty}"></option>
+									</select>
+								</div>
+								<div class="col-4">
+									<label class="form-label" for="carPartCondition">condition:</label>
+									<select id="carPartCondition" class="form-select" name="condition">
+										<option value="">None</option>
+										<option th:each="condition : ${car_part_condition}" th:value="${condition}" th:text="${condition}"></option>
 									</select>
 								</div>
 								</div>
