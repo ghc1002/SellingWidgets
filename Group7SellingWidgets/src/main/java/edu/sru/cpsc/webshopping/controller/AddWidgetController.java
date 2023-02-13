@@ -1235,16 +1235,17 @@ public String addCar(Model model)
 			result.addError(
 	    	          new FieldError("pricePerItem", "pricePerItem", "Upload at least one image"));	    	
 	       }
+		BigDecimal oneCent = new BigDecimal("0.01");
 		if(marketListing.getPricePerItem() == null) {
 			setPage("error2");
 			result.addError(
 	    	          new FieldError("pricePerItem", "pricePerItem", "Price per item can't be null"));	    	
 	       }
-		// check if the price of the item is greater than zero (should only fire after price is verified not null)
-		else if(marketListing.getPricePerItem().compareTo(BigDecimal.ZERO) != 1) {
+		// check if the price of the item is at least one cent
+		else if(marketListing.getPricePerItem().compareTo(oneCent) < 0) {
 			setPage("error2");
 			result.addError(
-					new FieldError("pricePerItem", "pricePerItem", "Price per item must be greater than zero"));
+					new FieldError("pricePerItem", "pricePerItem", "Price per item must be greater than 0.01"));
 		}
 		
 		if(Long.valueOf(marketListing.getQtyAvailable()).compareTo((long) 0) <= 0)  {
