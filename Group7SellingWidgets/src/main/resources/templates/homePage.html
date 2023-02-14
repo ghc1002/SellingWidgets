@@ -133,11 +133,11 @@
 
 			<th:block th:switch="${page}">
 			<div th:case="friends">
-					<table style="width:350px;margin-top:20px;margin-bottom:20px;margin-left:50px">
-						<tr>
-							<th onmouseover='this.style.backgroundColor="#C8C0B8"' onmouseout='this.style.backgroundColor="#faf0e6"' style="text-align: center;"><a  style="text-align: center;text-decoration:none;color:black;" th:href="@{/friends}" >Friend List</a></th>
-							<th onmouseover='this.style.backgroundColor="#C8C0B8"' onmouseout='this.style.backgroundColor="#faf0e6"' style="text-align: center;"><a  style="text-align: center;text-decoration:none;color:black;" th:href="@{/blockList}" >Block List</a></th>
-							<th onmouseover='this.style.backgroundColor="#C8C0B8"' onmouseout='this.style.backgroundColor="#faf0e6"' style="text-align: center;"><a  style="text-align: center;text-decoration:none;color:black;" th:href="@{/suggested}" >Suggested List</a></th>
+					<table style="table-layout: fixed;width:450px;margin-top:20px;margin-bottom:20px;margin-left:50px;text-align:left">
+						<tr style="height:50px;border:solid;background-color:#faf0e6" class="col-1 border border-2 border-dark table-bordered">
+							<th style="border:solid;" onmouseover='this.style.backgroundColor="#C8C0B8"' onmouseout='this.style.backgroundColor="#faf0e6"'><a  style="text-align: center;text-decoration:none;color:black;" th:href="@{/friends}" >Friend List</a></th>
+							<th style="border:solid;" onmouseover='this.style.backgroundColor="#C8C0B8"' onmouseout='this.style.backgroundColor="#faf0e6"'><a  style="text-align: center;text-decoration:none;color:black;" th:href="@{/blockList}" >Block List</a></th>
+							<th style="border:solid;" onmouseover='this.style.backgroundColor="#C8C0B8"' onmouseout='this.style.backgroundColor="#faf0e6"'><a  style="text-align: left;text-decoration:none;color:black;" th:href="@{/suggested}" >Suggested List</a></th>
 						</tr>
 						<th:block th:switch="${page2}">
 						<div th:case="alreadyFriends">
@@ -193,7 +193,7 @@
 						</tr>
 						<th:block  th:each="myFriends: ${myFriends}">
 						<tr>
-						<td><a  th:href="@{/viewUserProfile/{id}(id = ${myFriends.friend.id})}" th:text = ${myFriends.friend.username}></a> </td>
+						<td style="height:50px;"><a  th:href="@{/viewUserProfile/{id}(id = ${myFriends.friend.id})}" th:text = ${myFriends.friend.username}></a> </td>
 						<td><a  th:href="@{/sendMessageToFriend/{id}(id = ${myFriends.friend.id})}" class="submit">Message</a></td>
 						<td><a  th:href="@{/removeFriend/{id}(id = ${myFriends.friend.id})}" class="submit">Remove</a></td>
     					</tr>
@@ -297,6 +297,10 @@
 									{
 										document.getElementById("dryerSelect").style.display = "none";
 									}
+									if(element.value == "blender")
+									{
+										document.getElementById("blenderSelect").style.display = "none";
+									}
 									if(element.value == "washer")
 									{
 										document.getElementById("washerSelect").style.display = "none";
@@ -325,6 +329,10 @@
 									{
 										document.getElementById("carSelect").style.display = "none";
 									}
+									if(element.value == "carPart")
+									{
+										document.getElementById("carPartSelect").style.display = "none";
+									}
 								}
 								if(count != 1){
 									document.getElementById("rating").style.display = "initial";
@@ -338,6 +346,10 @@
 									if(element.value == "dryer")
 									{
 										document.getElementById("dryerSelect").style.display = "block";
+									}
+									if(element.value == "blender")
+									{
+										document.getElementById("blenderSelect").style.display = "none";
 									}
 									if(element.value == "washer")
 									{
@@ -367,6 +379,10 @@
 									{
 										document.getElementById("carSelect").style.display = "block";
 									}
+									if(element.value == "carPart")
+									{
+										document.getElementById("carPartSelect").style.display = "block";
+									}
 									count = 2;
 								}
 								count = count -1;
@@ -377,7 +393,8 @@
 									    "washer": [],
 									    "dryer":[],
 									    "microwave":[],
-									    "fridge":[]
+									    "fridge":[],
+									    "blender":[]
 									  },
 									  "electronic": {
 									    "computer":[],
@@ -388,6 +405,9 @@
 									  },
 									  "vehicle" :{
 										"car" :[]
+									  },
+									  "vehiclePart" :{
+										  "carPart" :[]
 									  }
 							}
 	
@@ -415,6 +435,20 @@
 									}
 									else {
 										var dryerOp = document.getElementById('dryerSelect');
+										var displaySetting = dryerOp.style.display;
+										if (displaySetting == 'block') {
+										dryerOp.style.display='none';
+										}
+									}
+									if(subCatSel.value == "blender") {
+										var dryerOp = document.getElementById('blenderSelect');
+										var displaySetting = dryerOp.style.display;
+										if (displaySetting == 'none') {
+											dryerOp.style.display='block';
+										}
+									}
+									else {
+										var dryerOp = document.getElementById('blenderSelect');
 										var displaySetting = dryerOp.style.display;
 										if (displaySetting == 'block') {
 										dryerOp.style.display='none';
@@ -470,8 +504,8 @@
 										}
 									}
 									else {
-									var computerOp = document.getElementById('computerSelect');
-									var displaySetting = computerOp.style.display;
+										var computerOp = document.getElementById('computerSelect');
+										var displaySetting = computerOp.style.display;
 										if (displaySetting == 'block') {
 											computerOp.style.display='none';
 										}
@@ -516,6 +550,20 @@
 										var displaySetting = carOp.style.display;
 										if (displaySetting == 'block') {
 											carOp.style.display='none';
+										}
+									}
+									if(subCatSel.value == "carPart") {
+										var carPartOp = document.getElementById('carPartSelect');
+										var displaySetting = carPartOp.style.display;
+										if (displaySetting == 'none') {
+											carPartOp.style.display='block';
+										}
+									}
+									else {
+										var carPartOp = document.getElementById('carPartSelect');
+										var displaySetting = carPartOp.style.display;
+										if (displaySetting == 'block') {
+										carPartOp.style.display='none';
 										}
 									}
 								}
@@ -585,6 +633,66 @@
 									<select id="dryerMake" class="form-select" name="brand">
 										<option value="">None</option>
 										<option th:each="make : ${dryer_make}" th:value="${make}" th:text="${make}"></option>
+									</select>
+								</div>
+								</div>
+							</div>
+							<div style="display:none;" id="blenderSelect">
+								<div class="row">
+								<div class="col-2">
+									<label class="form-label" for="blenderLength">Length:</label>
+									<select id="blenderLength" class="form-select" name="length">
+										<option value="">None</option>
+										<option th:each="length : ${blender_length}" th:value="${length}" th:text="${length}"></option>
+									</select>
+								</div>
+								<div class="col-2">
+									<label class="form-label" for="blenderWidth">Width:</label>
+									<select id="blenderWidth" class="form-select" name="width">
+										<option value="">None</option>
+										<option th:each="width : ${blender_width}" th:value="${width}" th:text="${width}"></option>
+									</select>
+								</div>
+								<div class="col-2">
+									<label class="form-label" for="blenderHeight">Height:</label>
+									<select id="blenderHeight" class="form-select" name="height">
+										<option value="">None</option>
+										<option th:each="height : ${blender_height}" th:value="${height}" th:text="${height}"></option>
+									</select>
+								</div>
+								<div class="col-2">
+									<label class="form-label" for="blenderColor">Color:</label>
+									<select id="blenderColor" class="form-select" name="color">
+										<option value="">None</option>
+										<option th:each="color : ${blender_color}" th:value="${color}" th:text="${color}"></option>
+									</select>
+								</div>
+								<div class="col-2">
+									<label class="form-label" for="blenderCondition">Condition:</label>
+									<select id="blenderCondition" class="form-select" name="condition">
+										<option value="">None</option>
+										<option th:each="condition : ${blender_condition}" th:value="${condition}" th:text="${condition}"></option>
+									</select>
+								</div>
+								<div class="col-2">
+									<label class="form-label" for="blenderModel">Model:</label>
+									<select id="blenderModel" class="form-select" name="model">
+										<option value="">None</option>
+										<option th:each="model : ${blender_model}" th:value="${model}" th:text="${model}"></option>
+									</select>
+								</div>
+								<div class="col-2">
+									<label class="form-label" for="blenderMake">Brand:</label>
+									<select id="blenderMake" class="form-select" name="brand">
+										<option value="">None</option>
+										<option th:each="make : ${blender_make}" th:value="${make}" th:text="${make}"></option>
+									</select>
+								</div>
+								<div class="col-2">
+									<label class="form-label" for="blenderCapacity">Capacity:</label>
+									<select id="blenderCapacity" class="form-select" name="capacity">
+										<option value="">None</option>
+										<option th:each="capacity : ${blender_capacity}" th:value="${capacity}" th:text="${capacity}"></option>
 									</select>
 								</div>
 								</div>
@@ -858,6 +966,52 @@
 									<select id="carYear" class="form-select" name="year">
 										<option value="">None</option>
 										<option th:each="year : ${car_year}" th:value="${year}" th:text="${year}"></option>
+									</select>
+								</div>
+								</div>
+							</div>
+							<div style="display:none;" id="carPartSelect">
+								<div class="row">
+								<div class="col-4">
+									<label class="form-label" for="carPartModel">Model:</label>
+									<select id="carPartModel" class="form-select" name="model">
+										<option value="">None</option>
+										<option th:each="model : ${car_part_model}" th:value="${model}" th:text="${model}"></option>
+									</select>
+								</div>
+								<div class="col-4">
+									<label class="form-label" for="carPartBrand">Brand:</label>
+									<select id="carPartBrand" class="form-select" name="brand">
+										<option value="">None</option>
+										<option th:each="brand : ${car_part_brand}" th:value="${brand}" th:text="${brand}"></option>
+									</select>
+								</div>
+								<div class="col-4">
+									<label class="form-label" for="carPartMadeIn">Made In:</label>
+									<select id="carPartMadeIn" class="form-select" name="madeIn">
+										<option value="">None</option>
+										<option th:each="madeIn : ${car_part_madeIn}" th:value="${madeIn}" th:text="${madeIn}"></option>
+									</select>
+								</div>
+								<div class="col-4">
+									<label class="form-label" for="carPartMaterial">Material:</label>
+									<select id="carPartMaterial" class="form-select" name="material">
+										<option value="">None</option>
+										<option th:each="material : ${car_part_material}" th:value="${material}" th:text="${material}"></option>
+									</select>
+								</div>
+								<div class="col-4">
+									<label class="form-label" for="carPartWarranty">warranty:</label>
+									<select id="carPartWarranty" class="form-select" name="warranty">
+										<option value="">None</option>
+										<option th:each="warranty : ${car_part_warranty}" th:value="${warranty}" th:text="${warranty}"></option>
+									</select>
+								</div>
+								<div class="col-4">
+									<label class="form-label" for="carPartCondition">condition:</label>
+									<select id="carPartCondition" class="form-select" name="condition">
+										<option value="">None</option>
+										<option th:each="condition : ${car_part_condition}" th:value="${condition}" th:text="${condition}"></option>
 									</select>
 								</div>
 								</div>

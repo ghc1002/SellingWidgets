@@ -737,6 +737,12 @@ public class WidgetController {
     Iterable<Vehicle_Car> car = carRepository.findAll();
     return car;
   }
+  
+  @RequestMapping({"/get-all-car-parts"})
+  public Iterable<Vehicle_Car_Parts> getAllCarParts() {
+    Iterable<Vehicle_Car_Parts> carParts = carPartsRepository.findAll();
+    return carParts;
+  }
 
   @PostMapping({"update-car/{id}"})
   public void updateCar(

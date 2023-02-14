@@ -43,4 +43,54 @@ public class Widget_Vehicles_Parts extends Widget {
   @NonNull
   @Column(name = "`made_in`")
   private String madeIn;
+  
+  public String getPartName()
+  {
+	  return partName;
+  }
+  
+  public void setPartName(String partName)
+  {
+	  this.partName = partName;
+  }
+  
+  public String getModel()
+  {
+	  return model;
+  }
+  
+  public void setModel(String model)
+  {
+	  this.model = model;
+  }
+  
+  public String getBrand()
+  {
+	  return brand;
+  }
+  
+  public void setBrand(String brand)
+  {
+	  this.brand = brand;
+  }
+  
+  public String getColor()
+  {
+	  return color;
+  }
+  
+  public void setColor(String color)
+  {
+	  this.color = color;
+  }
+  
+  public String getMadeIn()
+  {
+	  return madeIn;
+  }
+  
+  public void setMadeIn(String madeIn)
+  {
+	  this.madeIn = madeIn;
+  }
 }
