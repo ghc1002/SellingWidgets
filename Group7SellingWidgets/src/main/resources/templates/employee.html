@@ -240,6 +240,30 @@
 
 <body style="display: flex; margin-top: 96px">
   <div class="d-flex">
+  <script>
+  	var timer = 0;								//timer intializer set to zero
+    var idleCheck = setInterval(function(){		
+      ++timer;									//increases variable timer via interval
+      document.onmousemove = resetIdleClock;	//resets timer on user mouse move
+      document.onload = resetIdleClock;			//resets timer when page is intialized
+      document.onclick = resetIdleClock;		//resets timer on user click
+      document.onkeydown = resetIdleClock;		//when key is pressed on page
+      		
+      if(timer == 75000){						//if statement captures when idle timer reaches 5 mins
+      	lockUserAccount();						//alert message indictating to user they have been logged out
+      	window.location.href = "http://localhost:8080/do_the_logout";		//logs user out and redircts to home page
+      	}
+      		
+      	function resetIdleClock(){				//function to reset timer variable
+      		timer = 0;
+      	}
+      	
+      	function lockUserAccount(){				//function to alert use they have been logged out
+      		window.alert("logged-out due to inactivity, re-validation required")
+      	}
+      	
+     });
+    </script>
     <th:block th:switch="${masterPage}">
       <div th:case="base">
         <th:block th:switch="${page}">
@@ -262,17 +286,17 @@
                 </td>
               </tr>
               <tr>
-                <th> If you get up from your computer make sure to lock it with ctrl+L</th>
+                <th> To prevent 'Tailgating,' all administrators will be logged out if idle. </th>
               </tr>
               <tr>
-                <td> For more information, look in your employee handbook or the website
-                  user/technical manual
+                <td> To re-gain access to administrator page, sign back in using administrative credentials.
                 </td>
               </tr>
             </table>
           </div>
         </th:block>
       </div>
+      
       <div th:case="query">
 
         <th:block th:switch="${page}">
@@ -1466,8 +1490,5 @@
     </th:block>
   </div>
   </th:block>
-
-
-</div>
 </body>
 </html>
