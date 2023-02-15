@@ -102,6 +102,9 @@
 	            		<a th:if="${page != 'home'}" href="/homePage" class="nav-link">Home</a>
 	            		<a th:if="${page == 'home'}" href="#" class="nav-link active">Home</a>
 	            	</li>
+	            	<li class="nav-item">
+	            		<a href="/BrowseWidgetsButton" class="nav-link">Browse</a>
+	            	</li>
 	                <li class="nav-item">
 	                    <a th:if="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" href="/addWidget" class="nav-link">
 	                        Sell Items

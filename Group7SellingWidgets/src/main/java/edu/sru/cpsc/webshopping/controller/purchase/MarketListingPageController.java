@@ -1,7 +1,6 @@
 package edu.sru.cpsc.webshopping.controller.purchase;
 
 import edu.sru.cpsc.webshopping.controller.EmailController;
-
 import edu.sru.cpsc.webshopping.controller.MarketListingDomainController;
 import edu.sru.cpsc.webshopping.controller.MessageDomainController;
 import edu.sru.cpsc.webshopping.controller.TransactionController;
@@ -41,7 +40,6 @@ import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Vehicle_Car_Parts;
 import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Widget_Vehicles;
 import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Widget_Vehicles_Parts;
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -341,8 +339,22 @@ public class MarketListingPageController {
   public String deleteListing(@PathVariable long id, Model model) {
     // go to marketListingController and delete the listing (it has the repository there)
 	marketListingController.deleteMarketListing(id);
-    // redirect back to the browse
-    return "redirect:/BrowseWidgetsButton";
+    // redirect - if the user is an admin send to their search page
+	User user = userController.getCurrently_Logged_In();
+	if (user.getRole().equals("ROLE_ADMIN")
+	        || user.getRole().equals("ROLE_CUSTOMERSERVICE")
+	        || user.getRole().equals("ROLE_TECHNICALSERVICE")
+	        || user.getRole().equals("ROLE_SECURITY")
+	        || user.getRole().equals("ROLE_SALES")
+	        || user.getRole().equals("ROLE_ADMIN_SHADOW")
+	        || user.getRole().equals("ROLE_HELPDESK_ADMIN")
+	        || user.getRole().equals("ROLE_HELPDESK_REGULAR")) {
+		return "redirect:/searchWidgetButton";
+	}
+	// otherwise return user home
+    return "redirect:/homePage";
+    // this code could potentially be improved to track where the user deleted it from and return
+    // to that page specifically. look into doing that after overall site is more functional?
   }
 
   @RequestMapping({"/viewMarketListing/openMessage"})

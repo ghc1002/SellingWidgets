@@ -51,6 +51,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -1234,11 +1235,19 @@ public String addCar(Model model)
 			result.addError(
 	    	          new FieldError("pricePerItem", "pricePerItem", "Upload at least one image"));	    	
 	       }
+		BigDecimal oneCent = new BigDecimal("0.01");
 		if(marketListing.getPricePerItem() == null) {
 			setPage("error2");
 			result.addError(
 	    	          new FieldError("pricePerItem", "pricePerItem", "Price per item can't be null"));	    	
 	       }
+		// check if the price of the item is at least one cent
+		else if(marketListing.getPricePerItem().compareTo(oneCent) < 0) {
+			setPage("error2");
+			result.addError(
+					new FieldError("pricePerItem", "pricePerItem", "Price per item must be greater than 0.01"));
+		}
+		
 		if(Long.valueOf(marketListing.getQtyAvailable()).compareTo((long) 0) <= 0)  {
 			System.out.println(marketListing.getQtyAvailable());
 			System.out.println("help");

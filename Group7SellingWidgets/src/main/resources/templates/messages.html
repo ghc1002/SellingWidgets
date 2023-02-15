@@ -95,26 +95,53 @@
 	<div id="sidebar">
 		<ul class="nav nav-pills flex-column mb-auto bg-dark" style="height: 300%;">
 	    	<li class="nav-item">
-	        	<a th:if="${page == 'home'}" class="submit4 nav-link active pb-3" th:href="@{/messages}" ><span>Inbox</span></a>
-	        	<a th:unless="${page == 'home'}" class="submit4 pb-3" th:href="@{/messages}" ><span>Inbox</span></a>
+	    		<a href="/homePage" class="nav-link">Home</a>
+	    	</li>
+	    	<li class="nav-item">
+	            <a href="/BrowseWidgetsButton" class="nav-link">Browse</a>
 	        </li>
 	        <li class="nav-item">
-	        	<a th:if="${page == 'outbox'}" class="submit4 nav-link active pb-3" th:href="@{/outbox}" ><span>Sent</span></a>
-	        	<a th:unless="${page == 'outbox'}" class="submit4 pb-3" th:href="@{/outbox}" ><span>Sent</span></a>
+	            <a th:if="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" href="/addWidget" class="nav-link">
+	            	Sell Items
+	            </a>
+	            <a th:unless="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" href="#" data-bs-toggle="modal" data-bs-target="#sellErrorModal" class="nav-link">
+	                Sell Items
+	            </a>
 	        </li>
 	        <li class="nav-item">
-	        	<a th:if="${page == 'spamBox'}" class="submit4 nav-link active pb-3" th:href="@{/spambox}"><span>Spam</span></a>
-	        	<a th:unless="${page == 'spamBox'}" class="submit4 pb-3" th:href="@{/spambox}" ><span>Spam</span></a>
+	        	<span style="color:#AED6F1"><b>&nbsp;&nbsp;&nbsp;&nbsp;Messages</b></span>
 	        </li>
-	        <li class="nav-item">
-		        <a th:if="${page == 'trashBox'}" class="submit4 nav-link active pb-3" th:href="@{/trashbox}" ><span>Trash</span></a>
-		        <a th:unless="${page == 'trashBox'}" class="submit4 active pb-3" th:href="@{/trashbox}" ><span>Trash</span></a>
-	        </li>
-	        <li class="nav-item">
-				<a class="submit4 pb-3" type="button" data-bs-toggle="modal" data-bs-target="#modalCompose">Compose</a>
+	    	
+	    	<!-- subtabs for message specific stuff -->
+	    	<ul>
+		    	<li class="nav-item">
+		        	<a th:if="${page == 'home'}" class="submit4 nav-link active pb-3" th:href="@{/messages}" ><span>Inbox</span></a>
+		        	<a th:unless="${page == 'home'}" class="submit4 pb-3" th:href="@{/messages}" ><span>Inbox</span></a>
+		        </li>
+		        <li class="nav-item">
+		        	<a th:if="${page == 'outbox'}" class="submit4 nav-link active pb-3" th:href="@{/outbox}" ><span>Sent</span></a>
+		        	<a th:unless="${page == 'outbox'}" class="submit4 pb-3" th:href="@{/outbox}" ><span>Sent</span></a>
+		        </li>
+		        <li class="nav-item">
+		        	<a th:if="${page == 'spamBox'}" class="submit4 nav-link active pb-3" th:href="@{/spambox}"><span>Spam</span></a>
+		        	<a th:unless="${page == 'spamBox'}" class="submit4 pb-3" th:href="@{/spambox}" ><span>Spam</span></a>
+		        </li>
+		        <li class="nav-item">
+			        <a th:if="${page == 'trashBox'}" class="submit4 nav-link active pb-3" th:href="@{/trashbox}" ><span>Trash</span></a>
+			        <a th:unless="${page == 'trashBox'}" class="submit4 active pb-3" th:href="@{/trashbox}" ><span>Trash</span></a>
+		        </li>
+		        <li class="nav-item">
+					<a class="submit4 pb-3" type="button" data-bs-toggle="modal" data-bs-target="#modalCompose">Compose</a>
+				</li>
+			</ul>
+			
+			<!-- resuming regular tabs -->
+			
+			<li class="nav-item">
+				<a href="/tickets" class="nav-link">Tickets</a>
 			</li>
 			<li class="nav-item">
-				<a class="submit4" style="cursor: pointer" onclick="history.back()"><span>Back</span></a>
+				<a href="/friends" class="nav-link">Friends</a>"
 			</li>
 		</ul>
 	</div>

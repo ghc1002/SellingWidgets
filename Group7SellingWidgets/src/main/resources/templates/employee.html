@@ -1354,7 +1354,7 @@
             </table>
           </div>
           <div th:case="searchMarketListing">
-            <form th:action="@{/viewMarketListing/deleteListing}" method="post">
+            <form th:action="@{/viewMarketListing/deleteListing/{listing-id}(listing-id=${searchedMarkets.id})}" method="post" action="#">
 
               <th:block th:switch="${page3}">
                 <div th:case="editWidgetSuccess">

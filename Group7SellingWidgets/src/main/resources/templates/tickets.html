@@ -83,18 +83,48 @@
         <a href="/homePage" class="nav-link">Home</a>
       </li>
       <li class="nav-item">
-        <a th:if="${page == 'tickets'}" class="nav-link active" th:href="@{/tickets}"><span>My Tickets</span></a>
-        <a th:unless="${page == 'tickets'}" class="nav-link"
-           th:href="@{/tickets}"><span>My Tickets</span></a>
-      </li>
+      	<a href="/BrowseWidgetsButton" class="nav-link">Browse</a>
+	  </li>
+	  <li class="nav-item">
+	  	<a th:if="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" href="/addWidget" class="nav-link">
+	    	Sell Items
+	    </a>
+	    <a th:unless="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" href="#" data-bs-toggle="modal" data-bs-target="#sellErrorModal" class="nav-link">
+	    	Sell Items
+	    </a>
+	  </li>
+	  <li class="nav-item">
+	  	<a href="/messages" class="nav-link">
+	  		Messages
+	    </a>
+	  </li>
+	  <li class="nav-item">
+	  	<span style="color:#AED6F1"><b>&nbsp;&nbsp;&nbsp;&nbsp;Tickets</b></span>
+	  </li>
+	  <!-- subtabs for tickets -->
+	  <ul>
+	      <li class="nav-item">
+	        <a th:if="${page == 'tickets'}" class="nav-link active" th:href="@{/tickets}"><span>My Tickets</span></a>
+	        <a th:unless="${page == 'tickets'}" class="nav-link"
+	           th:href="@{/tickets}"><span>My Tickets</span></a>
+	      </li>
+	      <li class="nav-item">
+	        <a th:if="${page == 'createTickets'}" class="nav-link active"
+	           th:href="@{/createTickets}"><span>Add Ticket</span></a>
+	        <a th:unless="${page == 'createTickets'}" class="nav-link"
+	           th:href="@{/createTickets}"><span>Add Ticket</span></a>
+	      </li>
+      </ul>
+      
+      <!-- back to standard tabs -->
+      
       <li class="nav-item">
-        <a th:if="${page == 'createTickets'}" class="nav-link active"
-           th:href="@{/createTickets}"><span>Add Ticket</span></a>
-        <a th:unless="${page == 'createTickets'}" class="nav-link"
-           th:href="@{/createTickets}"><span>Add Ticket</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" style="cursor: pointer" onclick="history.back()"><span>Back</span></a>
+      	<a th:if="${page == 'friends' || page == 'notFriends'}" href="/friendsOff" class="nav-link active">
+      		Friends
+      	</a>
+      	<a th:if="${page != 'friends' && page != 'notFriends'}" href="/friends" class="nav-link">
+      		Friends
+      	</a>
       </li>
     </ul>
   </div>
