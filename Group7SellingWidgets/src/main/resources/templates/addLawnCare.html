@@ -106,17 +106,20 @@
 						<div class="card-header d-flex justify-content-center">
 							<h2>Choose a Lawncare Subcategory</h2>
 						</div>
-						<div class="card-body d-flex justify-content-center">
 							<form action="#" th:action="@{/createLawnCare}" th:object="${lawnCare}" method="post" class="form">
-								<a class="btn btn-danger" href="/homePage">Cancel</a>
-								<a class="btn btn-danger" href="/addWidget">Back</a>
-								<th:block th:if="${#lists.contains(subCategories, 'lawnMower')}">
-								<input type="radio" class="btn-check" name="subCategory" id="lawnMower" value="lawnMower" checked>
-								<label class="btn btn-outline-primary" for="lawnMower">Lawn Mower</label>
-								</th:block>
-								<input class="btn btn-success" type="submit" value="Next">
+								<div class="card-body d-flex justify-content-center">
+								<!--  <th:block th:if="${#lists.contains(subCategories, 'lawnMower')}">--> 
+									<input type="radio" class="btn-check" name="subCategory" id="lawnMower" value="lawnMower">
+									<label class="btn btn-outline-primary w-50 m-2" for="lawnMower">Lawn Mower</label>
+								<!-- </th:block>--> 
+								</div>
+
+								<div class="card-footer">
+									<a class="btn btn-danger w-25 m-4" href="/addWidget">Back</a>
+									<a class="btn btn-danger w-25 m-4" href="/homePage">Cancel</a>
+									<input class="btn btn-success w-25 m-4" type="submit" value="Next">
+								</div>
 							</form>
-						</div>
 					</div>
 				</div>
 			</div>

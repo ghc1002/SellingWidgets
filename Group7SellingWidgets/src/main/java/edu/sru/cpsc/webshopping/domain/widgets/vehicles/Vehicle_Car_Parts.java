@@ -1,7 +1,6 @@
 package edu.sru.cpsc.webshopping.domain.widgets.vehicles;
 
-import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Blender;
-import edu.sru.cpsc.webshopping.domain.widgets.appliances.Widget_Appliance_Parts;
+import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Vehicle_Car_Parts;
 
 import java.util.HashMap;
 import java.util.HashSet;

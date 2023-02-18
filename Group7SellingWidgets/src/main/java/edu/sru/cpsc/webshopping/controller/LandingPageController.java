@@ -12,10 +12,18 @@ import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Blender;
 import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Microwave;
 import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Refrigerator;
 import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Washers;
+import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Blender_Parts;
+import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Dryer_Parts;
+import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Microwave_Parts;
+import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Washers_Parts;
+import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Refrigerator_Parts;
 import edu.sru.cpsc.webshopping.domain.widgets.electronics.Electronics_Computers;
 import edu.sru.cpsc.webshopping.domain.widgets.electronics.Electronics_VideoGames;
+import edu.sru.cpsc.webshopping.domain.widgets.electronics.Electronics_VideoGames_Parts;
+import edu.sru.cpsc.webshopping.domain.widgets.electronics.Electronics_Computers_Parts;
 import edu.sru.cpsc.webshopping.domain.widgets.lawncare.LawnCare_LawnMower;
 import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Vehicle_Car;
+import edu.sru.cpsc.webshopping.domain.widgets.lawncare.LawnCare_LawnMower_Parts;
 import edu.sru.cpsc.webshopping.repository.user.UserRepository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -633,6 +641,7 @@ public class LandingPageController {
       Widget tempWidget,
       Model searchModel,
       MarketListing tempListing) {
+
     User user = userController.getCurrently_Logged_In();
     listingModel.addAttribute("sellerRating", userController.getSellerRating());
     listingModel.addAttribute("user", user);
@@ -725,7 +734,7 @@ public class LandingPageController {
     listingModel.addAttribute("listings", marketController.getAllListings());
     BigDecimal bigPrice = new BigDecimal("0.00");
     try {
-      System.out.println(searchString);
+      System.out.println("item: "+searchString);
     } catch (Exception e) {
 
     }
@@ -1524,7 +1533,505 @@ public class LandingPageController {
                 allListings);
         searchModel.addAttribute("searchWidgets", widgets);
       }
+      System.out.println("end of appliance");
     }
+   
+    if (category.contentEquals("appliance_parts")) {
+    	//begin blender parts
+        if (subCategory.contentEquals("blenderPart")) {
+          tempModel = tempModel.replace(",", "");
+          brand = brand.replace(",", "");
+          color = color.replace(",", "");
+          warranty = warranty.replace(",", "");
+          condition = condition.replace(",", "");
+          
+          if (!tempModel.contentEquals("") || !brand.contentEquals("") || !madeIn.contentEquals("") || !material.contentEquals("") || !warranty.contentEquals("") || !condition.contentEquals("")) {
+            allListings.clear();
+            allWidgets.clear();
+          }
+
+          List<Appliance_Blender_Parts> blenderParts = new ArrayList<Appliance_Blender_Parts>();
+          blenderParts = (List<Appliance_Blender_Parts>) widgetController.getAllBlenderParts();
+          if (!tempModel.contentEquals("")) {
+            String tempPartModel = tempModel;
+            blenderParts =
+            	blenderParts.stream()
+                    .filter(blender_part_widget -> blender_part_widget.getModel().contentEquals(tempPartModel))
+                    .collect(Collectors.toList());
+            System.out.println(blenderParts.size());
+            for (int i = 0; i < blenderParts.size(); i++) {
+              long tempLong = blenderParts.get(i).getId();
+              allWidgets.add(widgetController.getWidget(tempLong));
+              allListings.add(
+                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+            }
+          }
+          if (!brand.contentEquals("")) {
+            String tempPartBrand = brand;
+            blenderParts =
+            	blenderParts.stream()
+                    .filter(blender_part_widget -> blender_part_widget.getBrand().contentEquals(tempPartBrand))
+                    .collect(Collectors.toList());
+            System.out.println(blenderParts.size());
+            for (int i = 0; i < blenderParts.size(); i++) {
+              long tempLong = blenderParts.get(i).getId();
+              allWidgets.add(widgetController.getWidget(tempLong));
+              allListings.add(
+                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+            }
+          }
+          if (!color.contentEquals("")) {
+            String tempColor = color;
+            blenderParts =
+            	blenderParts.stream()
+                    .filter(blender_part_widget -> blender_part_widget.getColor() == tempColor)
+                    .collect(Collectors.toList());
+            System.out.println(blenderParts.size());
+            for (int i = 0; i < blenderParts.size(); i++) {
+              long tempLong = blenderParts.get(i).getId();
+              allWidgets.add(widgetController.getWidget(tempLong));
+              allListings.add(
+                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+            }
+          }
+          if (!warranty.contentEquals("")) {
+              String tempWarranty = warranty;
+              blenderParts =
+            		blenderParts.stream()
+                      .filter(blender_part_widget -> blender_part_widget.getWarranty() == tempWarranty)
+                      .collect(Collectors.toList());
+              System.out.println(blenderParts.size());
+              for (int i = 0; i < blenderParts.size(); i++) {
+                long tempLong = blenderParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+          if (!condition.contentEquals("")) {
+              String tempCondition = condition;
+              blenderParts =
+            		blenderParts.stream()
+                      .filter(blender_part_widget -> blender_part_widget.getCondition() == tempCondition)
+                      .collect(Collectors.toList());
+              System.out.println(blenderParts.size());
+              for (int i = 0; i < blenderParts.size(); i++) {
+                long tempLong = blenderParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+        }
+        
+        if (subCategory.contentEquals("dryerPart")) {
+            tempModel = tempModel.replace(",", "");
+            brand = brand.replace(",", "");
+            color = color.replace(",", "");
+            warranty = warranty.replace(",", "");
+            condition = condition.replace(",", "");
+            
+            if (!tempModel.contentEquals("") || !brand.contentEquals("") || !madeIn.contentEquals("") || !material.contentEquals("") || !warranty.contentEquals("") || !condition.contentEquals("")) {
+              allListings.clear();
+              allWidgets.clear();
+            }
+
+            List<Appliance_Dryer_Parts> dryerParts = new ArrayList<Appliance_Dryer_Parts>();
+            dryerParts = (List<Appliance_Dryer_Parts>) widgetController.getAllDryerParts();
+            if (!tempModel.contentEquals("")) {
+              String tempPartModel = tempModel;
+              dryerParts =
+            	dryerParts.stream()
+                      .filter(dryer_part_widget -> dryer_part_widget.getModel().contentEquals(tempPartModel))
+                      .collect(Collectors.toList());
+              System.out.println(dryerParts.size());
+              for (int i = 0; i < dryerParts.size(); i++) {
+                long tempLong = dryerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!brand.contentEquals("")) {
+              String tempPartBrand = brand;
+              dryerParts =
+            	dryerParts.stream()
+                      .filter(dryer_part_widget -> dryer_part_widget.getBrand().contentEquals(tempPartBrand))
+                      .collect(Collectors.toList());
+              System.out.println(dryerParts.size());
+              for (int i = 0; i < dryerParts.size(); i++) {
+                long tempLong = dryerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!color.contentEquals("")) {
+              String tempColor = color;
+              dryerParts =
+            		dryerParts.stream()
+                      .filter(dryer_part_widget -> dryer_part_widget.getColor() == tempColor)
+                      .collect(Collectors.toList());
+              System.out.println(dryerParts.size());
+              for (int i = 0; i < dryerParts.size(); i++) {
+                long tempLong = dryerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!warranty.contentEquals("")) {
+                String tempWarranty = warranty;
+                dryerParts =
+                	dryerParts.stream()
+                        .filter(dryer_part_widget -> dryer_part_widget.getWarranty() == tempWarranty)
+                        .collect(Collectors.toList());
+                System.out.println(dryerParts.size());
+                for (int i = 0; i < dryerParts.size(); i++) {
+                  long tempLong = dryerParts.get(i).getId();
+                  allWidgets.add(widgetController.getWidget(tempLong));
+                  allListings.add(
+                      marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+                }
+              }
+            if (!condition.contentEquals("")) {
+                String tempCondition = condition;
+                dryerParts =
+                	dryerParts.stream()
+                        .filter(dryer_part_widget -> dryer_part_widget.getCondition() == tempCondition)
+                        .collect(Collectors.toList());
+                System.out.println(dryerParts.size());
+                for (int i = 0; i < dryerParts.size(); i++) {
+                  long tempLong = dryerParts.get(i).getId();
+                  allWidgets.add(widgetController.getWidget(tempLong));
+                  allListings.add(
+                      marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+                }
+              }
+          }
+        
+        if (subCategory.contentEquals("microwavePart")) {
+            tempModel = tempModel.replace(",", "");
+            brand = brand.replace(",", "");
+            color = color.replace(",", "");
+            warranty = warranty.replace(",", "");
+            condition = condition.replace(",", "");
+            
+            if (!tempModel.contentEquals("") || !brand.contentEquals("") || !madeIn.contentEquals("") || !material.contentEquals("") || !warranty.contentEquals("") || !condition.contentEquals("")) {
+              allListings.clear();
+              allWidgets.clear();
+            }
+
+            List<Appliance_Microwave_Parts> microwaveParts = new ArrayList<Appliance_Microwave_Parts>();
+            microwaveParts = (List<Appliance_Microwave_Parts>) widgetController.getAllMicrowaveParts();
+            if (!tempModel.contentEquals("")) {
+              String tempPartModel = tempModel;
+              microwaveParts =
+            	microwaveParts.stream()
+                      .filter(microwave_part_widget -> microwave_part_widget.getModel().contentEquals(tempPartModel))
+                      .collect(Collectors.toList());
+              System.out.println(microwaveParts.size());
+              for (int i = 0; i < microwaveParts.size(); i++) {
+                long tempLong = microwaveParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!brand.contentEquals("")) {
+              String tempPartBrand = brand;
+              microwaveParts =
+            	microwaveParts.stream()
+                      .filter(microwave_part_widget -> microwave_part_widget.getBrand().contentEquals(tempPartBrand))
+                      .collect(Collectors.toList());
+              System.out.println(microwaveParts.size());
+              for (int i = 0; i < microwaveParts.size(); i++) {
+                long tempLong = microwaveParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!color.contentEquals("")) {
+              String tempColor = color;
+              microwaveParts =
+            		microwaveParts.stream()
+                      .filter(microwave_part_widget -> microwave_part_widget.getColor() == tempColor)
+                      .collect(Collectors.toList());
+              System.out.println(microwaveParts.size());
+              for (int i = 0; i < microwaveParts.size(); i++) {
+                long tempLong = microwaveParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!warranty.contentEquals("")) {
+                String tempWarranty = warranty;
+                microwaveParts =
+                	microwaveParts.stream()
+                        .filter(microwave_part_widget -> microwave_part_widget.getWarranty() == tempWarranty)
+                        .collect(Collectors.toList());
+                System.out.println(microwaveParts.size());
+                for (int i = 0; i < microwaveParts.size(); i++) {
+                  long tempLong = microwaveParts.get(i).getId();
+                  allWidgets.add(widgetController.getWidget(tempLong));
+                  allListings.add(
+                      marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+                }
+              }
+            if (!condition.contentEquals("")) {
+                String tempCondition = condition;
+                microwaveParts =
+                	microwaveParts.stream()
+                        .filter(microwave_part_widget -> microwave_part_widget.getCondition() == tempCondition)
+                        .collect(Collectors.toList());
+                System.out.println(microwaveParts.size());
+                for (int i = 0; i < microwaveParts.size(); i++) {
+                  long tempLong = microwaveParts.get(i).getId();
+                  allWidgets.add(widgetController.getWidget(tempLong));
+                  allListings.add(
+                      marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+                }
+              }
+          }
+        
+        if (subCategory.contentEquals("refigeratorPart")) {
+            tempModel = tempModel.replace(",", "");
+            brand = brand.replace(",", "");
+            color = color.replace(",", "");
+            warranty = warranty.replace(",", "");
+            condition = condition.replace(",", "");
+            
+            if (!tempModel.contentEquals("") || !brand.contentEquals("") || !madeIn.contentEquals("") || !material.contentEquals("") || !warranty.contentEquals("") || !condition.contentEquals("")) {
+              allListings.clear();
+              allWidgets.clear();
+            }
+
+            List<Appliance_Refrigerator_Parts> refrigeratorParts = new ArrayList<Appliance_Refrigerator_Parts>();
+            refrigeratorParts = (List<Appliance_Refrigerator_Parts>) widgetController.getAllRefrigeratorParts();
+            if (!tempModel.contentEquals("")) {
+              String tempPartModel = tempModel;
+              refrigeratorParts =
+            		refrigeratorParts.stream()
+                      .filter(refrigerator_part_widget -> refrigerator_part_widget.getModel().contentEquals(tempPartModel))
+                      .collect(Collectors.toList());
+              System.out.println(refrigeratorParts.size());
+              for (int i = 0; i < refrigeratorParts.size(); i++) {
+                long tempLong = refrigeratorParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!brand.contentEquals("")) {
+              String tempPartBrand = brand;
+              refrigeratorParts =
+            	refrigeratorParts.stream()
+                      .filter(refrigerator_part_widget -> refrigerator_part_widget.getBrand().contentEquals(tempPartBrand))
+                      .collect(Collectors.toList());
+              System.out.println(refrigeratorParts.size());
+              for (int i = 0; i < refrigeratorParts.size(); i++) {
+                long tempLong = refrigeratorParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!color.contentEquals("")) {
+              String tempColor = color;
+              refrigeratorParts =
+            		refrigeratorParts.stream()
+                      .filter(refrigerator_part_widget -> refrigerator_part_widget.getColor() == tempColor)
+                      .collect(Collectors.toList());
+              System.out.println(refrigeratorParts.size());
+              for (int i = 0; i < refrigeratorParts.size(); i++) {
+                long tempLong = refrigeratorParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!warranty.contentEquals("")) {
+                String tempWarranty = warranty;
+                refrigeratorParts =
+                	refrigeratorParts.stream()
+                        .filter(refrigerator_part_widget -> refrigerator_part_widget.getWarranty() == tempWarranty)
+                        .collect(Collectors.toList());
+                System.out.println(refrigeratorParts.size());
+                for (int i = 0; i < refrigeratorParts.size(); i++) {
+                  long tempLong = refrigeratorParts.get(i).getId();
+                  allWidgets.add(widgetController.getWidget(tempLong));
+                  allListings.add(
+                      marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+                }
+              }
+            if (!condition.contentEquals("")) {
+                String tempCondition = condition;
+                refrigeratorParts =
+                	refrigeratorParts.stream()
+                        .filter(refrigerator_part_widget -> refrigerator_part_widget.getCondition() == tempCondition)
+                        .collect(Collectors.toList());
+                System.out.println(refrigeratorParts.size());
+                for (int i = 0; i < refrigeratorParts.size(); i++) {
+                  long tempLong = refrigeratorParts.get(i).getId();
+                  allWidgets.add(widgetController.getWidget(tempLong));
+                  allListings.add(
+                      marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+                }
+              }
+          }
+        
+        if (subCategory.contentEquals("washerPart")) {
+            tempModel = tempModel.replace(",", "");
+            brand = brand.replace(",", "");
+            color = color.replace(",", "");
+            warranty = warranty.replace(",", "");
+            condition = condition.replace(",", "");
+            
+            if (!tempModel.contentEquals("") || !brand.contentEquals("") || !madeIn.contentEquals("") || !material.contentEquals("") || !warranty.contentEquals("") || !condition.contentEquals("")) {
+              allListings.clear();
+              allWidgets.clear();
+            }
+
+            List<Appliance_Washers_Parts> washerParts = new ArrayList<Appliance_Washers_Parts>();
+            washerParts = (List<Appliance_Washers_Parts>) widgetController.getAllWasherParts();
+            if (!tempModel.contentEquals("")) {
+              String tempPartModel = tempModel;
+              washerParts =
+            		  washerParts.stream()
+                      .filter(washer_part_widget -> washer_part_widget.getModel().contentEquals(tempPartModel))
+                      .collect(Collectors.toList());
+              System.out.println(washerParts.size());
+              for (int i = 0; i < washerParts.size(); i++) {
+                long tempLong = washerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!brand.contentEquals("")) {
+              String tempPartBrand = brand;
+              washerParts =
+            		  washerParts.stream()
+                      .filter(washer_part_widget -> washer_part_widget.getBrand().contentEquals(tempPartBrand))
+                      .collect(Collectors.toList());
+              System.out.println(washerParts.size());
+              for (int i = 0; i < washerParts.size(); i++) {
+                long tempLong = washerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!color.contentEquals("")) {
+              String tempColor = color;
+              washerParts =
+            		  washerParts.stream()
+                      .filter(washer_part_widget -> washer_part_widget.getColor() == tempColor)
+                      .collect(Collectors.toList());
+              System.out.println(washerParts.size());
+              for (int i = 0; i < washerParts.size(); i++) {
+                long tempLong = washerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!warranty.contentEquals("")) {
+                String tempWarranty = warranty;
+                washerParts =
+                		washerParts.stream()
+                        .filter(washer_part_widget -> washer_part_widget.getWarranty() == tempWarranty)
+                        .collect(Collectors.toList());
+                System.out.println(washerParts.size());
+                for (int i = 0; i < washerParts.size(); i++) {
+                  long tempLong = washerParts.get(i).getId();
+                  allWidgets.add(widgetController.getWidget(tempLong));
+                  allListings.add(
+                      marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+                }
+              }
+            if (!condition.contentEquals("")) {
+                String tempCondition = condition;
+                washerParts =
+                		washerParts.stream()
+                        .filter(washer_part_widget -> washer_part_widget.getCondition() == tempCondition)
+                        .collect(Collectors.toList());
+                System.out.println(washerParts.size());
+                for (int i = 0; i < washerParts.size(); i++) {
+                  long tempLong = washerParts.get(i).getId();
+                  allWidgets.add(widgetController.getWidget(tempLong));
+                  allListings.add(
+                      marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+                }
+              }
+          }
+
+        if (searchString.isBlank() && price.isBlank()) {
+          System.out.println("only category");
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
+          try {
+            searchModel.addAttribute("searchWidgets", widgets);
+            System.out.println("tried to find widget");
+          } catch (Exception e) {
+            System.out.println("No widgets");
+          }
+          System.out.println("neither");
+        }
+        if (!searchString.isBlank() && price.isBlank()) {
+          System.out.println("only search string");
+          model.addAttribute("searchString", searchString);
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.stringOnly(
+                  tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
+
+          searchModel.addAttribute("searchWidgets", widgets);
+        } else if (searchString.isBlank() && !price.isBlank()) {
+          System.out.println("only price");
+          model.addAttribute("operator", operator);
+          model.addAttribute("price", price);
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.priceOnly(
+                  tempWidget,
+                  widgets,
+                  tempListing,
+                  searchString,
+                  operator,
+                  bigPrice,
+                  category,
+                  allWidgets,
+                  allListings);
+          searchModel.addAttribute("searchWidgets", widgets);
+        } else if (!searchString.isBlank() && !price.isBlank()) {
+          System.out.println("both");
+          model.addAttribute("searchString", searchString);
+          model.addAttribute("operator", operator);
+          model.addAttribute("price", price);
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.stringAndPrice(
+                  tempWidget,
+                  widgets,
+                  tempListing,
+                  searchString,
+                  operator,
+                  bigPrice,
+                  category,
+                  allWidgets,
+                  allListings);
+          searchModel.addAttribute("searchWidgets", widgets);
+        }
+        
+      }
 
     if (category.contentEquals("electronic")) {
       if (subCategory.contentEquals("videoGame")) {
@@ -1740,6 +2247,247 @@ public class LandingPageController {
         searchModel.addAttribute("searchWidgets", widgets);
       }
     }
+    
+    if (category.contentEquals("electronic_parts")) {
+
+        if (subCategory.contentEquals("computerPart")) {
+          tempModel = tempModel.replace(",", "");
+          brand = brand.replace(",", "");
+          color = color.replace(",", "");
+          warranty = warranty.replace(",", "");
+          condition = condition.replace(",", "");
+          
+          if (!tempModel.contentEquals("") || !brand.contentEquals("") || !madeIn.contentEquals("") || !material.contentEquals("") || !warranty.contentEquals("") || !condition.contentEquals("")) {
+            allListings.clear();
+            allWidgets.clear();
+          }
+
+          List<Electronics_Computers_Parts> computerParts = new ArrayList<Electronics_Computers_Parts>();
+          computerParts = (List<Electronics_Computers_Parts>) widgetController.getAllComputerParts();
+          if (!tempModel.contentEquals("")) {
+            String tempPartModel = tempModel;
+            computerParts =
+            		computerParts.stream()
+                    .filter(computer_part_widget -> computer_part_widget.getModel().contentEquals(tempPartModel))
+                    .collect(Collectors.toList());
+            System.out.println(computerParts.size());
+            for (int i = 0; i < computerParts.size(); i++) {
+              long tempLong = computerParts.get(i).getId();
+              allWidgets.add(widgetController.getWidget(tempLong));
+              allListings.add(
+                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+            }
+          }
+          if (!brand.contentEquals("")) {
+            String tempPartBrand = brand;
+            computerParts =
+            	computerParts.stream()
+                    .filter(computer_part_widget -> computer_part_widget.getBrand().contentEquals(tempPartBrand))
+                    .collect(Collectors.toList());
+            System.out.println(computerParts.size());
+            for (int i = 0; i < computerParts.size(); i++) {
+              long tempLong = computerParts.get(i).getId();
+              allWidgets.add(widgetController.getWidget(tempLong));
+              allListings.add(
+                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+            }
+          }
+          if (!color.contentEquals("")) {
+            String tempColor = color;
+            computerParts =
+            		computerParts.stream()
+                    .filter(computer_part_widget -> computer_part_widget.getColor() == tempColor)
+                    .collect(Collectors.toList());
+            System.out.println(computerParts.size());
+            for (int i = 0; i < computerParts.size(); i++) {
+              long tempLong = computerParts.get(i).getId();
+              allWidgets.add(widgetController.getWidget(tempLong));
+              allListings.add(
+                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+            }
+          }
+          if (!warranty.contentEquals("")) {
+              String tempWarranty = warranty;
+              computerParts =
+            		  computerParts.stream()
+                      .filter(computer_part_widget -> computer_part_widget.getWarranty() == tempWarranty)
+                      .collect(Collectors.toList());
+              System.out.println(computerParts.size());
+              for (int i = 0; i < computerParts.size(); i++) {
+                long tempLong = computerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+          if (!condition.contentEquals("")) {
+              String tempCondition = condition;
+              computerParts =
+            		  computerParts.stream()
+                      .filter(computer_part_widget -> computer_part_widget.getCondition() == tempCondition)
+                      .collect(Collectors.toList());
+              System.out.println(computerParts.size());
+              for (int i = 0; i < computerParts.size(); i++) {
+                long tempLong = computerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+          System.out.println("end of car parts");
+        }
+        
+        if (subCategory.contentEquals("videoGameAccessory")) {
+            tempModel = tempModel.replace(",", "");
+            brand = brand.replace(",", "");
+            color = color.replace(",", "");
+            warranty = warranty.replace(",", "");
+            condition = condition.replace(",", "");
+            
+            if (!tempModel.contentEquals("") || !brand.contentEquals("") || !madeIn.contentEquals("") || !material.contentEquals("") || !warranty.contentEquals("") || !condition.contentEquals("")) {
+              allListings.clear();
+              allWidgets.clear();
+            }
+
+            List<Electronics_VideoGames_Parts> videoGameAccessory = new ArrayList<Electronics_VideoGames_Parts>();
+            videoGameAccessory = (List<Electronics_VideoGames_Parts>) widgetController.getAllVideoGameAccessories();
+            if (!tempModel.contentEquals("")) {
+              String tempPartModel = tempModel;
+              videoGameAccessory =
+            		  videoGameAccessory.stream()
+                      .filter(videoGame_accessory_widget -> videoGame_accessory_widget.getModel().contentEquals(tempPartModel))
+                      .collect(Collectors.toList());
+              System.out.println(videoGameAccessory.size());
+              for (int i = 0; i < videoGameAccessory.size(); i++) {
+                long tempLong = videoGameAccessory.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!brand.contentEquals("")) {
+              String tempPartBrand = brand;
+              videoGameAccessory =
+            		  videoGameAccessory.stream()
+                      .filter(videoGame_accessory_widget -> videoGame_accessory_widget.getBrand().contentEquals(tempPartBrand))
+                      .collect(Collectors.toList());
+              System.out.println(videoGameAccessory.size());
+              for (int i = 0; i < videoGameAccessory.size(); i++) {
+                long tempLong = videoGameAccessory.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!color.contentEquals("")) {
+              String tempColor = color;
+              videoGameAccessory =
+            		  videoGameAccessory.stream()
+                      .filter(videoGame_accessory_widget -> videoGame_accessory_widget.getColor() == tempColor)
+                      .collect(Collectors.toList());
+              System.out.println(videoGameAccessory.size());
+              for (int i = 0; i < videoGameAccessory.size(); i++) {
+                long tempLong = videoGameAccessory.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+            if (!warranty.contentEquals("")) {
+                String tempWarranty = warranty;
+                videoGameAccessory =
+                		videoGameAccessory.stream()
+                        .filter(videoGame_accessory_widget -> videoGame_accessory_widget.getWarranty() == tempWarranty)
+                        .collect(Collectors.toList());
+                System.out.println(videoGameAccessory.size());
+                for (int i = 0; i < videoGameAccessory.size(); i++) {
+                  long tempLong = videoGameAccessory.get(i).getId();
+                  allWidgets.add(widgetController.getWidget(tempLong));
+                  allListings.add(
+                      marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+                }
+              }
+            if (!condition.contentEquals("")) {
+                String tempCondition = condition;
+                videoGameAccessory =
+                		videoGameAccessory.stream()
+                        .filter(videoGame_accessory_widget -> videoGame_accessory_widget.getCondition() == tempCondition)
+                        .collect(Collectors.toList());
+                System.out.println(videoGameAccessory.size());
+                for (int i = 0; i < videoGameAccessory.size(); i++) {
+                  long tempLong = videoGameAccessory.get(i).getId();
+                  allWidgets.add(widgetController.getWidget(tempLong));
+                  allListings.add(
+                      marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+                }
+              }
+            System.out.println("end of car parts");
+          }
+
+        if (searchString.isBlank() && price.isBlank()) {
+          System.out.println("only category");
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
+          try {
+            searchModel.addAttribute("searchWidgets", widgets);
+            System.out.println("tried to find widget");
+          } catch (Exception e) {
+            System.out.println("No widgets");
+          }
+          System.out.println("neither");
+        }
+        if (!searchString.isBlank() && price.isBlank()) {
+          System.out.println("only search string");
+          model.addAttribute("searchString", searchString);
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.stringOnly(
+                  tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
+
+          searchModel.addAttribute("searchWidgets", widgets);
+        } else if (searchString.isBlank() && !price.isBlank()) {
+          System.out.println("only price");
+          model.addAttribute("operator", operator);
+          model.addAttribute("price", price);
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.priceOnly(
+                  tempWidget,
+                  widgets,
+                  tempListing,
+                  searchString,
+                  operator,
+                  bigPrice,
+                  category,
+                  allWidgets,
+                  allListings);
+          searchModel.addAttribute("searchWidgets", widgets);
+        } else if (!searchString.isBlank() && !price.isBlank()) {
+          System.out.println("both");
+          model.addAttribute("searchString", searchString);
+          model.addAttribute("operator", operator);
+          model.addAttribute("price", price);
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.stringAndPrice(
+                  tempWidget,
+                  widgets,
+                  tempListing,
+                  searchString,
+                  operator,
+                  bigPrice,
+                  category,
+                  allWidgets,
+                  allListings);
+          searchModel.addAttribute("searchWidgets", widgets);
+        }
+        System.out.println("end of vehicle parts");
+      }
 
     if (category.contentEquals("lawnCare")) {
       if (subCategory.contentEquals("lawnMower")) {
@@ -1982,16 +2730,18 @@ public class LandingPageController {
         searchModel.addAttribute("searchWidgets", widgets);
       }
     }
-    
-    if (category.contentEquals("vehicleParts")) {
-        if (subCategory.contentEquals("carParts")) {
+
+    if (category.contentEquals("vehicle_parts")) {
+
+        if (subCategory.contentEquals("carPart")) {
           tempModel = tempModel.replace(",", "");
           brand = brand.replace(",", "");
           madeIn = madeIn.replace(",", "");
           material = material.replace(",", "");
           warranty = warranty.replace(",", "");
           condition = condition.replace(",", "");
-          if (!make.contentEquals("") || !tempModel.contentEquals("") || !year.contentEquals("")) {
+          
+          if (!tempModel.contentEquals("") || !brand.contentEquals("") || !madeIn.contentEquals("") || !material.contentEquals("") || !warranty.contentEquals("") || !condition.contentEquals("")) {
             allListings.clear();
             allWidgets.clear();
           }
@@ -2082,7 +2832,9 @@ public class LandingPageController {
                     marketController.getListingByWidget(widgetController.getWidget(tempLong)));
               }
             }
+          System.out.println("end of car parts");
         }
+
         if (searchString.isBlank() && price.isBlank()) {
           System.out.println("only category");
           model.addAttribute("widgets", widgetController.getAllWidgets());
@@ -2091,9 +2843,11 @@ public class LandingPageController {
               this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
           try {
             searchModel.addAttribute("searchWidgets", widgets);
+            System.out.println("tried to find widget");
           } catch (Exception e) {
             System.out.println("No widgets");
           }
+          System.out.println("neither");
         }
         if (!searchString.isBlank() && price.isBlank()) {
           System.out.println("only search string");
@@ -2143,8 +2897,178 @@ public class LandingPageController {
                   allListings);
           searchModel.addAttribute("searchWidgets", widgets);
         }
+        System.out.println("end of vehicle parts");
       }
+    
+    if (category.contentEquals("lawnCare_parts")) {
 
+        if (subCategory.contentEquals("mowerParts")) {
+          tempModel = tempModel.replace(",", "");
+          brand = brand.replace(",", "");
+          madeIn = madeIn.replace(",", "");
+          material = material.replace(",", "");
+          warranty = warranty.replace(",", "");
+          condition = condition.replace(",", "");
+          
+          if (!tempModel.contentEquals("") || !brand.contentEquals("") || !madeIn.contentEquals("") || !material.contentEquals("") || !warranty.contentEquals("") || !condition.contentEquals("")) {
+            allListings.clear();
+            allWidgets.clear();
+          }
+
+          List<LawnCare_LawnMower_Parts> mowerParts = new ArrayList<LawnCare_LawnMower_Parts>();
+          mowerParts = (List<LawnCare_LawnMower_Parts>) widgetController.getAllMowerParts();
+          if (!tempModel.contentEquals("")) {
+            String tempMowerPartModel = tempModel;
+            mowerParts =
+                mowerParts.stream()
+                    .filter(mower_part_widget -> mower_part_widget.getModel().contentEquals(tempMowerPartModel))
+                    .collect(Collectors.toList());
+            System.out.println(mowerParts.size());
+            for (int i = 0; i < mowerParts.size(); i++) {
+              long tempLong = mowerParts.get(i).getId();
+              allWidgets.add(widgetController.getWidget(tempLong));
+              allListings.add(
+                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+            }
+          }
+          if (!brand.contentEquals("")) {
+            String tempMowerPartBrand = brand;
+            mowerParts =
+                mowerParts.stream()
+                    .filter(mower_part_widget -> mower_part_widget.getBrand().contentEquals(tempMowerPartBrand))
+                    .collect(Collectors.toList());
+            System.out.println(mowerParts.size());
+            for (int i = 0; i < mowerParts.size(); i++) {
+              long tempLong = mowerParts.get(i).getId();
+              allWidgets.add(widgetController.getWidget(tempLong));
+              allListings.add(
+                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+            }
+          }
+          if (!madeIn.contentEquals("")) {
+            String tempMadeIn = madeIn;
+            mowerParts =
+                mowerParts.stream()
+                    .filter(mower_part_widget -> mower_part_widget.getMadeIn() == tempMadeIn)
+                    .collect(Collectors.toList());
+            System.out.println(mowerParts.size());
+            for (int i = 0; i < mowerParts.size(); i++) {
+              long tempLong = mowerParts.get(i).getId();
+              allWidgets.add(widgetController.getWidget(tempLong));
+              allListings.add(
+                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+            }
+          }
+          if (!material.contentEquals("")) {
+              String tempMaterial = material;
+              mowerParts =
+                  mowerParts.stream()
+                      .filter(mower_part_widget -> mower_part_widget.getMaterial() == tempMaterial)
+                      .collect(Collectors.toList());
+              System.out.println(mowerParts.size());
+              for (int i = 0; i < mowerParts.size(); i++) {
+                long tempLong = mowerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+          if (!warranty.contentEquals("")) {
+              String tempWarranty = warranty;
+              mowerParts =
+                  mowerParts.stream()
+                      .filter(mower_part_widget -> mower_part_widget.getWarranty() == tempWarranty)
+                      .collect(Collectors.toList());
+              System.out.println(mowerParts.size());
+              for (int i = 0; i < mowerParts.size(); i++) {
+                long tempLong = mowerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+          if (!condition.contentEquals("")) {
+              String tempCondition = condition;
+              mowerParts =
+                  mowerParts.stream()
+                      .filter(mower_part_widget -> mower_part_widget.getCondition() == tempCondition)
+                      .collect(Collectors.toList());
+              System.out.println(mowerParts.size());
+              for (int i = 0; i < mowerParts.size(); i++) {
+                long tempLong = mowerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+          System.out.println("end of mower parts");
+        }
+
+        if (searchString.isBlank() && price.isBlank()) {
+          System.out.println("only category");
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
+          try {
+            searchModel.addAttribute("searchWidgets", widgets);
+            System.out.println("tried to find widget");
+          } catch (Exception e) {
+            System.out.println("No widgets");
+          }
+          System.out.println("neither");
+        }
+        if (!searchString.isBlank() && price.isBlank()) {
+          System.out.println("only search string");
+          model.addAttribute("searchString", searchString);
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.stringOnly(
+                  tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
+
+          searchModel.addAttribute("searchWidgets", widgets);
+        } else if (searchString.isBlank() && !price.isBlank()) {
+          System.out.println("only price");
+          model.addAttribute("operator", operator);
+          model.addAttribute("price", price);
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.priceOnly(
+                  tempWidget,
+                  widgets,
+                  tempListing,
+                  searchString,
+                  operator,
+                  bigPrice,
+                  category,
+                  allWidgets,
+                  allListings);
+          searchModel.addAttribute("searchWidgets", widgets);
+        } else if (!searchString.isBlank() && !price.isBlank()) {
+          System.out.println("both");
+          model.addAttribute("searchString", searchString);
+          model.addAttribute("operator", operator);
+          model.addAttribute("price", price);
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.stringAndPrice(
+                  tempWidget,
+                  widgets,
+                  tempListing,
+                  searchString,
+                  operator,
+                  bigPrice,
+                  category,
+                  allWidgets,
+                  allListings);
+          searchModel.addAttribute("searchWidgets", widgets);
+        }
+        System.out.println("end of lawncare parts");
+      }
+    System.out.println(widgets.size());
     return "searchResult";
   }
 
@@ -2165,7 +3089,6 @@ public class LandingPageController {
               && !tempListing.isDeleted()
               && tempWidget.getCategory().contentEquals(category))
           || (tempListing != null && !tempListing.isDeleted() && category.contentEquals("all"))) {
-        System.out.println(tempWidget.getName());
         widgets.add(tempWidget);
       }
 

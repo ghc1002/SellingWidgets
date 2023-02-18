@@ -146,25 +146,13 @@
 											<input class="form-control" type="text" th:field="*{bladeWidth}" id="bladeWidth" name="bladeWidth">
 										</div>
 									</div>
-									<div class="row justify-content-around my-3">
-										<a class="btn btn-danger col-sm-4" href="/addLawnCare">Back</a>
-										<a class="btn btn-danger col-sm-4" href="/homePage">Cancel</a>
-										<input class="btn btn-success col-sm-4" type="submit" value="Next">
+									<div class="card-footer d-flex justify-content-center">
+										<a class="btn btn-danger w-25 mx-4" href="/addLawnCare">Back</a>
+										<a class="btn btn-danger w-25 mx-4" href="/homePage">Cancel</a>
+										<input class="btn btn-success w-25 mx-4" type="submit" value="Next">
 									</div>
 								</form>
 							</div>
-						</div>
-						<div class="card-footer d-flex justify-content-center">
-							<form method="post" th:action="@{/uploadLawnMowerDataFile}" enctype="multipart/form-data">
-								<span>Upload Lawn Mower Data File : </span>
-								<input type="file" name="file" accept=".csv">
-								<button class="button button4" type="submit">Upload</button>
-							</form>
-							<form method="post" th:action="@{/uploadMarketListingDataFile}" enctype="multipart/form-data">
-								<span>Upload Market Listing Data File : </span>
-								<input type="file" name="file" accept=".csv">
-								<button class="button button4" type="submit">Upload</button>
-							</form>
 						</div>
 					</div>
 				</div>
