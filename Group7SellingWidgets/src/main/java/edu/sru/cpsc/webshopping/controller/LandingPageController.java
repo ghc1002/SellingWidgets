@@ -814,8 +814,9 @@ public class LandingPageController {
         searchModel.addAttribute("searchWidgets", widgets);
       }
     }
-
+    //appliance filter
     if (category.contentEquals("appliance")) {
+    	//washer filter
       if (subCategory.contentEquals("washer")) {
         width = width.replace(",", "");
         length = length.replace(",", "");
@@ -944,6 +945,7 @@ public class LandingPageController {
           }
         }
       }
+      //dryer filter
       if (subCategory.contentEquals("dryer")) {
         width = width.replace(",", "");
         length = length.replace(",", "");
@@ -1071,7 +1073,7 @@ public class LandingPageController {
           }
         }
       }
-      
+      //blender filter
       if (subCategory.contentEquals("blender")) {
           width = width.replace(",", "");
           length = length.replace(",", "");
@@ -1217,7 +1219,7 @@ public class LandingPageController {
               }
             }
         }
-      
+      //microwave filter
       if (subCategory.contentEquals("microwave")) {
         width = width.replace(",", "");
         length = length.replace(",", "");
@@ -1345,6 +1347,7 @@ public class LandingPageController {
           }
         }
       }
+      //fridge filter
       if (subCategory.contentEquals("fridge")) {
         width = width.replace(",", "");
         length = length.replace(",", "");
@@ -1535,9 +1538,9 @@ public class LandingPageController {
       }
       System.out.println("end of appliance");
     }
-   
+   //appliance parts filter
     if (category.contentEquals("appliance_parts")) {
-    	//begin blender parts
+    	//blender parts filter
         if (subCategory.contentEquals("blenderPart")) {
           tempModel = tempModel.replace(",", "");
           brand = brand.replace(",", "");
@@ -1623,7 +1626,7 @@ public class LandingPageController {
               }
             }
         }
-        
+        //dryer parts filter
         if (subCategory.contentEquals("dryerPart")) {
             tempModel = tempModel.replace(",", "");
             brand = brand.replace(",", "");
@@ -1709,7 +1712,7 @@ public class LandingPageController {
                 }
               }
           }
-        
+        //microwave parts filter
         if (subCategory.contentEquals("microwavePart")) {
             tempModel = tempModel.replace(",", "");
             brand = brand.replace(",", "");
@@ -1795,7 +1798,7 @@ public class LandingPageController {
                 }
               }
           }
-        
+        //refrigerator parts filter
         if (subCategory.contentEquals("refigeratorPart")) {
             tempModel = tempModel.replace(",", "");
             brand = brand.replace(",", "");
@@ -1881,7 +1884,7 @@ public class LandingPageController {
                 }
               }
           }
-        
+        //washer parts filter
         if (subCategory.contentEquals("washerPart")) {
             tempModel = tempModel.replace(",", "");
             brand = brand.replace(",", "");
@@ -2032,8 +2035,9 @@ public class LandingPageController {
         }
         
       }
-
+    //electronics filter
     if (category.contentEquals("electronic")) {
+    	//video games filter
       if (subCategory.contentEquals("videoGame")) {
         developer = developer.replace(",", "");
         condition = condition.replace(",", "");
@@ -2110,6 +2114,7 @@ public class LandingPageController {
           }
         }
       }
+      //computer filter
       if (subCategory.contentEquals("computer")) {
         memory = memory.replace(",", "");
         gpu = gpu.replace(",", "");
@@ -2247,9 +2252,9 @@ public class LandingPageController {
         searchModel.addAttribute("searchWidgets", widgets);
       }
     }
-    
+    //electronic parts filter
     if (category.contentEquals("electronic_parts")) {
-
+    	//computer parts filter
         if (subCategory.contentEquals("computerPart")) {
           tempModel = tempModel.replace(",", "");
           brand = brand.replace(",", "");
@@ -2336,7 +2341,7 @@ public class LandingPageController {
             }
           System.out.println("end of car parts");
         }
-        
+        //video game accessories filter
         if (subCategory.contentEquals("videoGameAccessory")) {
             tempModel = tempModel.replace(",", "");
             brand = brand.replace(",", "");
@@ -2486,10 +2491,10 @@ public class LandingPageController {
                   allListings);
           searchModel.addAttribute("searchWidgets", widgets);
         }
-        System.out.println("end of vehicle parts");
       }
-
+    //lawn care filter
     if (category.contentEquals("lawnCare")) {
+    	//lawn mower filter
       if (subCategory.contentEquals("lawnMower")) {
         yardSize = yardSize.replace(",", "");
         brand = brand.replace(",", "");
@@ -2613,8 +2618,180 @@ public class LandingPageController {
         searchModel.addAttribute("searchWidgets", widgets);
       }
     }
+    
+  //lawn care parts filter
+    if (category.contentEquals("lawnCare_parts")) {
+    	//mower parts
+        if (subCategory.contentEquals("mowerParts")) {
+          tempModel = tempModel.replace(",", "");
+          brand = brand.replace(",", "");
+          madeIn = madeIn.replace(",", "");
+          material = material.replace(",", "");
+          warranty = warranty.replace(",", "");
+          condition = condition.replace(",", "");
+          
+          if (!tempModel.contentEquals("") || !brand.contentEquals("") || !madeIn.contentEquals("") || !material.contentEquals("") || !warranty.contentEquals("") || !condition.contentEquals("")) {
+            allListings.clear();
+            allWidgets.clear();
+          }
 
+          List<LawnCare_LawnMower_Parts> mowerParts = new ArrayList<LawnCare_LawnMower_Parts>();
+          mowerParts = (List<LawnCare_LawnMower_Parts>) widgetController.getAllMowerParts();
+          if (!tempModel.contentEquals("")) {
+            String tempMowerPartModel = tempModel;
+            mowerParts =
+                mowerParts.stream()
+                    .filter(mower_part_widget -> mower_part_widget.getModel().contentEquals(tempMowerPartModel))
+                    .collect(Collectors.toList());
+            System.out.println(mowerParts.size());
+            for (int i = 0; i < mowerParts.size(); i++) {
+              long tempLong = mowerParts.get(i).getId();
+              allWidgets.add(widgetController.getWidget(tempLong));
+              allListings.add(
+                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+            }
+          }
+          if (!brand.contentEquals("")) {
+            String tempMowerPartBrand = brand;
+            mowerParts =
+                mowerParts.stream()
+                    .filter(mower_part_widget -> mower_part_widget.getBrand().contentEquals(tempMowerPartBrand))
+                    .collect(Collectors.toList());
+            System.out.println(mowerParts.size());
+            for (int i = 0; i < mowerParts.size(); i++) {
+              long tempLong = mowerParts.get(i).getId();
+              allWidgets.add(widgetController.getWidget(tempLong));
+              allListings.add(
+                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+            }
+          }
+          if (!madeIn.contentEquals("")) {
+            String tempMadeIn = madeIn;
+            mowerParts =
+                mowerParts.stream()
+                    .filter(mower_part_widget -> mower_part_widget.getMadeIn() == tempMadeIn)
+                    .collect(Collectors.toList());
+            System.out.println(mowerParts.size());
+            for (int i = 0; i < mowerParts.size(); i++) {
+              long tempLong = mowerParts.get(i).getId();
+              allWidgets.add(widgetController.getWidget(tempLong));
+              allListings.add(
+                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+            }
+          }
+          if (!material.contentEquals("")) {
+              String tempMaterial = material;
+              mowerParts =
+                  mowerParts.stream()
+                      .filter(mower_part_widget -> mower_part_widget.getMaterial() == tempMaterial)
+                      .collect(Collectors.toList());
+              System.out.println(mowerParts.size());
+              for (int i = 0; i < mowerParts.size(); i++) {
+                long tempLong = mowerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+          if (!warranty.contentEquals("")) {
+              String tempWarranty = warranty;
+              mowerParts =
+                  mowerParts.stream()
+                      .filter(mower_part_widget -> mower_part_widget.getWarranty() == tempWarranty)
+                      .collect(Collectors.toList());
+              System.out.println(mowerParts.size());
+              for (int i = 0; i < mowerParts.size(); i++) {
+                long tempLong = mowerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+          if (!condition.contentEquals("")) {
+              String tempCondition = condition;
+              mowerParts =
+                  mowerParts.stream()
+                      .filter(mower_part_widget -> mower_part_widget.getCondition() == tempCondition)
+                      .collect(Collectors.toList());
+              System.out.println(mowerParts.size());
+              for (int i = 0; i < mowerParts.size(); i++) {
+                long tempLong = mowerParts.get(i).getId();
+                allWidgets.add(widgetController.getWidget(tempLong));
+                allListings.add(
+                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
+              }
+            }
+          System.out.println("end of mower parts");
+        }
+
+        if (searchString.isBlank() && price.isBlank()) {
+          System.out.println("only category");
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
+          try {
+            searchModel.addAttribute("searchWidgets", widgets);
+            System.out.println("tried to find widget");
+          } catch (Exception e) {
+            System.out.println("No widgets");
+          }
+          System.out.println("neither");
+        }
+        if (!searchString.isBlank() && price.isBlank()) {
+          System.out.println("only search string");
+          model.addAttribute("searchString", searchString);
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.stringOnly(
+                  tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
+
+          searchModel.addAttribute("searchWidgets", widgets);
+        } else if (searchString.isBlank() && !price.isBlank()) {
+          System.out.println("only price");
+          model.addAttribute("operator", operator);
+          model.addAttribute("price", price);
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.priceOnly(
+                  tempWidget,
+                  widgets,
+                  tempListing,
+                  searchString,
+                  operator,
+                  bigPrice,
+                  category,
+                  allWidgets,
+                  allListings);
+          searchModel.addAttribute("searchWidgets", widgets);
+        } else if (!searchString.isBlank() && !price.isBlank()) {
+          System.out.println("both");
+          model.addAttribute("searchString", searchString);
+          model.addAttribute("operator", operator);
+          model.addAttribute("price", price);
+          model.addAttribute("widgets", widgetController.getAllWidgets());
+          listingModel.addAttribute("listings", marketController.getAllListings());
+          widgets =
+              this.stringAndPrice(
+                  tempWidget,
+                  widgets,
+                  tempListing,
+                  searchString,
+                  operator,
+                  bigPrice,
+                  category,
+                  allWidgets,
+                  allListings);
+          searchModel.addAttribute("searchWidgets", widgets);
+        }
+        System.out.println("end of lawncare parts");
+      }
+    
+    //vehicle filter
     if (category.contentEquals("vehicle")) {
+    	//car filter
       if (subCategory.contentEquals("car")) {
         make = make.replace(",", "");
         tempModel = tempModel.replace(",", "");
@@ -2730,9 +2907,9 @@ public class LandingPageController {
         searchModel.addAttribute("searchWidgets", widgets);
       }
     }
-
+    //vehicle parts filter
     if (category.contentEquals("vehicle_parts")) {
-
+    	//car parts filter
         if (subCategory.contentEquals("carPart")) {
           tempModel = tempModel.replace(",", "");
           brand = brand.replace(",", "");
@@ -2900,174 +3077,6 @@ public class LandingPageController {
         System.out.println("end of vehicle parts");
       }
     
-    if (category.contentEquals("lawnCare_parts")) {
-
-        if (subCategory.contentEquals("mowerParts")) {
-          tempModel = tempModel.replace(",", "");
-          brand = brand.replace(",", "");
-          madeIn = madeIn.replace(",", "");
-          material = material.replace(",", "");
-          warranty = warranty.replace(",", "");
-          condition = condition.replace(",", "");
-          
-          if (!tempModel.contentEquals("") || !brand.contentEquals("") || !madeIn.contentEquals("") || !material.contentEquals("") || !warranty.contentEquals("") || !condition.contentEquals("")) {
-            allListings.clear();
-            allWidgets.clear();
-          }
-
-          List<LawnCare_LawnMower_Parts> mowerParts = new ArrayList<LawnCare_LawnMower_Parts>();
-          mowerParts = (List<LawnCare_LawnMower_Parts>) widgetController.getAllMowerParts();
-          if (!tempModel.contentEquals("")) {
-            String tempMowerPartModel = tempModel;
-            mowerParts =
-                mowerParts.stream()
-                    .filter(mower_part_widget -> mower_part_widget.getModel().contentEquals(tempMowerPartModel))
-                    .collect(Collectors.toList());
-            System.out.println(mowerParts.size());
-            for (int i = 0; i < mowerParts.size(); i++) {
-              long tempLong = mowerParts.get(i).getId();
-              allWidgets.add(widgetController.getWidget(tempLong));
-              allListings.add(
-                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
-            }
-          }
-          if (!brand.contentEquals("")) {
-            String tempMowerPartBrand = brand;
-            mowerParts =
-                mowerParts.stream()
-                    .filter(mower_part_widget -> mower_part_widget.getBrand().contentEquals(tempMowerPartBrand))
-                    .collect(Collectors.toList());
-            System.out.println(mowerParts.size());
-            for (int i = 0; i < mowerParts.size(); i++) {
-              long tempLong = mowerParts.get(i).getId();
-              allWidgets.add(widgetController.getWidget(tempLong));
-              allListings.add(
-                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
-            }
-          }
-          if (!madeIn.contentEquals("")) {
-            String tempMadeIn = madeIn;
-            mowerParts =
-                mowerParts.stream()
-                    .filter(mower_part_widget -> mower_part_widget.getMadeIn() == tempMadeIn)
-                    .collect(Collectors.toList());
-            System.out.println(mowerParts.size());
-            for (int i = 0; i < mowerParts.size(); i++) {
-              long tempLong = mowerParts.get(i).getId();
-              allWidgets.add(widgetController.getWidget(tempLong));
-              allListings.add(
-                  marketController.getListingByWidget(widgetController.getWidget(tempLong)));
-            }
-          }
-          if (!material.contentEquals("")) {
-              String tempMaterial = material;
-              mowerParts =
-                  mowerParts.stream()
-                      .filter(mower_part_widget -> mower_part_widget.getMaterial() == tempMaterial)
-                      .collect(Collectors.toList());
-              System.out.println(mowerParts.size());
-              for (int i = 0; i < mowerParts.size(); i++) {
-                long tempLong = mowerParts.get(i).getId();
-                allWidgets.add(widgetController.getWidget(tempLong));
-                allListings.add(
-                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
-              }
-            }
-          if (!warranty.contentEquals("")) {
-              String tempWarranty = warranty;
-              mowerParts =
-                  mowerParts.stream()
-                      .filter(mower_part_widget -> mower_part_widget.getWarranty() == tempWarranty)
-                      .collect(Collectors.toList());
-              System.out.println(mowerParts.size());
-              for (int i = 0; i < mowerParts.size(); i++) {
-                long tempLong = mowerParts.get(i).getId();
-                allWidgets.add(widgetController.getWidget(tempLong));
-                allListings.add(
-                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
-              }
-            }
-          if (!condition.contentEquals("")) {
-              String tempCondition = condition;
-              mowerParts =
-                  mowerParts.stream()
-                      .filter(mower_part_widget -> mower_part_widget.getCondition() == tempCondition)
-                      .collect(Collectors.toList());
-              System.out.println(mowerParts.size());
-              for (int i = 0; i < mowerParts.size(); i++) {
-                long tempLong = mowerParts.get(i).getId();
-                allWidgets.add(widgetController.getWidget(tempLong));
-                allListings.add(
-                    marketController.getListingByWidget(widgetController.getWidget(tempLong)));
-              }
-            }
-          System.out.println("end of mower parts");
-        }
-
-        if (searchString.isBlank() && price.isBlank()) {
-          System.out.println("only category");
-          model.addAttribute("widgets", widgetController.getAllWidgets());
-          listingModel.addAttribute("listings", marketController.getAllListings());
-          widgets =
-              this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
-          try {
-            searchModel.addAttribute("searchWidgets", widgets);
-            System.out.println("tried to find widget");
-          } catch (Exception e) {
-            System.out.println("No widgets");
-          }
-          System.out.println("neither");
-        }
-        if (!searchString.isBlank() && price.isBlank()) {
-          System.out.println("only search string");
-          model.addAttribute("searchString", searchString);
-          model.addAttribute("widgets", widgetController.getAllWidgets());
-          listingModel.addAttribute("listings", marketController.getAllListings());
-          widgets =
-              this.stringOnly(
-                  tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
-
-          searchModel.addAttribute("searchWidgets", widgets);
-        } else if (searchString.isBlank() && !price.isBlank()) {
-          System.out.println("only price");
-          model.addAttribute("operator", operator);
-          model.addAttribute("price", price);
-          model.addAttribute("widgets", widgetController.getAllWidgets());
-          listingModel.addAttribute("listings", marketController.getAllListings());
-          widgets =
-              this.priceOnly(
-                  tempWidget,
-                  widgets,
-                  tempListing,
-                  searchString,
-                  operator,
-                  bigPrice,
-                  category,
-                  allWidgets,
-                  allListings);
-          searchModel.addAttribute("searchWidgets", widgets);
-        } else if (!searchString.isBlank() && !price.isBlank()) {
-          System.out.println("both");
-          model.addAttribute("searchString", searchString);
-          model.addAttribute("operator", operator);
-          model.addAttribute("price", price);
-          model.addAttribute("widgets", widgetController.getAllWidgets());
-          listingModel.addAttribute("listings", marketController.getAllListings());
-          widgets =
-              this.stringAndPrice(
-                  tempWidget,
-                  widgets,
-                  tempListing,
-                  searchString,
-                  operator,
-                  bigPrice,
-                  category,
-                  allWidgets,
-                  allListings);
-          searchModel.addAttribute("searchWidgets", widgets);
-        }
-        System.out.println("end of lawncare parts");
-      }
     System.out.println(widgets.size());
     return "searchResult";
   }
@@ -3080,6 +3089,7 @@ public class LandingPageController {
       List<Widget> allWidgets,
       List<MarketListing> allListings) {
     int id = 0;
+    System.out.println(allWidgets.get(0));
     if (!allWidgets.isEmpty()) {
       tempListing = allListings.get(id);
       tempWidget = tempListing.getWidgetSold();

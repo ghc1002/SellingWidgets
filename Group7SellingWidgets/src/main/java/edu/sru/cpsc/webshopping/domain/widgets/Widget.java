@@ -93,6 +93,8 @@ public class Widget {
 	}
 
 	public String getSubCategory() {
+		System.out.println(name);
+		System.out.println(subCategory);
 		return subCategory;
 	}
 

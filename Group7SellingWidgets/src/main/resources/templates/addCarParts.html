@@ -114,17 +114,17 @@
 							<div class="row">
 								<div class="form-group col-sm-6">
 									<label for="name">Provide a title for the post</label>
-									<input type="text" id="name" class="form-control" name="name">
+									<input type="text" id="name" class="form-control" name="name" required>
 								</div>
 								<div class="form-group col-sm-6">
 									<label for="description">Description</label>
-									<input type="text" id="description" class="form-control" name="description">
+									<input type="text" id="description" class="form-control" name="description" required>
 								</div>
 							</div>
 							<div class="row">
 								<div class="form-group col-sm-6">
 									<label for="vehiclePartName">Vehicle Part Name</label>
-									<input class="form-control" type="text" th:field="*{partName}" id="vehiclePartName" name="partName" min="1" max="1000000" value="">
+									<input class="form-control" type="text" th:field="*{partName}" id="vehiclePartName" name="partName" min="1" max="1000000" value="" required>
 								</div>
 								<div class="form-group col-sm-6">
 									<label for="vehiclePartModel">Vehicle Part Model</label>
@@ -134,7 +134,7 @@
 							<div class="row">
 								<div class="form-group col-sm-6">
 									<label for="vehiclePartBrand">Vehicle Part Brand</label>
-									<input class="form-control" type="text" th:field="*{brand}" id="vehiclePartBrand" name="brand" min="1" max="1000000" value="">
+									<input class="form-control" type="text" th:field="*{brand}" id="vehiclePartBrand" name="brand" min="1" max="1000000" value="" required>
 								</div>
 								<div class="form-group col-sm-6">
 									<label for="vehiclePartColor">Vehicle Part Color</label>
@@ -154,7 +154,7 @@
 							<div class="row">
 								<div class="form-group col-sm-6">
 									<label for="warranty">Warranty</label>
-									<input class="form-control" type="text" th:field="*{warranty}" id="warranty" name="warranty">
+									<input class="form-control" type="text" th:field="*{warranty}" id="warranty" name="warranty" required>
 								</div>
 								<div class="form-group col-sm-6">
 									<label for="condition">Condition</label>
