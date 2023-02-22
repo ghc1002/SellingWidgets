@@ -111,12 +111,12 @@
 									<div class="row">
 										<div class="form-group col-sm-6">
 											<label for="widgetName" >Widget Title</label>
-											<input class="form-control" type="text" th:field="*{name}" id="widgetName" placeholder="name">
+											<input class="form-control" type="text" th:field="*{name}" id="widgetName" placeholder="name" required>
 											<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 										</div>
 										<div class="form-group col-sm-6">
 											<label for="widgetDesc" >Description</label>
-											<input class="form-control" type="text" th:field="*{description}" id="widgetDesc" placeholder="description">
+											<input class="form-control" type="text" th:field="*{description}" id="widgetDesc" placeholder="description" required>
 											<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
 										</div>
 									</div>
@@ -133,17 +133,17 @@
 									<div class="row">
 										<div class="form-group col-sm-6">
 											<label for="brand" >Brand</label>
-											<input class="form-control" type="text" th:field="*{brand}" id="brand" name="brand">
+											<input class="form-control" type="text" th:field="*{brand}" id="brand" name="brand" required>
 										</div>
 										<div class="form-group col-sm-6">
 											<label for="powerSource" >Power Source</label>
-											<input class="form-control" type="text" th:field="*{powerSource}" id="powerSource" name="powerSource">
+											<input class="form-control" type="text" th:field="*{powerSource}" id="powerSource" name="powerSource" required>
 										</div>
 									</div>
 									<div class="row">
 										<div class="form-group col-sm-6">
 											<label for="bladeWidth" >Blade Width (Inches)</label>
-											<input class="form-control" type="text" th:field="*{bladeWidth}" id="bladeWidth" name="bladeWidth">
+											<input class="form-control" type="text" th:field="*{bladeWidth}" id="bladeWidth" name="bladeWidth" required>
 										</div>
 									</div>
 									<div class="card-footer d-flex justify-content-center">

@@ -222,6 +222,23 @@ public class WidgetController {
                 () -> new IllegalArgumentException("Invalid ID provided for deleting widget."));
     dryerRepository.delete(dryer);
   }
+  
+  @GetMapping({"back-delete-dryer/{id}"})
+  public String backDeleteDryer(@PathVariable("id") long id) {
+	  Appliance_Dryers dryer =
+		        dryerRepository
+		            .findById(id)
+		            .orElseThrow(
+		                () -> new IllegalArgumentException("Invalid ID provided for deleting widget."));
+		    dryerRepository.delete(dryer);
+		    Widget widget =
+		            widgetRepository
+		                .findById(id)
+		                .orElseThrow(
+		                    () -> new IllegalArgumentException("Invalid ID provided for deleting widget."));
+		        widgetRepository.delete(widget);
+		    return "addDryer";
+  }
 
   @GetMapping({"add-microwave"})
   public void addMicrowave(@Validated Appliance_Microwave microwave, BindingResult result) {

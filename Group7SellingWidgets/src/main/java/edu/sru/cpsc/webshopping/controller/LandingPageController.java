@@ -691,6 +691,41 @@ public class LandingPageController {
       model.addAttribute(entry.getKey(), entry.getValue());
     }
     model.addAttribute("fridge", fridge);
+    
+    Iterable<Appliance_Blender_Parts> blenderPart = widgetController.getAllBlenderParts();
+    for (Map.Entry<String, HashSet<String>> entry :
+        Appliance_Blender_Parts.getAttributes(blenderPart).entrySet()) {
+      model.addAttribute(entry.getKey(), entry.getValue());
+    }
+    model.addAttribute("blenderPart", blenderPart);
+    
+    Iterable<Appliance_Dryer_Parts> dryerPart = widgetController.getAllDryerParts();
+    for (Map.Entry<String, HashSet<String>> entry :
+        Appliance_Dryer_Parts.getAttributes(dryerPart).entrySet()) {
+      model.addAttribute(entry.getKey(), entry.getValue());
+    }
+    model.addAttribute("dryerPart", dryerPart);
+    
+    Iterable<Appliance_Microwave_Parts> microwavePart = widgetController.getAllMicrowaveParts();
+    for (Map.Entry<String, HashSet<String>> entry :
+        Appliance_Microwave_Parts.getAttributes(microwavePart).entrySet()) {
+      model.addAttribute(entry.getKey(), entry.getValue());
+    }
+    model.addAttribute("microwavePart", microwavePart);
+    
+    Iterable<Appliance_Refrigerator_Parts> refrigeratorPart = widgetController.getAllRefrigeratorParts();
+    for (Map.Entry<String, HashSet<String>> entry :
+        Appliance_Refrigerator_Parts.getAttributes(refrigeratorPart).entrySet()) {
+      model.addAttribute(entry.getKey(), entry.getValue());
+    }
+    model.addAttribute("refrigeratorPart", refrigeratorPart);
+    
+    Iterable<Appliance_Washers_Parts> washerPart = widgetController.getAllWasherParts();
+    for (Map.Entry<String, HashSet<String>> entry :
+        Appliance_Washers_Parts.getAttributes(washerPart).entrySet()) {
+      model.addAttribute(entry.getKey(), entry.getValue());
+    }
+    model.addAttribute("washerPart", washerPart);
 
     Iterable<Electronics_Computers> computer = widgetController.getAllComputers();
     for (Map.Entry<String, HashSet<String>> entry :
@@ -705,6 +740,20 @@ public class LandingPageController {
       model.addAttribute(entry.getKey(), entry.getValue());
     }
     model.addAttribute("videoGame", videoGame);
+    
+    Iterable<Electronics_Computers_Parts> computerPart = widgetController.getAllComputerParts();
+    for (Map.Entry<String, HashSet<String>> entry :
+        Electronics_Computers_Parts.getAttributes(computerPart).entrySet()) {
+      model.addAttribute(entry.getKey(), entry.getValue());
+    }
+    model.addAttribute("computerPart", computerPart);
+
+    Iterable<Electronics_VideoGames_Parts> videoGameAccessories = widgetController.getAllVideoGameAccessories();
+    for (Map.Entry<String, HashSet<String>> entry :
+        Electronics_VideoGames_Parts.getAttributes(videoGameAccessories).entrySet()) {
+      model.addAttribute(entry.getKey(), entry.getValue());
+    }
+    model.addAttribute("videoGameAccessory", videoGameAccessories);
 
     Iterable<Vehicle_Car> car = widgetController.getAllCars();
     for (Map.Entry<String, HashSet<String>> entry : Vehicle_Car.getAttributes(car).entrySet()) {
@@ -725,6 +774,13 @@ public class LandingPageController {
       model.addAttribute(entry.getKey(), entry.getValue());
     }
     model.addAttribute("lawnMower", lawnMower);
+    
+    Iterable<LawnCare_LawnMower_Parts> lawnMowerParts = widgetController.getAllMowerParts();
+    for (Map.Entry<String, HashSet<String>> entry :
+        LawnCare_LawnMower_Parts.getAttributes(lawnMowerParts).entrySet()) {
+      model.addAttribute(entry.getKey(), entry.getValue());
+    }
+    model.addAttribute("lawnMowerPart", lawnMowerParts);
 
     model.addAttribute("car", widgetController.getAllCars());
     model.addAttribute("lawnMower", widgetController.getAllMowers());
@@ -3089,7 +3145,6 @@ public class LandingPageController {
       List<Widget> allWidgets,
       List<MarketListing> allListings) {
     int id = 0;
-    System.out.println(allWidgets.get(0));
     if (!allWidgets.isEmpty()) {
       tempListing = allListings.get(id);
       tempWidget = tempListing.getWidgetSold();

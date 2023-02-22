@@ -126,11 +126,11 @@
 	            		<div class="row">
 	              			<div class="form-group col-sm-6">
 	                			<label for="widgetName">Widget Title</label>
-	                			<input class="form-control" type="text" id="widgetName" placeholder="name" th:field="*{name}" name="name"><span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+	                			<input class="form-control" type="text" id="widgetName" placeholder="name" th:field="*{name}" name="name"><span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" required></span>
 	              			</div>
 	              			<div class="form-group col-sm-6">
 	                			<label for="widgetDesc">Description</label>
-	                			<input class="form-control" type="text" id="widgetDesc" placeholder="description" th:field="*{description}" name="description"><span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+	                			<input class="form-control" type="text" id="widgetDesc" placeholder="description" th:field="*{description}" name="description"><span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" required></span>
 	              			</div>
 	            		</div>
 	            		<div class="row">
@@ -151,12 +151,12 @@
 	            		</div>
 	            		<div class="form-group">
 	              			<label for="memory">Amount of RAM (Gigabytes)</label>
-	              			<input class="form-control" type="number" id="memory" min="1" max="1000" name="memory" th:field="*{memory}">
+	              			<input class="form-control" type="number" id="memory" min="1" max="1000" name="memory" th:field="*{memory}" required>
 	            		</div>
 	            		<div class="row">
 	              			<div class="form-group col-sm-6">
 	                			<label for="storage">Disk Size</label>
-	                			<input class="form-control" type="text" id="storage" name="storage" th:field="*{storage}">
+	                			<input class="form-control" type="text" id="storage" name="storage" th:field="*{storage}" required>
 	              			</div>
 		              		<div class="form-group col-sm-6">
 		                		<label for="storageSize">Size Factor</label>
@@ -169,7 +169,7 @@
 	            	<div class="row">
 	              		<div class="form-group col-sm-6">
 			                <label for="processor">CPU</label>
-			                <input class="form-control" type="text" id="processor" name="processor" th:field="*{processor}">
+			                <input class="form-control" type="text" id="processor" name="processor" th:field="*{processor}" required>
 	              		</div>
 	              		<div class="form-group col-sm-6">
 	                		<label for="gpu">GPU (if applicable)</label>
