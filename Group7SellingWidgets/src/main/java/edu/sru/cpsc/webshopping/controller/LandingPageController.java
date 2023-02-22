@@ -811,7 +811,7 @@ public class LandingPageController {
       if (searchString.isBlank() && price.isBlank()) {
 
         widgets =
-            this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
+            this.onlyCategory(tempWidget, tempListing, category, subCategory, widgets, allWidgets, allListings);
 
         try {
           searchModel.addAttribute("searchWidgets", widgets);
@@ -823,7 +823,7 @@ public class LandingPageController {
 
         widgets =
             this.stringOnly(
-                tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
+                tempWidget, widgets, tempListing, searchString, category, subCategory, allWidgets, allListings);
 
         try {
           searchModel.addAttribute("searchWidgets", widgets);
@@ -847,6 +847,7 @@ public class LandingPageController {
                 operator,
                 bigPrice,
                 category,
+                subCategory,
                 allWidgets,
                 allListings);
         searchModel.addAttribute("searchWidgets", widgets);
@@ -867,6 +868,7 @@ public class LandingPageController {
                 operator,
                 bigPrice,
                 category,
+                subCategory,
                 allWidgets,
                 allListings);
         searchModel.addAttribute("searchWidgets", widgets);
@@ -1540,7 +1542,7 @@ public class LandingPageController {
         model.addAttribute("widgets", widgetController.getAllWidgets());
         listingModel.addAttribute("listings", marketController.getAllListings());
         widgets =
-            this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
+            this.onlyCategory(tempWidget, tempListing, category, subCategory, widgets, allWidgets, allListings);
         try {
           searchModel.addAttribute("searchWidgets", widgets);
         } catch (Exception e) {
@@ -1554,7 +1556,7 @@ public class LandingPageController {
         listingModel.addAttribute("listings", marketController.getAllListings());
         widgets =
             this.stringOnly(
-                tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
+                tempWidget, widgets, tempListing, searchString, category, subCategory, allWidgets, allListings);
         searchModel.addAttribute("searchWidgets", widgets);
       } else if (searchString.isBlank() && !price.isBlank()) {
         System.out.println("only price");
@@ -1571,6 +1573,7 @@ public class LandingPageController {
                 operator,
                 bigPrice,
                 category,
+                subCategory,
                 allWidgets,
                 allListings);
         searchModel.addAttribute("searchWidgets", widgets);
@@ -1590,6 +1593,7 @@ public class LandingPageController {
                 operator,
                 bigPrice,
                 category,
+                subCategory,
                 allWidgets,
                 allListings);
         searchModel.addAttribute("searchWidgets", widgets);
@@ -2034,7 +2038,7 @@ public class LandingPageController {
           model.addAttribute("widgets", widgetController.getAllWidgets());
           listingModel.addAttribute("listings", marketController.getAllListings());
           widgets =
-              this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
+              this.onlyCategory(tempWidget, tempListing, category, subCategory, widgets, allWidgets, allListings);
           try {
             searchModel.addAttribute("searchWidgets", widgets);
             System.out.println("tried to find widget");
@@ -2050,7 +2054,7 @@ public class LandingPageController {
           listingModel.addAttribute("listings", marketController.getAllListings());
           widgets =
               this.stringOnly(
-                  tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
+                  tempWidget, widgets, tempListing, searchString, category, subCategory, allWidgets, allListings);
 
           searchModel.addAttribute("searchWidgets", widgets);
         } else if (searchString.isBlank() && !price.isBlank()) {
@@ -2068,6 +2072,7 @@ public class LandingPageController {
                   operator,
                   bigPrice,
                   category,
+                  subCategory,
                   allWidgets,
                   allListings);
           searchModel.addAttribute("searchWidgets", widgets);
@@ -2087,6 +2092,7 @@ public class LandingPageController {
                   operator,
                   bigPrice,
                   category,
+                  subCategory,
                   allWidgets,
                   allListings);
           searchModel.addAttribute("searchWidgets", widgets);
@@ -2254,7 +2260,7 @@ public class LandingPageController {
         model.addAttribute("widgets", widgetController.getAllWidgets());
         listingModel.addAttribute("listings", marketController.getAllListings());
         widgets =
-            this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
+            this.onlyCategory(tempWidget, tempListing, category, subCategory, widgets, allWidgets, allListings);
         try {
           searchModel.addAttribute("searchWidgets", widgets);
         } catch (Exception e) {
@@ -2268,7 +2274,7 @@ public class LandingPageController {
         listingModel.addAttribute("listings", marketController.getAllListings());
         widgets =
             this.stringOnly(
-                tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
+                tempWidget, widgets, tempListing, searchString, category, subCategory, allWidgets, allListings);
 
         searchModel.addAttribute("searchWidgets", widgets);
       } else if (searchString.isBlank() && !price.isBlank()) {
@@ -2286,6 +2292,7 @@ public class LandingPageController {
                 operator,
                 bigPrice,
                 category,
+                subCategory,
                 allWidgets,
                 allListings);
         searchModel.addAttribute("searchWidgets", widgets);
@@ -2305,6 +2312,7 @@ public class LandingPageController {
                 operator,
                 bigPrice,
                 category,
+                subCategory,
                 allWidgets,
                 allListings);
         searchModel.addAttribute("searchWidgets", widgets);
@@ -2492,7 +2500,7 @@ public class LandingPageController {
           model.addAttribute("widgets", widgetController.getAllWidgets());
           listingModel.addAttribute("listings", marketController.getAllListings());
           widgets =
-              this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
+              this.onlyCategory(tempWidget, tempListing, category, subCategory, widgets, allWidgets, allListings);
           try {
             searchModel.addAttribute("searchWidgets", widgets);
             System.out.println("tried to find widget");
@@ -2502,15 +2510,14 @@ public class LandingPageController {
           System.out.println("neither");
         }
         if (!searchString.isBlank() && price.isBlank()) {
-          System.out.println("only search string");
-          model.addAttribute("searchString", searchString);
-          model.addAttribute("widgets", widgetController.getAllWidgets());
-          listingModel.addAttribute("listings", marketController.getAllListings());
-          widgets =
-              this.stringOnly(
-                  tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
-
-          searchModel.addAttribute("searchWidgets", widgets);
+        	System.out.println("only search string");
+            model.addAttribute("searchString", searchString);
+            model.addAttribute("widgets", widgetController.getAllWidgets());
+            listingModel.addAttribute("listings", marketController.getAllListings());
+            widgets =
+                this.stringOnly(
+                    tempWidget, widgets, tempListing, searchString, category, subCategory, allWidgets, allListings);
+            searchModel.addAttribute("searchWidgets", widgets);
         } else if (searchString.isBlank() && !price.isBlank()) {
           System.out.println("only price");
           model.addAttribute("operator", operator);
@@ -2526,6 +2533,7 @@ public class LandingPageController {
                   operator,
                   bigPrice,
                   category,
+                  subCategory,
                   allWidgets,
                   allListings);
           searchModel.addAttribute("searchWidgets", widgets);
@@ -2545,6 +2553,7 @@ public class LandingPageController {
                   operator,
                   bigPrice,
                   category,
+                  subCategory,
                   allWidgets,
                   allListings);
           searchModel.addAttribute("searchWidgets", widgets);
@@ -2620,7 +2629,7 @@ public class LandingPageController {
         tempListing = allListings.get(id);
         tempWidget = allWidgets.get(id);
         widgets =
-            this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
+            this.onlyCategory(tempWidget, tempListing, category, subCategory, widgets, allWidgets, allListings);
         try {
           searchModel.addAttribute("searchWidgets", widgets);
         } catch (Exception e) {
@@ -2634,7 +2643,7 @@ public class LandingPageController {
         listingModel.addAttribute("listings", marketController.getAllListings());
         widgets =
             this.stringOnly(
-                tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
+                tempWidget, widgets, tempListing, searchString, category, subCategory, allWidgets, allListings);
 
         searchModel.addAttribute("searchWidgets", widgets);
       } else if (searchString.isBlank() && !price.isBlank()) {
@@ -2652,6 +2661,7 @@ public class LandingPageController {
                 operator,
                 bigPrice,
                 category,
+                subCategory,
                 allWidgets,
                 allListings);
         searchModel.addAttribute("searchWidgets", widgets);
@@ -2671,6 +2681,7 @@ public class LandingPageController {
                 operator,
                 bigPrice,
                 category,
+                subCategory,
                 allWidgets,
                 allListings);
         searchModel.addAttribute("searchWidgets", widgets);
@@ -2787,7 +2798,7 @@ public class LandingPageController {
           model.addAttribute("widgets", widgetController.getAllWidgets());
           listingModel.addAttribute("listings", marketController.getAllListings());
           widgets =
-              this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
+              this.onlyCategory(tempWidget, tempListing, category, subCategory, widgets, allWidgets, allListings);
           try {
             searchModel.addAttribute("searchWidgets", widgets);
             System.out.println("tried to find widget");
@@ -2803,7 +2814,7 @@ public class LandingPageController {
           listingModel.addAttribute("listings", marketController.getAllListings());
           widgets =
               this.stringOnly(
-                  tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
+                  tempWidget, widgets, tempListing, searchString, category, subCategory, allWidgets, allListings);
 
           searchModel.addAttribute("searchWidgets", widgets);
         } else if (searchString.isBlank() && !price.isBlank()) {
@@ -2821,6 +2832,7 @@ public class LandingPageController {
                   operator,
                   bigPrice,
                   category,
+                  subCategory,
                   allWidgets,
                   allListings);
           searchModel.addAttribute("searchWidgets", widgets);
@@ -2840,6 +2852,7 @@ public class LandingPageController {
                   operator,
                   bigPrice,
                   category,
+                  subCategory,
                   allWidgets,
                   allListings);
           searchModel.addAttribute("searchWidgets", widgets);
@@ -2909,7 +2922,7 @@ public class LandingPageController {
         model.addAttribute("widgets", widgetController.getAllWidgets());
         listingModel.addAttribute("listings", marketController.getAllListings());
         widgets =
-            this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
+            this.onlyCategory(tempWidget, tempListing, category, subCategory, widgets, allWidgets, allListings);
         try {
           searchModel.addAttribute("searchWidgets", widgets);
         } catch (Exception e) {
@@ -2923,7 +2936,7 @@ public class LandingPageController {
         listingModel.addAttribute("listings", marketController.getAllListings());
         widgets =
             this.stringOnly(
-                tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
+                tempWidget, widgets, tempListing, searchString, category, subCategory, allWidgets, allListings);
 
         searchModel.addAttribute("searchWidgets", widgets);
       } else if (searchString.isBlank() && !price.isBlank()) {
@@ -2941,6 +2954,7 @@ public class LandingPageController {
                 operator,
                 bigPrice,
                 category,
+                subCategory,
                 allWidgets,
                 allListings);
         searchModel.addAttribute("searchWidgets", widgets);
@@ -2960,6 +2974,7 @@ public class LandingPageController {
                 operator,
                 bigPrice,
                 category,
+                subCategory,
                 allWidgets,
                 allListings);
         searchModel.addAttribute("searchWidgets", widgets);
@@ -3071,68 +3086,66 @@ public class LandingPageController {
         }
 
         if (searchString.isBlank() && price.isBlank()) {
-          System.out.println("only category");
-          model.addAttribute("widgets", widgetController.getAllWidgets());
-          listingModel.addAttribute("listings", marketController.getAllListings());
-          widgets =
-              this.onlyCategory(tempWidget, tempListing, category, widgets, allWidgets, allListings);
-          try {
-            searchModel.addAttribute("searchWidgets", widgets);
-            System.out.println("tried to find widget");
-          } catch (Exception e) {
-            System.out.println("No widgets");
+            System.out.println("only category");
+            model.addAttribute("widgets", widgetController.getAllWidgets());
+            listingModel.addAttribute("listings", marketController.getAllListings());
+            widgets =
+                this.onlyCategory(tempWidget, tempListing, category, subCategory, widgets, allWidgets, allListings);
+            try {
+              searchModel.addAttribute("searchWidgets", widgets);
+            } catch (Exception e) {
+              System.out.println("No widgets");
+            }
           }
-          System.out.println("neither");
-        }
-        if (!searchString.isBlank() && price.isBlank()) {
-          System.out.println("only search string");
-          model.addAttribute("searchString", searchString);
-          model.addAttribute("widgets", widgetController.getAllWidgets());
-          listingModel.addAttribute("listings", marketController.getAllListings());
-          widgets =
-              this.stringOnly(
-                  tempWidget, widgets, tempListing, searchString, category, allWidgets, allListings);
-
-          searchModel.addAttribute("searchWidgets", widgets);
-        } else if (searchString.isBlank() && !price.isBlank()) {
-          System.out.println("only price");
-          model.addAttribute("operator", operator);
-          model.addAttribute("price", price);
-          model.addAttribute("widgets", widgetController.getAllWidgets());
-          listingModel.addAttribute("listings", marketController.getAllListings());
-          widgets =
-              this.priceOnly(
-                  tempWidget,
-                  widgets,
-                  tempListing,
-                  searchString,
-                  operator,
-                  bigPrice,
-                  category,
-                  allWidgets,
-                  allListings);
-          searchModel.addAttribute("searchWidgets", widgets);
-        } else if (!searchString.isBlank() && !price.isBlank()) {
-          System.out.println("both");
-          model.addAttribute("searchString", searchString);
-          model.addAttribute("operator", operator);
-          model.addAttribute("price", price);
-          model.addAttribute("widgets", widgetController.getAllWidgets());
-          listingModel.addAttribute("listings", marketController.getAllListings());
-          widgets =
-              this.stringAndPrice(
-                  tempWidget,
-                  widgets,
-                  tempListing,
-                  searchString,
-                  operator,
-                  bigPrice,
-                  category,
-                  allWidgets,
-                  allListings);
-          searchModel.addAttribute("searchWidgets", widgets);
-        }
-        System.out.println("end of vehicle parts");
+          if (!searchString.isBlank() && price.isBlank()) {
+            System.out.println("only search string");
+            model.addAttribute("searchString", searchString);
+            model.addAttribute("widgets", widgetController.getAllWidgets());
+            listingModel.addAttribute("listings", marketController.getAllListings());
+            widgets =
+                this.stringOnly(
+                    tempWidget, widgets, tempListing, searchString, category, subCategory, allWidgets, allListings);
+            searchModel.addAttribute("searchWidgets", widgets);
+          } else if (searchString.isBlank() && !price.isBlank()) {
+            System.out.println("only price");
+            model.addAttribute("operator", operator);
+            model.addAttribute("price", price);
+            model.addAttribute("widgets", widgetController.getAllWidgets());
+            listingModel.addAttribute("listings", marketController.getAllListings());
+            widgets =
+                this.priceOnly(
+                    tempWidget,
+                    widgets,
+                    tempListing,
+                    searchString,
+                    operator,
+                    bigPrice,
+                    category,
+                    subCategory,
+                    allWidgets,
+                    allListings);
+            searchModel.addAttribute("searchWidgets", widgets);
+          } else if (!searchString.isBlank() && !price.isBlank()) {
+            System.out.println("both");
+            model.addAttribute("searchString", searchString);
+            model.addAttribute("operator", operator);
+            model.addAttribute("price", price);
+            model.addAttribute("widgets", widgetController.getAllWidgets());
+            listingModel.addAttribute("listings", marketController.getAllListings());
+            widgets =
+                this.stringAndPrice(
+                    tempWidget,
+                    widgets,
+                    tempListing,
+                    searchString,
+                    operator,
+                    bigPrice,
+                    category,
+                    subCategory,
+                    allWidgets,
+                    allListings);
+            searchModel.addAttribute("searchWidgets", widgets);
+          }
       }
     
     System.out.println(widgets.size());
@@ -3143,9 +3156,11 @@ public class LandingPageController {
       Widget tempWidget,
       MarketListing tempListing,
       String category,
+      String subCategory,
       List<Widget> widgets,
       List<Widget> allWidgets,
       List<MarketListing> allListings) {
+	  System.out.println(subCategory);
     int id = 0;
     ArrayList<Long> allIds = new ArrayList<Long>();
     int marker = 1;
@@ -3153,10 +3168,12 @@ public class LandingPageController {
       tempListing = allListings.get(id);
       tempWidget = tempListing.getWidgetSold();
     }
+    System.out.println(tempWidget.getSubCategory());
     while (tempWidget != null) {
       if ((tempListing != null
               && !tempListing.isDeleted()
               && tempWidget.getCategory().contentEquals(category))
+    		  && (tempWidget.getSubCategory().contentEquals(subCategory)|| subCategory.contentEquals("all"))
           || (tempListing != null && !tempListing.isDeleted() && category.contentEquals("all"))) {
     	  if(!allIds.isEmpty())
     	  {
@@ -3189,6 +3206,7 @@ public class LandingPageController {
       MarketListing tempListing,
       String searchString,
       String category,
+      String subCategory,
       List<Widget> allWidgets,
       List<MarketListing> allListings) {
     int id = 0;
@@ -3198,16 +3216,17 @@ public class LandingPageController {
       tempListing = allListings.get(id);
       tempWidget = tempListing.getWidgetSold();
     }
-
+   System.out.println(tempWidget.getSubCategory());
+   System.out.println(subCategory);
     while (tempWidget != null) {
-      tempWidget = allWidgets.get(id);
-      if (((tempWidget.getName().contains(searchString)
+      if ((tempWidget.getName().contains(searchString)
               || tempWidget.getName().toUpperCase().contains(searchString)
               || tempWidget.getName().toLowerCase().contains(searchString)
               || tempWidget.getDescription().contains(searchString)
               || tempWidget.getDescription().toUpperCase().contains(searchString)
-              || tempWidget.getDescription().toLowerCase().contains(searchString)))
-          && (tempWidget.getCategory().contentEquals(category) || category.contentEquals("all"))) {
+              || tempWidget.getDescription().toLowerCase().contains(searchString))
+          && (tempWidget.getCategory().contentEquals(category) || subCategory.contentEquals("all"))
+        	&& ((tempWidget.getSubCategory().contentEquals(subCategory))|| category.contentEquals("all"))) {
         if (tempListing != null && !tempListing.isDeleted()) {
         	if(!allIds.isEmpty())
       	  {
@@ -3230,6 +3249,7 @@ public class LandingPageController {
       } catch (Exception e) {
         break;
       }
+      System.out.println(tempWidget.getId());
     }
     return widgets;
   }
@@ -3242,6 +3262,7 @@ public class LandingPageController {
       String operator,
       BigDecimal bigPrice,
       String category,
+      String subCategory,
       List<Widget> allWidgets,
       List<MarketListing> allListings) {
     int id = 0;
@@ -3255,10 +3276,12 @@ public class LandingPageController {
     while (tempWidget != null) {
       tempListing = allListings.get(id);
       tempWidget = tempListing.getWidgetSold();
+     
       int res = tempListing.getPricePerItem().compareTo(bigPrice);
       if (operator.contentEquals("greater")
           && res == 1
-          && (tempWidget.getCategory().contentEquals(category) || category.contentEquals("all"))) {
+          && (tempWidget.getCategory().contentEquals(category) || category.contentEquals("all"))
+          && (tempWidget.getSubCategory().contentEquals(subCategory)|| subCategory.contentEquals("all"))) {
         if (!tempListing.isDeleted()) {
         	if(!allIds.isEmpty())
       	  {
@@ -3275,7 +3298,8 @@ public class LandingPageController {
         }
       } else if (operator.contentEquals("lesser")
           && res == -1
-          && (tempWidget.getCategory().contentEquals(category) || category.contentEquals("all"))) {
+          && (tempWidget.getCategory().contentEquals(category) || category.contentEquals("all")) 
+    	  && (tempWidget.getSubCategory().contentEquals(subCategory)|| subCategory.contentEquals("all"))) {
         if (!tempListing.isDeleted()) {
         	if(!allIds.isEmpty())
       	  {
@@ -3289,7 +3313,7 @@ public class LandingPageController {
       		  widgets.add(tempWidget);
       		  allIds.add(tempWidget.getId());
       	  }
-        }
+      }
       }
       id++;
       try {
@@ -3310,6 +3334,7 @@ public class LandingPageController {
       String operator,
       BigDecimal bigPrice,
       String category,
+      String subCategory,
       List<Widget> allWidgets,
       List<MarketListing> allListings) {
     int id = 0;
@@ -3329,7 +3354,9 @@ public class LandingPageController {
               || tempWidget.getDescription().contains(searchString)
               || tempWidget.getDescription().toUpperCase().contains(searchString)
               || tempWidget.getDescription().toLowerCase().contains(searchString))
-          && (tempWidget.getCategory().contentEquals(category) || category.contentEquals("all"))) {
+          && (tempWidget.getCategory().contentEquals(category) 
+        	|| category.contentEquals("all"))
+          && (tempWidget.getSubCategory().contentEquals(subCategory) || subCategory.contentEquals("all"))) {
         int res = tempListing.getPricePerItem().compareTo(bigPrice);
         if (operator.contentEquals("greater") && (res == 1)) {
           if (!tempListing.isDeleted()) {
