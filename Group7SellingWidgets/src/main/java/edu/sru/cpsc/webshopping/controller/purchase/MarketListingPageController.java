@@ -161,7 +161,7 @@ public class MarketListingPageController {
       Widget_Electronics_Parts electronicPart = widgetController.getElectronicParts(tempWidget.getId());
       System.out.println(electronicPart.getName());
       model.addAttribute("electronic_parts", electronicPart);
-      if (tempWidget.getSubCategory().contentEquals("videoGame_parts")) {
+      if (tempWidget.getSubCategory().contentEquals("videoGame_accessories")) {
         Electronics_VideoGames_Parts videoGamePart = widgetController.getVideoGameParts(tempWidget.getId());
         model.addAttribute("videoGame_parts", videoGamePart);
       }
