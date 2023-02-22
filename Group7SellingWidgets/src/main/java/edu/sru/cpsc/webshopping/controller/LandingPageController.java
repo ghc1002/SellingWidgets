@@ -175,7 +175,9 @@ public class LandingPageController {
 
     User user = userController.getCurrently_Logged_In();
     model.addAttribute("widgets", widgetController.getAllWidgets());
-    model.addAttribute("listings", marketController.getAllListings());
+    Iterable<MarketListing> listings =
+    		marketController.getAllListings();
+    model.addAttribute("listings", listings);
     Iterable<Transaction> purchases =
         transController.getUserPurchases(userController.getCurrently_Logged_In());
     model.addAttribute("purchases", purchases);

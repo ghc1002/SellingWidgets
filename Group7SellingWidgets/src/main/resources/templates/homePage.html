@@ -1128,7 +1128,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="listing : ${listings}">
+									<tr th:each="listing : ${listings}" th:unless="${listing.qtyAvailable == 0}">
                             			<th:block th:if="${user.id == listing.seller.id && listing.isDeleted == false}">
                                 			<td class="text"  th:text="${listing.widgetSold.name}"></td>
                                 			<td class="text"  th:text="${listing.widgetSold.description}"></td>

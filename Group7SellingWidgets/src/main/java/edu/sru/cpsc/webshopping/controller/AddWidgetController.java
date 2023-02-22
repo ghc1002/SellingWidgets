@@ -81,7 +81,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class AddWidgetController {
-	
+
 	WidgetRepository widgetRepository;
 	ApplianceDryersRepository dryerRepository;
 	ApplianceMicrowaveRepository microwaveRepository;
@@ -141,7 +141,7 @@ public class AddWidgetController {
 	}
 
 	private final String UPLOAD_DIR = "src/main/resources/static/images/userImages/";
-	
+
 	public AddWidgetController(WidgetRepository widgetRepository, ApplianceDryersRepository dryerRepository, 
 			ApplianceMicrowaveRepository microwaveRepository, ApplianceRefrigeratorRepository fridgeRepository, 
 			ApplianceWashersRepository washerRepository, ApplianceBlenderRepository blenderRepository, ElectronicsComputersRepository computerRepository, 
@@ -173,7 +173,7 @@ public class AddWidgetController {
 		this.lawnCareRepository = lawnCareRepository;
 		this.generalRepository = generalRepository;
 	}
-	
+
 	@RequestMapping("/addWidget")
 	public String addWidget(Model model)
 	{
@@ -220,7 +220,7 @@ public class AddWidgetController {
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return url;
 	}
-@RequestMapping("/addAppliance")
+	@RequestMapping("/addAppliance")
 	public String addAppliance(Model model)
 	{
 		Set<String> subCategories = new HashSet<>();
@@ -249,21 +249,21 @@ public class AddWidgetController {
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "addApplianceParts";
 	}
-	
-@RequestMapping("/addElectronic")
-public String addElectronic(Model model)
-{
-	Set<String> subCategories = new HashSet<>();
-	for (Pair<String, String> pair : PreLoad.categoryConfiguration()) {
-		if (pair.getLeft().equalsIgnoreCase("electronics")) {
-			String right = pair.getRight();
-			subCategories.add(right);
+
+	@RequestMapping("/addElectronic")
+	public String addElectronic(Model model)
+	{
+		Set<String> subCategories = new HashSet<>();
+		for (Pair<String, String> pair : PreLoad.categoryConfiguration()) {
+			if (pair.getLeft().equalsIgnoreCase("electronics")) {
+				String right = pair.getRight();
+				subCategories.add(right);
+			}
 		}
+		model.addAttribute("subCategories", subCategories);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "addElectronic";
 	}
-	model.addAttribute("subCategories", subCategories);
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return "addElectronic";
-}
 
 	@RequestMapping("/addElectronicParts")
 	public String addElectronicParts(Model model) {
@@ -279,20 +279,20 @@ public String addElectronic(Model model)
 		return "addElectronicParts";
 	}
 
-@RequestMapping("/addLawnCare")
-public String addLawnCare(Model model)
-{
-	Set<String> subCategories = new HashSet<>();
-	for (Pair<String, String> pair : PreLoad.categoryConfiguration()) {
-		if (pair.getLeft().equalsIgnoreCase("lawnCare")) {
-			String right = pair.getRight();
-			subCategories.add(right);
+	@RequestMapping("/addLawnCare")
+	public String addLawnCare(Model model)
+	{
+		Set<String> subCategories = new HashSet<>();
+		for (Pair<String, String> pair : PreLoad.categoryConfiguration()) {
+			if (pair.getLeft().equalsIgnoreCase("lawnCare")) {
+				String right = pair.getRight();
+				subCategories.add(right);
+			}
 		}
+		model.addAttribute("subCategories", subCategories);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "addLawnCare";
 	}
-	model.addAttribute("subCategories", subCategories);
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return "addLawnCare";
-}
 
 	@RequestMapping("/addLawnCareParts")
 	public String addLawnCareParts(Model model) {
@@ -308,20 +308,20 @@ public String addLawnCare(Model model)
 		return "addLawnCareParts";
 	}
 
-@RequestMapping("/addVehicle")
-public String addVehicle(Model model)
-{
-	Set<String> subCategories = new HashSet<>();
-	for (Pair<String, String> pair : PreLoad.categoryConfiguration()) {
-		if (pair.getLeft().equalsIgnoreCase("vehicle")) {
-			String right = pair.getRight();
-			subCategories.add(right);
+	@RequestMapping("/addVehicle")
+	public String addVehicle(Model model)
+	{
+		Set<String> subCategories = new HashSet<>();
+		for (Pair<String, String> pair : PreLoad.categoryConfiguration()) {
+			if (pair.getLeft().equalsIgnoreCase("vehicle")) {
+				String right = pair.getRight();
+				subCategories.add(right);
+			}
 		}
+		model.addAttribute("subCategories", subCategories);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "addVehicle";
 	}
-	model.addAttribute("subCategories", subCategories);
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return "addVehicle";
-}
 
 	@RequestMapping("/addVehicleParts")
 	public String addVehicleParts(Model model) {
@@ -337,34 +337,34 @@ public String addVehicle(Model model)
 		return "addVehicleParts";
 	}
 
-@RequestMapping("/createAppliance")
-public String createAppliance(Model model, @RequestParam("subCategory") String subCategory)
-{
-	this.subCategory = subCategory;
-	String url = "";
-	if(subCategory.contentEquals("dryer"))
+	@RequestMapping("/createAppliance")
+	public String createAppliance(Model model, @RequestParam("subCategory") String subCategory)
 	{
-		url = "redirect:addDryer";
+		this.subCategory = subCategory;
+		String url = "";
+		if(subCategory.contentEquals("dryer"))
+		{
+			url = "redirect:addDryer";
+		}
+		else if (subCategory.contentEquals("microwave"))
+		{
+			url = "redirect:addMicrowave";
+		}
+		else if (subCategory.contentEquals("refridgerator"))
+		{
+			url = "redirect:addFridge";
+		}
+		else if (subCategory.contentEquals("washer"))
+		{
+			url = "redirect:addWasher";
+		}
+		else if(subCategory.contentEquals("blender"))
+		{
+			url ="redirect:addBlender";
+		}
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return url;
 	}
-	else if (subCategory.contentEquals("microwave"))
-	{
-		url = "redirect:addMicrowave";
-	}
-	else if (subCategory.contentEquals("refridgerator"))
-	{
-		url = "redirect:addFridge";
-	}
-	else if (subCategory.contentEquals("washer"))
-	{
-		url = "redirect:addWasher";
-	}
-	else if(subCategory.contentEquals("blender"))
-	{
-		url ="redirect:addBlender";
-	}
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return url;
-}
 
 	@RequestMapping("/createApplianceParts")
 	public String createApplianceParts(Model model, @RequestParam("subCategory") String subCategory)
@@ -395,23 +395,23 @@ public String createAppliance(Model model, @RequestParam("subCategory") String s
 		return url;
 	}
 
-@RequestMapping("/createElectronic")
-public String createElectronic(Model model, @RequestParam("subCategory") String subCategory)
-{
-	this.subCategory = subCategory;
-	String url = "";
-	
-	if (subCategory.contentEquals("computer"))
+	@RequestMapping("/createElectronic")
+	public String createElectronic(Model model, @RequestParam("subCategory") String subCategory)
 	{
-		url = "redirect:addComputer";
+		this.subCategory = subCategory;
+		String url = "";
+
+		if (subCategory.contentEquals("computer"))
+		{
+			url = "redirect:addComputer";
+		}
+		else if (subCategory.contentEquals("videoGame"))
+		{
+			url = "redirect:addVideoGame";
+		}
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return url;
 	}
-	else if (subCategory.contentEquals("videoGame"))
-	{
-		url = "redirect:addVideoGame";
-	}
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return url;
-}
 
 	@RequestMapping("/createElectronicParts")
 	public String createElectronicParts(Model model, @RequestParam("subCategory") String subCategory)
@@ -431,18 +431,18 @@ public String createElectronic(Model model, @RequestParam("subCategory") String 
 		return url;
 	}
 
-@RequestMapping("/createLawnCare")
-public String createLawnCare(Model model, @RequestParam("subCategory") String subCategory)
-{
-	this.subCategory = subCategory;
-	String url = "";
-	if (subCategory.contentEquals("lawnMower"))
+	@RequestMapping("/createLawnCare")
+	public String createLawnCare(Model model, @RequestParam("subCategory") String subCategory)
 	{
-		url = "redirect:addLawnMower";
+		this.subCategory = subCategory;
+		String url = "";
+		if (subCategory.contentEquals("lawnMower"))
+		{
+			url = "redirect:addLawnMower";
+		}
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return url;
 	}
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return url;
-}
 
 	@RequestMapping("/createLawnCareParts")
 	public String createLawnCareParts(Model model, @RequestParam("subCategory") String subCategory)
@@ -457,19 +457,19 @@ public String createLawnCare(Model model, @RequestParam("subCategory") String su
 		return url;
 	}
 
-@RequestMapping("/createVehicle")
-public String createVehicle(Model model, @RequestParam("subCategory") String subCategory)
-{
-	this.subCategory = subCategory;
-	String url = "";
-	if(subCategory.contentEquals("car"))
+	@RequestMapping("/createVehicle")
+	public String createVehicle(Model model, @RequestParam("subCategory") String subCategory)
 	{
-		
-		url = "redirect:addCar";
+		this.subCategory = subCategory;
+		String url = "";
+		if(subCategory.contentEquals("car"))
+		{
+
+			url = "redirect:addCar";
+		}
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return url;
 	}
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return url;
-}
 
 	@RequestMapping("/createVehicleParts")
 	public String createVehicleParts(Model model, @RequestParam("subCategory") String subCategory)
@@ -485,59 +485,59 @@ public String createVehicle(Model model, @RequestParam("subCategory") String sub
 		return url;
 	}
 
-@RequestMapping("/addDryer")
-public String addDryer(Model model)
-{
-	dryer = new Appliance_Dryers();
-	model.addAttribute("dryer", dryer);
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return "addDryer";
-}
+	@RequestMapping("/addDryer")
+	public String addDryer(Model model)
+	{
+		dryer = new Appliance_Dryers();
+		model.addAttribute("dryer", dryer);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "addDryer";
+	}
 
-@RequestMapping("/addGeneral")
-public String addGeneral(Model model)
-{
-	generalWidget = new Widget_General();
-	model.addAttribute("generalWidget", generalWidget);
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return "addGeneral";
-}
+	@RequestMapping("/addGeneral")
+	public String addGeneral(Model model)
+	{
+		generalWidget = new Widget_General();
+		model.addAttribute("generalWidget", generalWidget);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "addGeneral";
+	}
 
-@RequestMapping("addMicrowave")
-public String addMicrowave(Model model)
-{
-	microwave = new Appliance_Microwave();
-	model.addAttribute("microwave", microwave);
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return "addMicrowave";
-}
+	@RequestMapping("addMicrowave")
+	public String addMicrowave(Model model)
+	{
+		microwave = new Appliance_Microwave();
+		model.addAttribute("microwave", microwave);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "addMicrowave";
+	}
 
-@RequestMapping("addFridge")
-public String addFridge(Model model)
-{
-	refridgerator = new Appliance_Refrigerator();
-	model.addAttribute("refridgerator", refridgerator);
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return "addFridge";
-}
+	@RequestMapping("addFridge")
+	public String addFridge(Model model)
+	{
+		refridgerator = new Appliance_Refrigerator();
+		model.addAttribute("refridgerator", refridgerator);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "addFridge";
+	}
 
-@RequestMapping("addWasher")
-public String addWasher(Model model)
-{
-	washer = new Appliance_Washers();
-	model.addAttribute("washer", washer);
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return "addWasher";
-}
+	@RequestMapping("addWasher")
+	public String addWasher(Model model)
+	{
+		washer = new Appliance_Washers();
+		model.addAttribute("washer", washer);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "addWasher";
+	}
 
-@RequestMapping("addBlender")
-public String addBlender(Model model)
-{
-	blender = new Appliance_Blender();
-	model.addAttribute("blender", blender);
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return "addBlender";
-}
+	@RequestMapping("addBlender")
+	public String addBlender(Model model)
+	{
+		blender = new Appliance_Blender();
+		model.addAttribute("blender", blender);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "addBlender";
+	}
 
 	@RequestMapping("addBlenderParts")
 	public String addBlenderParts(Model model) {
@@ -579,14 +579,14 @@ public String addBlender(Model model)
 		return "addWasherParts";
 	}
 
-@RequestMapping("addComputer")
-public String addComputer(Model model)
-{
-	computer = new Electronics_Computers();
-	model.addAttribute("computer", computer);
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return "addComputer";
-}
+	@RequestMapping("addComputer")
+	public String addComputer(Model model)
+	{
+		computer = new Electronics_Computers();
+		model.addAttribute("computer", computer);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "addComputer";
+	}
 
 	@RequestMapping("addComputerParts")
 	public String addComputerParts(Model model)
@@ -597,14 +597,14 @@ public String addComputer(Model model)
 		return "addComputerParts";
 	}
 
-@RequestMapping("addVideoGame")
-public String addVideoGame(Model model)
-{
-	videoGame = new Electronics_VideoGames();
-	model.addAttribute("videoGame", videoGame);
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return "addVideoGame";
-}
+	@RequestMapping("addVideoGame")
+	public String addVideoGame(Model model)
+	{
+		videoGame = new Electronics_VideoGames();
+		model.addAttribute("videoGame", videoGame);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "addVideoGame";
+	}
 
 	@RequestMapping("addVideoGameParts")
 	public String addVideoGameParts(Model model)
@@ -615,14 +615,14 @@ public String addVideoGame(Model model)
 		return "addVideoGameParts";
 	}
 
-@RequestMapping("addLawnMower")
-public String addLawnMower(Model model)
-{
-	mower = new LawnCare_LawnMower();
-	model.addAttribute("mower", mower);
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return "addLawnMower";
-}
+	@RequestMapping("addLawnMower")
+	public String addLawnMower(Model model)
+	{
+		mower = new LawnCare_LawnMower();
+		model.addAttribute("mower", mower);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "addLawnMower";
+	}
 
 	@RequestMapping("addLawnMowerParts")
 	public String addLawnMowerParts(Model model)
@@ -633,14 +633,14 @@ public String addLawnMower(Model model)
 		return "addLawnMowerParts";
 	}
 
-@RequestMapping("addCar")
-public String addCar(Model model)
-{
-	car = new Vehicle_Car();
-	model.addAttribute("car", car);
-	model.addAttribute("user", userController.getCurrently_Logged_In());
-	return "addCar";
-}
+	@RequestMapping("addCar")
+	public String addCar(Model model)
+	{
+		car = new Vehicle_Car();
+		model.addAttribute("car", car);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "addCar";
+	}
 
 	@RequestMapping("addCarParts")
 	public String addCarParts(Model model)
@@ -752,15 +752,15 @@ public String addCar(Model model)
 				new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8);
 		CsvToBeanBuilder<Widget> widgetsCsvBeanBuilder = new CsvToBeanBuilder<>(streamReader);
 		switch (subCategory) {
-			case "computer" -> widgetsCsvBeanBuilder.withType(Electronics_Computers.class);
-			case "videoGame" -> widgetsCsvBeanBuilder.withType(Electronics_VideoGames.class);
-			case "dryer" -> widgetsCsvBeanBuilder.withType(Appliance_Dryers.class);
-			case "blender" -> widgetsCsvBeanBuilder.withType(Appliance_Blender.class);
-			case "microwave" -> widgetsCsvBeanBuilder.withType(Appliance_Microwave.class);
-			case "refrigerator" -> widgetsCsvBeanBuilder.withType(Appliance_Refrigerator.class);
-			case "washer" -> widgetsCsvBeanBuilder.withType(Appliance_Washers.class);
-			case "car" -> widgetsCsvBeanBuilder.withType(Vehicle_Car.class);
-			case "lawnMower" -> widgetsCsvBeanBuilder.withType(LawnCare_LawnMower.class);
+		case "computer" -> widgetsCsvBeanBuilder.withType(Electronics_Computers.class);
+		case "videoGame" -> widgetsCsvBeanBuilder.withType(Electronics_VideoGames.class);
+		case "dryer" -> widgetsCsvBeanBuilder.withType(Appliance_Dryers.class);
+		case "blender" -> widgetsCsvBeanBuilder.withType(Appliance_Blender.class);
+		case "microwave" -> widgetsCsvBeanBuilder.withType(Appliance_Microwave.class);
+		case "refrigerator" -> widgetsCsvBeanBuilder.withType(Appliance_Refrigerator.class);
+		case "washer" -> widgetsCsvBeanBuilder.withType(Appliance_Washers.class);
+		case "car" -> widgetsCsvBeanBuilder.withType(Vehicle_Car.class);
+		case "lawnMower" -> widgetsCsvBeanBuilder.withType(LawnCare_LawnMower.class);
 		}
 		CsvToBean<Widget> widgetsCsvBean =
 				widgetsCsvBeanBuilder.withIgnoreLeadingWhiteSpace(true).build();
@@ -791,7 +791,7 @@ public String addCar(Model model)
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "redirect:createListing";
 	}
-	
+
 	@RequestMapping("createMicrowave")
 	public String createMicrowave(Model model, @ModelAttribute Appliance_Microwave microwave, BindingResult result)
 	{
@@ -814,7 +814,7 @@ public String addCar(Model model)
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "redirect:createListing";
 	}
-	
+
 	@RequestMapping("createFridge")
 	public String createFridge(Model model, @ModelAttribute Appliance_Refrigerator fridge, BindingResult result)
 	{
@@ -837,7 +837,7 @@ public String addCar(Model model)
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "redirect:createListing";
 	}
-	
+
 	@RequestMapping("createWasher")
 	public String createWasher(Model model, @ModelAttribute Appliance_Washers washer, BindingResult result)
 	{
@@ -860,7 +860,7 @@ public String addCar(Model model)
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "redirect:createListing";
 	}
-	
+
 	@RequestMapping("createBlender")
 	public String createBlender(Model model, @ModelAttribute Appliance_Blender blender, BindingResult result)
 	{
@@ -998,7 +998,7 @@ public String addCar(Model model)
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "redirect:createListing";
 	}
-	
+
 	@RequestMapping("createComputer")
 	public String createComputer(Model model, @RequestParam("storageSize") String storageSize, @ModelAttribute Electronics_Computers computer, BindingResult result)
 	{
@@ -1043,7 +1043,7 @@ public String addCar(Model model)
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "redirect:createListing";
 	}
-	
+
 	@RequestMapping("createVideoGame")
 	public String createVideoGame(Model model, @ModelAttribute Electronics_VideoGames videoGame, BindingResult result)
 	{
@@ -1087,7 +1087,7 @@ public String addCar(Model model)
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "redirect:createListing";
 	}
-	
+
 	@RequestMapping("createLawnMower")
 	public String createLawnMower(Model model, @ModelAttribute LawnCare_LawnMower mower, BindingResult result)
 	{
@@ -1130,7 +1130,7 @@ public String addCar(Model model)
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "redirect:createListing";
 	}
-	
+
 	@RequestMapping("createCar")
 	public String createCar(Model model, @ModelAttribute Vehicle_Car car, BindingResult result)
 	{
@@ -1149,7 +1149,7 @@ public String addCar(Model model)
 		widgetController.addCar(car, result);
 		this.car = car;
 		widget = car;
-		
+
 		model.addAttribute("createCar", true);
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "redirect:createListing";
@@ -1177,7 +1177,7 @@ public String addCar(Model model)
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "redirect:createListing";
 	}
-	
+
 	@RequestMapping("/createListing")
 	public String createListing(Model model)
 	{
@@ -1189,15 +1189,14 @@ public String addCar(Model model)
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "createListing";
 	}
-	
+
 	@RequestMapping("/addListing")
 	public String addListing(Model model, @RequestParam("imageUpload") MultipartFile file ,@RequestParam("qtyAvailable") Long qty , RedirectAttributes attributes, @Valid @ModelAttribute MarketListing marketListing, BindingResult result)
 	{
 		if(getWidgetStorage() != null) {
-			System.out.println("hello");
 			System.out.println(getWidgetStorage().getId());
-		widgetController.addWidgetnobinding(getWidgetStorage());
-		getWidgetStorage().setId(getWidgetStorage().getId()+1);
+			widgetController.addWidgetnobinding(getWidgetStorage());
+			getWidgetStorage().setId(getWidgetStorage().getId()+1);
 		}
 		marketListing.setQtyAvailable(qty);
 		model.addAttribute("pricePerItem", marketListing);
@@ -1233,42 +1232,42 @@ public String addCar(Model model)
 		if(marketListing.getImageName() == null) {
 			setPage("error");
 			result.addError(
-	    	          new FieldError("pricePerItem", "pricePerItem", "Upload at least one image"));	    	
-	       }
+					new FieldError("pricePerItem", "pricePerItem", "Upload at least one image"));	    	
+		}
 		BigDecimal oneCent = new BigDecimal("0.01");
 		if(marketListing.getPricePerItem() == null) {
 			setPage("error2");
 			result.addError(
-	    	          new FieldError("pricePerItem", "pricePerItem", "Price per item can't be null"));	    	
-	       }
+					new FieldError("pricePerItem", "pricePerItem", "Price per item can't be null"));	    	
+		}
 		// check if the price of the item is at least one cent
 		else if(marketListing.getPricePerItem().compareTo(oneCent) < 0) {
 			setPage("error2");
 			result.addError(
 					new FieldError("pricePerItem", "pricePerItem", "Price per item must be greater than 0.01"));
 		}
-		
+
 		if(Long.valueOf(marketListing.getQtyAvailable()).compareTo((long) 0) <= 0)  {
 			System.out.println(marketListing.getQtyAvailable());
 			System.out.println("help");
 			setPage("error3");
 			result.addError(
-	    	          new FieldError("pricePerItem", "pricePerItem", "Quantity must be greater than 0"));	    	
-	       }
-	    if (result.hasErrors()) {
-	    	
-	    	System.out.println(marketListing.getQtyAvailable());
-	    	setWidgetStorage(widget);
-	    	
-	    	widgetController.deleteWidget(getWidgetStorage().getId());
-	    	model.addAttribute("page", getPage());
+					new FieldError("pricePerItem", "pricePerItem", "Quantity must be greater than 0"));	    	
+		}
+		if (result.hasErrors()) {
+
+			System.out.println(marketListing.getQtyAvailable());
+			setWidgetStorage(widget);
+
+			widgetController.deleteWidget(getWidgetStorage().getId());
+			model.addAttribute("page", getPage());
 			model.addAttribute("pricePerItem", marketListing);
 			model.addAttribute("qtyAvailable", marketListing.getQtyAvailable());
 			model.addAttribute("listing", marketListing);
 			model.addAttribute("subCategory", subCategory);
-        return "createListing" ;
-}
-	    System.out.println("here2");
+			return "createListing" ;
+		}
+		System.out.println("here2");
 		marketListingController.addMarketListing(marketListing);
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "redirect:homePage";

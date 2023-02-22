@@ -95,8 +95,9 @@
          th:href="@{/newUser}"><span>Sign Up</span></a>
       <a class="submit" style="height:30px;width:70px;" th:href="@{/login}"><span>Log In</span></a>
       <div th:case="searchWidgetSellerMarketListing">
-        <th:block th:each="searchedMarkets: ${allMarketListings}">
-        <th:block th:if="${searchedMarkets.deleted == false}">
+
+        <th:block th:each="searchedMarkets: ${allMarketListings}" th:unless="${searchedMarkets.qtyAvailable == 0}">
+
 
           <table class="center" style="float: left;width:30%;">
 

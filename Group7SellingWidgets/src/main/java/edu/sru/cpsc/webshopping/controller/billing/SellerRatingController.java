@@ -33,9 +33,9 @@ public class SellerRatingController {
 		SellerRating rating = new SellerRating();
 		// Find associated rating
 		for (SellerRating possibleRating : ratings) {
-			System.out.println(possibleRating.getMinPercent());
-			System.out.println(possibleRating.getMaxPercent());
-			System.out.println(possibleRating.getRatingName());
+			//System.out.println(possibleRating.getMinPercent());
+			//System.out.println(possibleRating.getMaxPercent());
+			//System.out.println(possibleRating.getRatingName());
 			if (percentQuickShipping >= possibleRating.getMinPercent() && percentQuickShipping <= possibleRating.getMaxPercent()) 
 				rating.setRatingName(possibleRating.getRatingName());
 				rating.setMinPercent(possibleRating.getMinPercent());
@@ -65,23 +65,23 @@ public class SellerRatingController {
 			if (trans.getShippingEntry().getShippingDate() == null) {
 				if (ChronoUnit.DAYS.between(transDate, LocalDate.now()) >= LATE_SHIPPING_NUMBER_DAYS) {
 					numberLate++;
-					System.out.println("incr");
+					//System.out.println("incr");
 				}
-				System.out.println("days between not shipped item: " + ChronoUnit.DAYS.between(transDate, LocalDate.now()));
+				//System.out.println("days between not shipped item: " + ChronoUnit.DAYS.between(transDate, LocalDate.now()));
 			}
 			// Case for an item that has shipped, and possibly arrived
 			else {
 				LocalDate shippedDate = Date.valueOf(trans.getShippingEntry().getShippingDate().toString()).toLocalDate();
 				if (ChronoUnit.DAYS.between(transDate, shippedDate) >= LATE_SHIPPING_NUMBER_DAYS) {
 					numberLate++;
-					System.out.println("incr");
+					//System.out.println("incr");
 				}
-				System.out.println("days between shipped item: " + ChronoUnit.DAYS.between(transDate, shippedDate));
+				//System.out.println("days between shipped item: " + ChronoUnit.DAYS.between(transDate, shippedDate));
 			}
 		}
-		System.out.println(numberLate);
-		System.out.println(totalItems);
-		System.out.println((1.0f - (float)numberLate) / (float)(totalItems));
+		//System.out.println(numberLate);
+		//System.out.println(totalItems);
+		//System.out.println((1.0f - (float)numberLate) / (float)(totalItems));
 		return 1.0f - ((float)numberLate / (float)(totalItems));
 	}
 }
