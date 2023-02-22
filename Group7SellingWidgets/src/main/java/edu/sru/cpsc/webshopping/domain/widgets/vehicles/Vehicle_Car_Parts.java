@@ -1,7 +1,6 @@
 package edu.sru.cpsc.webshopping.domain.widgets.vehicles;
 
-import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Blender;
-import edu.sru.cpsc.webshopping.domain.widgets.appliances.Widget_Appliance_Parts;
+import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Vehicle_Car_Parts;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -66,7 +65,7 @@ public class Vehicle_Car_Parts extends Widget_Vehicles_Parts {
 	  return condition;
   }
   
-  public void setModel(String condition)
+  public void setCondition(String condition)
   {
 	  this.condition = condition;
   }
@@ -84,8 +83,8 @@ public class Vehicle_Car_Parts extends Widget_Vehicles_Parts {
 		
 		for (Vehicle_Car_Parts currCarPart : carPart) {
 			
-			car_part_model.add(String.valueOf(currCarPart.getModel()));
-			car_part_brand.add(String.valueOf(currCarPart.getBrand()));
+			car_part_model.add(currCarPart.getModel());
+			car_part_brand.add(currCarPart.getBrand());
 			car_part_madeIn.add(currCarPart.getMadeIn());
 			car_part_material.add(currCarPart.getMaterial());
 			car_part_warranty.add(currCarPart.getWarranty());

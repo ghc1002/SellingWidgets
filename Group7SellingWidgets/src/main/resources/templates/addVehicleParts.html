@@ -120,7 +120,7 @@
 					<form action="#" th:action="@{/createVehicleParts}" method="post" class="form">
 						<div class="card-body d-flex justify-content-center">
 							<th:block th:if="${#lists.contains(subCategories, 'car_parts')}">
-							<input type="radio" class="btn-check" name="subCategory" id="car_parts" value="car_parts">
+							<input type="radio" class="btn-check" name="subCategory" id="car_parts" value="car_parts" checked>
 							<label class="btn btn-outline-primary" for="car_parts">Car Parts</label>
 							</th:block>
 							

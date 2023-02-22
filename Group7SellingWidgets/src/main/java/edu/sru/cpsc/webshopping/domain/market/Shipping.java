@@ -89,13 +89,6 @@ public class Shipping {
 		this.transaction = transaction;
 	}
 	
-	public LocalDate getToday() {
-		return today;
-	}
-
-	public void setToday(LocalDate today) {
-		this.today = today;
-	}
 
 	/**
 	 * Checks if the Shipping label says that the item has been shipped
