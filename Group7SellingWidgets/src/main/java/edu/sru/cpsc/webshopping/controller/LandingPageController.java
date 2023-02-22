@@ -1643,7 +1643,7 @@ public class LandingPageController {
             String tempColor = color;
             blenderParts =
             	blenderParts.stream()
-                    .filter(blender_part_widget -> blender_part_widget.getColor() == tempColor)
+                    .filter(blender_part_widget -> blender_part_widget.getColor().contentEquals(tempColor))
                     .collect(Collectors.toList());
             System.out.println(blenderParts.size());
             for (int i = 0; i < blenderParts.size(); i++) {
@@ -1657,7 +1657,7 @@ public class LandingPageController {
               String tempWarranty = warranty;
               blenderParts =
             		blenderParts.stream()
-                      .filter(blender_part_widget -> blender_part_widget.getWarranty() == tempWarranty)
+                      .filter(blender_part_widget -> blender_part_widget.getWarranty().contentEquals(tempWarranty))
                       .collect(Collectors.toList());
               System.out.println(blenderParts.size());
               for (int i = 0; i < blenderParts.size(); i++) {
@@ -1671,7 +1671,7 @@ public class LandingPageController {
               String tempCondition = condition;
               blenderParts =
             		blenderParts.stream()
-                      .filter(blender_part_widget -> blender_part_widget.getCondition() == tempCondition)
+                      .filter(blender_part_widget -> blender_part_widget.getCondition().contentEquals(tempCondition))
                       .collect(Collectors.toList());
               System.out.println(blenderParts.size());
               for (int i = 0; i < blenderParts.size(); i++) {
@@ -1729,7 +1729,7 @@ public class LandingPageController {
               String tempColor = color;
               dryerParts =
             		dryerParts.stream()
-                      .filter(dryer_part_widget -> dryer_part_widget.getColor() == tempColor)
+                      .filter(dryer_part_widget -> dryer_part_widget.getColor().contentEquals(tempColor))
                       .collect(Collectors.toList());
               System.out.println(dryerParts.size());
               for (int i = 0; i < dryerParts.size(); i++) {
@@ -1743,7 +1743,7 @@ public class LandingPageController {
                 String tempWarranty = warranty;
                 dryerParts =
                 	dryerParts.stream()
-                        .filter(dryer_part_widget -> dryer_part_widget.getWarranty() == tempWarranty)
+                        .filter(dryer_part_widget -> dryer_part_widget.getWarranty().contentEquals(tempWarranty))
                         .collect(Collectors.toList());
                 System.out.println(dryerParts.size());
                 for (int i = 0; i < dryerParts.size(); i++) {
@@ -1757,7 +1757,7 @@ public class LandingPageController {
                 String tempCondition = condition;
                 dryerParts =
                 	dryerParts.stream()
-                        .filter(dryer_part_widget -> dryer_part_widget.getCondition() == tempCondition)
+                        .filter(dryer_part_widget -> dryer_part_widget.getCondition().contentEquals(tempCondition))
                         .collect(Collectors.toList());
                 System.out.println(dryerParts.size());
                 for (int i = 0; i < dryerParts.size(); i++) {
@@ -1815,7 +1815,7 @@ public class LandingPageController {
               String tempColor = color;
               microwaveParts =
             		microwaveParts.stream()
-                      .filter(microwave_part_widget -> microwave_part_widget.getColor() == tempColor)
+                      .filter(microwave_part_widget -> microwave_part_widget.getColor().contentEquals(tempColor))
                       .collect(Collectors.toList());
               System.out.println(microwaveParts.size());
               for (int i = 0; i < microwaveParts.size(); i++) {
@@ -1829,7 +1829,7 @@ public class LandingPageController {
                 String tempWarranty = warranty;
                 microwaveParts =
                 	microwaveParts.stream()
-                        .filter(microwave_part_widget -> microwave_part_widget.getWarranty() == tempWarranty)
+                        .filter(microwave_part_widget -> microwave_part_widget.getWarranty().contentEquals(tempWarranty))
                         .collect(Collectors.toList());
                 System.out.println(microwaveParts.size());
                 for (int i = 0; i < microwaveParts.size(); i++) {
@@ -1843,7 +1843,7 @@ public class LandingPageController {
                 String tempCondition = condition;
                 microwaveParts =
                 	microwaveParts.stream()
-                        .filter(microwave_part_widget -> microwave_part_widget.getCondition() == tempCondition)
+                        .filter(microwave_part_widget -> microwave_part_widget.getCondition().contentEquals(tempCondition))
                         .collect(Collectors.toList());
                 System.out.println(microwaveParts.size());
                 for (int i = 0; i < microwaveParts.size(); i++) {
@@ -1901,7 +1901,7 @@ public class LandingPageController {
               String tempColor = color;
               refrigeratorParts =
             		refrigeratorParts.stream()
-                      .filter(refrigerator_part_widget -> refrigerator_part_widget.getColor() == tempColor)
+                      .filter(refrigerator_part_widget -> refrigerator_part_widget.getColor().contentEquals(tempColor))
                       .collect(Collectors.toList());
               System.out.println(refrigeratorParts.size());
               for (int i = 0; i < refrigeratorParts.size(); i++) {
@@ -1915,7 +1915,7 @@ public class LandingPageController {
                 String tempWarranty = warranty;
                 refrigeratorParts =
                 	refrigeratorParts.stream()
-                        .filter(refrigerator_part_widget -> refrigerator_part_widget.getWarranty() == tempWarranty)
+                        .filter(refrigerator_part_widget -> refrigerator_part_widget.getWarranty().contentEquals(tempWarranty))
                         .collect(Collectors.toList());
                 System.out.println(refrigeratorParts.size());
                 for (int i = 0; i < refrigeratorParts.size(); i++) {
@@ -1929,7 +1929,7 @@ public class LandingPageController {
                 String tempCondition = condition;
                 refrigeratorParts =
                 	refrigeratorParts.stream()
-                        .filter(refrigerator_part_widget -> refrigerator_part_widget.getCondition() == tempCondition)
+                        .filter(refrigerator_part_widget -> refrigerator_part_widget.getCondition().contentEquals(tempCondition))
                         .collect(Collectors.toList());
                 System.out.println(refrigeratorParts.size());
                 for (int i = 0; i < refrigeratorParts.size(); i++) {
@@ -1987,7 +1987,7 @@ public class LandingPageController {
               String tempColor = color;
               washerParts =
             		  washerParts.stream()
-                      .filter(washer_part_widget -> washer_part_widget.getColor() == tempColor)
+                      .filter(washer_part_widget -> washer_part_widget.getColor().contentEquals(tempColor))
                       .collect(Collectors.toList());
               System.out.println(washerParts.size());
               for (int i = 0; i < washerParts.size(); i++) {
@@ -2001,7 +2001,7 @@ public class LandingPageController {
                 String tempWarranty = warranty;
                 washerParts =
                 		washerParts.stream()
-                        .filter(washer_part_widget -> washer_part_widget.getWarranty() == tempWarranty)
+                        .filter(washer_part_widget -> washer_part_widget.getWarranty().contentEquals(tempWarranty))
                         .collect(Collectors.toList());
                 System.out.println(washerParts.size());
                 for (int i = 0; i < washerParts.size(); i++) {
@@ -2015,7 +2015,7 @@ public class LandingPageController {
                 String tempCondition = condition;
                 washerParts =
                 		washerParts.stream()
-                        .filter(washer_part_widget -> washer_part_widget.getCondition() == tempCondition)
+                        .filter(washer_part_widget -> washer_part_widget.getCondition().contentEquals(tempCondition))
                         .collect(Collectors.toList());
                 System.out.println(washerParts.size());
                 for (int i = 0; i < washerParts.size(); i++) {
@@ -2357,7 +2357,7 @@ public class LandingPageController {
             String tempColor = color;
             computerParts =
             		computerParts.stream()
-                    .filter(computer_part_widget -> computer_part_widget.getColor() == tempColor)
+                    .filter(computer_part_widget -> computer_part_widget.getColor().contentEquals(tempColor))
                     .collect(Collectors.toList());
             System.out.println(computerParts.size());
             for (int i = 0; i < computerParts.size(); i++) {
@@ -2371,7 +2371,7 @@ public class LandingPageController {
               String tempWarranty = warranty;
               computerParts =
             		  computerParts.stream()
-                      .filter(computer_part_widget -> computer_part_widget.getWarranty() == tempWarranty)
+                      .filter(computer_part_widget -> computer_part_widget.getWarranty().contentEquals(tempWarranty))
                       .collect(Collectors.toList());
               System.out.println(computerParts.size());
               for (int i = 0; i < computerParts.size(); i++) {
@@ -2385,7 +2385,7 @@ public class LandingPageController {
               String tempCondition = condition;
               computerParts =
             		  computerParts.stream()
-                      .filter(computer_part_widget -> computer_part_widget.getCondition() == tempCondition)
+                      .filter(computer_part_widget -> computer_part_widget.getCondition().contentEquals(tempCondition))
                       .collect(Collectors.toList());
               System.out.println(computerParts.size());
               for (int i = 0; i < computerParts.size(); i++) {
@@ -2444,7 +2444,7 @@ public class LandingPageController {
               String tempColor = color;
               videoGameAccessory =
             		  videoGameAccessory.stream()
-                      .filter(videoGame_accessory_widget -> videoGame_accessory_widget.getColor() == tempColor)
+                      .filter(videoGame_accessory_widget -> videoGame_accessory_widget.getColor().contentEquals(tempColor))
                       .collect(Collectors.toList());
               System.out.println(videoGameAccessory.size());
               for (int i = 0; i < videoGameAccessory.size(); i++) {
@@ -2458,7 +2458,7 @@ public class LandingPageController {
                 String tempWarranty = warranty;
                 videoGameAccessory =
                 		videoGameAccessory.stream()
-                        .filter(videoGame_accessory_widget -> videoGame_accessory_widget.getWarranty() == tempWarranty)
+                        .filter(videoGame_accessory_widget -> videoGame_accessory_widget.getWarranty().contentEquals(tempWarranty))
                         .collect(Collectors.toList());
                 System.out.println(videoGameAccessory.size());
                 for (int i = 0; i < videoGameAccessory.size(); i++) {
@@ -2472,7 +2472,7 @@ public class LandingPageController {
                 String tempCondition = condition;
                 videoGameAccessory =
                 		videoGameAccessory.stream()
-                        .filter(videoGame_accessory_widget -> videoGame_accessory_widget.getCondition() == tempCondition)
+                        .filter(videoGame_accessory_widget -> videoGame_accessory_widget.getCondition().contentEquals(tempCondition))
                         .collect(Collectors.toList());
                 System.out.println(videoGameAccessory.size());
                 for (int i = 0; i < videoGameAccessory.size(); i++) {
@@ -2725,7 +2725,7 @@ public class LandingPageController {
             String tempMadeIn = madeIn;
             mowerParts =
                 mowerParts.stream()
-                    .filter(mower_part_widget -> mower_part_widget.getMadeIn() == tempMadeIn)
+                    .filter(mower_part_widget -> mower_part_widget.getMadeIn().contentEquals(tempMadeIn))
                     .collect(Collectors.toList());
             System.out.println(mowerParts.size());
             for (int i = 0; i < mowerParts.size(); i++) {
@@ -2739,7 +2739,7 @@ public class LandingPageController {
               String tempMaterial = material;
               mowerParts =
                   mowerParts.stream()
-                      .filter(mower_part_widget -> mower_part_widget.getMaterial() == tempMaterial)
+                      .filter(mower_part_widget -> mower_part_widget.getMaterial().contentEquals(tempMaterial))
                       .collect(Collectors.toList());
               System.out.println(mowerParts.size());
               for (int i = 0; i < mowerParts.size(); i++) {
@@ -2753,7 +2753,7 @@ public class LandingPageController {
               String tempWarranty = warranty;
               mowerParts =
                   mowerParts.stream()
-                      .filter(mower_part_widget -> mower_part_widget.getWarranty() == tempWarranty)
+                      .filter(mower_part_widget -> mower_part_widget.getWarranty().contentEquals(tempWarranty))
                       .collect(Collectors.toList());
               System.out.println(mowerParts.size());
               for (int i = 0; i < mowerParts.size(); i++) {
@@ -2767,7 +2767,7 @@ public class LandingPageController {
               String tempCondition = condition;
               mowerParts =
                   mowerParts.stream()
-                      .filter(mower_part_widget -> mower_part_widget.getCondition() == tempCondition)
+                      .filter(mower_part_widget -> mower_part_widget.getCondition().contentEquals(tempCondition))
                       .collect(Collectors.toList());
               System.out.println(mowerParts.size());
               for (int i = 0; i < mowerParts.size(); i++) {
@@ -3013,7 +3013,7 @@ public class LandingPageController {
             String tempMadeIn = madeIn;
             carParts =
                 carParts.stream()
-                    .filter(car_part_widget -> car_part_widget.getMadeIn() == tempMadeIn)
+                    .filter(car_part_widget -> car_part_widget.getMadeIn().contentEquals(tempMadeIn))
                     .collect(Collectors.toList());
             System.out.println(carParts.size());
             for (int i = 0; i < carParts.size(); i++) {
@@ -3027,7 +3027,7 @@ public class LandingPageController {
               String tempMaterial = material;
               carParts =
                   carParts.stream()
-                      .filter(car_part_widget -> car_part_widget.getMaterial() == tempMaterial)
+                      .filter(car_part_widget -> car_part_widget.getMaterial().contentEquals(tempMaterial))
                       .collect(Collectors.toList());
               System.out.println(carParts.size());
               for (int i = 0; i < carParts.size(); i++) {
@@ -3041,7 +3041,7 @@ public class LandingPageController {
               String tempWarranty = warranty;
               carParts =
                   carParts.stream()
-                      .filter(car_part_widget -> car_part_widget.getWarranty() == tempWarranty)
+                      .filter(car_part_widget -> car_part_widget.getWarranty().contentEquals(tempWarranty))
                       .collect(Collectors.toList());
               System.out.println(carParts.size());
               for (int i = 0; i < carParts.size(); i++) {
@@ -3055,7 +3055,7 @@ public class LandingPageController {
               String tempCondition = condition;
               carParts =
                   carParts.stream()
-                      .filter(car_part_widget -> car_part_widget.getCondition() == tempCondition)
+                      .filter(car_part_widget -> car_part_widget.getCondition().contentEquals(tempCondition))
                       .collect(Collectors.toList());
               System.out.println(carParts.size());
               for (int i = 0; i < carParts.size(); i++) {
@@ -3145,6 +3145,8 @@ public class LandingPageController {
       List<Widget> allWidgets,
       List<MarketListing> allListings) {
     int id = 0;
+    ArrayList<Long> allIds = new ArrayList<Long>();
+    int marker = 1;
     if (!allWidgets.isEmpty()) {
       tempListing = allListings.get(id);
       tempWidget = tempListing.getWidgetSold();
@@ -3154,7 +3156,18 @@ public class LandingPageController {
               && !tempListing.isDeleted()
               && tempWidget.getCategory().contentEquals(category))
           || (tempListing != null && !tempListing.isDeleted() && category.contentEquals("all"))) {
-        widgets.add(tempWidget);
+    	  if(!allIds.isEmpty())
+    	  {
+    		  if(allIds.contains(tempWidget.getId()))
+    		  {
+    			  marker = 0;
+    		  }
+    	  }
+    	  if(marker != 0)
+    	  {
+    		  widgets.add(tempWidget);
+    		  allIds.add(tempWidget.getId());
+    	  }
       }
 
       id++;
@@ -3177,6 +3190,8 @@ public class LandingPageController {
       List<Widget> allWidgets,
       List<MarketListing> allListings) {
     int id = 0;
+    int marker =1;
+    ArrayList<Long> allIds = new ArrayList<Long>();
     if (!allWidgets.isEmpty()) {
       tempListing = allListings.get(id);
       tempWidget = tempListing.getWidgetSold();
@@ -3192,7 +3207,18 @@ public class LandingPageController {
               || tempWidget.getDescription().toLowerCase().contains(searchString)))
           && (tempWidget.getCategory().contentEquals(category) || category.contentEquals("all"))) {
         if (tempListing != null && !tempListing.isDeleted()) {
-          widgets.add(tempWidget);
+        	if(!allIds.isEmpty())
+      	  {
+      		if(allIds.contains(tempWidget.getId()))
+      		  {
+      			  marker = 0;
+      		  }
+      	  }
+      	  if(marker != 0)
+      	  {
+      		  widgets.add(tempWidget);
+      		  allIds.add(tempWidget.getId());
+      	  }
         }
       }
       id++;
@@ -3217,6 +3243,8 @@ public class LandingPageController {
       List<Widget> allWidgets,
       List<MarketListing> allListings) {
     int id = 0;
+    int marker = 1;
+    ArrayList<Long> allIds = new ArrayList<Long>();
     if (!allWidgets.isEmpty()) {
       tempListing = allListings.get(id);
       tempWidget = tempListing.getWidgetSold();
@@ -3230,13 +3258,35 @@ public class LandingPageController {
           && res == 1
           && (tempWidget.getCategory().contentEquals(category) || category.contentEquals("all"))) {
         if (!tempListing.isDeleted()) {
-          widgets.add(tempWidget);
+        	if(!allIds.isEmpty())
+      	  {
+      		if(allIds.contains(tempWidget.getId()))
+      		  {
+      			  marker = 0;
+      		  }
+      	  }
+      	  if(marker != 0)
+      	  {
+      		  widgets.add(tempWidget);
+      		  allIds.add(tempWidget.getId());
+      	  }
         }
       } else if (operator.contentEquals("lesser")
           && res == -1
           && (tempWidget.getCategory().contentEquals(category) || category.contentEquals("all"))) {
         if (!tempListing.isDeleted()) {
-          widgets.add(tempWidget);
+        	if(!allIds.isEmpty())
+      	  {
+      		if(allIds.contains(tempWidget.getId()))
+      		  {
+      			  marker = 0;
+      		  }
+      	  }
+      	  if(marker != 0)
+      	  {
+      		  widgets.add(tempWidget);
+      		  allIds.add(tempWidget.getId());
+      	  }
         }
       }
       id++;
@@ -3261,6 +3311,8 @@ public class LandingPageController {
       List<Widget> allWidgets,
       List<MarketListing> allListings) {
     int id = 0;
+    int marker = 1;
+    ArrayList<Long> allIds = new ArrayList<Long>();
     if (!allWidgets.isEmpty()) {
       tempListing = allListings.get(id);
       tempWidget = tempListing.getWidgetSold();
@@ -3279,11 +3331,33 @@ public class LandingPageController {
         int res = tempListing.getPricePerItem().compareTo(bigPrice);
         if (operator.contentEquals("greater") && (res == 1)) {
           if (!tempListing.isDeleted()) {
-            widgets.add(tempWidget);
+        	  if(!allIds.isEmpty())
+        	  {
+        		  if(allIds.contains(tempWidget.getId()))
+        		  {
+        			  marker = 0;
+        		  }
+        	  }
+        	  if(marker != 0)
+        	  {
+        		  widgets.add(tempWidget);
+        		  allIds.add(tempWidget.getId());
+        	  }
           }
         } else if (operator.contentEquals("lesser") && (res == -1)) {
           if (!tempListing.isDeleted()) {
-            widgets.add(tempWidget);
+        	  if(!allIds.isEmpty())
+        	  {
+        		  if(allIds.contains(tempWidget.getId()))
+        		  {
+        			  marker = 0;
+        		  }
+        	  }
+        	  if(marker != 0)
+        	  {
+        		  widgets.add(tempWidget);
+        		  allIds.add(tempWidget.getId());
+        	  }
           }
         }
       }
