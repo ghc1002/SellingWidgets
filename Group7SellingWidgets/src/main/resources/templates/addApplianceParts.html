@@ -111,59 +111,66 @@
    		</ul>
 		</div>
 		<div class="card h-100 w-100">
-			<div class="card-header d-flex justify-content-center"><h1>Create an Appliance</h1><br></div>
-			<div class="card-body">
-				<div class="card w-50" style="margin-left: auto; margin-right: auto;">
-					<div class="card-header d-flex justify-content-center"><h2>Choose an Appliance Subcategory</h2></div>
-					<form action="#" th:action="@{/createApplianceParts}" method="post" class="form">
+			<div class="card-header d-flex justify-content-center">
+				<h1>Create an Appliance Parts Listing</h1><br>
+			</div>
+			<div class="card-body d-flex justify-content-center">
+			<form action="#" th:action="@{/createApplianceParts}" method="post" class="form">
+				<div class="card w-150" style="margin-left: auto; margin-right: auto;">
+					<div class="card-header d-flex justify-content-center">
+						<h2>Choose an Appliance Parts Sub-category</h2>
+					</div>
 						<div class="card-body">
-							<div class="row">
+							<th:block>
 								<div class="col">
-									<!--<th:block th:if="${#lists.contains(subCategories, 'blender_parts')}">-->
-										<input type="radio" class="btn-check" name="subCategory" id="blender_parts" value="blender_parts">
-										<label class="btn btn-outline-primary w-100 m-2" for="blender_parts">Blender Parts</label>
-									<!--</th:block>-->
+									<input type="radio" class="btn-check" name="subCategory" id="blender_parts" value="blender_parts">
+									<label class="btn btn-outline-primary w-100 mb-2" for="blender_parts">Blender Parts</label>
 								</div>
+							</th:block>
+							<th:block>
 								<div class="col">
-									<!--<th:block th:if="${#lists.contains(subCategories, 'dryer_parts')}">-->
-										<input type="radio" class="btn-check" name="subCategory" id="dryer_parts" value="dryer_parts">
-										<label class="btn btn-outline-primary w-100 m-2" for="dryer_parts">Dryer Parts</label>
-									<!--</th:block>-->
+									<input type="radio" class="btn-check" name="subCategory" id="dryer_parts" value="dryer_parts">
+									<label class="btn btn-outline-primary w-100 mb-2" for="dryer_parts">Dryer Parts</label>
 								</div>
-							</div>
-							<div class="row">
+							</th:block>
+							<th:block>
 								<div class="col">
-									<!--<th:block th:if="${#lists.contains(subCategories, 'microwave_parts')}">-->
-										<input type="radio" class="btn-check" name="subCategory" id="microwave_parts" value="microwave_parts">
-										<label class="btn btn-outline-primary w-100 m-2" for="microwave_parts">Microwave Parts</label>
-									<!--</th:block>-->
+									<input type="radio" class="btn-check" name="subCategory" id="microwave_parts" value="microwave_parts">
+									<label class="btn btn-outline-primary w-100 mb-2" for="microwave_parts">Microwave Parts</label>
 								</div>
+							</th:block>
+							<th:block>
 								<div class="col">
-									<!--<th:block th:if="${#lists.contains(subCategories, 'refrigerator_parts')}">-->
-										<input type="radio" class="btn-check" name="subCategory" id="refrigerator_parts" value="refrigerator_parts">
-										<label class="btn btn-outline-primary w-100 m-2" for="refrigerator_parts">Refrigerator Parts</label>
-									<!--</th:block>-->
+									<input type="radio" class="btn-check" name="subCategory" id="refrigerator_parts" value="refrigerator_parts">
+									<label class="btn btn-outline-primary w-100 mb-2" for="refrigerator_parts">Refrigerator Parts</label>
 								</div>
-							</div>
-							<div class="row">
+							</th:block>
+							<th:block>
 								<div class="col">
-									<!--<th:block th:if="${#lists.contains(subCategories, 'washer_parts')}">-->
-										<input type="radio" class="btn-check" name="subCategory" id="washer_parts" value="washer_parts">
-										<label class="btn btn-outline-primary w-100 m-2" for="washer_parts">Washer Parts</label>
-									<!--</th:block>-->
+									<input type="radio" class="btn-check" name="subCategory" id="washer_parts" value="washer_parts">
+									<label class="btn btn-outline-primary w-100 mb-2" for="washer_parts">Washer Parts</label>
 								</div>
-								<div class="col">
-									<button class="btn w-100" visible="hidden"></button>	
-								</div>
-							</div>
+							</th:block>
 						</div>
 						<div class="card-footer">
-							<a class="btn btn-danger w-25 m-4" href="/addWidget">Back</a>
-							<a class="btn btn-danger w-25 m-4" href="/homePage">Cancel</a>
-							<input class="btn btn-success w-25 m-4" type="submit" value="Next">
-						</div>
-					</form>
+            				<th:block>
+            					<div class="col">
+            						<input class="btn btn-success w-100 mb-2" type="submit" value="Next">
+            					</div>
+            				</th:block>
+            				<th:block>
+            					<div>
+            						<a class="btn w-100 mb-2" style="background-color: #D3D3D3;" href="/addWidget">Back</a>
+            					</div>
+            				</th:block>
+            				<th:block>
+            					<div>
+            						<a class="btn btn-danger w-100 mb-2" href="/homePage">Cancel</a>
+            					</div>
+            				</th:block>
+        				</div>
 				</div>
+			 </form>
 			</div>
 		</div>
 	</div>
