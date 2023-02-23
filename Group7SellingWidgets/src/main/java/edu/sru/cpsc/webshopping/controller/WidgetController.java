@@ -222,6 +222,23 @@ public class WidgetController {
                 () -> new IllegalArgumentException("Invalid ID provided for deleting widget."));
     dryerRepository.delete(dryer);
   }
+  
+  @GetMapping({"back-delete-dryer/{id}"})
+  public String backDeleteDryer(@PathVariable("id") long id) {
+	  Appliance_Dryers dryer =
+		        dryerRepository
+		            .findById(id)
+		            .orElseThrow(
+		                () -> new IllegalArgumentException("Invalid ID provided for deleting widget."));
+		    dryerRepository.delete(dryer);
+		    Widget widget =
+		            widgetRepository
+		                .findById(id)
+		                .orElseThrow(
+		                    () -> new IllegalArgumentException("Invalid ID provided for deleting widget."));
+		        widgetRepository.delete(widget);
+		    return "addDryer";
+  }
 
   @GetMapping({"add-microwave"})
   public void addMicrowave(@Validated Appliance_Microwave microwave, BindingResult result) {
@@ -470,6 +487,36 @@ public class WidgetController {
     Iterable<Appliance_Blender> blender = blenderRepository.findAll();
     return blender;
   }
+  
+  @RequestMapping({"/get-all-blender-parts"})
+  public Iterable<Appliance_Blender_Parts> getAllBlenderParts() {
+    Iterable<Appliance_Blender_Parts> blenderParts = blenderPartsRepository.findAll();
+    return blenderParts;
+  }
+  
+  @RequestMapping({"/get-all-washer-parts"})
+  public Iterable<Appliance_Washers_Parts> getAllWasherParts() {
+    Iterable<Appliance_Washers_Parts> washerParts = washersPartsRepository.findAll();
+    return washerParts;
+  }
+  
+  @RequestMapping({"/get-all-dryer-parts"})
+  public Iterable<Appliance_Dryer_Parts> getAllDryerParts() {
+    Iterable<Appliance_Dryer_Parts> dryerParts = dryerPartsRepository.findAll();
+    return dryerParts;
+  }
+  
+  @RequestMapping({"/get-all-microwave-parts"})
+  public Iterable<Appliance_Microwave_Parts> getAllMicrowaveParts() {
+    Iterable<Appliance_Microwave_Parts> microwaveParts = microwavePartsRepository.findAll();
+    return microwaveParts;
+  }
+  
+  @RequestMapping({"/get-all-refrigerator-parts"})
+  public Iterable<Appliance_Refrigerator_Parts> getAllRefrigeratorParts() {
+    Iterable<Appliance_Refrigerator_Parts> refrigeratorParts = refrigeratorPartsRepository.findAll();
+    return refrigeratorParts;
+  }
 
   @PostMapping({"update-blender/{id}"})
   public void updateBlender(
@@ -535,6 +582,12 @@ public class WidgetController {
   public Iterable<Electronics_Computers> getAllComputers() {
     Iterable<Electronics_Computers> computers = computerRepository.findAll();
     return computers;
+  }
+  
+  @RequestMapping({"/get-all-computer-parts"})
+  public Iterable<Electronics_Computers_Parts> getAllComputerParts() {
+    Iterable<Electronics_Computers_Parts> computerParts = computersPartsRepository.findAll();
+    return computerParts;
   }
 
   @PostMapping({"update-computer/{id}"})
@@ -603,6 +656,12 @@ public class WidgetController {
   public Iterable<Electronics_VideoGames> getAllVideoGames() {
     Iterable<Electronics_VideoGames> videoGames = videoGameRepository.findAll();
     return videoGames;
+  }
+  
+  @RequestMapping({"/get-all-videoGames-accessories"})
+  public Iterable<Electronics_VideoGames_Parts> getAllVideoGameAccessories() {
+    Iterable<Electronics_VideoGames_Parts> videoGameAccessories = videoGamesPartsRepository.findAll();
+    return videoGameAccessories;
   }
 
   @PostMapping({"update-videoGame/{id}"})
@@ -907,6 +966,12 @@ public class WidgetController {
             .findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Invalid ID specified to get-widget"));
     return lawnCarePart;
+  }
+  
+  @RequestMapping({"/get-all-mower-parts"})
+  public Iterable<LawnCare_LawnMower_Parts> getAllMowerParts() {
+    Iterable<LawnCare_LawnMower_Parts> mowerParts = mowerPartsRepository.findAll();
+    return mowerParts;
   }
 
   @RequestMapping({"/get-all-lawnCares"})

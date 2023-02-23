@@ -111,27 +111,26 @@
 									<div class="row">
 										<div class="form-group col-sm-6">
 											<label for="name">Provide a title for the post</label>
-											<input type="text" id="name" class="form-control" name="name">
+											<input type="text" id="name" class="form-control" name="name" required>
 										</div>
 										<div class="form-group col-sm-6">
 											<label for="description">Description</label>
-											<input type="text" id="description" class="form-control" name="description">
-										</div>
+											<input type="text" id="description" class="form-control" name="description" required>
 									</div>
 									<div class="row">
 										<div class="form-group col-sm-6">
 											<label for="appliancePartName">Appliance Part Name</label>
-											<input class="form-control" type="text" th:field="*{partName}" id="appliancePartName" name="partName" min="1" max="1000000" value="">
+											<input class="form-control" type="text" th:field="*{partName}" id="appliancePartName" name="partName" min="1" max="1000000" value="" required>
 										</div>
 										<div class="form-group col-sm-6">
 											<label for="applianceModel">Appliance Model</label>
-											<input class="form-control" type="text" th:field="*{model}" id="applianceModel" name="model" min="1" max="1000000" value="">
+											<input class="form-control" type="text" th:field="*{model}" id="applianceModel" name="model" min="1" max="1000000" value="" required>
 										</div>
 									</div>
 									<div class="row">
 										<div class="form-group col-sm-6">
 											<label for="applianceBrand">Appliance Brand</label>
-											<input class="form-control" type="text" th:field="*{brand}" id="applianceBrand" name="brand" min="1" max="1000000" value="">
+											<input class="form-control" type="text" th:field="*{brand}" id="applianceBrand" name="brand" min="1" max="1000000" value="" required>
 										</div>
 										<div class="form-group col-sm-6">
 											<label for="applianceColor">Appliance Color</label>
@@ -151,7 +150,7 @@
 									<div class="row">
 										<div class="form-group col-sm-6">
 											<label for="warranty">Warranty</label>
-											<input class="form-control" type="text" th:field="*{warranty}" id="warranty" name="warranty">
+											<input class="form-control" type="text" th:field="*{warranty}" id="warranty" name="warranty" required>
 										</div>
 										<div class="form-group col-sm-6">
 											<label for="condition">Condition</label>
