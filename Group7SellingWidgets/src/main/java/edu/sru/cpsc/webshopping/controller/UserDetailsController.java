@@ -111,6 +111,10 @@ public class UserDetailsController {
 		model.addAttribute("paypalDetails", new Paypal_Form());
 		// Model for updating Payment Details
 		model.addAttribute("paymentDetails", new PaymentDetails_Form());
+		if(userController.getCurrently_Logged_In().getPaymentDetails() != null)
+		{
+			model.addAttribute("paymentDetails2", userController.getCurrently_Logged_In().getPaymentDetails());
+		}
 		model.addAttribute("cardTypes", cardController.getAllCardTypes());
 		// Model for updating Direct Deposit Details
 		DirectDepositDetails_Form details = new DirectDepositDetails_Form();
@@ -220,6 +224,7 @@ public class UserDetailsController {
 		User user = new User();
 		user = userController.getCurrently_Logged_In();
 		model.addAttribute("currUser", user);
+		System.out.println(user.getUserImage());
 		userName = user.getUsername();
 		userDescription = user.getUserDescription();
 		creationDate = user.getCreationDate();
@@ -291,21 +296,24 @@ public class UserDetailsController {
 	public String sendUpdate(@Validated @ModelAttribute("paymentDetails") PaymentDetails_Form details, BindingResult result, Model model) {
 		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
 		model.addAttribute("selectedMenu", selectedMenu);
+		System.out.println(details.getExpirationDate());
 		if (result.hasErrors() || paymentDetailsConstraintsFailed(details)) {
 			// Add error messages
 			if (cardExpired(details))
-				model.addAttribute("cardExpiredError", "The credit card is expired.");
+				model.addAttribute("cardError", "The credit card is expired.");
+			if(cardFarFuture(details))
+				model.addAttribute("cardError", "The expiration date is an impossible number of years in the future");
 			model.addAttribute("errMessage", "Your updated payment details has errors.");
 			// Add back page data
 			model.addAttribute("cardTypes", cardController.getAllCardTypes());
 			model.addAttribute("directDepositDetails", new DirectDepositDetails_Form());
 			loadUserData(model);
-			return "userDetails";
+			return "/userDetails";
 		}
 		PaymentDetails payment = new PaymentDetails();
 		payment.buildFromForm(details);
 		this.userController.updatePaymentDetails(payment);
-		return "redirect:/userDetails";
+		return "redirect:/userDetails/paymentDetails";
 	}
 	
 	@RequestMapping(value = "/submitPaymentDetailsAction", 
@@ -322,7 +330,7 @@ public class UserDetailsController {
 			return "userDetails";
 		}
 		this.userController.deletePaymentDetails();
-		return "redirect:/userDetails";
+		return "redirect:/userDetails/paymentDetails";
 	}
 	
 	@RequestMapping(value = "/submitPaypalDetailsAction", method = RequestMethod.POST, params="submit")
@@ -382,5 +390,19 @@ public class UserDetailsController {
 		catch (Exception e) {
 			return false;
 		}
+	}
+	
+	public boolean cardFarFuture(PaymentDetails_Form details) {
+		int thisYear = LocalDate.now().getYear();
+		try {
+			int year = Integer.parseInt(details.getExpirationDate().substring(0, 4));
+			if((thisYear + 5) >= year)
+				return false;
+			return true;
+		}
+			catch (Exception e) {
+			return true;
+		}
+				
 	}
 }

@@ -21,8 +21,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.sru.cpsc.webshopping.controller.MarketListingDomainController;
 import edu.sru.cpsc.webshopping.controller.TransactionController;
+import edu.sru.cpsc.webshopping.controller.billing.PaymentDetailsController;
 import edu.sru.cpsc.webshopping.controller.UserController;
+import edu.sru.cpsc.webshopping.controller.UserDetailsController;
 import edu.sru.cpsc.webshopping.controller.billing.CardTypeController;
+import edu.sru.cpsc.webshopping.domain.billing.DirectDepositDetails_Form;
 import edu.sru.cpsc.webshopping.domain.billing.PaymentDetails;
 import edu.sru.cpsc.webshopping.domain.billing.PaymentDetails_Form;
 import edu.sru.cpsc.webshopping.domain.billing.Paypal;
@@ -33,6 +36,7 @@ import edu.sru.cpsc.webshopping.domain.market.Shipping;
 import edu.sru.cpsc.webshopping.domain.market.Transaction;
 import edu.sru.cpsc.webshopping.repository.market.ShippingRepository;
 import edu.sru.cpsc.webshopping.repository.market.TransactionRepository;
+import edu.sru.cpsc.webshopping.repository.billing.PaymentDetailsRepository;
 
 /**
  * Manages functionality for the confirmPurchase page
@@ -44,21 +48,27 @@ public class ConfirmPurchasePageController {
 	private Transaction purchase;
 	private MarketListing prevListing;
 	private PaymentDetails details;
+	private PaymentDetailsRepository payDetRepository;
 	private ShippingAddress address;
 	private Paypal_Form paypal;
 	// SQL Controllers
 	private TransactionController transController;
+	private PaymentDetailsController payDetController;
 	private MarketListingDomainController marketListingController;
 	private UserController userController;
 	private CardTypeController cardController;
+	private UserDetailsController userDetController;
 	
 	ConfirmPurchasePageController(MarketListingDomainController marketListingController, 
-									UserController userController, TransactionController transController,
-									CardTypeController cardController) {
+									UserController userController, TransactionController transController, UserDetailsController userDetController, 
+									CardTypeController cardController, PaymentDetailsController payDetController, PaymentDetailsRepository payDetRepository) {
 		this.marketListingController = marketListingController;
+		this.payDetController = payDetController;
+		this.payDetRepository = payDetRepository;
 		this.userController = userController;
 		this.transController = transController;
 		this.cardController = cardController;
+		this.userDetController = userDetController;
 	}
 	
 	/**
@@ -117,7 +127,7 @@ public class ConfirmPurchasePageController {
 			throw new IllegalStateException("Cannot purchase an item when not logged in.");
 		}
 		// Test that payment details are valid
-		if (this.userController.verifyPaymentDetails(currDetails) && !paymentDetailsInvalid(paymentDetails)) {
+		if (!paymentDetailsInvalid(paymentDetails) && !result.hasErrors()) {
 			// Update market listing to reflect purchase
 			marketListingController.marketListingPurchaseUpdate(prevListing, purchase.getQtyBought());
 			// Creates an unfinished shipping label, to be filled out later by the seller
@@ -125,9 +135,21 @@ public class ConfirmPurchasePageController {
 			Shipping shipping = new Shipping();
 			shipping.setTransaction(purchase);
 			shipping.setAddress(address);
+			System.out.println(currDetails.getCardNumber());
 			purchase.setShippingEntry(shipping);
+			if(!payDetController.checkDuplicateCard(currDetails))
+			{
+					payDetController.addPaymentDetails(currDetails);
+					System.out.println("option 1");
+			}
+			else
+			{
+				currDetails = payDetController.getPaymentDetailsByCardNumberAndExpirationDate(currDetails);
+				System.out.println(currDetails.getId());
+			}
+			purchase.setPaymentDetails(currDetails);
 			transController.addTransaction(purchase);
-			return "redirect:/index";
+			return "redirect:/homePage";
 		}
 		// Transaction failed - post error
 		else {
@@ -137,8 +159,10 @@ public class ConfirmPurchasePageController {
 				model.addAttribute(item.getField() + "Err", item.getDefaultMessage());		
 			}
 			if (paymentDetails.getExpirationDate() != null && paymentDetailsExpired(paymentDetails)) {
-				model.addAttribute("ccExpired", "The Credit Card has expired.");
+				model.addAttribute("cardError", "The Credit Card has expired.");
 			}
+			if(userDetController.cardFarFuture(paymentDetails))
+				model.addAttribute("cardError", "The expiration date is an impossible number of years in the future");
 			model.addAttribute("purchase", purchase);
 			model.addAttribute("marketListing", prevListing);
 			model.addAttribute("widget", prevListing.getWidgetSold());

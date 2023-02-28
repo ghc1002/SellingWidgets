@@ -105,7 +105,7 @@
 					<h1>Confirm Purchase</h1>
 				</div>
 				<div th:if="${errMessage != null}" th:text="${errMessage}" class="alert alert-danger d-flex justify-content-center my-3">
-				</div>
+				</div> 
 				<div class="card-body">
 					<div class="my-2">
 						<div class="d-flex justify-content-center">
@@ -167,7 +167,7 @@
 												<label for="expirationDate" class="form-label">Expiration Date</label>
 												<input type="date" class="form-control" th:field="*{expirationDate}"></input>
 												<p th:text="${expirationDateErr}" th:if="${expirationDateErr != null}"></p>
-												<p th:text="${ccExpired}" th:if="${ccExpired != null}"></p>
+												<p th:text="${cardError}" th:if="${cardError != null}"></p>
 											</div>
 											<div class="mb-3 col-sm-4">
 												<label for="securityCode" class="form-label">Security Code</label>
@@ -184,10 +184,9 @@
 										<!-- Purchase decisions -->
 										<div class="d-flex justify-content-evenly mb-3">
 											<button class="btn btn-danger btn-lg" type="submit" name="cancel">Cancel</button>
-											<button th:if="${user.paymentDetails != null}" class="btn btn-primary btn-lg"
+											<button class="btn btn-primary btn-lg"
 												 type="submit" name="submit">Purchase Item</button>
-											<button th:if="${user.paymentDetails == null}" class="btn btn-danger btn-lg"
-												disabled>Purchase Disabled</button>
+											
 										</div>
 									</form>
 								</div>

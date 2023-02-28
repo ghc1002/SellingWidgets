@@ -63,7 +63,7 @@ table.center {
 			<!-- Left justified unordered list -->
 			<ul class="navbar nav">
 				<li class="nav-item"><a class="navbar-brand"
-					th:href="@{/index}"> <img
+					th:href="@{/homePage}"> <img
 						src="/images/university_depot_icon.png" alt="Home"
 						style="width: 64px; height: 64px;"></img></a></li>
 				<li class="nav-item"><a class="nav-link text-white"
@@ -96,7 +96,7 @@ table.center {
 				<div th:case="searchWidgetSellerMarketListing">
 
 					<th:block th:each="searchedMarkets: ${allMarketListings}"
-						th:unless="${searchedMarkets.qtyAvailable == 0 || searchedMarkets.isDeleted == 1}">
+						th:unless="${searchedMarkets.qtyAvailable == 0 || searchedMarkets.isDeleted == true}">
 
 
 						<table class="center" style="float: left; width: 30%;">

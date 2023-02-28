@@ -575,12 +575,8 @@
                  th:max="${currListing.qtyAvailable}" value="0" required></input>
         </div>
         <div class="col-auto">
-          <input th:if="${user.paypal != null || user.paymentDetails != null}"
-                 class="btn btn-success" id="buyProduct"
+          <input class="btn btn-success" id="buyProduct"
                  name="buyProduct" type="submit" value="Purchase Items"></input>
-          <input th:unless="${user.paypal != null || user.paymentDetails != null}"
-                 class="btn btn-danger" id="buyProduct"
-                 name="buyProduct" type="submit" value="Need Payment Method to Purchase" disabled>
         </div>
         <div class="d-flex justify-content-center mt-1">
           <a class="btn btn-danger" href="javascript:window.history.back()">Back</a>
