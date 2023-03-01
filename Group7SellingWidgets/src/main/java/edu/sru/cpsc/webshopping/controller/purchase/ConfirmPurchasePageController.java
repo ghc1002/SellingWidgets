@@ -104,9 +104,23 @@ public class ConfirmPurchasePageController {
 		model.addAttribute("cardTypes", cardController.getAllCardTypes());
 		model.addAttribute("paypal", paypal);
 		model.addAttribute("user", userController.getCurrently_Logged_In());
+	    model.addAttribute("paymentDetails2", userController.getCurrently_Logged_In().getPaymentDetails());
 		model.addAttribute("existingSecurityCode", new String());
 		return "confirmPurchase";
 	}
+	
+	/**
+	 * Allow the user to use their currently saved Card details
+	 * by validating using the security code
+	 * If successful, the associated Transaction is saved to the database,
+	 * and the number of available items for the MarketListing is decreased by 
+	 * the number of purchased items
+	 * The variables are passed by dependency injection
+	 * @param existingSecurityCode the existing security code
+	 * @param result BindingResult associated with the form
+	 * @param model
+	 * @return
+	 */
 	
 	@RequestMapping(value = "/confirmPurchase/existingCard", method = RequestMethod.POST, params = "submit")
 	public String submitPurchaseExistingCard(@Validated @ModelAttribute("existingSecurityCode") String existingSecurityCode, BindingResult result, Model model) {
@@ -144,9 +158,18 @@ public class ConfirmPurchasePageController {
 			model.addAttribute("paypal", paypal);
 			model.addAttribute("cardTypes", cardController.getAllCardTypes());
 			model.addAttribute("user", userController.getCurrently_Logged_In());
+			model.addAttribute("paymentDetails2", userController.getCurrently_Logged_In().getPaymentDetails());
 			return "confirmPurchase";
 		}
 	}
+	
+	/**
+	 * Cancels the purchase
+	 * The user is returned to the viewMarketListing page they attempted to purchase from
+	 * No changes are made
+	 * @param existingSecurityCode
+	 * @return
+	 */
 	
 	@RequestMapping(value = "/confirmPurchase/existingCard", method = RequestMethod.POST, params = "cancel")
 	public String cancelPurchaseExistingCard(@Validated @ModelAttribute("existingSecurityCode") String existingSecurityCode) {
@@ -181,7 +204,6 @@ public class ConfirmPurchasePageController {
 			Shipping shipping = new Shipping();
 			shipping.setTransaction(purchase);
 			shipping.setAddress(address);
-			System.out.println(currDetails.getCardNumber());
 			purchase.setShippingEntry(shipping);
 			if(!payDetController.checkDuplicateCard(currDetails))
 			{
@@ -207,7 +229,7 @@ public class ConfirmPurchasePageController {
 			if (paymentDetails.getExpirationDate() != null && paymentDetailsExpired(paymentDetails)) {
 				model.addAttribute("cardError", "The Credit Card has expired.");
 			}
-			if(userDetController.cardFarFuture(paymentDetails))
+			if(userDetController.cardFarFuture(paymentDetails) && paymentDetails.getExpirationDate() != "")
 				model.addAttribute("cardError", "The expiration date is an impossible number of years in the future");
 			model.addAttribute("purchase", purchase);
 			model.addAttribute("marketListing", prevListing);
@@ -215,8 +237,10 @@ public class ConfirmPurchasePageController {
 			model.addAttribute("paymentDetails", details);
 			model.addAttribute("errMessage", "Payment Details Invalid");
 			model.addAttribute("paypal", paypal);
+			model.addAttribute("useThis", true);			
 			model.addAttribute("cardTypes", cardController.getAllCardTypes());
 			model.addAttribute("user", userController.getCurrently_Logged_In());
+			model.addAttribute("paymentDetails2", userController.getCurrently_Logged_In().getPaymentDetails());
 			return "confirmPurchase";
 		}
 	}

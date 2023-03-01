@@ -126,32 +126,38 @@
 							</ul>
 						</div>
 					</div>
-					
+					<!-- used if the user has existing card details and wishes to use them -->
 					<div class="accordion" id="payment-methods">
-					<div class="accordion-item">
+					<div class="accordion-item" th:if="${paymentDetails2 != null}">
 							<h2 class="accordion-header">
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#creditAccordion">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#existingAccordion">
 									Pay via Existing Credit Card
 								</button>
 							</h2>
-							<div id="creditAccordion" class="accordion-collapse collapse show" data-bs-parent="#payment-methods">
+							<div id="existingAccordion" class="accordion-collapse collapse" th:classappend="${useThis == null ? 'show' : ''}" data-bs-parent="#payment-methods">
 								<div class="accordion-body">
+									<div class="d-flex justify-content-center">
+									<h2>Current Payment Details</h2>
+								</div>
+								<div class="d-flex justify-content-center">
+									<h3 th:text=" ${paymentDetails2.cardType}"></h3>
+									<h3>&nbspEnding In:&nbsp</h3>
+									<h3 th:text=" ${paymentDetails2.last4Digits}"></h3>
+								</div>
 									<form method="post" action="#" class="row g-3 d-flex justify-content-center my-2"
 										th:action="@{/confirmPurchase/existingCard}">
 										<div class="d-flex justify-content-center">
 											<h2>Payment Method</h2>
 										</div>
-										<div class="row">
-											<div class="mb-3 col-sm-4">
-												<label for="securityCode" class="form-label">Security Code for Confirmation</label>
+											<div class="mb-3 col-sm-4 justify-content-center">
+												<label for="securityCode" class="form-label ">Security Code for Confirmation</label>
 												<input type="number" class="form-control" name="existingSecurityCode" id="securityCode" th:value="${existingSecurityCode}"></input>
 												<p th:text="${securityCodeErr}" th:if="${securityCodeErr != null}"></p>
 											</div>
-										</div>
 
 										<!-- Purchase decisions -->
-										<div class="d-flex justify-content-evenly mb-3">
-											<button class="btn btn-danger btn-lg" type="submit" name="cancel">Cancel</button>
+										<div class="d-flex justify-content-center mb-3">
+											<button class="btn btn-danger btn-lg" style="margin-right: 15px;" type="submit" name="cancel">Cancel</button>
 											<button class="btn btn-primary btn-lg"
 												 type="submit" name="submit">Purchase Item</button>
 											
@@ -166,11 +172,11 @@
 									Pay via Credit Card
 								</button>
 							</h2>
-							<div id="creditAccordion" class="accordion-collapse collapse" data-bs-parent="#payment-methods">
+							<div id="creditAccordion" class="accordion-collapse collapse" th:classappend="${paymentDetails2 == null || useThis != null ? 'show' : ''}" data-bs-parent="#payment-methods">
 								<div class="accordion-body">
 									<form method="post" action="#" class="row g-3 d-flex justify-content-center my-2"
 										th:action="@{/confirmPurchase/submitPurchase}"  th:object="${paymentDetails}">
-										<div class="d-flex justify-content-center">
+										<div class="d-flex justify-content-center ">
 											<h2>Payment Method</h2>
 										</div>
 										<div class="row">

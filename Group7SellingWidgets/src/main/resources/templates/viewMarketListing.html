@@ -578,8 +578,8 @@
           <input class="btn btn-success" id="buyProduct"
                  name="buyProduct" type="submit" value="Purchase Items"></input>
         </div>
-        <div class="d-flex justify-content-center mt-1">
-          <a class="btn btn-danger" href="javascript:window.history.back()">Back</a>
+        <div class="col-sm-1">
+          <a class="btn btn-danger" href="/BrowseWidgetsButton">Back</a>
         </div>
       </form>
       <form th:if="${!isBuyer}" id="update-listing"
@@ -614,10 +614,10 @@
             <input class="btn btn-primary" id="updateListing" name="updateListing" type="submit"
                    value="Update">
           </div>
-        </div>
-        <div class="d-flex justify-content-center mt-1">
-          <a class="btn btn-danger" href="javascript:window.history.back()">Back</a>
-        </div>
+	        <div class="col-sm-2">
+	          <a class="btn btn-danger" href="/BrowseWidgetsButton">Back</a>
+	        </div>
+	    </div>
       </form>
     </div>
   </div>

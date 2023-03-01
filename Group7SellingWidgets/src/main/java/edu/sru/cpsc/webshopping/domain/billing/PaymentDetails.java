@@ -111,6 +111,7 @@ public class PaymentDetails {
 		this.cardType = other.cardType;
 		this.cardholderName = other.cardholderName;
 		this.cardNumber = other.cardNumber;
+		this.last4Digits = other.last4Digits;
 		this.expirationDate = other.expirationDate;
 		this.securityCode = other.securityCode;
 		this.postalCode = other.postalCode;

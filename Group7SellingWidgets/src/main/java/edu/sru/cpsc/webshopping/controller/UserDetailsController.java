@@ -316,6 +316,13 @@ public class UserDetailsController {
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
+	/**
+	 * deletes the existing payment details of a user
+	 * @param details The paymentDetails_Form to be deleted
+	 * @param result
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/submitPaymentDetailsAction", 
 			method = RequestMethod.POST, params="delete")
 	public String deleteExisting(@Validated @ModelAttribute("paymentDetails") PaymentDetails_Form details, BindingResult result, Model model) {
@@ -333,6 +340,13 @@ public class UserDetailsController {
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
+	/**
+	 * Updates the users details and sends the update to the paymentdetails Database location of that users paymentDetails
+	 * @param details The updated Payment Details
+	 * @param result
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/submitPaypalDetailsAction", method = RequestMethod.POST, params="submit")
 	public String sendUpdate(@Validated @ModelAttribute("paypalDetails") Paypal_Form details, BindingResult result, Model model) {
 		selectedMenu = SUB_MENU.PAYPAL_DETAILS;
@@ -351,6 +365,14 @@ public class UserDetailsController {
 		this.userController.updatePaypalDetails(payment);
 		return "redirect:/userDetails";
 	}
+	
+	/**
+	 * send an error if the users paypal Details had already been deleted
+	 * @param details
+	 * @param result
+	 * @param model
+	 * @return
+	 */
 	
 	@RequestMapping(value ="/submitPaypalDetailsAction", method = RequestMethod.POST, params="delete")
 	public String deleteExisting(@Validated @ModelAttribute("paypalDetails") Paypal_Form details, BindingResult result, Model model) {
@@ -392,6 +414,11 @@ public class UserDetailsController {
 		}
 	}
 	
+	/**
+	 * Checks to see if the card's expiration date is more than 5 years in the future
+	 * @param details the PaymentDetails_Form to check
+	 * @return true if the card is not in the far future
+	 */
 	public boolean cardFarFuture(PaymentDetails_Form details) {
 		int thisYear = LocalDate.now().getYear();
 		try {

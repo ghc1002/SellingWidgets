@@ -165,14 +165,14 @@
                         Card Info
                     </a>
                 </li>
-                <li class="nav-item">
+               <!-- <li class="nav-item">
                 	<a href="#" class="nav-link active" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYPAL_DETAILS}">
                 		PayPal
                 	</a>
                 	<a th:href="@{/userDetails/paypalDetails}" class="nav-link" th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYPAL_DETAILS}">
                 		PayPal
                 	</a>
-                </li>
+                </li>-->
                 <li class="nav-item">
                 	<a href="#" class="nav-link active" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}">
                 		Direct Deposit
@@ -191,7 +191,7 @@
 			<div class="card-header d-flex justify-content-center">
 				<h1 th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).USER_DETAILS}">Personal Info</h1>
 				<h1 th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}">Card Info</h1>
-				<h1 th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYPAL_DETAILS}">PayPal Info</h1>
+				<!--<h1 th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYPAL_DETAILS}">PayPal Info</h1>-->
 				<h1 th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}">Direct Deposit Info</h1>
 			</div>
 			
@@ -354,7 +354,7 @@
 				</form>
 				
 				<!-- Paypal submenu -->
-				<form method="post" action="#" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYPAL_DETAILS}"
+				<!-- <form method="post" action="#" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYPAL_DETAILS}"
 					th:action="@{/submitPaypalDetailsAction}" th:object="${paypalDetails}">
 					<div class="d-flex justify-content-center">
 						<h2>Update Paypal Details</h2>
@@ -379,7 +379,7 @@
 						<button type="button" class="btn btn-lg btn-danger" disabled
 								th:if="${currUser.paypal == null}">No Paypal Account Added</button>
 					</div>
-				</form>
+				</form>-->
 					
 				<!-- Deposit details submenu -->
 				<form method="post" action="#" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}"
