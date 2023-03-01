@@ -128,13 +128,45 @@
 					</div>
 					
 					<div class="accordion" id="payment-methods">
+					<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#creditAccordion">
+									Pay via Existing Credit Card
+								</button>
+							</h2>
+							<div id="creditAccordion" class="accordion-collapse collapse show" data-bs-parent="#payment-methods">
+								<div class="accordion-body">
+									<form method="post" action="#" class="row g-3 d-flex justify-content-center my-2"
+										th:action="@{/confirmPurchase/existingCard}">
+										<div class="d-flex justify-content-center">
+											<h2>Payment Method</h2>
+										</div>
+										<div class="row">
+											<div class="mb-3 col-sm-4">
+												<label for="securityCode" class="form-label">Security Code for Confirmation</label>
+												<input type="number" class="form-control" name="existingSecurityCode" id="securityCode" th:value="${existingSecurityCode}"></input>
+												<p th:text="${securityCodeErr}" th:if="${securityCodeErr != null}"></p>
+											</div>
+										</div>
+
+										<!-- Purchase decisions -->
+										<div class="d-flex justify-content-evenly mb-3">
+											<button class="btn btn-danger btn-lg" type="submit" name="cancel">Cancel</button>
+											<button class="btn btn-primary btn-lg"
+												 type="submit" name="submit">Purchase Item</button>
+											
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
 						<div class="accordion-item">
 							<h2 class="accordion-header">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#creditAccordion">
 									Pay via Credit Card
 								</button>
 							</h2>
-							<div id="creditAccordion" class="accordion-collapse collapse show" data-bs-parent="#payment-methods">
+							<div id="creditAccordion" class="accordion-collapse collapse" data-bs-parent="#payment-methods">
 								<div class="accordion-body">
 									<form method="post" action="#" class="row g-3 d-flex justify-content-center my-2"
 										th:action="@{/confirmPurchase/submitPurchase}"  th:object="${paymentDetails}">
@@ -192,7 +224,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="accordion-item">
+						  <!-- <div class="accordion-item">
 							<h2 class="accordion-header">
 								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#paypalAccordion">
 									Pay via PayPal
@@ -225,7 +257,7 @@
 									</form>
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>

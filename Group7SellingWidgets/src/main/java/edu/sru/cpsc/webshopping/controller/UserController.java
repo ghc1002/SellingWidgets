@@ -411,4 +411,14 @@ public class UserController {
 		user.setRealCaptcha(CaptchaUtil.encodeCaptcha(captcha));
 		
 	}
+	
+	public boolean matchExistingCard(String secCode, User user)
+	{
+		if(passwordEncoder.matches(secCode, user.getPaymentDetails().getSecurityCode()))
+		{
+			return true;
+		}
+		else
+			return false;
+	}
 }
