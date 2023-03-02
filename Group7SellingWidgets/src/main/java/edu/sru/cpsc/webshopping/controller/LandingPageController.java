@@ -3171,11 +3171,10 @@ public class LandingPageController {
     System.out.println(tempWidget.getSubCategory());
     while (tempWidget != null) {
       if ((tempListing != null
-    		  && tempListing.getQtyAvailable() > 0
               && !tempListing.isDeleted()
               && tempWidget.getCategory().contentEquals(category))
     		  && (tempWidget.getSubCategory().contentEquals(subCategory)|| subCategory.contentEquals("all"))
-          || (tempListing != null && !tempListing.isDeleted() && category.contentEquals("all") && tempListing.getQtyAvailable() > 0)) {
+          || (tempListing != null && !tempListing.isDeleted() && category.contentEquals("all"))) {
     	  if(!allIds.isEmpty())
     	  {
     		  if(allIds.contains(tempWidget.getId()))
@@ -3217,15 +3216,17 @@ public class LandingPageController {
       tempListing = allListings.get(id);
       tempWidget = tempListing.getWidgetSold();
     }
+   System.out.println(tempWidget.getSubCategory());
+   System.out.println(subCategory);
     while (tempWidget != null) {
-      if (( tempWidget.getName() != null &&(tempWidget.getName().contains(searchString)
+      if ((tempWidget.getName().contains(searchString)
               || tempWidget.getName().toUpperCase().contains(searchString)
               || tempWidget.getName().toLowerCase().contains(searchString)
               || tempWidget.getDescription().contains(searchString)
               || tempWidget.getDescription().toUpperCase().contains(searchString)
-              || tempWidget.getDescription().toLowerCase().contains(searchString)))
+              || tempWidget.getDescription().toLowerCase().contains(searchString))
           && (tempWidget.getCategory().contentEquals(category) || subCategory.contentEquals("all"))
-        	&& ((tempWidget.getSubCategory().contentEquals(subCategory))|| category.contentEquals("all"))&& tempListing.getQtyAvailable() > 0) {
+        	&& ((tempWidget.getSubCategory().contentEquals(subCategory))|| category.contentEquals("all"))) {
         if (tempListing != null && !tempListing.isDeleted()) {
         	if(!allIds.isEmpty())
       	  {
@@ -3280,8 +3281,7 @@ public class LandingPageController {
       if (operator.contentEquals("greater")
           && res == 1
           && (tempWidget.getCategory().contentEquals(category) || category.contentEquals("all"))
-          && (tempWidget.getSubCategory().contentEquals(subCategory)|| subCategory.contentEquals("all"))
-          && tempListing.getQtyAvailable() > 0) {
+          && (tempWidget.getSubCategory().contentEquals(subCategory)|| subCategory.contentEquals("all"))) {
         if (!tempListing.isDeleted()) {
         	if(!allIds.isEmpty())
       	  {
@@ -3299,8 +3299,7 @@ public class LandingPageController {
       } else if (operator.contentEquals("lesser")
           && res == -1
           && (tempWidget.getCategory().contentEquals(category) || category.contentEquals("all")) 
-    	  && (tempWidget.getSubCategory().contentEquals(subCategory)|| subCategory.contentEquals("all"))
-    	  && tempListing.getQtyAvailable() > 0) {
+    	  && (tempWidget.getSubCategory().contentEquals(subCategory)|| subCategory.contentEquals("all"))) {
         if (!tempListing.isDeleted()) {
         	if(!allIds.isEmpty())
       	  {
@@ -3357,8 +3356,7 @@ public class LandingPageController {
               || tempWidget.getDescription().toLowerCase().contains(searchString))
           && (tempWidget.getCategory().contentEquals(category) 
         	|| category.contentEquals("all"))
-          && (tempWidget.getSubCategory().contentEquals(subCategory) || subCategory.contentEquals("all"))
-          && tempListing.getQtyAvailable() > 0) {
+          && (tempWidget.getSubCategory().contentEquals(subCategory) || subCategory.contentEquals("all"))) {
         int res = tempListing.getPricePerItem().compareTo(bigPrice);
         if (operator.contentEquals("greater") && (res == 1)) {
           if (!tempListing.isDeleted()) {

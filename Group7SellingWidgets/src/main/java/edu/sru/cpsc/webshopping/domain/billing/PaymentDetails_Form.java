@@ -3,8 +3,8 @@ package edu.sru.cpsc.webshopping.domain.billing;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.*;
-import java.time.LocalDate;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.NonNull;
@@ -33,8 +33,6 @@ public class PaymentDetails_Form {
 	@NonNull
 	@Size(min = 5, max = 5, message = "Postal Code must be 5 characters")
 	private String postalCode;
-	
-	private int Ex = LocalDate.now().getYear();
 
 	public String getCardType() {
 		return cardType;
