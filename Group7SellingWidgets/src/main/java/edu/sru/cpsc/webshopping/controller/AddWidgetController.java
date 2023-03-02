@@ -1189,6 +1189,49 @@ public class AddWidgetController {
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "createListing";
 	}
+	
+	/**
+	 * Deletes the added widget from the widgets database and then returns to that widgets add page
+	 * @param model
+	 * @return
+	 */
+	
+	@RequestMapping("/back-and-delete")
+	public String backAndDelete(Model model)
+	{
+		String back = "redirect:add";
+		String pre = "";
+		String post = "";
+		String subCat = widget.getSubCategory();
+		if(subCat.contains("mower"))
+			back = back + "Lawn";
+		if(widget.getSubCategory().contains("_")) //check if the widget is a part
+		{
+			int space = subCat.indexOf('_');
+			pre = subCat.substring(0, 1).toUpperCase() + subCat.substring(1, space);
+			post =  subCat.substring(space+1, space+2).toUpperCase() + subCat.substring(space+2, subCat.length());
+			back = back + pre + post;
+		}
+		else if(widget.getSubCategory().equalsIgnoreCase("refridgerator"))
+			back = back + "Fridge";
+		else
+			back = back + subCat.substring(0, 1).toUpperCase() + subCat.substring(1);
+		widgetController.deleteWidget(widget.getId());
+		System.out.println(back);
+		System.out.println(widget.getSubCategory());
+		return back;
+	}
+	
+	/**
+	 * Add the listing to the listings database
+	 * @param model
+	 * @param file the image files name
+	 * @param qty The set quantity
+	 * @param attributes
+	 * @param marketListing
+	 * @param result
+	 * @return
+	 */
 
 	@RequestMapping("/addListing")
 	public String addListing(Model model, @RequestParam("imageUpload") MultipartFile file ,@RequestParam("qtyAvailable") Long qty , RedirectAttributes attributes, @Valid @ModelAttribute MarketListing marketListing, BindingResult result)

@@ -799,6 +799,7 @@ public class EmployeeController {
     model.addAttribute("allWidgets", getAllWidgets());
     model.addAttribute("allSellers", getAllSellers());
     model.addAttribute("page", getPage());
+    model.addAttribute("user", user);
     return "browseWidgets";
   }
 
