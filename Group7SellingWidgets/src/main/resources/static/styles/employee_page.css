@@ -369,6 +369,13 @@ table.addUserCreateFail td{
 	text-align: center
 }
 
+table.uniTableForm td{
+	height:50px;
+	border-color: black;
+	padding-left: 8px;
+	width: 120px;
+}
+
 table.addUserSuccess td{
 	
 	height:50px;
@@ -380,12 +387,12 @@ table.addUserSuccess td{
 }
 
 .buttonCancelUser{
-		margin-right: 4px;
-		border-radius: 12px;
-		color: black;
-		background-color: red;
-		border-color: black;
-		font-size: 15px;
+	margin-right: 4px;
+	border-radius: 12px;
+	color: black;
+	background-color: red;
+	border-color: black;
+	font-size: 15px;
 }
 
 .buttonCancelUser:hover{
@@ -393,14 +400,27 @@ table.addUserSuccess td{
 }
 
 .buttonAddUser{
-		margin-right: 4px;
-		border-radius: 12px;
-		color: black;
-		background-color: #0BDA51;
-		border-color: black;
-		font-size: 15px
+	margin-right: 4px;
+	border-radius: 12px;
+	color: black;
+	background-color: #0BDA51;
+	border-color: black;
+	font-size: 15px
 }
 
 .buttonAddUser:hover{
 	background-color: #009E60;
+}
+
+.buttonSearchUser{
+	border-radius: 12px;
+	color: black;
+	background-color: white;
+	border-color: black;
+	font-size: 15px;
+}
+
+.buttonSearchUser:hover{
+	
+	background-color: #D3D3D3;
 }

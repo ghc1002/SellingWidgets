@@ -62,7 +62,7 @@
 
 <!-- ROLE_ADMIN SIDEBAR -->
   <th:block th:switch="${user.role}">
-    <nav class="navbar bg-dark align-items-start" style="width:6%">
+    <nav class="navbar bg-dark align-items-start">
     	<div th:case="ROLE_ADMIN" class="container-fluid">
         	<ul class="nav nav-pills flex-column mb-auto bg-dark" style="height: 100%;">
 				<li class="nav-item">
@@ -70,8 +70,8 @@
 					<a th:unless="${page == 'ticket'}" class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a>
 				</li>
 				<li class="nav-item">
-					<a th:if="${page == 'create'}" class="submit4 nav-link active" th:href="@{/createButton}"><span>Add Users</span></a>
-					<a th:unless="${page == 'create'}" class="submit4" th:href="@{/createButton}"><span>Add Users</span></a>
+					<a th:if="${page == 'create'}" class="submit4 nav-link active" th:href="@{/createButton}"><span>Add Account</span></a>
+					<a th:unless="${page == 'create'}" class="submit4" th:href="@{/createButton}"><span>Add Account</span></a>
 				</li>
 				<li class="nav-item">
 					<a th:if="${page == 'search'}" class="submit4 nav-link active" th:href="@{/searchButton}"><span>Search Users</span></a>
@@ -319,70 +319,66 @@
             </form>
           </div>
           <div th:case="ticket">
-            <table class="center">
-              <tr>
-                <th:block th:if="${user.role == 'ROLE_ADMIN'}">
-                  <th colspan="15">Tickets</th>
-                </th:block>
-                <th:block th:unless="${user.role == 'ROLE_ADMIN'}">
-                  <th colspan="11">Tickets</th>
-                </th:block>
-              </tr>
-              <tr>
-                <th colspan="1">Ticket ID</th>
-                <th colspan="2">Reporter</th>
-                <th colspan="2">Currently Assigned To</th>
-                <th colspan="2">User Level</th>
-                <th:block th:if="${user.role == 'ROLE_ADMIN'}">
-                  <th colspan="4">Update Assignee</th>
-                </th:block>
-                <th colspan="2">State</th>
-                <th colspan="2">Ticket Actions</th>
-              </tr>
-              <th:block th:each="ticket: ${tickets}">
-                <tr>
-                  <td><a th:href="@{/searchTickets/{id}(id = ${ticket.id})}"
-                         th:text="${ticket.id}"></a></td>
-                  <td colspan="2"><a th:href="@{/searchUser/{id}(id = ${ticket.createdBy.id})}"
-                         th:text="${ticket.createdBy.username}"></a></td>
-                  <!-- Null Pointer Check - https://stackoverflow.com/questions/20636456/using-thymeleaf-when-the-value-is-null -->
-                  <td colspan="2"><p
-                      th:text="${ticket.assignedTo} ? ${ticket.assignedTo.username} : 'None'"></p>
-                  </td>
-                  <td colspan="2"><p
-                      th:text="${ticket.assignedTo} ? ${ticket.assignedTo.role} : 'None'"></p>
-                  </td>
-                  <th:block th:if="${user.role == 'ROLE_ADMIN'}">
-                    <td colspan="4">
-                      <th:block th:if="${!ticket.isResolved()}">
-                        <form method="post" th:action="@{/assignTicket/{id}(id = ${ticket.id})}">
-                          <select th:name="username" style="max-width: 70%">
-                            <option th:each="assignuser : ${users}"
-                                    th:value="${assignuser.username}"
-                                    th:text="${assignuser.username != user.username} ? ${assignuser.role} + ' - ' + ${assignuser.username} : 'Assign To Me'"></option>
-                          </select>
-                          <input type="submit" value="submit"/>
-                        </form>
-                      </th:block>
-                      <th:block th:unless="${!ticket.isResolved()}"><p>None</p></th:block>
-                    </td>
-                  </th:block>
-                  <td colspan="2"><p th:text="${ticket.state}"></p></td>
-                  <td colspan="2">
-                    <th:block
-                        th:if="${!ticket.isResolved() && ticket.assignedTo != null ? ticket.assignedTo.username == user.username : false}">
-                      <form method="post" th:action="@{/resolveTicket/{id}(id = ${ticket.id})}">
-                        <input type="submit" value="Resolve Ticket"/>
-                      </form>
-                    </th:block>
-                    <th:block
-                        th:unless="${!ticket.isResolved() && ticket.assignedTo != null ? ticket.assignedTo.username == user.username : false}">
-                      <p>None</p></th:block>
-                  </td>
-                </tr>
-              </th:block>
-            </table>
-
+          	<div class ="card h-100 w-100">
+              	<div class="card-body" style="padding-top: 24px;">
+              		<div class="card" style="width: fit-content; height: fit-content; float:left">
+						<table class="uniTableForm">
+							<tr>
+                				<th:block th:if="${user.role == 'ROLE_ADMIN'}">
+                 					<td colspan="15" style="background-color: #D3D3D3"><h4>Tickets</h4></td>
+                				</th:block>
+                				<th:block th:unless="${user.role == 'ROLE_ADMIN'}">
+                  					<td colspan="11">Tickets</td>
+                				</th:block>
+              				</tr>
+              				<tr>
+                				<td colspan="1" style="background-color: #89CFF0">Ticket ID</td>
+                				<td colspan="2" style="background-color: #89CFF0">Reporter</td>
+                				<td colspan="2" style="background-color: #89CFF0">Currently Assigned To</td>
+                				<td colspan="2" style="background-color: #89CFF0">User Level</td>
+               					<th:block th:if="${user.role == 'ROLE_ADMIN'}">
+                  					<td colspan="4" style="background-color: #89CFF0">Update Assignee</td>
+                				</th:block>
+                				<td colspan="2" style="background-color: #89CFF0">State</td>
+                				<td colspan="2" style="background-color: #89CFF0">Ticket Actions</td>
+              				</tr>
+              				 <th:block th:each="ticket: ${tickets}">
+                				<tr>
+                  					<td><a th:href="@{/searchTickets/{id}(id = ${ticket.id})}" th:text="${ticket.id}"></a></td>
+                  					<td colspan="2"><a th:href="@{/searchUser/{id}(id = ${ticket.createdBy.id})}"th:text="${ticket.createdBy.username}"></a></td>
+                  					<!-- Null Pointer Check - https://stackoverflow.com/questions/20636456/using-thymeleaf-when-the-value-is-null -->
+                  					<td colspan="2"><p th:text="${ticket.assignedTo} ? ${ticket.assignedTo.username} : 'None'"></p></td>
+                  					<td colspan="2"><p th:text="${ticket.assignedTo} ? ${ticket.assignedTo.role} : 'None'"></p></td>
+                  				<th:block th:if="${user.role == 'ROLE_ADMIN'}">
+                    				<td colspan="4">
+                      				<th:block th:if="${!ticket.isResolved()}">
+                       					 <form method="post" th:action="@{/assignTicket/{id}(id = ${ticket.id})}">
+                          					<select th:name="username" style="max-width: 70%">
+                            					<option th:each="assignuser : ${users}"
+                                   				th:value="${assignuser.username}"
+                                    			th:text="${assignuser.username != user.username} ? ${assignuser.role} + ' - ' + ${assignuser.username} : 'Assign To Me'"></option>
+                          					</select>
+                         			 		<input type="submit" value="Submit"/>
+                        				</form>
+                      				</th:block>
+                      				<th:block th:unless="${!ticket.isResolved()}"><p>None</p></th:block>
+                    				</td>
+                  				</th:block>
+                  					<td colspan="2"><p th:text="${ticket.state}"></p></td>
+                  					<td colspan="2">
+                    			<th:block th:if="${!ticket.isResolved() && ticket.assignedTo != null ? ticket.assignedTo.username == user.username : false}">
+                     				<form method="post" th:action="@{/resolveTicket/{id}(id = ${ticket.id})}">
+                        				<input type="submit" value="Resolve Ticket"/>
+                     				</form>
+                    			</th:block>
+                   				<th:block th:unless="${!ticket.isResolved() && ticket.assignedTo != null ? ticket.assignedTo.username == user.username : false}"><p>None</p></th:block>
+                  					</td>
+                				</tr>
+              				</th:block>
+						</table>
+					</div>
+				</div>
+			</div>	
           </div>
 
           <div th:case="ticketdetail">
@@ -629,19 +625,19 @@
               				</thead>
               				<tbody>
               					<tr>
-              						<td><label for="userName">username:</label></td>
+              						<td style="background-color: #89CFF0"><label for="userName">Username:</label></td>
               						<td><input type="text" th:field="*{username}" id="username"></td>
               					</tr>
               					<tr>
-              						 <td><label for="password">password:</label></td>
+              						 <td style="background-color: #89CFF0"><label for="password">Password:</label></td>
                   					 <td><input type="text" th:field="*{password}" id="password"></td>
               					</tr>
               					<tr>
-              						 <td><label for="email">email: </label></td>
+              						 <td style="background-color: #89CFF0"><label for="email">Email: </label></td>
                   					 <td><input type="text" th:field="*{email}" id="email"></td>
               					</tr>
               					<tr>
-              						<td>select role:</td>
+              						<td style="background-color: #89CFF0">Select Role:</td>
               						<td style="padding-right: 8px;">
               							<div>
               								<select th:field="*{role}">
@@ -707,41 +703,43 @@
           
           <div th:case="searchWidgetSellerMarketListing">
             <form th:action="@{/viewWidgetListing}" method="post">
-            		<div class="table-responsive">
-            			<table class="left" style="width: 85%">
-            				<tr>
-            					<td>
-            						<table style="width: 100%">
-            							<thead>
-            								<tr>
-            									<th colspan="2" style="border: 1px solid black;">Search Widgets<br/><input type="text" id="widgetNameInput" name="name" size="28"></th>
-            									<th colspan="3" style="border: 1px solid black;"><input type="submit" style="width:50%; height:75%; text-align: center; " class="submit" value="Search"></th>	
-            								</tr>
-            								<tr>
-            									<th colspan="4" style="background-color: #5C6B9C; border: 1px solid black;">Widget</th>
-            								</tr>
-            								<tr>
-            									<td style="background-color: #D3D3D3; border: 1px solid black;">View Listing</td>
-            									<td style="background-color: #D3D3D3; border: 1px solid black;">Widget Name</td>
-            									<td style="background-color: #D3D3D3; border: 1px solid black;">Widget Description</td>
-            									<td style="background-color: #D3D3D3; border: 1px solid black;">Widget Category</td>
-            								</tr>
-            							</thead>
-            							<tbody>
-            								<th:block th:each="searchedWidgets: ${allWidgets}">
-            									<tr>
-            										<td style="border: 1px solid black;"><a th:href="@{/viewOneListing/{id}(id = ${searchedWidgets.id})}">View</a></td>
-                   									<td style="border: 1px solid black;"><p th:text="${searchedWidgets.name}"></p></td>
-                    								<td style="border: 1px solid black;"><p th:text="${searchedWidgets.description}"></p></td>
-                    								<td style="border: 1px solid black;"><p th:text="${searchedWidgets.category}"></p></td>
-            									</tr>
-            								</th:block>
-            							</tbody>
-            						</table>
-            					</td>
-            				</tr>
-            			</table>
-            		</div>
+            	<div class ="card h-100 w-100">
+              		<div class="card-body" style="padding-top: 24px;">
+              			<div class="card" style="width: fit-content; height: fit-content; float:left">
+              				<table class="uniTableForm">
+              					<thead>
+              						<tr>
+              							<td colspan="5" style="background-color: #D3D3D3"><h2>Search Widgets</h2></td>
+              						</tr>
+									<tr>
+      									<td colspan="1">Search Widgets</td>
+      									<td colspan="2"><input type="text" id="widgetNameInput" name="name"></td>
+           								<td colspan="2"><input type="submit" style="width:50%; height:75%; text-align: center; " class="buttonSearchUser" value="Search"></td>	
+      								</tr>
+      								<tr>
+            							<td colspan="4" style="background-color: #D3D3D3"><h4>Widget</h4></td>
+      								</tr>
+      								<tr>
+            							<td style="background-color: #89CFF0">View Listing</td>
+            							<td style="background-color: #89CFF0">Widget Name</td>
+            							<td style="background-color: #89CFF0">Widget Description</td>
+            							<td style="background-color: #89CFF0">Widget Category</td>
+      								</tr>
+								</thead>
+								<tbody>
+      								<th:block th:each="searchedWidgets: ${allWidgets}">
+      									<tr>
+            								<td><a th:href="@{/viewOneListing/{id}(id = ${searchedWidgets.id})}">View</a></td>
+                  							<td><p th:text="${searchedWidgets.name}"></p></td>
+                  							<td><p th:text="${searchedWidgets.description}"></p></td>
+                  							<td><p th:text="${searchedWidgets.category}"></p></td>
+            							</tr>
+       								</th:block>
+								</tbody>
+              				</table>
+              			</div>
+              		</div>
+              	</div>	
             </form>
             <th:block th:switch="${page2}">
             	<div th:case="widget">
@@ -935,47 +933,47 @@
           </div>
 
           <div th:case="search">
-
-
-            <table class="center">
-              <tr>
-                <th colspan="7"> Search For Users</th>
-              </tr>
-              <tr>
-                <form th:action="@{/searchUser}" method="post">
-                  <td colspan="2"><label for="userName">Search By Username</label></td>
-                  <td colspan="3"><input type="text" id="nameInput" name="userName"></td>
-                  <td colspan="2"><input type="submit" style="width:75%;height:75%" class="submit"
-                                         value="Search"></td>
-                </form>
-              </tr>
-              <tr>
-                <th colspan="7"> All User's Information</th>
-              </tr>
-              <tr>
-                <th> User Name</th>
-                <th> Email Address</th>
-                <th> View Inbox</th>
-                <th> View Outbox</th>
-                <th> View Trash</th>
-                <th> Edit User</th>
-                <th> View User's Market Listings</th>
-              </tr>
-              <th:block th:each="user: ${users}">
-                <tr>
-                  <td><a th:href="@{/searchUser/{id}(id = ${user.id})}"
-                         th:text="${user.username}"></a></td>
-                  <td><p th:text="${user.email}"></p></td>
-                  <td><a th:href="@{/viewSpecificUserInbox/{id}(id = ${user.id})}">Inbox</a></td>
-                  <td><a th:href="@{/viewSpecificUserOutbox/{id}(id = ${user.id})}">Outbox</a></td>
-                  <td><a th:href="@{/viewSpecificUserTrash/{id}(id = ${user.id})}">Trash</a></td>
-                  <td><a th:href="@{/editUserButton/{id}(id = ${user.id})}">Edit User</a></td>
-                  <td><a th:href="@{/viewListing/{id}(id = ${user.id})}">View User's Market
-                    Listings</a></td>
-                </tr>
-              </th:block>
-            </table>
-
+		  	<div class ="card h-100 w-100">
+              	<div class="card-body" style="padding-top: 24px;">
+              		<div class="card" style="width: fit-content; height: fit-content; float:left">
+              			<table class="uniTableForm">
+              				<tr>
+                				<td colspan="7" style="background-color: #D3D3D3"><h2>Search For Users</h2></td>
+              				</tr>
+              				<tr>
+                				<form th:action="@{/searchUser}" method="post">
+                  					<td colspan="2"><label for="userName">Search By Username</label></td>
+                  					<td colspan="3"><input type="text" id="nameInput" name="userName" style="width: 97%"></td>
+                  					<td colspan="2"><input type="submit" class="buttonSearchUser" value="Search"></td>
+                				</form>
+              				</tr>
+              				<tr>
+                				<td colspan="7" style="background-color: #D3D3D3"><h4>All User's Information</h4></td>
+              				</tr>
+              				<tr>
+                				<td style="background-color: #89CFF0"> Username</td>
+                				<td style="background-color: #89CFF0"> Email Address</td>
+                				<td style="background-color: #89CFF0"> View Inbox</td>
+                				<td style="background-color: #89CFF0"> View Outbox</td>
+                				<td style="background-color: #89CFF0"> View Trash</td>
+                				<td style="background-color: #89CFF0"> Edit User</td>
+                				<td style="background-color: #89CFF0"> User's Market Listings</td>
+              				</tr>
+              				<th:block th:each="user: ${users}">
+                				<tr>
+                  					<td><a th:href="@{/searchUser/{id}(id = ${user.id})}" th:text="${user.username}"></a></td>
+                  					<td><p th:text="${user.email}"></p></td>
+                  					<td><a th:href="@{/viewSpecificUserInbox/{id}(id = ${user.id})}">Inbox</a></td>
+                  					<td><a th:href="@{/viewSpecificUserOutbox/{id}(id = ${user.id})}">Outbox</a></td>
+                  					<td><a th:href="@{/viewSpecificUserTrash/{id}(id = ${user.id})}">Trash</a></td>
+                  					<td><a th:href="@{/editUserButton/{id}(id = ${user.id})}">Edit User</a></td>
+                  					<td><a th:href="@{/viewListing/{id}(id = ${user.id})}">View</a></td>
+                				</tr>
+              				</th:block>
+            			</table>
+              		</div>
+              	</div>
+              </div>
           </div>
           <div th:case="userSearchfailed">
             <table class="center">
@@ -1083,24 +1081,33 @@
 
           </div>
           <div th:case="searchMessage">
-            <table class="center">
-              <tr>
-                <th> User Name</th>
-                <th> Email Address</th>
-                <th> View Inbox</th>
-                <th> View Outbox</th>
-                <th> View Trash</th>
-              </tr>
-              <th:block th:each="user: ${users}">
-                <tr>
-                  <td><p th:text="${user.username}"></p></td>
-                  <td><p th:text="${user.email}"></p></td>
-                  <td><a th:href="@{/viewSpecificUserInbox/{id}(id = ${user.id})}">Inbox</a></td>
-                  <td><a th:href="@{/viewSpecificUserOutbox/{id}(id = ${user.id})}">Outbox</a></td>
-                  <td><a th:href="@{/viewSpecificUserTrash/{id}(id = ${user.id})}">Trash</a></td>
-                </tr>
-              </th:block>
-            </table>
+          	<div class ="card h-100 w-100">
+              	<div class="card-body" style="padding-top: 24px;">
+              		<div class="card" style="width: fit-content; height: fit-content; float:left">
+              			<table class="uniTableForm">
+              				<tr>
+              					<td colspan="5" style="background-color: #D3D3D3"><h2>View Messages</h2></td>
+              				</tr>
+              				<tr>
+                				<td style="background-color: #89CFF0"> Username</td>
+                				<td style="background-color: #89CFF0"> Email Address</td>
+               					<td style="background-color: #89CFF0"> View Inbox</td>
+                				<td style="background-color: #89CFF0"> View Outbox</td>
+                				<td style="background-color: #89CFF0"> View Trash</td>
+              				</tr>
+              				<th:block th:each="user: ${users}">
+                				<tr>
+                  					<td><p th:text="${user.username}"></p></td>
+                  					<td><p th:text="${user.email}"></p></td>
+                  					<td><a th:href="@{/viewSpecificUserInbox/{id}(id = ${user.id})}">Inbox</a></td>
+                  					<td><a th:href="@{/viewSpecificUserOutbox/{id}(id = ${user.id})}">Outbox</a></td>
+                  				<td><a th:href="@{/viewSpecificUserTrash/{id}(id = ${user.id})}">Trash</a></td>
+                				</tr>
+              				</th:block>
+              			</table>
+              		</div>
+              	</div>
+              </div>
           </div>
           <div th:case="applications">
             <table class="center">
