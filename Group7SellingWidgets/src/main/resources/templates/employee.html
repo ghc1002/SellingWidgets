@@ -62,16 +62,16 @@
 
 <!-- ROLE_ADMIN SIDEBAR -->
   <th:block th:switch="${user.role}">
-    <nav class="navbar bg-dark align-items-start">
+    <nav class="navbar bg-dark align-items-start" style="width:6%">
     	<div th:case="ROLE_ADMIN" class="container-fluid">
-        	<ul class="nav nav-pills">
+        	<ul class="nav nav-pills flex-column mb-auto bg-dark" style="height: 100%;">
 				<li class="nav-item">
 					<a th:if="${page == 'ticket'}" class="submit4 nav-link active" th:href="@{/searchTickets}"><span>Search Tickets</span></a>
 					<a th:unless="${page == 'ticket'}" class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a>
 				</li>
 				<li class="nav-item">
-					<a th:if="${page == 'create'}" class="submit4 nav-link active" th:href="@{/createButton}"><span>Add Employee</span></a>
-					<a th:unless="${page == 'create'}" class="submit4" th:href="@{/createButton}"><span>Add Employee</span></a>
+					<a th:if="${page == 'create'}" class="submit4 nav-link active" th:href="@{/createButton}"><span>Add Users</span></a>
+					<a th:unless="${page == 'create'}" class="submit4" th:href="@{/createButton}"><span>Add Users</span></a>
 				</li>
 				<li class="nav-item">
 					<a th:if="${page == 'search'}" class="submit4 nav-link active" th:href="@{/searchButton}"><span>Search Users</span></a>
@@ -82,8 +82,8 @@
 					<a th:unless="${page =='searchWidgetSellerMarketListing'}" class="submit4" th:href="@{/searchWidgetButton}"><span>Search Items</span></a>
 				</li>
 				<li class="nav-item">
-					<a th:if="${page == 'widgetsInfo'}" class="submit4 nav-link active" th:href="@{/widgetsInfo}"><span>Items Info</span></a>
-					<a th:unless="${page == 'widgetsInfo'}" class="submit4" th:href="@{/widgetsInfo}"><span>Items Info</span></a>
+					<a th:if="${page == 'widgetsInfo'}" class="submit4 nav-link active" th:href="@{/widgetsInfo}"><span>Items Details</span></a>
+					<a th:unless="${page == 'widgetsInfo'}" class="submit4" th:href="@{/widgetsInfo}"><span>Items Details</span></a>
 				</li>
 				<li class="nav-item">
 					<a th:if="${page == 'searchMessage'}" class="submit4 nav-link active" th:href="@{/searchMessageButton}"><span>View a Message</span></a>
@@ -617,74 +617,54 @@
             <h1>Employee Creation Failed</h1>
           </div>
           <div th:case="create">
-            <th:block th:switch="${page2}">
-              <div th:case="create">
-                <table class="center">
-                  <tr>
-
-                    <th colspan="3" style="background-color: rgb(4, 179, 87);"> Creation
-                      Successful
-                    </th>
-                  </tr>
-                </table>
-              </div>
-              <div th:case="createFail">
-                <table class="center">
-                  <tr>
-
-                    <th colspan="3" style="background-color: red;"> Creation Fail</th>
-
-                  </tr>
-                  <tr>
-
-                    <th colspan="3" style="background-color: red;"><p
-                        th:text="${createStringError}"></p></th>
-
-                  </tr>
-
-                </table>
-              </div>
-            </th:block>
             <form th:action="@{/createEmployee}" th:object="${useradd}" method="post">
-              <table class="center">
-                <tr>
-                  <th colspan="2"> Create an Employee</th>
-                </tr>
-                <tr>
-                  <td><label for="userName">Username:</label></td>
-                  <td><input type="text" th:field="*{username}" id="username"></td>
-
-                </tr>
-                <tr>
-                  <td><label for="password">Password:</label></td>
-                  <td><input type="text" th:field="*{password}" id="password"></td>
-
-                </tr>
-                <tr>
-                  <td><label for="email">Email: </label></td>
-                  <td><input type="text" th:field="*{email}" id="email"></td>
-
-                </tr>
-                <tr>
-                  <td>
-                    <div>Select Role :</div>
-                  </td>
-                  <td>
-                    <div><select th:field="*{role}">
-                      <option th:each="role : ${roleList}" th:text="${role}" th:value="${role}"/>
-                    </select></div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><input type="submit" class="submit" style="width:75%;height:75%"
-                             value="Add Employee"></td>
-
-                  <td><a class="submit7 " style="width:70%;height:70%" th:href="@{/employee}"><span>Cancel</span></a>
-                  </td>
-                </tr>
-
-
-              </table>
+              <div class ="card h-100 w-100">
+              	<div class="card-body" style="padding-top: 24px;">
+              		<div class="card" style="width: fit-content; height: fit-content; float:left">
+              			<table class="addUserTable">
+              				<thead>
+              					<tr>
+              						<td colspan="2" style="background-color: #D3D3D3;"><h4>Add User</h4></td>
+              					</tr>
+              				</thead>
+              				<tbody>
+              					<tr>
+              						<td><label for="userName">username:</label></td>
+              						<td><input type="text" th:field="*{username}" id="username"></td>
+              					</tr>
+              					<tr>
+              						 <td><label for="password">password:</label></td>
+                  					 <td><input type="text" th:field="*{password}" id="password"></td>
+              					</tr>
+              					<tr>
+              						 <td><label for="email">email: </label></td>
+                  					 <td><input type="text" th:field="*{email}" id="email"></td>
+              					</tr>
+              					<tr>
+              						<td>select role:</td>
+              						<td style="padding-right: 8px;">
+              							<div>
+              								<select th:field="*{role}">
+                      						<option th:each="role : ${roleList}" th:text="${role}" th:value="${role}"/>
+                    						</select>
+              							</div>
+              						</td>
+              					</tr>
+              				</tbody>
+              				<tfoot>
+              					<tr>
+              						<td><input type="submit" class="buttonAddUser" value="Add"></td>
+              						<td>
+              							<div>
+                        					<button class="buttonCancelUser" type="button" onclick="location.href='/employee'">Cancel</button>
+                        				</div>
+              						</td>
+              					</tr>
+              				</tfoot>
+              			</table>
+              		</div>
+              	</div>
+              </div>
               <span style="color:red" th:if="${#fields.hasErrors('username')}"
                     th:errors="*{username}"></span>
               <span style="color:red" th:if="${#fields.hasErrors('password')}"
@@ -692,6 +672,37 @@
               <span style="color:red" th:if="${#fields.hasErrors('email')}"
                     th:errors="*{email}"></span>
             </form>
+             <th:block th:switch="${page2}">
+              <div th:case="create">
+                <div class ="card h-100 w-100">
+              		<div class="card-body" style="padding-top: 24px;">
+              			<div class="card" style="width: fit-content; height: fit-content; float:left">
+              				<table class="addUserSuccess">
+              					<tr>
+              						<td colspan="3" style="background-color: rgb(4, 179, 87);">Creation Successful</td>
+              					</tr>
+              				</table>
+              			</div>
+              		</div>
+              	</div>		
+              </div>
+              <div th:case="createFail">
+              	<div class ="card h-100 w-100">
+              		<div class="card-body" style="padding-top: 24px;">
+              			<div class="card" style="width: fit-content; height: fit-content; float:left">
+              				<table class="addUserCreateFail">
+              					<tr>
+                    				<td colspan="3"> Creation Fail</td>
+                  				</tr>
+                  				<tr>
+                    				<td colspan="3"><p th:text="${createStringError}"></p></td>
+                  				</tr>           					
+              				</table>
+              			</div>
+					</div>
+				</div>              
+              </div>
+            </th:block>
           </div>
           
           <div th:case="searchWidgetSellerMarketListing">
