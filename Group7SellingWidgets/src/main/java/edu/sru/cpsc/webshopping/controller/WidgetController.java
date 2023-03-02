@@ -239,23 +239,6 @@ public class WidgetController {
 		        widgetRepository.delete(widget);
 		    return "addDryer";
   }
-  
-  @GetMapping({"back-delete-car-parts/{id}"})
-  public String backDeleteCarParts(@PathVariable("id") long id) {
-	  Vehicle_Car_Parts carParts =
-		        carPartsRepository
-		            .findById(id)
-		            .orElseThrow(
-		                () -> new IllegalArgumentException("Invalid ID provided for deleting widget."));
-		    carPartsRepository.delete(carParts);
-		    Widget widget =
-		            widgetRepository
-		                .findById(id)
-		                .orElseThrow(
-		                    () -> new IllegalArgumentException("Invalid ID provided for deleting widget."));
-		        widgetRepository.delete(widget);
-		    return "/addCarParts";
-  }
 
   @GetMapping({"add-microwave"})
   public void addMicrowave(@Validated Appliance_Microwave microwave, BindingResult result) {
@@ -788,16 +771,6 @@ public class WidgetController {
       throw new IllegalArgumentException("Error adding new widget in WidgetController.addWidget");
     }
     carPartsRepository.save(carPart);
-  }
-  
-  @GetMapping({"delete-carPart/{id}"})
-  public void deleteCarPart(@PathVariable("id") long id) {
-	  Vehicle_Car_Parts carPart =
-        carPartsRepository
-            .findById(id)
-            .orElseThrow(
-                () -> new IllegalArgumentException("Invalid ID provided for deleting widget."));
-    carPartsRepository.delete(carPart);
   }
 
   @RequestMapping({"get-car"})

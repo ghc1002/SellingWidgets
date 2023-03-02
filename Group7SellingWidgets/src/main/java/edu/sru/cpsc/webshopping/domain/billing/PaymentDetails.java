@@ -31,9 +31,6 @@ public class PaymentDetails {
 	private String cardNumber;
 	
 	@NonNull
-	private String last4Digits;
-	
-	@NonNull
 	private String expirationDate;
 	
 	@NonNull
@@ -98,20 +95,11 @@ public class PaymentDetails {
 		this.postalCode = postalCode;
 	}
 	
-	public String getLast4Digits() {
-		return last4Digits;
-	}
-
-	public void setLast4Digits(String last4Digits) {
-		this.last4Digits = last4Digits;
-	}
-
 	// Sets the non-id fields of the calling PaymentDetails to match that of the passed PaymentDetails
 	public void transferFields(PaymentDetails other) {
 		this.cardType = other.cardType;
 		this.cardholderName = other.cardholderName;
 		this.cardNumber = other.cardNumber;
-		this.last4Digits = other.last4Digits;
 		this.expirationDate = other.expirationDate;
 		this.securityCode = other.securityCode;
 		this.postalCode = other.postalCode;
@@ -121,8 +109,6 @@ public class PaymentDetails {
 		this.cardType = form.getCardType();
 		this.cardholderName = form.getCardholderName();
 		this.cardNumber = form.getCardNumber();
-		if(this.cardNumber.length() == 16)
-			this.last4Digits = form.getCardNumber().substring(12);
 		this.expirationDate = form.getExpirationDate();
 		this.securityCode = form.getSecurityCode();
 		this.postalCode = form.getPostalCode();

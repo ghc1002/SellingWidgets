@@ -24,7 +24,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.lang.NonNull;
 
 import edu.sru.cpsc.webshopping.domain.user.User;
-import edu.sru.cpsc.webshopping.domain.billing.PaymentDetails;
 
 
 
@@ -74,10 +73,6 @@ public class Transaction {
 	
 	@OneToOne
 	private Shipping shippingEntry;
-	
-	@NonNull
-	@ManyToOne
-	private PaymentDetails paymentDetails;
 
 
 	public long getId() {
@@ -158,13 +153,5 @@ public class Transaction {
 
 	public void setMarketListing(MarketListing marketListing) {
 		this.marketListing = marketListing;
-	}
-
-	public PaymentDetails getPaymentDetails() {
-		return paymentDetails;
-	}
-
-	public void setPaymentDetails(PaymentDetails paymentDetails) {
-		this.paymentDetails = paymentDetails;
 	}
 }

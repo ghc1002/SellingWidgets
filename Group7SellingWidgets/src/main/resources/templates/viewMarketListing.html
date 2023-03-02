@@ -575,11 +575,15 @@
                  th:max="${currListing.qtyAvailable}" value="0" required></input>
         </div>
         <div class="col-auto">
-          <input class="btn btn-success" id="buyProduct"
+          <input th:if="${user.paypal != null || user.paymentDetails != null}"
+                 class="btn btn-success" id="buyProduct"
                  name="buyProduct" type="submit" value="Purchase Items"></input>
+          <input th:unless="${user.paypal != null || user.paymentDetails != null}"
+                 class="btn btn-danger" id="buyProduct"
+                 name="buyProduct" type="submit" value="Need Payment Method to Purchase" disabled>
         </div>
-        <div class="col-sm-1">
-          <a class="btn btn-danger" href="/BrowseWidgetsButton">Back</a>
+        <div class="d-flex justify-content-center mt-1">
+          <a class="btn btn-danger" href="javascript:window.history.back()">Back</a>
         </div>
       </form>
       <form th:if="${!isBuyer}" id="update-listing"
@@ -614,10 +618,10 @@
             <input class="btn btn-primary" id="updateListing" name="updateListing" type="submit"
                    value="Update">
           </div>
-	        <div class="col-sm-2">
-	          <a class="btn btn-danger" href="/BrowseWidgetsButton">Back</a>
-	        </div>
-	    </div>
+        </div>
+        <div class="d-flex justify-content-center mt-1">
+          <a class="btn btn-danger" href="javascript:window.history.back()">Back</a>
+        </div>
       </form>
     </div>
   </div>
