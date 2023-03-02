@@ -352,4 +352,55 @@ table.right {
   margin-right: auto;
 }
 
+table.addUserTable td{
+	height:50px;
+	border-color: black;
+	padding-left: 8px;
+	width: 120px;
+}
 
+table.addUserCreateFail td{
+	
+	height:50px;
+	border-color: black;
+	padding-left: 8px;
+	width: 361px;
+	background-color: #ff372e;
+	text-align: center
+}
+
+table.addUserSuccess td{
+	
+	height:50px;
+	border-color: black;
+	padding-left: 8px;
+	width: 361px;
+	background-color: #50C878;
+	text-align: center
+}
+
+.buttonCancelUser{
+		margin-right: 4px;
+		border-radius: 12px;
+		color: black;
+		background-color: red;
+		border-color: black;
+		font-size: 15px;
+}
+
+.buttonCancelUser:hover{
+	background-color: #8B0000;
+}
+
+.buttonAddUser{
+		margin-right: 4px;
+		border-radius: 12px;
+		color: black;
+		background-color: #0BDA51;
+		border-color: black;
+		font-size: 15px
+}
+
+.buttonAddUser:hover{
+	background-color: #009E60;
+}
