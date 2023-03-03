@@ -5,7 +5,10 @@ import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
+import edu.sru.cpsc.webshopping.controller.sidebar.SidebarController;
 import edu.sru.cpsc.webshopping.domain.market.MarketListing;
+import edu.sru.cpsc.webshopping.domain.sidebar.Sidebar;
 import edu.sru.cpsc.webshopping.domain.user.Applicant;
 import edu.sru.cpsc.webshopping.domain.user.Message;
 import edu.sru.cpsc.webshopping.domain.user.Statistics;
@@ -24,6 +27,7 @@ import edu.sru.cpsc.webshopping.domain.widgets.electronics.Electronics_VideoGame
 import edu.sru.cpsc.webshopping.domain.widgets.lawncare.LawnCare_LawnMower;
 import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Vehicle_Car;
 import edu.sru.cpsc.webshopping.repository.applicant.ApplicantRepository;
+import edu.sru.cpsc.webshopping.repository.sidebar.SidebarRepository;
 import edu.sru.cpsc.webshopping.repository.user.UserRepository;
 import edu.sru.cpsc.webshopping.repository.widgets.WidgetRepository;
 import edu.sru.cpsc.webshopping.repository.widgets.WidgetsInfoRepository;
@@ -75,6 +79,7 @@ public class EmployeeController {
   private final TicketService ticketService;
   private final UserRepository userRepository;
   private final EmailController emailController;
+  private final SidebarController sidebarController;
   private final WidgetRepository<Widget> widgetRepository;
   private String page;
   private String mailboxPage;
@@ -137,6 +142,12 @@ public class EmployeeController {
     dateList.add("Previous Week");
     dateList.add("Previous Month");
     dateList.add("Previous Year");
+  }
+  
+  @ModelAttribute
+  public void preLoadSidebar(Model model) {
+	  Iterable<Sidebar> allTabs = new ArrayList<>();
+	  allTabs = sidebarController.getAllTabs();
   }
 
   @RequestMapping({"/statButton"})

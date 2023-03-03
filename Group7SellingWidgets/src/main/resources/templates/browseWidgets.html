@@ -82,6 +82,19 @@ table.center {
 <!-- END NAV BAR -->
 
 <body>
+	<div id="page">
+		<!-- SIDE NAV BAR -->
+		<th:block th:switch="${user.role}">
+			<div class="grid-item item3">
+				<div th:each="tab: ${allTabs}">
+					<ul>
+						<li th:if="${tab.role == user.role}"><a class="submit4"
+							th:href="${tab.link}" th:innerHTML="${tab.displayText}"></a><br></li>
+					</ul>
+				</div>
+			</div>
+		</th:block>
+	</div>
 	<div class="grid-container">
 
 		<div class="grid-item item1"></div>
@@ -96,7 +109,7 @@ table.center {
 				<div th:case="searchWidgetSellerMarketListing">
 
 					<th:block th:each="searchedMarkets: ${allMarketListings}"
-						th:unless="${searchedMarkets.qtyAvailable == 0 || searchedMarkets.isDeleted == 1}">
+						th:unless="${searchedMarkets.qtyAvailable == 0 || searchedMarkets.isDeleted}">
 
 
 						<table class="center" style="float: left; width: 30%;">
@@ -133,7 +146,7 @@ table.center {
 							</tr>
 						</table>
 					</th:block>
-					</div>
+				</div>
 			</th:block>
 		</div>
 
