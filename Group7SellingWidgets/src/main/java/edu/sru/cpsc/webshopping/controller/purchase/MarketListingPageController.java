@@ -291,6 +291,7 @@ public class MarketListingPageController {
         heldListing.getPricePerItem().multiply(BigDecimal.valueOf(newTransaction.getQtyBought())));
     // Add shipping entry if user confirms purchase on next page
     purchaseAttempt.setShippingEntry(null);
+    model.addAttribute("user", userController.getCurrently_Logged_In());
     return shippingPage.openConfirmShippingPage(heldListing, purchaseAttempt, model);
   }
 

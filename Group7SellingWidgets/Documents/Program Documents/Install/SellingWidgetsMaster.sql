@@ -224,6 +224,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
+INSERT INTO `category` VALUES ('appliance'),('appliance_parts'),('electronic'),('electronic_parts'),('lawnCare'),('lawnCare_parts'),('vehicle'),('vehicle_parts');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -704,6 +705,7 @@ CREATE TABLE `subcategory` (
 
 LOCK TABLES `subcategory` WRITE;
 /*!40000 ALTER TABLE `subcategory` DISABLE KEYS */;
+INSERT INTO `subcategory` VALUES ('washer', 'appliance'), ('dryer', 'appliance'), ('microwave', 'appliance'), ('fridge', 'appliance'), ('blender', 'appliance'), ('washer_parts', 'appliance_parts'), ('dryer_parts', 'appliance_parts'), ('microwave_parts', 'appliance_parts'), ('fridge_parts', 'appliance_parts'), ('blender_parts', 'appliance_parts'), ('computer', 'electronic'), ('videoGame', 'electronic'), ('computer_parts', 'electronic_parts'), ('videoGame_parts', 'electronic_parts'), ('lawnMower', 'lawnCare'), ('mower_parts', 'lawnCare_parts'), ('car', 'vehicle'), ('car_parts', 'vehicle_parts');
 /*!40000 ALTER TABLE `subcategory` ENABLE KEYS */;
 UNLOCK TABLES;
 
