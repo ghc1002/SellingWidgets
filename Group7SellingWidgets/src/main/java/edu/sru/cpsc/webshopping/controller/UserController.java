@@ -133,7 +133,8 @@ public class UserController {
 		// Encode fields
 		details.setCardholderName(passwordEncoder.encode(details.getCardholderName()));
 		details.setCardNumber(passwordEncoder.encode(details.getCardNumber()));
-		details.setCardType(passwordEncoder.encode(details.getCardType()));
+		details.setLast4Digits(details.getLast4Digits());
+		details.setCardType(details.getCardType());
 		details.setExpirationDate(passwordEncoder.encode(details.getExpirationDate()));
 		details.setPostalCode(passwordEncoder.encode(details.getPostalCode()));
 		details.setSecurityCode(passwordEncoder.encode(details.getSecurityCode()));
@@ -238,7 +239,6 @@ public class UserController {
 		boolean isValid = true;
 		isValid = isValid && passwordEncoder.matches(details.getCardholderName(), encodedDetails.getCardholderName());
 		isValid = isValid && passwordEncoder.matches(details.getCardNumber(), encodedDetails.getCardNumber());
-		isValid = isValid && passwordEncoder.matches(details.getCardType(), encodedDetails.getCardType());
 		isValid = isValid && passwordEncoder.matches(details.getExpirationDate(), encodedDetails.getExpirationDate());
 		isValid = isValid && passwordEncoder.matches(details.getPostalCode(), encodedDetails.getPostalCode());
 		isValid = isValid && passwordEncoder.matches(details.getSecurityCode(), encodedDetails.getSecurityCode());
@@ -410,5 +410,15 @@ public class UserController {
 		user.setCaptcha(""); // value entered by the User
 		user.setRealCaptcha(CaptchaUtil.encodeCaptcha(captcha));
 		
+	}
+	
+	public boolean matchExistingCard(String secCode, User user)
+	{
+		if(passwordEncoder.matches(secCode, user.getPaymentDetails().getSecurityCode()))
+		{
+			return true;
+		}
+		else
+			return false;
 	}
 }

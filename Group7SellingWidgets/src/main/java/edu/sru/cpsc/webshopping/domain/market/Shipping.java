@@ -32,7 +32,6 @@ public class Shipping {
 	
 	private Date arrivalDate;
 	
-	private LocalDate today = LocalDate.now();
 	
 	@OneToOne
 	@NonNull
