@@ -66,10 +66,8 @@
 					<li class="nav-item">
 						<div class="dropdown"> 
 							<a class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-								<img th:if="${currUser.userImage == null}" src="/images/default_user_icon.png" alt="Blank user avatar" style="width:32px; height:32px"></img>
-								<img th:unless="${currUser.userImage == null}" th:src="@{/images/userImages/{image}(image = ${currUser.userImage})}" alt="User avatar" style="width:32px; height:32px"></img>
+								<img th:src="@{/images/default_user_icon.png}" th:text=" ${user.username}" style="width:50px; height:50px"></img>
 							</a>
-							
 							<ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
 								<li><h5 class="dropdown-header">My Account</h5></li>
 								<li><a class="dropdown-item" th:href="@{/userDetails}">Personal Info</a></li>
@@ -205,14 +203,7 @@
 					<div class="row my-2">
 						<div class="col-sm-2">
 							<div class="card my-2 h-100">
-								<img th:if="${user.userImage == null}" 
-								class="card-img-bottom" 
-								src="https://previews.123rf.com/images/kritchanut/kritchanut1406/kritchanut140600093/29213195-.jpg?fj=1" 
-								alt="Blank user avatar">
-								<img th:unless="${user.userImage == null}" 
-								class="card-img-bottom" 
-								th:src="@{/images/userImages/{image}(image = ${user.userImage})}" 
-								alt="User avatar">
+								<img th:src="@{/images/default_user_icon.png}" th:text=" ${user.username}" style="width:50px; height:50px"></img>
 							</div>
 						</div>
 						
