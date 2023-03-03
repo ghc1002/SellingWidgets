@@ -505,6 +505,7 @@ CREATE TABLE `payment_details` (
   `expiration_date` varchar(255) DEFAULT NULL,
   `postal_code` varchar(255) DEFAULT NULL,
   `security_code` varchar(255) DEFAULT NULL,
+  `last4digits` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -515,7 +516,7 @@ CREATE TABLE `payment_details` (
 
 LOCK TABLES `payment_details` WRITE;
 /*!40000 ALTER TABLE `payment_details` DISABLE KEYS */;
-INSERT INTO `payment_details` VALUES (50,'$2a$10$V6Es7v/zAtNiPQD1IQBgpeAy0pcfUu5Zd6KmManUA/99fDKGeFhea','$2a$10$TC40nOHfHJnqiJgnZ2ii3OfOzvLbifWLugNV4TgCOfv0JdAu2DwsC','$2a$10$3Rc4rNvU.5e5ElQr7XL1T.9Z70thL4LRPdBG070C8uEYv9VksuO42','$2a$10$9a3Gpc.2dq0.Qs/9A6nmT.QfJhxeN1j2yw6QXo3kyQ8D/XkvS26Hy','$2a$10$mZS8w.MH3EaJAlqgzxbxTuZIBm3iLlfvHeNv7OV6oNcE6MCnWkh5W','$2a$10$7SXgimkkh4.ntDwktSO3MeSsEgyqjP/MitoCbCypJExQr/BD9vfXm');
+INSERT INTO `payment_details` VALUES (50,'$2a$10$V6Es7v/zAtNiPQD1IQBgpeAy0pcfUu5Zd6KmManUA/99fDKGeFhea','Visa','$2a$10$3Rc4rNvU.5e5ElQr7XL1T.9Z70thL4LRPdBG070C8uEYv9VksuO42','$2a$10$9a3Gpc.2dq0.Qs/9A6nmT.QfJhxeN1j2yw6QXo3kyQ8D/XkvS26Hy','$2a$10$mZS8w.MH3EaJAlqgzxbxTuZIBm3iLlfvHeNv7OV6oNcE6MCnWkh5W','$2a$10$7SXgimkkh4.ntDwktSO3MeSsEgyqjP/MitoCbCypJExQr/BD9vfXm', '5478');
 /*!40000 ALTER TABLE `payment_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -785,6 +786,7 @@ CREATE TABLE `transaction` (
   `total_price_after_taxes` decimal(10,2) DEFAULT NULL,
   `total_price_before_taxes` decimal(10,2) DEFAULT NULL,
   `seller_id` bigint DEFAULT NULL,
+  `payment_details_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKosd6qqlkyqp8gk4gjisggqev0` (`buyer_id`),
   KEY `FKmoxh3homji0gvlfcw51kuc5w5` (`market_listing_id`),
@@ -793,7 +795,8 @@ CREATE TABLE `transaction` (
   CONSTRAINT `FKaasul5qbkvi7jujotj7rgst7l` FOREIGN KEY (`shipping_entry_id`) REFERENCES `shipping` (`id`),
   CONSTRAINT `FKmoxh3homji0gvlfcw51kuc5w5` FOREIGN KEY (`market_listing_id`) REFERENCES `market_listing` (`id`),
   CONSTRAINT `FKosd6qqlkyqp8gk4gjisggqev0` FOREIGN KEY (`buyer_id`) REFERENCES `user` (`id`),
-  CONSTRAINT `FKs37irexq9hyvl7pqyqya2i0dn` FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `FKs37irexq9hyvl7pqyqya2i0dn` FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `FK4v8i3wqtpv6b2b0u6heymi5kp` FOREIGN KEY (`payment_details_id`) REFERENCES `payment_details` (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -803,7 +806,7 @@ CREATE TABLE `transaction` (
 
 LOCK TABLES `transaction` WRITE;
 /*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
-INSERT INTO `transaction` VALUES (56,'2022-03-06',50,NULL,1,25,55,NULL,532.50,500.00,20),(76,'2022-04-24',1,NULL,1,36,75,226.31,266.25,250.00,34),(81,'2022-04-24',1,NULL,1,38,80,17.68,20.80,20.00,34),(88,'2022-04-24',20,NULL,20,70,87,729.30,858.00,800.00,1),(161,'2022-04-25',1,NULL,1,47,160,1802.00,2120.00,2000.00,43);
+INSERT INTO `transaction` VALUES (56,'2022-03-06',50,NULL,1,25,55,NULL,532.50,500.00,20,50),(76,'2022-04-24',1,NULL,1,36,75,226.31,266.25,250.00,34,50),(81,'2022-04-24',1,NULL,1,38,80,17.68,20.80,20.00,34,50),(88,'2022-04-24',20,NULL,20,70,87,729.30,858.00,800.00,1,50),(161,'2022-04-25',1,NULL,1,47,160,1802.00,2120.00,2000.00,43,50);
 /*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
