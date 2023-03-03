@@ -84,6 +84,7 @@
 <!-- END NAV BAR -->
 
 <body>
+<div id="page">
 	<div class="grid-container">
 
 		<div class="grid-item item1"></div>
@@ -98,7 +99,7 @@
 				<div th:case="searchWidgetSellerMarketListing">
 
 					<th:block th:each="searchedMarkets: ${allMarketListings}"
-						th:unless="${searchedMarkets.qtyAvailable == 0 || searchedMarkets.isDeleted == 1}">
+						th:unless="${searchedMarkets.qtyAvailable == 0 || searchedMarkets.isDeleted == true}">
 
 
 						<table class="center" style="float: left; width: 30%;">
@@ -147,6 +148,6 @@
 
 
 
-	<div></div>
+	</div>
 </body>
 </html>
