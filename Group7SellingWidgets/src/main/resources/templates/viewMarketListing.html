@@ -190,10 +190,10 @@
           <div class="d-flex justify-content-center">
             <h2>Product Image</h2>
           </div>-->
-          <div class="card h-100"
+          <div th:each="imageName : ${currListing.getImageName()}" class="card h-100"
                th:if="${currListing.imageName != null && !currListing.imageName.isEmpty()}">
             <img class="card-img-bottom" style="width:400px;"
-                 th:src="@{/listingImages/{image}(image = ${currListing.getImageName})}"/>
+                 th:src="@{/listingImages/{image}(image = imageName)}"/>
           </div>
           <div class="card h-100"
                th:unless="${currListing.imageName != null && !currListing.imageName.isEmpty()}">

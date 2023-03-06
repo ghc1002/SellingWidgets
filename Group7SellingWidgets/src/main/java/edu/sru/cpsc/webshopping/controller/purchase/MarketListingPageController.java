@@ -41,6 +41,8 @@ import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Widget_Vehicles;
 import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Widget_Vehicles_Parts;
 import java.math.BigDecimal;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -241,10 +243,12 @@ public class MarketListingPageController {
   public String viewMarketListingPage(
       @PathVariable("marketListingId") long marketListingId, Model model) {
     heldListing = marketListingController.getMarketListing(marketListingId);
-    System.out.println(heldListing.getId());
-    System.out.println(heldListing.getImageName());
     // TODO: Open an error page
     // TODO: Set user status by reading from a User server
+    if(heldListing == null || heldListing.isDeleted() || heldListing.getQtyAvailable() == 0)
+    {
+    	return "redirect:/homePage";
+    }
     if (heldListing.isDeleted()) {
       throw new IllegalArgumentException("Attempted to access an invalid Market Listing");
     }

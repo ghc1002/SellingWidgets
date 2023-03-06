@@ -136,8 +136,8 @@
 									
 									<p  th:if="${#fields.hasErrors('qtyAvailable')}" th:errors="*{qtyAvailable}"></p>
 									<div class="form-group w-35">
-										<label for="fileUpload">Choose a image to upload:</label>
-										<input type="file" class="form-control" id="fileUpload" name="imageUpload" accept=".jpg,.img,.png,.jpeg">
+										<label for="fileUpload">Choose an image to upload:</label>
+										<input type="file" class="form-control" id="fileUpload" name="imageUpload" accept=".jpg,.img,.png,.jpeg" multiple>
 								
 									</div>
 									</div>

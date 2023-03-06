@@ -199,7 +199,7 @@
 											<div th:unless="${listing.imageName != null && !listing.imageName.isEmpty()}" class="card-img-top" style="height: 150px;">
 												No Image Provided
 											</div>
-											<img th:if="${listing.imageName != null && !listing.imageName.isEmpty()}" class="card-img-top" style="height: 150px; object-fit: contain; width: 100%;" th:src="@{/listingImages/{image}(image = ${listing.getImageName})}">
+											<img th:each="imageName : ${listing.getImageName()}" th:if="${listing.imageName != null && !listing.imageName.isEmpty()}" class="card-img-top" style="height: 150px; object-fit: contain; width: 100%;" th:src="@{/listingImages/{image}(image = imageName)}">
 											<div class="card-body">
 												<h5 class="card-title" th:text="${listing.widgetSold.name}"></h5>
 												<h6 class="card-subtitle text-muted mb-1" th:text="${#strings.capitalize(listing.widgetSold.category)}"></h6>
