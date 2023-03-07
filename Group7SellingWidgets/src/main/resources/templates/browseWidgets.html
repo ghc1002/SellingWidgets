@@ -81,31 +81,22 @@ table.center {
 </header>
 <!-- END NAV BAR -->
 
+<!-- SIDE NAV BAR -->
+	<th:block th:switch="${user.role}" th:unless="${user == null}">
+		<nav class="sidebar">
+			<ul class="nav nav-pills">
+				<li class="nav-item" th:each="tab: ${allTabs}"
+					th:if="${tab.role == user.role}"><a class="submit4"
+					th:href="${tab.linkTo}" th:text="${tab.displayText}">displayText</a><br></li>
+			</ul>
+		</nav>
+	</th:block>
+	
 <body>
-	<div id="page">
-		<!-- SIDE NAV BAR -->
-		<th:block th:switch="${user.role}">
-			<div class="grid-item item3">
-				<div th:each="tab: ${allTabs}">
-					<ul>
-						<li th:if="${tab.role == user.role}"><a class="submit4"
-							th:href="${tab.link}" th:innerHTML="${tab.displayText}"></a><br></li>
-					</ul>
-				</div>
-			</div>
-		</th:block>
-	</div>
 	<div class="grid-container">
-
-		<div class="grid-item item1"></div>
-
 
 		<div class="grid-item item5">
 			<th:block th:switch="${page}">
-				<a class="submit" style="height: 30px; width: 70px;"
-					th:href="@{/newUser}"><span>Sign Up</span></a>
-				<a class="submit" style="height: 30px; width: 70px;"
-					th:href="@{/login}"><span>Log In</span></a>
 				<div th:case="searchWidgetSellerMarketListing">
 
 					<th:block th:each="searchedMarkets: ${allMarketListings}"

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SidebarRepository extends CrudRepository<Sidebar, Long> {
-	Iterable<Sidebar> getAllTabs();
+	//Iterable<Sidebar> getAllTabs();
 }

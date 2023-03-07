@@ -4,6 +4,7 @@ import edu.sru.cpsc.webshopping.controller.sidebar.SidebarController;
 import edu.sru.cpsc.webshopping.domain.market.MarketListing;
 import edu.sru.cpsc.webshopping.domain.market.Transaction;
 import edu.sru.cpsc.webshopping.domain.sidebar.Sidebar;
+import edu.sru.cpsc.webshopping.domain.sidebar.SidebarCSVModel;
 import edu.sru.cpsc.webshopping.domain.user.Message;
 import edu.sru.cpsc.webshopping.domain.user.User;
 import edu.sru.cpsc.webshopping.domain.user.UserList;
@@ -94,8 +95,14 @@ public class LandingPageController {
 
   @ModelAttribute
   public void preLoadSidebar(Model model) {
-	  Iterable<Sidebar> allTabs = new ArrayList<>();
-	  allTabs = sidebarController.getAllTabs();
+	  // this would be the code for using the repo but it doesnt work
+	  //Iterable<Sidebar> allTabs = new ArrayList<>();
+	  //allTabs = sidebarController.getAllTabs();
+	  
+	  // csv workaround:
+	  List<SidebarCSVModel> allTabs = sidebarController.readAllTabs();
+	  System.out.println(allTabs);
+	  model.addAttribute("allTabs", allTabs);
   }
   
   @GetMapping({"/friendsOff"})
