@@ -16,6 +16,7 @@ import edu.sru.cpsc.webshopping.domain.user.User;
 import edu.sru.cpsc.webshopping.domain.user.UserList;
 import edu.sru.cpsc.webshopping.domain.widgets.Widget;
 import edu.sru.cpsc.webshopping.domain.widgets.WidgetImage;
+import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Blender;
 import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Blender_Parts;
 import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Dryer_Parts;
 import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Dryers;
@@ -124,6 +125,10 @@ public class MarketListingPageController {
         Appliance_Microwave microwave = widgetController.getMicrowave(tempWidget.getId());
         model.addAttribute("microwave", microwave);
       }
+      if (tempWidget.getSubCategory().contentEquals("blender")) {
+          Appliance_Blender blender = widgetController.getBlender(tempWidget.getId());
+          model.addAttribute("blender", blender);
+        }
     }
 
     if (tempWidget.getCategory().contentEquals("appliance_parts")) {
@@ -171,8 +176,9 @@ public class MarketListingPageController {
       Widget_Electronics_Parts electronicPart = widgetController.getElectronicParts(tempWidget.getId());
       System.out.println(electronicPart.getName());
       model.addAttribute("electronic_parts", electronicPart);
-      if (tempWidget.getSubCategory().contentEquals("videoGame_accessories")) {
+      if (tempWidget.getSubCategory().contentEquals("videoGame_parts")) {
         Electronics_VideoGames_Parts videoGamePart = widgetController.getVideoGameParts(tempWidget.getId());
+        System.out.println(videoGamePart.getMaterial() + " I AM REAL");
         model.addAttribute("videoGame_parts", videoGamePart);
       }
       if (tempWidget.getSubCategory().contentEquals("computer_parts")) {

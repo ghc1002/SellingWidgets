@@ -31,10 +31,13 @@
     }
     
     .center{
-    display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 50%
+    object-fit: contain;
+    }
+    
+    .image-preview{
+    vertical-align: middle;
     }
 
   </style>
@@ -197,12 +200,12 @@
           <div class="d-flex justify-content-center">
             <h2>Product Image</h2>
           </div>-->
-          <div class="card h-100"
+          <div class="card h-60"
                th:if="${currListing.coverImage != null && !currListing.coverImage.isEmpty()}">
-               <button onclick="changeImageForward()">Next Image</button>
-            <img class="card-img-bottom center" style="width:400px;" id="showWidget"
+               <button style="height:40px;" onclick="changeImageForward()">Next Image</button>
+            <img class="card-img-bottom center col-sm-2" style=" height:50vh;" id="showWidget"
                  th:src="@{/listingImages/{image}(image = ${currListing.coverImage})}" />
-                 <button onclick="changeImageBackward()">Previous Image</button>
+                 <button style="height:40px;" onclick="changeImageBackward()">Previous Image</button>
                 <script th:inline="javascript">
                 /*<![CDATA[*/
                 var x = 1;
@@ -550,9 +553,8 @@
             <li class="list-group-item">Year: <span th:text="${car.year}"></span></li>
           </ul>
         </div>
-      </div>
-
-      <div class="col-sm-6 my-2" th:if="${widget.category} == 'vehicle_parts'">
+        
+        <div class="col-sm-6 my-2" th:if="${widget.category} == 'vehicle_parts'">
         <div class="d-flex justify-content-center">
           <h2>Product Information</h2>
         </div>
@@ -574,6 +576,8 @@
               th:text="${car_parts.condition}"></span></li>
         </ul>
       </div>
+      </div>
+
 
       <th:block th:switch="${page}">
         <div th:case="openMessage" class="d-flex justify-content-center">
