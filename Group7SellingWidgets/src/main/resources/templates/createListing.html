@@ -130,13 +130,42 @@
 										</div>
 										</th:block>
 									</div>
-										
 									
 									<p  th:if="${#fields.hasErrors('qtyAvailable')}" th:errors="*{qtyAvailable}"></p>
+									
+									
 									<div class="form-group w-35">
-										<label for="fileUpload">Choose a image to upload:</label>
-										<input type="file" class="form-control" id="fileUpload" name="imageUpload" accept=".jpg,.img,.png,.jpeg">
-								
+										<label for="coverImage">Choose the items cover image shown when browsing:</label>
+										<input type="file" class="form-control" id="coverImage" name="listingCoverImage" accept=".jpg,.img,.png,.jpeg" required>
+										
+										<label for="fileUpload">Choose images to upload (hold ctrl while clicking to add multiple images):</label>
+									Files:	<input type="file" class="form-control" id="fileUpload" name="imageUpload" accept=".jpg,.img,.png,.jpeg" multiple required>
+									<div id="selectedFiles"></div>
+										<script> <!-- script code to show file names from https://www.raymondcamden.com/2013/09/10/Adding-a-file-display-list-to-a-multifile-upload-HTML-control -->
+											var selDive = "";
+											document.addEventListener("DOMContentLoaded", init, false);
+											
+											function init() {
+												document.querySelector('#fileUpload').addEventListener('change', handleFileSelect, false);
+												selDiv = document.querySelector("#selectedFiles");
+											}
+												
+											function handleFileSelect(e) {
+												
+												if(!e.target.files) return;
+												
+												selDiv.innerHTML = "";
+												
+												var files = e.target.files;
+												for(var i=0; i<files.length; i++) {
+													var f = files[i];
+													
+													selDiv.innerHTML += f.name + "<br/>";
+
+												}
+												
+											}
+										</script>
 									</div>
 									</div>
 									</div>

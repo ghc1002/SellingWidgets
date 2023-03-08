@@ -2,6 +2,8 @@ package edu.sru.cpsc.webshopping.domain.widgets.appliances;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Collections;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -23,7 +25,6 @@ public class DomainWidgetsAppliancesSpringTest {
 		blender.setDescription("loud");
 		blender.setHeight(2);
 		blender.setId(11);
-		blender.setImageName("Best Blender");
 		blender.setItemCondition("good");
 		blender.setLength(1);
 		blender.setName("Bob");
@@ -36,7 +37,6 @@ public class DomainWidgetsAppliancesSpringTest {
 		assertEquals("loud", blender.getDescription());
 		assertEquals(2, blender.getHeight());
 		assertEquals(11, blender.getId());
-		assertEquals("Best Blender", blender.getImageName());
 		assertEquals("good", blender.getItemCondition());
 		assertEquals(1, blender.getLength());
 		assertEquals("Bob", blender.getName());
@@ -56,7 +56,6 @@ public class DomainWidgetsAppliancesSpringTest {
 		dryer.setDescription("loud");
 		dryer.setHeight(2);
 		dryer.setId(11);
-		dryer.setImageName("Best Dryer");
 		dryer.setItemCondition("good");
 		dryer.setLength(1);
 		dryer.setName("Bob");
@@ -69,7 +68,6 @@ public class DomainWidgetsAppliancesSpringTest {
 		assertEquals("loud", dryer.getDescription());
 		assertEquals(2, dryer.getHeight());
 		assertEquals(11, dryer.getId());
-		assertEquals("Best Dryer", dryer.getImageName());
 		assertEquals("good", dryer.getItemCondition());
 		assertEquals(1, dryer.getLength());
 		assertEquals("Bob", dryer.getName());
@@ -89,7 +87,6 @@ public class DomainWidgetsAppliancesSpringTest {
 		microwave.setDescription("loud");
 		microwave.setHeight(2);
 		microwave.setId(11);
-		microwave.setImageName("Best Microwave");
 		microwave.setItemCondition("good");
 		microwave.setLength(1);
 		microwave.setName("Bob");
@@ -102,7 +99,6 @@ public class DomainWidgetsAppliancesSpringTest {
 		assertEquals("loud", microwave.getDescription());
 		assertEquals(2, microwave.getHeight());
 		assertEquals(11, microwave.getId());
-		assertEquals("Best Microwave", microwave.getImageName());
 		assertEquals("good", microwave.getItemCondition());
 		assertEquals(1, microwave.getLength());
 		assertEquals("Bob", microwave.getName());
@@ -122,7 +118,6 @@ public class DomainWidgetsAppliancesSpringTest {
 		refrigerator.setDescription("loud");
 		refrigerator.setHeight(2);
 		refrigerator.setId(11);
-		refrigerator.setImageName("Best Refrigerator");
 		refrigerator.setItemCondition("good");
 		refrigerator.setLength(1);
 		refrigerator.setName("Bob");
@@ -135,7 +130,6 @@ public class DomainWidgetsAppliancesSpringTest {
 		assertEquals("loud", refrigerator.getDescription());
 		assertEquals(2, refrigerator.getHeight());
 		assertEquals(11, refrigerator.getId());
-		assertEquals("Best Refrigerator", refrigerator.getImageName());
 		assertEquals("good", refrigerator.getItemCondition());
 		assertEquals(1, refrigerator.getLength());
 		assertEquals("Bob", refrigerator.getName());
@@ -155,7 +149,6 @@ public class DomainWidgetsAppliancesSpringTest {
 		washers.setDescription("loud");
 		washers.setHeight(2);
 		washers.setId(11);
-		washers.setImageName("Best Washers");
 		washers.setItemCondition("good");
 		washers.setLength(1);
 		washers.setName("Bob");
@@ -168,7 +161,6 @@ public class DomainWidgetsAppliancesSpringTest {
 		assertEquals("loud", washers.getDescription());
 		assertEquals(2, washers.getHeight());
 		assertEquals(11, washers.getId());
-		assertEquals("Best Washers", washers.getImageName());
 		assertEquals("good", washers.getItemCondition());
 		assertEquals(1, washers.getLength());
 		assertEquals("Bob", washers.getName());
@@ -185,14 +177,12 @@ public class DomainWidgetsAppliancesSpringTest {
 		widget.setCategory("category");
 		widget.setDescription("description");
 		widget.setId(1);
-		widget.setImageName("appliance");
 		widget.setName("Alexis");
 		widget.setSubCategory("subcategory");
 		
 		assertEquals("category", widget.getCategory());
 		assertEquals("description", widget.getDescription());
 		assertEquals(1, widget.getId());
-		assertEquals("appliance", widget.getImageName());
 		assertEquals("Alexis", widget.getName());
 		assertEquals("subcategory", widget.getSubCategory());
 	}

@@ -397,7 +397,7 @@ CREATE TABLE `market_listing` (
   `qty_available` bigint NOT NULL,
   `seller_id` bigint DEFAULT NULL,
   `widget_sold_id` bigint DEFAULT NULL,
-  `image_name` varchar(255) DEFAULT NULL,
+  `cover_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKj77ex4y8ywq29uphgbf1o5ixy` (`seller_id`),
   KEY `FKarx832bifmicpnuhv8mov8uhx` (`widget_sold_id`),
@@ -414,6 +414,34 @@ LOCK TABLES `market_listing` WRITE;
 /*!40000 ALTER TABLE `market_listing` DISABLE KEYS */;
 INSERT INTO `market_listing` VALUES (3,_binary '',500.00,40,1,2,NULL),(5,_binary '',50.20,50,1,4,NULL),(7,_binary '',70.00,27,1,6,NULL),(25,_binary '',10.00,410,20,24,NULL),(36,_binary '\0',250.00,0,34,35,'34oldmac.jpeg'),(38,_binary '\0',20.00,0,34,37,'34ratechetandclank.jpg'),(40,_binary '\0',500.00,1,34,39,'34broken dryer.jpeg'),(42,_binary '\0',50.00,1,34,41,'34brand new microwave.jpeg'),(45,_binary '\0',500.00,1,43,44,'43new fridge.jpeg'),(47,_binary '\0',2000.00,0,43,46,'43oldford.jpeg'),(49,_binary '\0',300.00,1,43,48,'43teslamower.jpeg'),(66,_binary '\0',800.00,20,1,65,'1surface-laptop-4-4-625x417-c.jpg'),(70,_binary '\0',40.00,80,1,69,'1surface-laptop-4-4-625x417-c.jpg'),(144,_binary '\0',50.00,2,1,143,'11mario64box.jpg'),(155,_binary '\0',50.00,1,1,154,'1microwave.jpeg'),(166,_binary '\0',500.00,25,1,165,'1dryer.jpeg');
 /*!40000 ALTER TABLE `market_listing` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `widget_image`
+--
+
+DROP TABLE IF EXISTS `widget_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `widget_image` (
+  `id` bigint NOT NULL,
+  `image_name` varchar(255) DEFAULT NULL,
+  `market_listing_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKqudapab12tq3aorl9cok3b9kj` (`market_listing_id`),
+  CONSTRAINT `FKqudapab12tq3aorl9cok3b9kj` FOREIGN KEY (`market_listing_id`) REFERENCES `market_listing` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `widget_image`
+--
+
+LOCK TABLES `widget_image` WRITE;
+/*!40000 ALTER TABLE `widget_image` DISABLE KEYS */;
+INSERT INTO `widget_image` VALUES (36,'34oldmac.jpeg',36),(38,'34ratechetandclank.jpg',38),(40,'34broken dryer.jpeg',40),(42,'34brand new microwave.jpeg',42),(45,'43new fridge.jpeg',45),(47,'43oldford.jpeg',47),(49,'43teslamower.jpeg',49),(66,'1surface-laptop-4-4-625x417-c.jpg',66),(70,'1surface-laptop-4-4-625x417-c.jpg',70),(144,'11mario64box.jpg',144),(155,'1microwave.jpeg',155),(166,'1dryer.jpeg',166);
+/*!40000 ALTER TABLE `widget_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

@@ -194,10 +194,10 @@
 								<div class="row">
 									<div class="col-sm-3"  th:each="listing: ${currPageItems}">
 										<div class="card">	
-											<div th:unless="${listing.imageName != null && !listing.imageName.isEmpty()}" class="card-img-top" style="height: 150px;">
+											<div th:unless="${listing.coverImage != null && !listing.coverImage.isEmpty()}" class="card-img-top" style="height: 150px;">
 												No Image Provided
 											</div>
-											<img th:if="${listing.imageName != null && !listing.imageName.isEmpty()}" class="card-img-top" style="height: 150px; object-fit: contain; width: 100%;" th:src="@{/listingImages/{image}(image = ${listing.getImageName})}">
+											<img  th:if="${listing.coverImage != null && !listing.coverImage.isEmpty()}" class="card-img-top" style="height: 150px; object-fit: contain; width: 100%;" th:src="@{/listingImages/{image}(image = ${listing.coverImage})}">
 											<div class="card-body">
 												<h5 class="card-title" th:text="${listing.widgetSold.name}"></h5>
 												<h6 class="card-subtitle text-muted mb-1" th:text="${#strings.capitalize(listing.widgetSold.category)}"></h6>

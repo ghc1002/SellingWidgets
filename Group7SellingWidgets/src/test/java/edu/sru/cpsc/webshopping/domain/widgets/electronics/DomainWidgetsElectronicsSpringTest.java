@@ -2,6 +2,8 @@ package edu.sru.cpsc.webshopping.domain.widgets.electronics;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Collections;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,7 +23,6 @@ public class DomainWidgetsElectronicsSpringTest {
 		computers.setDescription("pink");
 		computers.setEntertainmentUse("YouTube");
 		computers.setId(22);
-		computers.setImageName("computer");
 		computers.setName("Karen");
 		computers.setOfficeUse("Excel");
 		computers.setSubCategory("machine");
@@ -30,7 +31,6 @@ public class DomainWidgetsElectronicsSpringTest {
 		assertEquals("pink", computers.getDescription());
 		assertEquals("YouTube", computers.getEntertainmentUse());
 		assertEquals(22, computers.getId());
-		assertEquals("computer", computers.getImageName());
 		assertEquals("Karen", computers.getName());
 		assertEquals("Excel", computers.getOfficeUse());
 		assertEquals("machine", computers.getSubCategory());
@@ -46,7 +46,6 @@ public class DomainWidgetsElectronicsSpringTest {
 		games.setDescription("GTA");
 		games.setEntertainmentUse("YouTube");
 		games.setId(22);
-		games.setImageName("games");
 		games.setName("Karen");
 		games.setOfficeUse("Excel");
 		games.setSubCategory("machine");
@@ -55,7 +54,6 @@ public class DomainWidgetsElectronicsSpringTest {
 		assertEquals("GTA", games.getDescription());
 		assertEquals("YouTube", games.getEntertainmentUse());
 		assertEquals(22, games.getId());
-		assertEquals("games", games.getImageName());
 		assertEquals("Karen", games.getName());
 		assertEquals("Excel", games.getOfficeUse());
 		assertEquals("machine", games.getSubCategory());
@@ -70,14 +68,12 @@ public class DomainWidgetsElectronicsSpringTest {
 		widget.setCategory("electronics");
 		widget.setDescription("shiny");
 		widget.setId(3);
-		widget.setImageName("widget");
 		widget.setName("Emilie");
 		widget.setSubCategory("subcategory");
 		
 		assertEquals("electronics", widget.getCategory());
 		assertEquals("shiny", widget.getDescription());
 		assertEquals(3, widget.getId());
-		assertEquals("widget", widget.getImageName());
 		assertEquals("Emilie", widget.getName());
 		assertEquals("subcategory", widget.getSubCategory());
 	}

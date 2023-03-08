@@ -2,15 +2,20 @@ package edu.sru.cpsc.webshopping.domain.widgets;
 
 import com.opencsv.bean.CsvIgnore;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -50,7 +55,6 @@ public class Widget {
 	
 	private String subCategory;
 	
-	private String imageName;
 
 	public long getId() {
 		return id;
@@ -82,14 +86,6 @@ public class Widget {
 
 	public void setCategory(String category) {
 		this.category = category;
-	}
-
-	public String getImageName() {
-		return imageName;
-	}
-
-	public void setImageName(String imageName) {
-		this.imageName = imageName;
 	}
 
 	public String getSubCategory() {

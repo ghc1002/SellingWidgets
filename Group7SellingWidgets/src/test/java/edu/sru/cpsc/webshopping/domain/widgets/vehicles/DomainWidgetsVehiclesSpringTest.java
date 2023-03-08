@@ -2,6 +2,8 @@ package edu.sru.cpsc.webshopping.domain.widgets.vehicles;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collections;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -28,7 +30,6 @@ public class DomainWidgetsVehiclesSpringTest {
 		car.setCondition("good");
 		car.setDescription("red");
 		car.setId(45);
-		car.setImageName("car");
 		//car.setItemCondition("mint");
 		car.setMake("Kia");
 		car.setModel("Soul");
@@ -44,7 +45,6 @@ public class DomainWidgetsVehiclesSpringTest {
 		assertEquals("good", car.getCondition());
 		assertEquals("red", car.getDescription());
 		assertEquals(45, car.getId());
-		assertEquals("car", car.getImageName());
 		//assertEquals("mint", car.getItemCondition());
 		assertEquals("Kia", car.getMake());
 		assertEquals("Soul", car.getModel());
@@ -67,7 +67,6 @@ public class DomainWidgetsVehiclesSpringTest {
 		widget.setCondition("fair");
 		widget.setDescription("pink");
 		widget.setId(12);
-		widget.setImageName("widget");
 		//widget.setItemCondition("poor");
 		widget.setName("Beth");
 		widget.setRoadSafe("no");
@@ -78,7 +77,6 @@ public class DomainWidgetsVehiclesSpringTest {
 		assertEquals("fair", widget.getCondition());
 		assertEquals("pink", widget.getDescription());
 		assertEquals(12, widget.getId());
-		assertEquals("widget", widget.getImageName());
 		//assertEquals("poor", widget.getItemCondition());
 		assertEquals("Beth", widget.getName());
 		assertEquals("no", widget.getRoadSafe());
