@@ -33,11 +33,21 @@ public class WidgetImageController {
 		return widgetImage;
 	}
 	
+	/**
+	 * return all widgetImages associated with a marketlisting
+	 * @param listing
+	 * @return
+	 */
 	@RequestMapping("/get-widget-image-by-listing")
 	public WidgetImage[] getwidgetImageByMarketListing(@PathVariable("marketListing") MarketListing listing) {
 		return widgetImageRepository.findByMarketListing(listing).toArray(WidgetImage[]::new);
 	}
 	
+	/**
+	 * add images to the widgetimage database
+	 * @param widgetImage
+	 * @return
+	 */
 	@PostMapping("/add-widget-image")
 	@Transactional
 	public WidgetImage addWidgetImage(@Validated WidgetImage widgetImage) {

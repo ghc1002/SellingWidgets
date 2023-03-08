@@ -1240,10 +1240,11 @@ public class AddWidgetController {
 	}
 	
 	/**
-	 * Add the listing to the listings database
+	 * 
 	 * @param model
-	 * @param file the image files name
-	 * @param qty The set quantity
+	 * @param coverImage Image to be displayed when browsing
+	 * @param files all images associated with the current listing
+	 * @param qty
 	 * @param attributes
 	 * @param marketListing
 	 * @param result
@@ -1335,6 +1336,11 @@ public class AddWidgetController {
 		this.widgetStorage = widgetStorage;
 	}
 	
+	/**
+	 * adds to the widgetImage database and sets the foreign key of marketListing
+	 * @param file incremented list of images to be associated with the market listing
+	 * @param marketListing
+	 */
 	public void setListingImage(MultipartFile file, MarketListing marketListing)
 	{
 		//WidgetImage newImage = new WidgetImage();
