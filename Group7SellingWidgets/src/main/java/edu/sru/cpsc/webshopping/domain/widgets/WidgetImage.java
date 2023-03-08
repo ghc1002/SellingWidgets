@@ -21,20 +21,21 @@ import edu.sru.cpsc.webshopping.domain.market.Transaction;
 public class WidgetImage {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "image_id")
-	private Long image_id;
+	@Column(name = "id")
+	private Long id;
 	
 	private String imageName;
 	
 	@ManyToOne(cascade = CascadeType.MERGE)
-	private MarketListing marketListingId;
+	private MarketListing marketListing;
 
-	public Long getImage_id() {
-		return image_id;
+
+	public Long getId() {
+		return id;
 	}
 
-	public void setImage_id(Long image_id) {
-		this.image_id = image_id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getImageName() {
@@ -45,13 +46,14 @@ public class WidgetImage {
 		this.imageName = imageName;
 	}
 
-	public MarketListing getMarketListingId() {
-		return marketListingId;
+	public MarketListing getMarketListing() {
+		return marketListing;
 	}
 
-	public void setMarketListingId(MarketListing marketListingId) {
-		this.marketListingId = marketListingId;
+	public void setMarketListing(MarketListing marketListing) {
+		this.marketListing = marketListing;
 	}
+
 
 
 }

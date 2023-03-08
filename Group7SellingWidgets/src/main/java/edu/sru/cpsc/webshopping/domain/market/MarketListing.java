@@ -43,6 +43,7 @@ public class MarketListing {
 	@Min(value=0, message="Must have 0 or more items available.")
 	private long qtyAvailable;
 	
+	
 	@NonNull 
 	private boolean isDeleted;
 	
@@ -54,14 +55,14 @@ public class MarketListing {
 	@NonNull
 	private Widget widgetSold;
 	
-	@OneToMany(mappedBy = "marketListingId", cascade = CascadeType.MERGE)
+	private String coverImage;
+	
+	@OneToMany(mappedBy = "marketListing", cascade = CascadeType.MERGE)
 	private Set<WidgetImage> images;
 	
 	@OneToMany(mappedBy="marketListing", cascade = CascadeType.MERGE)
 	private Set<Transaction> transactions;
 	
-	@NonNull
-	private String coverImage;
 
 	public long getId() {
 		return id;

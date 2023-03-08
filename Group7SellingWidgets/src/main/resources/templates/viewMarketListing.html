@@ -29,6 +29,13 @@
       margin-right: 8px;
       font-size: 12px;
     }
+    
+    .center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%
+    }
 
   </style>
 </head>
@@ -190,13 +197,44 @@
           <div class="d-flex justify-content-center">
             <h2>Product Image</h2>
           </div>-->
-          <div th:each="imageName : ${currListing.getImageName()}" class="card h-100"
-               th:if="${currListing.imageName != null && !currListing.imageName.isEmpty()}">
-            <img class="card-img-bottom" style="width:400px;"
-                 th:src="@{/listingImages/{image}(image = imageName)}"/>
+          <div class="card h-100"
+               th:if="${currListing.coverImage != null && !currListing.coverImage.isEmpty()}">
+               <button onclick="changeImageForward()">Next Image</button>
+            <img class="card-img-bottom center" style="width:400px;" id="showWidget"
+                 th:src="@{/listingImages/{image}(image = ${currListing.coverImage})}" />
+                 <button onclick="changeImageBackward()">Previous Image</button>
+                <script th:inline="javascript">
+                /*<![CDATA[*/
+                var x = 1;
+                var image = document.querySelector('#showWidget');
+                var len = /*[[${images.length}]]*/ '0';
+                const images = /*[[${images}]]*/ 'd';
+                function changeImageForward()
+                {
+                	if(len==1)
+                		window.alert("Only one image has been uploaded for this item")
+                	x++;
+                	if(x > len - 1 || x<0)
+                		x = 0;
+                	
+                	image.src = '/listingImages/' + images[x];
+                }
+                
+                function changeImageBackward()
+                {
+                	if(len==1)
+                		window.alert("Only one image has been uploaded for this item")
+                	x--;
+                	if(x < 0 || x > len-1)
+                		x = len-1;
+                	
+                	image.src = '/listingImages/' + images[x];
+                }
+                /*]]>*/
+                 </script>
           </div>
           <div class="card h-100"
-               th:unless="${currListing.imageName != null && !currListing.imageName.isEmpty()}">
+               th:unless="${currListing.coverImage != null && !currListing.coverImage.isEmpty()}">
             <div class="d-flex justify-content-center card-header">
               <h2>No Image Provided</h2>
             </div>

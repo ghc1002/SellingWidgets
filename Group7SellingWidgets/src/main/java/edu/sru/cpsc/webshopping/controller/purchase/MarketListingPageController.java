@@ -7,6 +7,7 @@ import edu.sru.cpsc.webshopping.controller.TransactionController;
 import edu.sru.cpsc.webshopping.controller.UserController;
 import edu.sru.cpsc.webshopping.controller.UserListDomainController;
 import edu.sru.cpsc.webshopping.controller.WidgetController;
+import edu.sru.cpsc.webshopping.controller.WidgetImageController;
 import edu.sru.cpsc.webshopping.controller.billing.SellerRatingController;
 import edu.sru.cpsc.webshopping.domain.market.MarketListing;
 import edu.sru.cpsc.webshopping.domain.market.Transaction;
@@ -14,6 +15,7 @@ import edu.sru.cpsc.webshopping.domain.user.Message;
 import edu.sru.cpsc.webshopping.domain.user.User;
 import edu.sru.cpsc.webshopping.domain.user.UserList;
 import edu.sru.cpsc.webshopping.domain.widgets.Widget;
+import edu.sru.cpsc.webshopping.domain.widgets.WidgetImage;
 import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Blender_Parts;
 import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Dryer_Parts;
 import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Dryers;
@@ -40,6 +42,9 @@ import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Vehicle_Car_Parts;
 import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Widget_Vehicles;
 import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Widget_Vehicles_Parts;
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -63,6 +68,7 @@ public class MarketListingPageController {
   PurchaseShippingAddressPageController shippingPage;
   MarketListing heldListing;
   UserController userController;
+  WidgetImageController widgetImageController;
   MessageDomainController msgcontrol;
   EmailController emailController;
   SellerRatingController ratingController;
@@ -81,6 +87,7 @@ public class MarketListingPageController {
       MessageDomainController msgcontrol,
       EmailController emailController,
       WidgetController widgetController,
+      WidgetImageController widgetImageController,
       SellerRatingController ratingController,
       UserListDomainController userListController) {
     this.marketListingController = marketListingController;
@@ -88,6 +95,7 @@ public class MarketListingPageController {
     this.userController = userController;
     this.shippingPage = shippingPage;
     this.msgcontrol = msgcontrol;
+    this.widgetImageController = widgetImageController;
     this.emailController = emailController;
     this.widgetController = widgetController;
     this.ratingController = ratingController;
@@ -243,6 +251,7 @@ public class MarketListingPageController {
   public String viewMarketListingPage(
       @PathVariable("marketListingId") long marketListingId, Model model) {
     heldListing = marketListingController.getMarketListing(marketListingId);
+    WidgetImage [] widgetImages = widgetImageController.getwidgetImageByMarketListing(heldListing);
     // TODO: Open an error page
     // TODO: Set user status by reading from a User server
     if(heldListing == null || heldListing.isDeleted() || heldListing.getQtyAvailable() == 0)
@@ -255,8 +264,13 @@ public class MarketListingPageController {
     User user = userController.getCurrently_Logged_In();
     UserList myList = new UserList();
     myList.setOwner(user);
+    
+    String [] widgetNames = new String [widgetImages.length];
+    for(int x = 0; x < widgetImages.length; x++)
+    	widgetNames[x] = widgetImages[x].getImageName();
 
     model.addAttribute("page", "");
+    model.addAttribute("images", widgetNames);
     reloadModel(model);
     return "viewMarketListing";
   }

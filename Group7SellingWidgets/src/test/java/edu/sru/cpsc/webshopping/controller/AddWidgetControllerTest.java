@@ -5,7 +5,7 @@ import org.junit.Test;
 
 
 public class AddWidgetControllerTest {
-	public static AddWidgetController Widget = new AddWidgetController(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); 
+	public static AddWidgetController Widget = new AddWidgetController(null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); 
 	@BeforeAll
 	public static void newWidget() {
 
@@ -20,7 +20,7 @@ public class AddWidgetControllerTest {
 		Widget.addFridge(null);
 		Widget.addLawnCare(null);
 		Widget.addLawnMower(null);
-		Widget.addListing(null, null, null, null, null, null);
+		Widget.addListing(null, null, null, null, null, null, null);
 		Widget.addMicrowave(null);
 		Widget.addVehicle(null);
 		Widget.addVideoGame(null);
@@ -89,7 +89,7 @@ public class AddWidgetControllerTest {
 	@Test
 	public void addListing() {
 		String actual = null;
-		assertEquals(Widget.addListing(null, null, null, null, null, null), actual);
+		assertEquals(Widget.addListing(null, null, null, null, null, null, null), actual);
 	}
 	@Test
 	public void addMicrowave() {
