@@ -40,11 +40,7 @@ void init() {
 	
 }
 // testing the tickets page
-/*
- * I changed the constructor for ticket page and it makes all of this not work.
- * Based on the fact that we're redoing the testing anyway, I'm just gonna throw all this out.
- * 
- * @Test
+@Test
 @DisplayName("get Tickets Page")
 
 public void getTicketsPage() {
@@ -201,7 +197,7 @@ public void getTicketsPage1() {
 		exception.printStackTrace();
 		Assertions.assertFalse(false);
 	}
-}*/
+}
 @AfterEach
 void tearDown() {
 	

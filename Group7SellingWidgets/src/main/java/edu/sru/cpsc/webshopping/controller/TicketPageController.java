@@ -1,7 +1,5 @@
 package edu.sru.cpsc.webshopping.controller;
 
-import edu.sru.cpsc.webshopping.controller.sidebar.SidebarController;
-import edu.sru.cpsc.webshopping.domain.sidebar.SidebarCSVModel;
 import edu.sru.cpsc.webshopping.domain.user.Message;
 import edu.sru.cpsc.webshopping.domain.user.Ticket;
 import edu.sru.cpsc.webshopping.domain.user.User;
@@ -10,8 +8,6 @@ import edu.sru.cpsc.webshopping.util.constants.TimeConstants;
 import edu.sru.cpsc.webshopping.util.enums.MessageType;
 import edu.sru.cpsc.webshopping.util.enums.TicketState;
 import java.time.LocalDateTime;
-import java.util.List;
-
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,35 +19,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @Data
+@RequiredArgsConstructor
 public class TicketPageController {
 
   private String page;
   private final UserController userController;
   private final TicketRepository ticketRepository;
   private final EmailController emailController;
-  private SidebarController sidebarController;
 
-  public TicketPageController(UserController userController, TicketRepository ticketRepository,
-		  EmailController emailController, SidebarController sidebarController) {
-	  this.userController = userController;
-	  this.ticketRepository = ticketRepository;
-	  this.emailController = emailController;
-	  this.sidebarController = sidebarController;
-  }
-  
-  @ModelAttribute
-  public void preLoadSidebar(Model model) {
-	  // this would be the code for using the repo but it doesnt work
-	  //Iterable<Sidebar> allTabs = new ArrayList<>();
-	  //allTabs = sidebarController.getAllTabs();
-	  
-	  // csv workaround:
-	  List<SidebarCSVModel> allTabs = sidebarController.readAllTabs();
-	  model.addAttribute("allTabs", allTabs);
-  }
-  
-  
-  
   @GetMapping("/tickets")
   public String getTicketsPage(Model model) {
     User user = userController.getCurrently_Logged_In();
