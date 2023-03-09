@@ -2,15 +2,20 @@ package edu.sru.cpsc.webshopping.domain.market;
 
 import java.math.BigDecimal;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
@@ -18,6 +23,7 @@ import org.springframework.lang.NonNull;
 
 import edu.sru.cpsc.webshopping.domain.user.User;
 import edu.sru.cpsc.webshopping.domain.widgets.Widget;
+import edu.sru.cpsc.webshopping.domain.widgets.WidgetImage;
 
 /**
  * Holds information on a marketplace listing that has been posted by a seller,
@@ -37,6 +43,7 @@ public class MarketListing {
 	@Min(value=0, message="Must have 0 or more items available.")
 	private long qtyAvailable;
 	
+	
 	@NonNull 
 	private boolean isDeleted;
 	
@@ -48,7 +55,10 @@ public class MarketListing {
 	@NonNull
 	private Widget widgetSold;
 	
-	private String imageName;
+	private String coverImage;
+	
+	@OneToMany(mappedBy = "marketListing", cascade = CascadeType.MERGE)
+	private Set<WidgetImage> images;
 	
 	@OneToMany(mappedBy="marketListing", cascade = CascadeType.MERGE)
 	private Set<Transaction> transactions;
@@ -111,11 +121,21 @@ public class MarketListing {
 		this.transactions = transactions;
 	}
 
-	public String getImageName() {
-		return imageName;
+	public Set<WidgetImage> getImages() {
+		return images;
 	}
 
-	public void setImageName(String imageName) {
-		this.imageName = imageName;
+	public void setImages(Set<WidgetImage> images) {
+		this.images = images;
 	}
+
+	public String getCoverImage() {
+		return coverImage;
+	}
+
+	public void setCoverImage(String coverImage) {
+		this.coverImage = coverImage;
+	}
+
+
 }

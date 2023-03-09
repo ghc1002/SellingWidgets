@@ -84,6 +84,7 @@
 	</nav>
 </header>
 <!-- END NAV BAR -->
+
 <body>
 	<!-- Modal if user tries to sell without having payment information set up. -->
 	<div class="modal" id="sellErrorModal">
@@ -114,6 +115,7 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger"
 						data-bs-dismiss="modal">Close</button>
+
 				</div>
 			</div>
 		</div>
@@ -136,6 +138,7 @@
 								th:unless="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}"
 								href="#" data-bs-toggle="modal" data-bs-target="#sellErrorModal"
 								class="nav-link"> Sell Items </a></li>
+
 
 						</ul>
 					</div>

@@ -1,4 +1,4 @@
-package edu.sru.cpsc.webshopping.repository.widgets;
+	package edu.sru.cpsc.webshopping.repository.widgets;
 
 import edu.sru.cpsc.webshopping.domain.widgets.Widget;
 import java.util.List;

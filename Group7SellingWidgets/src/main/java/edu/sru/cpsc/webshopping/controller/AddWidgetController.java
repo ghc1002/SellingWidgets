@@ -3,9 +3,11 @@ package edu.sru.cpsc.webshopping.controller;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import edu.sru.cpsc.webshopping.domain.market.MarketListing;
+import edu.sru.cpsc.webshopping.domain.widgets.WidgetImage;
 import edu.sru.cpsc.webshopping.domain.market.MarketListingCSVModel;
 import edu.sru.cpsc.webshopping.domain.user.User;
 import edu.sru.cpsc.webshopping.domain.widgets.Widget;
+import edu.sru.cpsc.webshopping.domain.widgets.WidgetImage;
 import edu.sru.cpsc.webshopping.domain.widgets.Widget_General;
 import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Blender;
 import edu.sru.cpsc.webshopping.domain.widgets.appliances.Appliance_Blender_Parts;
@@ -46,6 +48,7 @@ import edu.sru.cpsc.webshopping.repository.widgets.lawncare.LawnCareLawnMowerRep
 import edu.sru.cpsc.webshopping.repository.widgets.lawncare.WidgetLawnCareRepository;
 import edu.sru.cpsc.webshopping.repository.widgets.vehicles.VehicleCarRepository;
 import edu.sru.cpsc.webshopping.repository.widgets.vehicles.WidgetVehiclesRepository;
+import edu.sru.cpsc.webshopping.repository.widgets.WidgetImageRepository;
 import edu.sru.cpsc.webshopping.util.PreLoad;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -54,10 +57,14 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.core.io.ClassPathResource;
@@ -83,6 +90,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AddWidgetController {
 
 	WidgetRepository widgetRepository;
+	WidgetImageRepository widgetImageRepository;
 	ApplianceDryersRepository dryerRepository;
 	ApplianceMicrowaveRepository microwaveRepository;
 	ApplianceRefrigeratorRepository fridgeRepository;
@@ -101,6 +109,7 @@ public class AddWidgetController {
 	WidgetController widgetController;
 	UserController userController;
 	MarketListingDomainController marketListingController;
+	WidgetImageController widgetImageController;
 	UserRepository userRepo;
 	Widget widget;
 	Widget_Appliance appliances;
@@ -126,11 +135,12 @@ public class AddWidgetController {
 	LawnCare_LawnMower mower;
 	LawnCare_LawnMower_Parts mowerPart;
 	Widget_General generalWidget;
+	Set<WidgetImage> listingImages = new HashSet<>();
 	MarketListing marketListing;
 	private Widget widgetStorage;
 	private String category;
 	private String subCategory;
-	private String tempImageName;
+	private WidgetImage tempImage = new WidgetImage();
 	private String page;
 	public String getPage() {
 		return page;
@@ -142,11 +152,11 @@ public class AddWidgetController {
 
 	private final String UPLOAD_DIR = "src/main/resources/static/images/userImages/";
 
-	public AddWidgetController(WidgetRepository widgetRepository, ApplianceDryersRepository dryerRepository, 
+	public AddWidgetController(WidgetRepository widgetRepository, ApplianceDryersRepository dryerRepository, WidgetImageRepository widgetImageRepository,
 			ApplianceMicrowaveRepository microwaveRepository, ApplianceRefrigeratorRepository fridgeRepository, 
 			ApplianceWashersRepository washerRepository, ApplianceBlenderRepository blenderRepository, ElectronicsComputersRepository computerRepository, 
 			ElectronicsVideoGamesRepository videoGameRepository, VehicleCarRepository carRepository, 
-			WidgetApplianceRepository applianceRepository, WidgetLawnCareRepository lawnCareRepository, 
+			WidgetApplianceRepository applianceRepository, WidgetLawnCareRepository lawnCareRepository, WidgetImageController widgetImageController,
 			WidgetElectronicsRepository electronicsRepository, WidgetVehiclesRepository vehicleRepository, 
 			MarketListingRepository marketListingRepos, WidgetController widgetController, UserController userController, 
 			MarketListingDomainController marketListingController, UserRepository userRepo, LawnCareLawnMowerRepository mowerRepository, WidgetGeneralRepository generalRepository)
@@ -172,6 +182,8 @@ public class AddWidgetController {
 		this.mowerRepository = mowerRepository;
 		this.lawnCareRepository = lawnCareRepository;
 		this.generalRepository = generalRepository;
+		this.widgetImageRepository = widgetImageRepository;
+		this.widgetImageController = widgetImageController;
 	}
 
 	@RequestMapping("/addWidget")
@@ -734,7 +746,12 @@ public class AddWidgetController {
 			MarketListing newMarketListing = new MarketListing();
 			newMarketListing.setPricePerItem(marketListingCSVModel.getPricePerItem());
 			newMarketListing.setQtyAvailable(marketListingCSVModel.getQtyAvailable());
-			newMarketListing.setImageName("TempImage");
+			Set<WidgetImage> WI = new HashSet<WidgetImage>();
+			WidgetImage image = new WidgetImage();
+			image.setImageName("TempImage");
+			WI.add(image);
+			newMarketListing.setCoverImage("tempCoverImage");
+			newMarketListing.setImages(WI);
 			newMarketListing.setSeller(user);
 			Optional<Widget> widgetSoldOptional = widgetRepository.findById(marketListingCSVModel.getWidgetId());
 			if (widgetSoldOptional.isPresent()) {
@@ -1182,16 +1199,60 @@ public class AddWidgetController {
 	public String createListing(Model model)
 	{
 		marketListing = new MarketListing();
-		model.addAttribute("pricePerItem", marketListing);
-		model.addAttribute("qtyAvailable", marketListing);
+		model.addAttribute("pricePerItem", marketListing.getPricePerItem());
+		model.addAttribute("qtyAvailable", marketListing.getQtyAvailable());
 		model.addAttribute("listing", marketListing);
 		model.addAttribute("subCategory", subCategory);
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "createListing";
 	}
+	
+	/**
+	 * Deletes the added widget from the widgets database and then returns to that widgets add page
+	 * @param model
+	 * @return
+	 */
+	
+	@RequestMapping("/back-and-delete")
+	public String backAndDelete(Model model)
+	{
+		String back = "redirect:add";
+		String pre = "";
+		String post = "";
+		String subCat = widget.getSubCategory();
+		if(subCat.contains("mower"))
+			back = back + "Lawn";
+		if(widget.getSubCategory().contains("_")) //check if the widget is a part
+		{
+			int space = subCat.indexOf('_');
+			pre = subCat.substring(0, 1).toUpperCase() + subCat.substring(1, space);
+			post =  subCat.substring(space+1, space+2).toUpperCase() + subCat.substring(space+2, subCat.length());
+			back = back + pre + post;
+		}
+		else if(widget.getSubCategory().equalsIgnoreCase("refridgerator"))
+			back = back + "Fridge";
+		else
+			back = back + subCat.substring(0, 1).toUpperCase() + subCat.substring(1);
+		widgetController.deleteWidget(widget.getId());
+		System.out.println(back);
+		System.out.println(widget.getSubCategory());
+		return back;
+	}
+	
+	/**
+	 * 
+	 * @param model
+	 * @param coverImage Image to be displayed when browsing
+	 * @param files all images associated with the current listing
+	 * @param qty
+	 * @param attributes
+	 * @param marketListing
+	 * @param result
+	 * @return
+	 */
 
 	@RequestMapping("/addListing")
-	public String addListing(Model model, @RequestParam("imageUpload") MultipartFile file ,@RequestParam("qtyAvailable") Long qty , RedirectAttributes attributes, @Valid @ModelAttribute MarketListing marketListing, BindingResult result)
+	public String addListing(Model model,@RequestParam("listingCoverImage") MultipartFile coverImage , @RequestParam("imageUpload") MultipartFile[] files ,@RequestParam("qtyAvailable") Long qty , RedirectAttributes attributes, @Valid @ModelAttribute MarketListing marketListing, BindingResult result)
 	{
 		if(getWidgetStorage() != null) {
 			System.out.println(getWidgetStorage().getId());
@@ -1207,33 +1268,18 @@ public class AddWidgetController {
 		marketListing.setWidgetSold(widget);
 		marketListing.setDeleted(false);
 		//code basis found at https://attacomsian.com/blog/spring-boot-thymeleaf-file-upload
-		if(!file.isEmpty())
-		{
-			tempImageName = marketListing.getSeller().getId() + StringUtils.cleanPath(file.getOriginalFilename());
-			System.out.println(file.getOriginalFilename());
-			System.out.println(tempImageName);
-			try {
-				String fileLocation = new File("src/main/resources/static/listingImages").getAbsolutePath() + "/" + tempImageName;
-				String fileLocationTemp = new ClassPathResource("static/listingImages").getFile().getAbsolutePath() + "/" + tempImageName;
 
-				FileOutputStream output = new FileOutputStream(fileLocation);
-				output.write(file.getBytes());
-				output.close();
-
-				output = new FileOutputStream(fileLocationTemp);
-				output.write(file.getBytes());
-				output.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.println("upload failed");
-			}
-			marketListing.setImageName(tempImageName);
-		}
-		if(marketListing.getImageName() == null) {
+			marketListing.setCoverImage(marketListing.getSeller().getId() + StringUtils.cleanPath(coverImage.getOriginalFilename()));
+			marketListingController.addMarketListing(marketListing);
+			tempImage.setImageName(marketListing.getSeller().getId() + StringUtils.cleanPath(coverImage.getOriginalFilename()));
+			tempImage.setMarketListing(marketListing);
+			widgetImageController.addWidgetImage(tempImage);
+			listingImages.add(tempImage);
+		/*if(marketListing.getImages().size() == 0) {
 			setPage("error");
 			result.addError(
 					new FieldError("pricePerItem", "pricePerItem", "Upload at least one image"));	    	
-		}
+		}*/
 		BigDecimal oneCent = new BigDecimal("0.01");
 		if(marketListing.getPricePerItem() == null) {
 			setPage("error2");
@@ -1267,8 +1313,17 @@ public class AddWidgetController {
 			model.addAttribute("subCategory", subCategory);
 			return "createListing" ;
 		}
-		System.out.println("here2");
-		marketListingController.addMarketListing(marketListing);
+		
+		if(!(files.length == 0))
+		{
+			marketListingController.getListingByWidget(widget).setCoverImage(marketListing.getSeller().getId() + StringUtils.cleanPath(coverImage.getOriginalFilename()));
+			List<MultipartFile> MPF = Arrays.asList(files)
+			.stream()
+			.filter(file -> !(file.getOriginalFilename().matches(coverImage.getOriginalFilename())))
+			.collect(Collectors.toList());
+			MPF.forEach(file -> {setListingImage(file, marketListing);});
+			marketListing.setImages(listingImages);
+		}
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "redirect:homePage";
 	}
@@ -1279,6 +1334,37 @@ public class AddWidgetController {
 
 	public void setWidgetStorage(Widget widgetStorage) {
 		this.widgetStorage = widgetStorage;
+	}
+	
+	/**
+	 * adds to the widgetImage database and sets the foreign key of marketListing
+	 * @param file incremented list of images to be associated with the market listing
+	 * @param marketListing
+	 */
+	public void setListingImage(MultipartFile file, MarketListing marketListing)
+	{
+		//WidgetImage newImage = new WidgetImage();
+		tempImage = new WidgetImage();
+		tempImage.setImageName(marketListing.getSeller().getId() + StringUtils.cleanPath(file.getOriginalFilename()));
+		tempImage.setMarketListing(marketListing);
+		widgetImageController.addWidgetImage(tempImage);
+		listingImages.add(tempImage);
+		try {
+			String fileLocation = new File("src/main/resources/static/listingImages").getAbsolutePath() + "/" + tempImage.getImageName();
+			String fileLocationTemp = new ClassPathResource("static/listingImages").getFile().getAbsolutePath() + "/" + tempImage.getImageName();
+
+			FileOutputStream output = new FileOutputStream(fileLocation);
+			output.write(file.getBytes());
+			output.close();
+
+			output = new FileOutputStream(fileLocationTemp);
+			output.write(file.getBytes());
+			output.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("upload failed");
+		}
+		tempImage = new WidgetImage();
 	}
 }
 

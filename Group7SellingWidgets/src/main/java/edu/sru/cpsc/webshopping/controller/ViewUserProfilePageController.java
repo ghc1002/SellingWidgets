@@ -75,6 +75,7 @@ public class ViewUserProfilePageController {
 		this.soldItems = Arrays.stream(this.soldItems).filter(item -> !item.isDeleted()).toArray(MarketListing[]::new);
 		this.rating = ratingController.determineRating(selectedUser);
 		this.messagePaneOpen = false;
+		model.addAttribute("user", selectedUser);
 		itemsEachPage = new Vector<Vector<MarketListing>>();
 		if (soldItems.length == 0) {
 			// If no sold items, add a blank page

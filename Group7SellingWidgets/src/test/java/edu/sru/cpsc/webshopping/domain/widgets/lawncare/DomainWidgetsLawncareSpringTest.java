@@ -2,6 +2,8 @@ package edu.sru.cpsc.webshopping.domain.widgets.lawncare;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Collections;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +29,6 @@ public class DomainWidgetsLawncareSpringTest {
 		lawnmower.setCategory("LawnCare");
 		lawnmower.setDescription("brown");
 		lawnmower.setId(36);
-		lawnmower.setImageName("mower");
 		lawnmower.setName("Bill");
 		lawnmower.setSubCategory("garden");
 		lawnmower.setToolType("lawn");
@@ -39,7 +40,6 @@ public class DomainWidgetsLawncareSpringTest {
 		assertEquals("LawnCare", lawnmower.getCategory());
 		assertEquals("brown", lawnmower.getDescription());
 		assertEquals(36, lawnmower.getId());
-		assertEquals("mower", lawnmower.getImageName());
 		assertEquals("Bill", lawnmower.getName());
 		assertEquals("garden", lawnmower.getSubCategory());
 		assertEquals("lawn", lawnmower.getToolType());
@@ -58,7 +58,6 @@ public class DomainWidgetsLawncareSpringTest {
 		widget.setCategory("lawncare");
 		widget.setDescription("black");
 		widget.setId(12);
-		widget.setImageName("widget");
 		widget.setName("Steve");
 		widget.setSubCategory("garden");
 		widget.setToolType("tool");
@@ -67,7 +66,6 @@ public class DomainWidgetsLawncareSpringTest {
 		assertEquals("lawncare", widget.getCategory());
 		assertEquals("black", widget.getDescription());
 		assertEquals(12, widget.getId());
-		assertEquals("widget", widget.getImageName());
 		assertEquals("Steve", widget.getName());
 		assertEquals("garden", widget.getSubCategory());
 		assertEquals("tool", widget.getToolType());

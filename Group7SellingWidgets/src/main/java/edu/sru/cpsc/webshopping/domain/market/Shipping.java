@@ -31,9 +31,7 @@ public class Shipping {
 	private Date shippingDate;
 	
 	private Date arrivalDate;
-	
-	private LocalDate today = LocalDate.now();
-	
+  
 	@OneToOne
 	@NonNull
 	private ShippingAddress address;

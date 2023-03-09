@@ -55,7 +55,7 @@ import edu.sru.cpsc.webshopping.util.enums.WebshoppingUtilEnumsSpringTest;
  */
 
 @RunWith(Suite.class)
-@SuiteClasses({Group7SellingWidgetsTests.class, AddWidgetControllerTest.class, ApplicantDomainControllerTest.class, CategoryControllerTest.class, EmailControllerTest.class,
+@SuiteClasses({SellingWidgetsTests.class, AddWidgetControllerTest.class, ApplicantDomainControllerTest.class, CategoryControllerTest.class, EmailControllerTest.class,
 	EmployeeControllerTest.class, FriendRequestControllerTest.class, IndexControllerTest.class, LandingPageControllerTest.class, MarketListingControllerTest.class, MarketListingDomainControllerTest.class,
 	MessageControllerTest.class, ShippingDomainControllerTest.class, StatisticsDomainControllerTest.class, TestPageControllerTest.class, TicketPageControllerTest.class, TransactionControllerSpringTest.class, 
 	TransactionControllerTest.class, UserDetailsControllerTest.class, UserListDomainControllerTest.class, UtilityControllerTest.class, WebshoppingControllerSpringTest.class, 
