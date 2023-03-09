@@ -57,9 +57,7 @@
 				<!-- Left justified unordered list -->
 				<ul class="navbar nav">
 					<li class="nav-item"> <a class="navbar-brand" th:href="@{/homePage}">
-						<img src="/images/pseudo_ebay_icon.png" 
-							alt="Home" 
-							style="width:64px; height:64px;"></img></a></li>
+						<img src="/images/pseudo_ebay_icon.png" alt="Home" style="width:64px; height:64px;"></img></a></li>
 				</ul>
 				<!-- Right justified unordered list -->
 				<ul class="navbar nav ms-md-auto">
@@ -151,18 +149,14 @@
 	<div id="page">
 		<!-- Side bar -->
 		<div id="sidebar" th:if="${selectedMenu != T(edu.sru.cpsc.webshopping.controller.SUB_MENU).USER_DETAILS}">
-            <ul class="nav nav-pills flex-column mb-auto bg-dark" style="height: 100%;">
+			<ul class="nav nav-pills flex-column mb-auto bg-dark" style="height: 150%;">
 				<li class="nav-item">
-	            	<a href="/homePage" class="nav-link">Home</a>
-	            </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link active" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}">
-                        Card Info
-                    </a>
-                    <a th:href="@{/userDetails/paymentDetails}" class="nav-link" th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}">
-                        Card Info
-                    </a>
-                </li>
+	      	<a href="/homePage" class="nav-link">Home</a>
+	      </li>
+        <li class="nav-item">
+        	<a href="#" class="nav-link active" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}">Card Info</a>
+          <a th:href="@{/userDetails/paymentDetails}" class="nav-link" th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}">Card Info</a>
+        </li>
                <!-- <li class="nav-item">
                 	<a href="#" class="nav-link active" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYPAL_DETAILS}">
                 		PayPal
@@ -171,19 +165,40 @@
                 		PayPal
                 	</a>
                 </li>-->
-                <li class="nav-item">
-                	<a href="#" class="nav-link active" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}">
-                		Direct Deposit
-                	</a>
-                	<a th:href="@{/userDetails/depositDetails}" class="nav-link" th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}">
-                		Direct Deposit
-                	</a>
-                </li>
-                <li class="nav-item">
-                	<a class="nav-link" style="cursor: pointer" onclick="history.back()">Back</a>
-                </li>
-            </ul>
+				<li class="nav-item">
+					<a href="#" class="nav-link active" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}">Direct Deposit</a>
+          <a th:href="@{/userDetails/depositDetails}" class="nav-link" th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}">Direct Deposit</a>
+        </li>
+			</ul>
 		</div>
+		<div id="sidebar" th:unless="${selectedMenu != T(edu.sru.cpsc.webshopping.controller.SUB_MENU).USER_DETAILS}">
+			<ul class="nav nav-pills flex-column mb-auto bg-dark" style="height: 150%">
+				<li class="nav-item">
+					<a th:if="${page != 'home'}" href="/homePage" class="nav-link">Home</a>
+					<a th:if="${page == 'home'}" href="#" class="nav-link active">Home</a>
+				</li>
+	       <li class="nav-item">
+	        <a href="/BrowseWidgetsButton" class="nav-link">Browse</a>
+	      </li>
+	      <li class="nav-item">
+	        <a th:if="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" href="/addWidget" class="nav-link">Sell Items</a>
+	        <a th:unless="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" href="#" data-bs-toggle="modal" data-bs-target="#sellErrorModal" class="nav-link">
+	        	Sell Items
+	        </a>
+	      </li>
+	      <li class="nav-item">
+	        <a href="/messages" class="nav-link">Messages</a>
+	      </li>
+	      <li class="nav-item">
+	        <a href="/tickets" class="nav-link">Tickets</a>
+				</li>
+				<li class="nav-item">
+	        <a th:if="${page == 'friends' || page == 'notFriends'}" href="/friendsOff" class="nav-link active">Friends</a>
+					<a th:if="${page != 'friends' && page != 'notFriends'}" href="/friends" class="nav-link">Friends</a>
+				</li>
+			</ul>
+		</div>
+		
 	
 		<div class="card h-100 w-100">
 			<div class="card-header d-flex justify-content-center">
@@ -203,7 +218,7 @@
 					<div class="row my-2">
 						<div class="col-sm-2">
 							<div class="card my-2 h-100">
-								<img th:src="@{/images/default_user_icon.png}" th:text=" ${user.username}" style="width:50px; height:50px"></img>
+								<img th:src="@{/images/default_user_icon.png}"></img>
 							</div>
 						</div>
 						
@@ -211,13 +226,12 @@
 							<div class="card my-2 h-100">
 								<div class="card-body d-flex justify-content-center">
 									<ul class="list-group w-100">
-										<li class="list-group-item">Name: 
-											<span th:if="${currUser.displayName != null && !currUser.displayName.isEmpty()}" 
-											th:text="${currUser.displayName}"></span>
-											<span th:unless="${currUser.displayName != null && !currUser.displayName.isEmpty()}" th:text="${currUser.username}"></span>
-										</li>
+										<li class="list-group-item">Username: <span th:text="${currUser.username}"></span></li>
+										<li class="list-group-item">User ID: <span th:text="${displayUserID}"></span></li>
+										<li class="list-group-item">Display Name: <span th:text="${displayName}"></span></li>
+										<li class="list-group-item">Email: <span th:text="${email}"></span></li>
+										<li class="list-group-item">Account Created: <span th:text="${creationDate}"></span></li>
 										<li class="list-group-item">Rating: <span th:text="${sellerRating.RatingName}"></span></li>
-										<li class="list-group-item">Created: <span th:text="${creationDate}"></span></li>
 									</ul>	
 								</div>
 							</div>
@@ -234,35 +248,29 @@
 							</div>
 						</div>		
 					</div>
-					
-					<div class="row mb-3">
-						<div class="col-sm-6">
-							<label class="form-label" for="username">Username:</label>
-							<input class="form-control" type="text" name="username" th:value="${userName}" id="username" maxlength="20">
-						</div>
-						<div class="col-sm-6">
-							<label class="form-label" for="display">Display Name:</label>
-							<input class="form-control" type="text" name="displayName" th:value="${displayName}" id="display" maxlength="20">
-						</div>
-						<div class="col-sm-6">
-						<label class="form-label" for="userID">User ID:</label>
-						<input class="form-control" type="text" name="displayUserID" th:value="${displayUserID}" id="userID" maxlength="10">
-						</div>
-					</div>
-	
-					<div class="mb-3">
-						<label class="form-label" for="desc">User Description</label>
-						<textarea class="form-control" name="description" th:text="${userDescription}" id="desc" rows="4" cols="5" maxlength="250"
-							style="resize: none;"></textarea>
-					</div>
-					<div class="mb-3">
-						<label class="form-label" for="email">Email Address</label>
-						<input class="form-control" type="text" name="email" id="email" th:value="${email}" maxlength="50">
-					</div>
-						<br>
+					<br>
 					<div class="mb-3">
 						<label for="fileUpload">Choose a image to change profile picture:</label>
 						<input type="file" id="fileUpload" name="imageName" accept=".jpg,.img,.png">
+					</div>
+					<br>
+					<div class="row mb-3">
+						<div class="col-sm-4">
+							<label class="form-label" for="username">Username: </label>
+							<input class="form-control" type="text" name="username" th:value="${userName}" id="username" maxlength="20">
+						</div>
+						<div class="col-sm-4">
+							<label class="form-label" for="display">Display Name: </label>
+							<input class="form-control" type="text" name="displayName" th:value="${displayName}" id="display" maxlength="20">
+						</div>
+						<div class="col-sm-4">
+							<label class="form-label" for="email">Email Address: </label>
+							<input class="form-control" type="text" name="email" id="email" th:value="${email}" maxlength="50">
+						</div>
+					</div>
+					<div class="mb-3">
+						<label class="form-label" for="desc">User Description: </label>
+						<textarea class="form-control" name="description" th:text="${userDescription}" id="desc" rows="4" cols="5" maxlength="250" style="resize: none;"></textarea>
 					</div>
 					<div class="d-flex justify-content-evenly mb-3">
 						<a class="btn btn-lg btn-danger" href="/homePage">Return Home</a>

@@ -96,41 +96,31 @@
 
 		<div id="page">
 			<div id="sidebar">
-	            <ul class="nav nav-pills flex-column mb-auto bg-dark" style="height: 150%">
-	            	<li class="nav-item">
-	            		<a th:if="${page != 'home'}" href="/homePage" class="nav-link">Home</a>
-	            		<a th:if="${page == 'home'}" href="#" class="nav-link active">Home</a>
-	            	</li>
-	            	<li class="nav-item">
-	            		<a href="/BrowseWidgetsButton" class="nav-link">Browse</a>
-	            	</li>
-	                <li class="nav-item">
-	                    <a th:if="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" href="/addWidget" class="nav-link">
-	                        Sell Items
-	                    </a>
-	                    <a th:unless="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" href="#" data-bs-toggle="modal" data-bs-target="#sellErrorModal" class="nav-link">
-	                        Sell Items
-	                    </a>
-	                </li>
-	                <li class="nav-item">
-	                    <a href="/messages" class="nav-link">
-	                        Messages
-	                    </a>
-	                </li>
-									<li class="nav-item">
-										<a href="/tickets" class="nav-link">
-											Tickets
-										</a>
-									</li>
-	                <li class="nav-item">
-	                	<a th:if="${page == 'friends' || page == 'notFriends'}" href="/friendsOff" class="nav-link active">
-	                		Friends
-	                	</a>
-	                    <a th:if="${page != 'friends' && page != 'notFriends'}" href="/friends" class="nav-link">
-	                        Friends
-	                    </a>
-	                </li>
-	            </ul>
+				<ul class="nav nav-pills flex-column mb-auto bg-dark" style="height: 150%">
+					<li class="nav-item">
+						<a th:if="${page != 'home'}" href="/homePage" class="nav-link">Home</a>
+						<a th:if="${page == 'home'}" href="#" class="nav-link active">Home</a>
+					</li>
+	        <li class="nav-item">
+	        	<a href="/BrowseWidgetsButton" class="nav-link">Browse</a>
+	        </li>
+	        <li class="nav-item">
+	        	<a th:if="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" href="/addWidget" class="nav-link">Sell Items</a>
+	        	<a th:unless="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" href="#" data-bs-toggle="modal" data-bs-target="#sellErrorModal" class="nav-link">
+	        		Sell Items
+	        	</a>
+	        </li>
+	        <li class="nav-item">
+	        	<a href="/messages" class="nav-link">Messages</a>
+	        </li>
+	        <li class="nav-item">
+	        	<a href="/tickets" class="nav-link">Tickets</a>
+					</li>
+					<li class="nav-item">
+	          <a th:if="${page == 'friends' || page == 'notFriends'}" href="/friendsOff" class="nav-link active">Friends</a>
+						<a th:if="${page != 'friends' && page != 'notFriends'}" href="/friends" class="nav-link">Friends</a>
+					</li>
+				</ul>
 			</div>
 
 			<th:block th:switch="${page}">
