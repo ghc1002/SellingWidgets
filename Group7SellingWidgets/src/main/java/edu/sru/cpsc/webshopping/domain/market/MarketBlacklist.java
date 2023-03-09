@@ -22,7 +22,7 @@ public class MarketBlacklist extends Widget {
 			
 			List<String> blackList = new ArrayList<String>();
 			try {
-				Scanner scnr = new Scanner(new FileReader("Group2SellingWidgets\\Documents\\Text_files\\bad_words.txt"));
+				Scanner scnr = new Scanner(new FileReader("SellingWidgets\\Documents\\Text_files\\bad_words.txt"));
 				String str;
 				while (scnr.hasNext()) {
 					str = scnr.next();

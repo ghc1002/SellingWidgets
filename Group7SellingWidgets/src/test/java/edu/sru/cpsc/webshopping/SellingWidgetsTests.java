@@ -15,15 +15,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.sru.cpsc.webshopping.controller.misc.CustomErrorControllerSpringTest;
 
-@SpringBootTest(classes = {Group7SellingWidgetsTests.class})
+@SpringBootTest(classes = {SellingWidgetsTests.class})
 @AutoConfigureMockMvc
 
-public class Group7SellingWidgetsTests {
+public class SellingWidgetsTests
+{
 
 	@Test
 	void loadTest() {
-			assertThat(SpringApplication.run(Group7SellingWidgets.class)).isNotExactlyInstanceOf(getClass());
+			assertThat(SpringApplication.run(SellingWidgets.class)).isNotExactlyInstanceOf(getClass());
 	}
-	}
-
-
+}
