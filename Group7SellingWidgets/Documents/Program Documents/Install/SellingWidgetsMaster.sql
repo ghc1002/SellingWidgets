@@ -396,7 +396,7 @@ CREATE TABLE `market_listing` (
   `qty_available` bigint NOT NULL,
   `seller_id` bigint DEFAULT NULL,
   `widget_sold_id` bigint DEFAULT NULL,
-  `image_name` varchar(255) DEFAULT NULL,
+  `cover_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKj77ex4y8ywq29uphgbf1o5ixy` (`seller_id`),
   KEY `FKarx832bifmicpnuhv8mov8uhx` (`widget_sold_id`),
@@ -1159,6 +1159,33 @@ LOCK TABLES `widget_electronics` WRITE;
 /*!40000 ALTER TABLE `widget_electronics` DISABLE KEYS */;
 INSERT INTO `widget_electronics` VALUES (35,'1','Yes'),(37,'Yes','Yes'),(65,'1','Yes'),(143,'Yes','No');
 /*!40000 ALTER TABLE `widget_electronics` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `widget_image`
+--
+
+DROP TABLE IF EXISTS `widget_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `widget_image` (
+  `id` bigint NOT NULL,
+  `image_name` varchar(255) DEFAULT NULL,
+  `market_listing_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKqudapab12tq3aorl9cok3b9kj` (`market_listing_id`),
+  CONSTRAINT `FKqudapab12tq3aorl9cok3b9kj` FOREIGN KEY (`market_listing_id`) REFERENCES `market_listing` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `widget_image`
+--
+
+LOCK TABLES `widget_image` WRITE;
+/*!40000 ALTER TABLE `widget_image` DISABLE KEYS */;
+INSERT INTO `widget_image` VALUES (36,'34oldmac.jpeg',36),(38,'34ratechetandclank.jpg',38),(40,'34broken dryer.jpeg',40),(42,'34brand new microwave.jpeg',42),(45,'43new fridge.jpeg',45),(47,'43oldford.jpeg',47),(49,'43teslamower.jpeg',49),(66,'1surface-laptop-4-4-625x417-c.jpg',66),(70,'1surface-laptop-4-4-625x417-c.jpg',70),(144,'11mario64box.jpg',144),(155,'1microwave.jpeg',155),(166,'1dryer.jpeg',166);
+/*!40000 ALTER TABLE `widget_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
