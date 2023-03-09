@@ -69,65 +69,57 @@
 <!-- END NAV BAR -->
 <body>
 <div class="d-flex">
-  <!-- SIDE NAV BAR -->
-<!-- Modal if user tries to sell without having payment information set up. -->
-	<div class="modal" id="sellErrorModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-
-				<!-- Modal Header -->
-				<div class="modal-header">
-					<h4 class="modal-title">Payment Information Required</h4>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-				</div>
-
-				<!-- Modal body -->
-				<div class="modal-body">
-					<p>
-						To sell items on University Depot, you must first set up some
-						payment information. We will need <b>Card information</b> <i>and</i>
-						<b>Direct Deposit</b> details. To set this up now, click <a
-							href="userDetails/paymentDetails">here</a>.
-					</p>
-					<p>If you would like to do this later, you can find your
-						payment information by clicking your user icon in the upper right
-						corner of the top navigation bar and selecting "Payment Info" from
-						the dropdown at any time.</p>
-				</div>
-
-				<!-- Modal footer -->
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger"
-						data-bs-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div id="page">
-		<div id="sidebar">
-			<th:block th:switch="${user.role}" th:unless="${user == null}">
-				<nav class="navbar bg-dark align-items-start">
-					<div class="container-fluid">
-						<ul class="nav nav-pills flex-column mb-auto bg-dark"
-							style="height: 150%">
-							<li class="nav-item" th:each="tab: ${allTabs}"
-								th:if="${tab.role == user.role}"><a class="nav-link"
-								th:href="${tab.linkTo}" th:text="${tab.displayText}"
-								th:unless="${tab.linkTo == '/addWidget'}">displayText</a> <a
-								th:if="${tab.linkTo == '/addWidget' && user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}"
-								href="/addWidget" class="nav-link"> Sell Items </a> <a
-								th:if="${tab.linkTo == '/addWidget'}"
-								th:unless="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}"
-								href="#" data-bs-toggle="modal" data-bs-target="#sellErrorModal"
-								class="nav-link"> Sell Items </a></li>
-
-						</ul>
-					</div>
-				</nav>
-			</th:block>
-		</div>
-		</div>
+  <div id="sidebar">
+    <ul class="nav nav-pills flex-column bg-dark" style="padding-bottom: 600px">
+      <li class="nav-item">
+        <a href="/homePage" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item">
+      	<a href="/BrowseWidgetsButton" class="nav-link">Browse</a>
+	  </li>
+	  <li class="nav-item">
+	  	<a th:if="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" href="/addWidget" class="nav-link">
+	    	Sell Items
+	    </a>
+	    <a th:unless="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" href="#" data-bs-toggle="modal" data-bs-target="#sellErrorModal" class="nav-link">
+	    	Sell Items
+	    </a>
+	  </li>
+	  <li class="nav-item">
+	  	<a href="/messages" class="nav-link">
+	  		Messages
+	    </a>
+	  </li>
+	  <li class="nav-item">
+	  	<span style="color:#AED6F1"><b>&nbsp;&nbsp;&nbsp;&nbsp;Tickets</b></span>
+	  </li>
+	  <!-- subtabs for tickets -->
+	  <ul>
+	      <li class="nav-item">
+	        <a th:if="${page == 'tickets'}" class="nav-link active" th:href="@{/tickets}"><span>My Tickets</span></a>
+	        <a th:unless="${page == 'tickets'}" class="nav-link"
+	           th:href="@{/tickets}"><span>My Tickets</span></a>
+	      </li>
+	      <li class="nav-item">
+	        <a th:if="${page == 'createTickets'}" class="nav-link active"
+	           th:href="@{/createTickets}"><span>Add Ticket</span></a>
+	        <a th:unless="${page == 'createTickets'}" class="nav-link"
+	           th:href="@{/createTickets}"><span>Add Ticket</span></a>
+	      </li>
+      </ul>
+      
+      <!-- back to standard tabs -->
+      
+      <li class="nav-item">
+      	<a th:if="${page == 'friends' || page == 'notFriends'}" href="/friendsOff" class="nav-link active">
+      		Friends
+      	</a>
+      	<a th:if="${page != 'friends' && page != 'notFriends'}" href="/friends" class="nav-link">
+      		Friends
+      	</a>
+      </li>
+    </ul>
+  </div>
   <th:block th:switch="${page}">
     <!-- MY TICKETS -->
     <div th:case="tickets">
