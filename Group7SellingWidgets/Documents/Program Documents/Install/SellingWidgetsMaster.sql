@@ -397,7 +397,7 @@ CREATE TABLE `market_listing` (
   `qty_available` bigint NOT NULL,
   `seller_id` bigint DEFAULT NULL,
   `widget_sold_id` bigint DEFAULT NULL,
-  `cover_image` varchar(255) DEFAULT NULL,
+  `cover_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKj77ex4y8ywq29uphgbf1o5ixy` (`seller_id`),
   KEY `FKarx832bifmicpnuhv8mov8uhx` (`widget_sold_id`),
