@@ -1,15 +1,19 @@
 package edu.sru.cpsc.webshopping.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import edu.sru.cpsc.webshopping.controller.sidebar.SidebarController;
+import edu.sru.cpsc.webshopping.domain.sidebar.SidebarCSVModel;
 import edu.sru.cpsc.webshopping.domain.user.Message;
 import edu.sru.cpsc.webshopping.domain.user.User;
 import edu.sru.cpsc.webshopping.repository.user.UserRepository;
@@ -19,6 +23,7 @@ public class MessagePageController {
 	private UserController userController;
 	private MessageDomainController msgcontrol;
 	private EmailController emailController;
+	private SidebarController sidebarController;
 	private Message mailbox[];
 	private Message tempMessage;
 	private int pageNumber = 1;
@@ -31,14 +36,24 @@ public class MessagePageController {
 	private int[] id;
 
 	
-	public MessagePageController(UserController userController,MessageDomainController msgcontrol,EmailController emailController,UserRepository repo) {
+	public MessagePageController(UserController userController,MessageDomainController msgcontrol,EmailController emailController,SidebarController sidebarController,UserRepository repo) {
 		this.userController = userController;
 		this.msgcontrol = msgcontrol;
 		this.emailController = emailController;
+		this.sidebarController = sidebarController;
 		
 	}
 	
-	
+	@ModelAttribute
+	  public void preLoadSidebar(Model model) {
+		  // this would be the code for using the repo but it doesnt work
+		  //Iterable<Sidebar> allTabs = new ArrayList<>();
+		  //allTabs = sidebarController.getAllTabs();
+		  
+		  // csv workaround:
+		  List<SidebarCSVModel> allTabs = sidebarController.readAllTabs();
+		  model.addAttribute("allTabs", allTabs);
+	  }
 	
 	 @RequestMapping({"/messages"})
 	    public String returnMessages(Model model) {
