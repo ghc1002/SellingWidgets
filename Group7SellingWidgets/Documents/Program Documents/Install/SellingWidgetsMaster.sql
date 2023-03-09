@@ -224,7 +224,6 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO category VALUES ('appliance'),('appliance_parts'),('electronic'),('electronic_parts'),('lawnCare'),('lawnCare_parts'),('vehicle'),('vehicle_parts');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -506,7 +505,6 @@ CREATE TABLE `payment_details` (
   `expiration_date` varchar(255) DEFAULT NULL,
   `postal_code` varchar(255) DEFAULT NULL,
   `security_code` varchar(255) DEFAULT NULL,
-  `last4digits` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -517,7 +515,7 @@ CREATE TABLE `payment_details` (
 
 LOCK TABLES `payment_details` WRITE;
 /*!40000 ALTER TABLE `payment_details` DISABLE KEYS */;
-INSERT INTO `payment_details` VALUES (50,'$2a$10$V6Es7v/zAtNiPQD1IQBgpeAy0pcfUu5Zd6KmManUA/99fDKGeFhea','Visa','$2a$10$3Rc4rNvU.5e5ElQr7XL1T.9Z70thL4LRPdBG070C8uEYv9VksuO42','$2a$10$9a3Gpc.2dq0.Qs/9A6nmT.QfJhxeN1j2yw6QXo3kyQ8D/XkvS26Hy','$2a$10$mZS8w.MH3EaJAlqgzxbxTuZIBm3iLlfvHeNv7OV6oNcE6MCnWkh5W','$2a$10$7SXgimkkh4.ntDwktSO3MeSsEgyqjP/MitoCbCypJExQr/BD9vfXm', '5478');
+INSERT INTO `payment_details` VALUES (50,'$2a$10$V6Es7v/zAtNiPQD1IQBgpeAy0pcfUu5Zd6KmManUA/99fDKGeFhea','$2a$10$TC40nOHfHJnqiJgnZ2ii3OfOzvLbifWLugNV4TgCOfv0JdAu2DwsC','$2a$10$3Rc4rNvU.5e5ElQr7XL1T.9Z70thL4LRPdBG070C8uEYv9VksuO42','$2a$10$9a3Gpc.2dq0.Qs/9A6nmT.QfJhxeN1j2yw6QXo3kyQ8D/XkvS26Hy','$2a$10$mZS8w.MH3EaJAlqgzxbxTuZIBm3iLlfvHeNv7OV6oNcE6MCnWkh5W','$2a$10$7SXgimkkh4.ntDwktSO3MeSsEgyqjP/MitoCbCypJExQr/BD9vfXm');
 /*!40000 ALTER TABLE `payment_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
