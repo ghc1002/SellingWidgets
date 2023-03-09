@@ -1,7 +1,10 @@
 package edu.sru.cpsc.webshopping.controller;
 
+import edu.sru.cpsc.webshopping.controller.sidebar.SidebarController;
 import edu.sru.cpsc.webshopping.domain.market.MarketListing;
 import edu.sru.cpsc.webshopping.domain.market.Transaction;
+import edu.sru.cpsc.webshopping.domain.sidebar.Sidebar;
+import edu.sru.cpsc.webshopping.domain.sidebar.SidebarCSVModel;
 import edu.sru.cpsc.webshopping.domain.user.Message;
 import edu.sru.cpsc.webshopping.domain.user.User;
 import edu.sru.cpsc.webshopping.domain.user.UserList;
@@ -24,6 +27,7 @@ import edu.sru.cpsc.webshopping.domain.widgets.electronics.Electronics_Computers
 import edu.sru.cpsc.webshopping.domain.widgets.lawncare.LawnCare_LawnMower;
 import edu.sru.cpsc.webshopping.domain.widgets.vehicles.Vehicle_Car;
 import edu.sru.cpsc.webshopping.domain.widgets.lawncare.LawnCare_LawnMower_Parts;
+import edu.sru.cpsc.webshopping.repository.sidebar.SidebarRepository;
 import edu.sru.cpsc.webshopping.repository.user.UserRepository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -32,9 +36,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,6 +61,7 @@ public class LandingPageController {
   UserListDomainController userListController;
   MessageDomainController msgcontrol;
   EmailController emailController;
+  SidebarController sidebarController;
   private List<User> allUsers = new ArrayList<>();
   private TransactionController transController;
   private UserController userController;
@@ -72,7 +80,8 @@ public class LandingPageController {
       UserController userController,
       UserListDomainController userListController,
       MessageDomainController msgcontrol,
-      EmailController emailController) {
+      EmailController emailController,
+      SidebarController sidebarController) {
     this.userRepository = userRepository;
     this.widgetController = widgetController;
     this.marketController = marketController;
@@ -81,8 +90,21 @@ public class LandingPageController {
     this.userListController = userListController;
     this.msgcontrol = msgcontrol;
     this.emailController = emailController;
+    this.sidebarController = sidebarController;
   }
 
+  @ModelAttribute
+  public void preLoadSidebar(Model model) {
+	  // this would be the code for using the repo but it doesnt work
+	  //Iterable<Sidebar> allTabs = new ArrayList<>();
+	  //allTabs = sidebarController.getAllTabs();
+	  
+	  // csv workaround:
+	  List<SidebarCSVModel> allTabs = sidebarController.readAllTabs();
+	  System.out.println(allTabs);
+	  model.addAttribute("allTabs", allTabs);
+  }
+  
   @GetMapping({"/friendsOff"})
   public String friendsOff(Model model) {
     setPage("friendOff");
