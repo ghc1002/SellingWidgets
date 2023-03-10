@@ -152,7 +152,7 @@
 												
 											function handleFileSelect(e) {
 												
-												if(!e.target.files) return;
+												if(!e.target.files || e.target.files.length == 1) return;
 												
 												selDiv.innerHTML = "";
 												
