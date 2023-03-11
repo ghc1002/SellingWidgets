@@ -416,34 +416,6 @@ INSERT INTO `market_listing` VALUES (3,_binary '',500.00,40,1,2,NULL),(5,_binar
 /*!40000 ALTER TABLE `market_listing` ENABLE KEYS */;
 UNLOCK TABLES;
 
-
---
--- Table structure for table `widget_image`
---
-
-DROP TABLE IF EXISTS `widget_image`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `widget_image` (
-  `id` bigint NOT NULL,
-  `image_name` varchar(255) DEFAULT NULL,
-  `market_listing_id` bigint DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKqudapab12tq3aorl9cok3b9kj` (`market_listing_id`),
-  CONSTRAINT `FKqudapab12tq3aorl9cok3b9kj` FOREIGN KEY (`market_listing_id`) REFERENCES `market_listing` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `widget_image`
---
-
-LOCK TABLES `widget_image` WRITE;
-/*!40000 ALTER TABLE `widget_image` DISABLE KEYS */;
-INSERT INTO `widget_image` VALUES (36,'34oldmac.jpeg',36),(38,'34ratechetandclank.jpg',38),(40,'34broken dryer.jpeg',40),(42,'34brand new microwave.jpeg',42),(45,'43new fridge.jpeg',45),(47,'43oldford.jpeg',47),(49,'43teslamower.jpeg',49),(66,'1surface-laptop-4-4-625x417-c.jpg',66),(70,'1surface-laptop-4-4-625x417-c.jpg',70),(144,'11mario64box.jpg',144),(155,'1microwave.jpeg',155),(166,'1dryer.jpeg',166);
-/*!40000 ALTER TABLE `widget_image` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `message`
 --
@@ -659,6 +631,99 @@ LOCK TABLES `shipping_address` WRITE;
 /*!40000 ALTER TABLE `shipping_address` DISABLE KEYS */;
 INSERT INTO `shipping_address` VALUES (54,'05212','Jacob','152 Street','Arkansas'),(74,'55442','Jacob','1st Road','Arkansas'),(79,'54667','Jacob','1st Road','Hawaii'),(86,'43415','new user','2nd Road','California'),(91,'12345','fdsa','fdas','Alabama'),(159,'16057','Billy Bob','1 Morrow Way Slippery Rock','Pennsylvania');
 /*!40000 ALTER TABLE `shipping_address` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sidebar`
+--
+
+DROP TABLE IF EXISTS `sidebar`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sidebar` (
+  `tabid` bigint NOT NULL,
+  `display_text` varchar(255) DEFAULT NULL,
+  `link_to` varchar(255) DEFAULT NULL,
+  `role` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`tabid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- 
+-- Dumping data for table `sidebar`
+--
+
+LOCK TABLES `sidebar` WRITE;
+/*!40000 ALTER TABLE `sidebar` DISABLE KEYS */;
+INSERT INTO `sidebar` VALUES (1, 'Home Page', '/employee', 'ROLE_ADMIN'),
+							(2, 'Search Tickets', '/searchTickets', 'ROLE_ADMIN'),
+							(3, 'Add User', '/createButton', 'ROLE_ADMIN'),
+                            (4, 'Search Users', '/searchButton', 'ROLE_ADMIN'),
+                            (5, 'Search Items', '/searchWidgetButton', 'ROLE_ADMIN'),
+                            (6, 'Items Info', '/widgetsInfo', 'ROLE_ADMIN'),
+                            (7, 'View a Message', '/searchMessageButton', 'ROLE_ADMIN'),
+                            (8, 'My Messages', '/messages', 'ROLE_ADMIN'),
+
+                            (9, 'Home Page', '/employee', 'ROLE_ADMIN_SHADOW'),
+                            (10, 'Search Tickets', '/searchTickets', 'ROLE_ADMIN_SHADOW'),
+                            (11, 'Search Users', '/searchButton', 'ROLE_ADMIN_SHADOW'),
+                            (12, 'Search Widgets', '/searchWidgetButton', 'ROLE_ADMIN_SHADOW'),
+                            (13, 'Widgets Info', '/widgetsInfo', 'ROLE_ADMIN_SHADOW'),
+                            (14, 'View a Message', '/searchMessageButton', 'ROLE_ADMIN_SHADOW'),
+                            (15, 'My Messages', '/messages', 'ROLE_ADMIN_SHADOW'),
+
+                            (16, 'Home Page', '/employee', 'ROLE_TECHNICALSERVICE'),
+                            (17, 'Search Tickets', '/searchTickets', 'ROLE_TECHNICALSERVICE'),
+                            (18, 'Search Users', '/searchButton', 'ROLE_TECHNICALSERVICE'),
+                            (19, 'Search Widgets', '/searchWidgetButton', 'ROLE_TECHNICALSERVICE'),
+                            (20, 'Widgets Info', '/widgetsInfo', 'ROLE_TECHNICALSERVICE'),
+                            (21, 'View a Message', '/searchMessageButton', 'ROLE_TECHNICALSERVICE'),
+                            (22, 'My Messages', '/messages', 'ROLE_TECHNICALSERVICE'),
+
+                            (23, 'Home Page', '/employee', 'ROLE_SECURITY'),
+                            (24, 'Search Tickets', '/searchTickets', 'ROLE_SECURITY'),
+                            (25, 'Search Users', '/searchButton', 'ROLE_SECURITY'),
+                            (26, 'Search Widgets', '/searchWidgetButton', 'ROLE_SECURITY'),
+                            (27, 'Widgets Info', '/widgetsInfo', 'ROLE_SECURITY'),
+                            (28, 'View a Message', '/searchMessageButton', 'ROLE_SECURITY'),
+                            (29, 'My Messages', '/messages', 'ROLE_SECURITY'),
+
+                            (30, 'Home Page', '/employee', 'ROLE_SALES'),
+                            (31, 'Statistics', '/statButton', 'ROLE_SALES'),
+                            (32, 'Search Users', '/searchButton', 'ROLE_SALES'),
+                            (33, 'Search Widgets', '/searchWidgetButton', 'ROLE_SALES'),
+                            (34, 'Widgets Info', '/widgetsInfo', 'ROLE_SALES'),
+                            (35, 'View a Message', '/searchMessageButton', 'ROLE_SALES'),
+                            (36, 'My Messages', '/messages', 'ROLE_SALES'),
+
+                            (37, 'Home Page', '/employee', 'ROLE_HIRINGMANAGER'),
+                            (38, 'New Applications', '/searchApplicationsButton(id = ${1})', 'ROLE_HIRINGMANAGER'),
+                            (39, 'Reviewed Applications', '/searchApplicationsButton(id = ${2})', 'ROLE_HIRINGMANAGER'),
+                            (40, 'My Messages', '/messages', 'ROLE_HIRINGMANAGER'),
+
+                            (41, 'Home Page', '/employee', 'ROLE_HELPDESK_ADMIN'),
+                            (42, 'Search Tickets', '/searchTickets', 'ROLE_HELPDESK_ADMIN'),
+                            (43, 'Search Users', '/searchButton', 'ROLE_HELPDESK_ADMIN'),
+                            (44, 'Search Widgets', '/searchWidgetButton', 'ROLE_HELPDESK_ADMIN'),
+                            (45, 'Widgets Info', '/widgetsInfo', 'ROLE_HELPDESK_ADMIN'),
+                            (46, 'View a Message', '/searchMessageButton', 'ROLE_HELPDESK_ADMIN'),
+                            (47, 'My Messages', '/messages', 'ROLE_HELPDESK_ADMIN'),
+
+                            (48, 'Home Page', '/employee', 'ROLE_HELPDESK_REGULAR'),
+                            (49, 'Search Tickets', '/searchTickets', 'ROLE_HELPDESK_REGULAR'),
+                            (50, 'Search Users', '/searchButton', 'ROLE_HELPDESK_REGULAR'),
+                            (51, 'Search Widgets', '/searchWidgetButton', 'ROLE_HELPDESK_REGULAR'),
+                            (52, 'Widgets Info', '/widgetsInfo', 'ROLE_HELPDESK_REGULAR'),
+                            (53, 'View a Message', '/searchMessageButton', 'ROLE_HELPDESK_REGULAR'),
+                            (54, 'My Messages', '/messages', 'ROLE_HELPDESK_REGULAR'),
+
+                            (55, 'Home', '/homePage', 'ROLE_USER'),
+                            (56, 'Browse', '/BrowseWidgetsButton', 'ROLE_USER'),
+                            (57, 'Sell Items', '/addWidget', 'ROLE_USER'),
+                            (58, 'Tickets', '/tickets', 'ROLE_USER'),
+                            (59, 'Friends', '/friends', 'ROLE_USER'),
+                            (60, 'Messages', '/messages', 'ROLE_USER');
+/*!40000 ALTER TABLE `sidebar` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -901,7 +966,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,_binary '\0',_binary '\0','2022-02-20',_binary '\0',_binary '\0','','test@tester.com','fqdqmdyoha',_binary '','$2a$10$yynCjuGntBkkX2m859LnBeYyJ9TS5N6ryrZ2lO.OOBuq5jR1Bzkzq','ROLE_USER','userDeschere','userName',NULL,NULL,50,0,NULL,NULL,63,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1surface-laptop-4-4-625x417-c.jpg',71),(8,_binary '\0',_binary '\0','2022-02-20',_binary '\0',_binary '\0',NULL,'tewatwe@test.com','xowotnxnvu',_binary '','$2a$10$FnrxvrCjxbBjjl5XWI2nCOUpqvTlCp2LVpIsfhbSq0U60B5xuHxRK','ROLE_USER','tewatwaetwedesc','newUser',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(19,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0',NULL,'test@tester.com','gxfoqjzfoa',_binary '','$2a$10$Z1nwcoVJZGu2ZBeZzLdbQeo9/OzpANnt9a8OgwTaCPGdN5J3sk6K6','ROLE_USER','Nicholas','nickd',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(20,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0','Jacob_Tester','test@tester.com','lhglseppzh',_binary '','$2a$10$gDzbpcKSKRDQh6mS.e0hr.vtcfg.oNmg.nd8JJlgiZqKwlF2EwWHy','ROLE_USER','Jacob','userName2',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,83),(21,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0',NULL,'namer@name.com','ghkkllstnu',_binary '','$2a$10$.pRuDcQzwJxBzLsgjRmTNeqPIJ4Ncc2zSgEhCWvMNg3ZQwQM3rzJW','ROLE_USER','Timothy','timd',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(34,_binary '\0',_binary '\0','2022-03-06',_binary '\0',_binary '\0',NULL,'mtest9293@gmail.com','zihbbotswb',_binary '','$2a$10$ebFOJs88r6QnskKpSnDYpuG9NaHEno0b2xkjI1worC.MR3AUbDkFO','ROLE_USER','','testAcc',NULL,NULL,NULL,200,'password',_binary '�\�\0ur\0[Ljava.lang.String;�\�V\�\�{G\0\0xp\0\0\0pppppppppppppppppppp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(43,_binary '\0',_binary '\0','2022-03-06',_binary '\0',_binary '\0',NULL,'mtest9293@gmail.com','lxbgkkmlva',_binary '','$2a$10$WH1rexv507TIwZ2RCSevf.t7Xj9ks7NdUEzDG4NMp7sfWXDp.P8V.','ROLE_USER','','nickTest',NULL,NULL,NULL,200,'password',_binary '�\�\0ur\0[Ljava.lang.String;�\�V\�\�{G\0\0xp\0\0\0pppppppppppppppppppp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(58,_binary '\0',_binary '\0','2022-03-07',_binary '\0',_binary '\0',NULL,'tmd1021@sru.edu',NULL,_binary '','$2a$10$YjpI0ak3J9eKKHjlii0heevip93h9NDOtqAxacc0v.D8x2xlgKuJy','ROLE_ADMIN','','useradminwidget',NULL,NULL,NULL,200,'useradmin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(59,_binary '\0',_binary '\0','2022-03-07',_binary '\0',_binary '\0',NULL,'test@test.com',NULL,_binary '','$2a$10$.GndlDgEzXtOTmOYpDHlVO9GSwKbU5QdHZLGg6j9.ar4Ba/H/KnE2','ROLE_USER',NULL,'testuser',NULL,NULL,NULL,200,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(106,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'taddamd1021@sru.edu',NULL,_binary '','$2a$10$4rVpuQuJCO7h.ksC36YWp.87jvj5OpHKDsTXgtf4Nb9ei57uSNb9G','ROLE_CUSTOMERSERVICE',NULL,'usercustomerwidget',NULL,NULL,NULL,200,'pethfexgpd',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(108,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tmsddawd1021@sru.edu',NULL,_binary '','$2a$10$2gMfUVv/rmUV8M0cDk5bjOeh8A2j0bQXL3x3TgHHDk8H7UHLab4LS','ROLE_TECHNICALSERVICE',NULL,'usertechwidget',NULL,NULL,NULL,200,'qgghmmftrb',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(110,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tdsdmsdad1021@sru.edu',NULL,_binary '','$2a$10$Oaoq39cwIcN14Ais2oe5xe.1HpLg9rIREn5EXLVfwUIdPAhpGFes2','ROLE_HIRINGMANAGER',NULL,'userhiringwidget',NULL,NULL,NULL,200,'xplsbsuloo',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(112,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tsdmsadwdsdwa1021@sru.edu',NULL,_binary '','$2a$10$PY6jwIQfE5cRJVfUXdxaQOB.1wqqnbmj1.edNMKtUAwdqZ8PALDkC','ROLE_SALES',NULL,'usersaleswidget',NULL,NULL,NULL,200,'ejvemzxkzs',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(114,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tasdwmdawd1021@sru.edu',NULL,_binary '','$2a$10$6Hoouh4QNJ7SthcQCTf3qOLdhMscfoPxDSkXwQjB0u/Yqb7997xZu','ROLE_SECURITY',NULL,'usersecuritywidget',NULL,NULL,NULL,200,'viqxomlryx',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(122,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'dougherty.tdoc@gmail.com','uygchacaey',_binary '','$2a$10$Conjpd7KR1GQI/Ik2GtguON8G2.9WB1y0hiDEBdy7KyYSkG/ks/IW','ROLE_USER','','timuser',NULL,NULL,NULL,200,'mvarjpzssz',NULL,NULL,'Timothy','Dougherty','+14127124259','+1       USA','What is your mother\'s maiden name?','What is your favorite band?','What is your favorite beverage?','peterson','rush','sprite',NULL,NULL);
+INSERT INTO `user` VALUES (1,_binary '\0',_binary '\0','2022-02-20',_binary '\0',_binary '\0','','test@tester.com','fqdqmdyoha',_binary '','$2a$10$yynCjuGntBkkX2m859LnBeYyJ9TS5N6ryrZ2lO.OOBuq5jR1Bzkzq','ROLE_USER','userDeschere','userName',NULL,NULL,50,0,NULL,NULL,63,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1surface-laptop-4-4-625x417-c.jpg',71),(8,_binary '\0',_binary '\0','2022-02-20',_binary '\0',_binary '\0',NULL,'tewatwe@test.com','xowotnxnvu',_binary '','$2a$10$FnrxvrCjxbBjjl5XWI2nCOUpqvTlCp2LVpIsfhbSq0U60B5xuHxRK','ROLE_USER','tewatwaetwedesc','newUser',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(19,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0',NULL,'test1@tester.com','gxfoqjzfoa',_binary '','$2a$10$Z1nwcoVJZGu2ZBeZzLdbQeo9/OzpANnt9a8OgwTaCPGdN5J3sk6K6','ROLE_USER','Nicholas','nickd',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(20,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0','Jacob_Tester','test2@tester.com','lhglseppzh',_binary '','$2a$10$gDzbpcKSKRDQh6mS.e0hr.vtcfg.oNmg.nd8JJlgiZqKwlF2EwWHy','ROLE_USER','Jacob','userName2',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,83),(21,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0',NULL,'namer@name.com','ghkkllstnu',_binary '','$2a$10$.pRuDcQzwJxBzLsgjRmTNeqPIJ4Ncc2zSgEhCWvMNg3ZQwQM3rzJW','ROLE_USER','Timothy','timd',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(34,_binary '\0',_binary '\0','2022-03-06',_binary '\0',_binary '\0',NULL,'mtest9293@gmail.com','zihbbotswb',_binary '','$2a$10$ebFOJs88r6QnskKpSnDYpuG9NaHEno0b2xkjI1worC.MR3AUbDkFO','ROLE_USER','','testAcc',NULL,NULL,NULL,200,'password',_binary '�\�\0ur\0[Ljava.lang.String;�\�V\�\�{G\0\0xp\0\0\0pppppppppppppppppppp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(43,_binary '\0',_binary '\0','2022-03-06',_binary '\0',_binary '\0',NULL,'mtest9294@gmail.com','lxbgkkmlva',_binary '','$2a$10$WH1rexv507TIwZ2RCSevf.t7Xj9ks7NdUEzDG4NMp7sfWXDp.P8V.','ROLE_USER','','nickTest',NULL,NULL,NULL,200,'password',_binary '�\�\0ur\0[Ljava.lang.String;�\�V\�\�{G\0\0xp\0\0\0pppppppppppppppppppp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(58,_binary '\0',_binary '\0','2022-03-07',_binary '\0',_binary '\0',NULL,'tmd1021@sru.edu',NULL,_binary '','$2a$10$YjpI0ak3J9eKKHjlii0heevip93h9NDOtqAxacc0v.D8x2xlgKuJy','ROLE_ADMIN','','useradminwidget',NULL,NULL,NULL,200,'useradmin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(59,_binary '\0',_binary '\0','2022-03-07',_binary '\0',_binary '\0',NULL,'test@test.com',NULL,_binary '','$2a$10$.GndlDgEzXtOTmOYpDHlVO9GSwKbU5QdHZLGg6j9.ar4Ba/H/KnE2','ROLE_USER',NULL,'testuser',NULL,NULL,NULL,200,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(106,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'taddamd1021@sru.edu',NULL,_binary '','$2a$10$4rVpuQuJCO7h.ksC36YWp.87jvj5OpHKDsTXgtf4Nb9ei57uSNb9G','ROLE_CUSTOMERSERVICE',NULL,'usercustomerwidget',NULL,NULL,NULL,200,'pethfexgpd',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(108,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tmsddawd1021@sru.edu',NULL,_binary '','$2a$10$2gMfUVv/rmUV8M0cDk5bjOeh8A2j0bQXL3x3TgHHDk8H7UHLab4LS','ROLE_TECHNICALSERVICE',NULL,'usertechwidget',NULL,NULL,NULL,200,'qgghmmftrb',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(110,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tdsdmsdad1021@sru.edu',NULL,_binary '','$2a$10$Oaoq39cwIcN14Ais2oe5xe.1HpLg9rIREn5EXLVfwUIdPAhpGFes2','ROLE_HIRINGMANAGER',NULL,'userhiringwidget',NULL,NULL,NULL,200,'xplsbsuloo',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(112,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tsdmsadwdsdwa1021@sru.edu',NULL,_binary '','$2a$10$PY6jwIQfE5cRJVfUXdxaQOB.1wqqnbmj1.edNMKtUAwdqZ8PALDkC','ROLE_SALES',NULL,'usersaleswidget',NULL,NULL,NULL,200,'ejvemzxkzs',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(114,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tasdwmdawd1021@sru.edu',NULL,_binary '','$2a$10$6Hoouh4QNJ7SthcQCTf3qOLdhMscfoPxDSkXwQjB0u/Yqb7997xZu','ROLE_SECURITY',NULL,'usersecuritywidget',NULL,NULL,NULL,200,'viqxomlryx',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(122,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'dougherty.tdoc@gmail.com','uygchacaey',_binary '','$2a$10$Conjpd7KR1GQI/Ik2GtguON8G2.9WB1y0hiDEBdy7KyYSkG/ks/IW','ROLE_USER','','timuser',NULL,NULL,NULL,200,'mvarjpzssz',NULL,NULL,'Timothy','Dougherty','+14127124259','+1       USA','What is your mother\'s maiden name?','What is your favorite band?','What is your favorite beverage?','peterson','rush','sprite',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1099,6 +1164,33 @@ LOCK TABLES `widget_electronics` WRITE;
 /*!40000 ALTER TABLE `widget_electronics` DISABLE KEYS */;
 INSERT INTO `widget_electronics` VALUES (35,'1','Yes'),(37,'Yes','Yes'),(65,'1','Yes'),(143,'Yes','No');
 /*!40000 ALTER TABLE `widget_electronics` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `widget_image`
+--
+
+DROP TABLE IF EXISTS `widget_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `widget_image` (
+  `id` bigint NOT NULL,
+  `image_name` varchar(255) DEFAULT NULL,
+  `market_listing_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKqudapab12tq3aorl9cok3b9kj` (`market_listing_id`),
+  CONSTRAINT `FKqudapab12tq3aorl9cok3b9kj` FOREIGN KEY (`market_listing_id`) REFERENCES `market_listing` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `widget_image`
+--
+
+LOCK TABLES `widget_image` WRITE;
+/*!40000 ALTER TABLE `widget_image` DISABLE KEYS */;
+INSERT INTO `widget_image` VALUES (36,'34oldmac.jpeg',36),(38,'34ratechetandclank.jpg',38),(40,'34broken dryer.jpeg',40),(42,'34brand new microwave.jpeg',42),(45,'43new fridge.jpeg',45),(47,'43oldford.jpeg',47),(49,'43teslamower.jpeg',49),(66,'1surface-laptop-4-4-625x417-c.jpg',66),(70,'1surface-laptop-4-4-625x417-c.jpg',70),(144,'11mario64box.jpg',144),(155,'1microwave.jpeg',155),(166,'1dryer.jpeg',166);
+/*!40000 ALTER TABLE `widget_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
