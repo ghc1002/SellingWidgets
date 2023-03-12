@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -240,32 +241,34 @@ public class SignUpController {
       if (user.getRole() != "ROLE_ADMIN") {
         email.verificationEmail(user, util.randomStringGenerator());
       }
-
+      userController.addUser(user, result);
+      user = userController.getUserByEmail(user.getEmail());
+      System.out.println(user.getId() + " user Id");
       System.out.println(file.isEmpty() + " is the file empty");
       if (!file.isEmpty()) {
         String tempImageName;
         tempImageName = user.getId() + StringUtils.cleanPath(file.getOriginalFilename());
         System.out.println(file.getOriginalFilename());
         System.out.println(tempImageName);
+        user.setUserImage(tempImageName);
         try {
-          String fileLocation =
-              new File("src\\main\\resources\\static\\images\\userImages").getAbsolutePath()
-                  + "\\"
-                  + tempImageName;
-          System.out.println(fileLocation);
-          FileOutputStream output = new FileOutputStream(fileLocation);
-          output.write(file.getBytes());
+        	String fileLocation = new File("src/main/resources/static/images/userImages").getAbsolutePath() + "/" + tempImageName;
+			String fileLocationTemp = new ClassPathResource("static/images/userImages").getFile().getAbsolutePath() + "/" + tempImageName;
 
-          output.close();
+			FileOutputStream output = new FileOutputStream(fileLocation);
+			output.write(file.getBytes());
+			output.close();
+
+			output = new FileOutputStream(fileLocationTemp);
+			output.write(file.getBytes());
+			output.close();
         } catch (IOException e) {
           e.printStackTrace();
           System.out.println("upload failed");
         }
         model.addAttribute("userImage", tempImageName);
-        user.setUserImage(tempImageName);
       }
-      userController.addUser(user, result);
-
+      userRepository.save(user);
       model.addAttribute("user", user);
       return "redirect:newUser";
     } else {
