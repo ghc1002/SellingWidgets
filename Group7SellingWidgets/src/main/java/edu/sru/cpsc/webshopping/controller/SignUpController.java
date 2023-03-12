@@ -161,6 +161,16 @@ public class SignUpController {
     model.addAttribute("defaultCountryCode", defaultCountryCode);
     return "newUser";
   }
+  
+  /**
+   * creates a new user when someone signs up
+   * @param user
+   * @param result
+   * @param file
+   * @param attributes
+   * @param model
+   * @return
+   */
 
   @PostMapping("/add-user-signup")
   public String addUser(
