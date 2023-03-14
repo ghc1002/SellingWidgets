@@ -1687,7 +1687,7 @@ public class EmployeeController {
     model.addAttribute("searchedUser", getSearchedUser());
     model.addAttribute("sellers", getSearchedUserSellers());
     model.addAttribute("searchedWidgets", getSearchedUserWidgets());
-    model.addAttribute("searchedMarkets", user.getMarketListings());
+    model.addAttribute("searchedMarkets", getSearchedUserListings());
     model.addAttribute("myusers", getMyUserSearch());
     return "employee";
   }
@@ -1750,7 +1750,7 @@ public class EmployeeController {
     model.addAttribute("searchedUser", getSearchedUser());
     model.addAttribute("sellers", getSearchedSeller());
     model.addAttribute("searchedWidgets", getSearchedWidget());
-    model.addAttribute("searchedMarkets", user.getMarketListings());
+    model.addAttribute("searchedMarkets", getSearchedMarket());
     model.addAttribute("mailpage", getMailboxPage());
     model.addAttribute("myusers", getMyUserSearch());
     model.addAttribute("page", page);
