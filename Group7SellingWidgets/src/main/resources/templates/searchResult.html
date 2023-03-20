@@ -123,22 +123,22 @@
 	
 		
 	<div class="container">
-	<div style="margin-bottom:5px;"  class="card-header d-flex justify-content-center">
+	<div style="margin-bottom:5px; margin-top:5px;"  class="d-flex justify-content-center">
 					<h1>Search Results</h1>
 				</div>
 	<form action="search" th:action="@{/search}" th:object="${widget}" method="get" class="form-horizontal">
 		<div class="row">
-		<div class="col-1">
-			<a class="btn btn-secondary" th:onclick="myFunction()"><span>Filter</span></a>
-		</div>
-		<div class="col-3">
-			<input class="form-control" type="search" value="" id="SearchBar" placeholder="search bar" name="searchString">
+		<div class="col-3" style="margin-left:25px">
+			<input class="form-control" type="search" value="" id="SearchBar" placeholder="Search again" name="searchString">
 		</div>
 		<div class="col-1">
 			<input class="btn btn-primary" type = "submit" value="Search" id="SearchButton">
 		</div>
 		<div class="col-2">
 			<a class="btn btn-danger" href="/homePage">Cancel Search</a>
+		</div>
+		<div class="col" style="justify-content:right; display:flex; margin-right: 25px">
+			<a class="btn btn-secondary" th:onclick="myFunction()"><span>Filter</span></a>
 		</div>
 		</div>
 	<script>
@@ -674,7 +674,7 @@
 								}
 						
 						</script>
-		<div class="row mx-4">
+		<div class="row mx-3">
 							<div class="col-2">
 							<label style="display:none;" class="form-label" id="category"for="categories">Select Category:</label>
 							<select class="form-select" id="categories" name="category" style="width:auto;display:none;">
@@ -1432,7 +1432,7 @@
 								</div>
 							</div>
 						</div>
-		<div class="row">
+		<div class="row" style="margin-left:13px;">
 			<p style = "visibility:none;" id="rating"th:text="${sellerRating.ratingName}"></p>
 		<div class="form-group">
 		
@@ -1461,13 +1461,13 @@
 				<h2>Search Results</h2>
 			</div>
 			<div class="card-body">
-				<table class="table">
-					<thead class="table-dark">
+				<table class="uniTableForm">
+					<thead class="table-primary">
 						<tr>
-							<th style="text-align:center;">Widget Name</th>
-							<th style="text-align:center;">Widget Description</th>
-							<th style="text-align:center;">Price</th>
-							<th style="text-align:center;">Link to Widget</th>
+							<td style="text-align:center; background-color: #89CFF0"><h5>Widget Name</h5></td>
+							<td style="text-align:center; background-color: #89CFF0"><h5>Widget Description</h5></td>
+							<td style="text-align:center; background-color: #89CFF0"><h5>Price</h5></td>
+							<td style="text-align:center; background-color: #89CFF0"><h5>Link to Widget</h5></td>
 						</tr>
 					</thead>
 					<tbody>
@@ -1477,7 +1477,7 @@
 							<td class="text" th:each="listing : ${listings}" th:if="(${widget.id} == ${listing.widgetSold.id} and ${listing.isDeleted} != 1)">
 								<p>$<span  th:text="${listing.pricePerItem}"></span></p>
 							</td>
-							<td th:each="listing : ${listings}" th:if="(${widget.id} == ${listing.widgetSold.id} and ${listing.isDeleted} != 1)"><a class ="btn btn-success" th:href="@{/viewMarketListing/{id}(id = ${listing.id})}"><span>View Listing</span></a></td>
+							<td th:each="listing : ${listings}" th:if="(${widget.id} == ${listing.widgetSold.id} and ${listing.isDeleted} != 1)"><a class ="buttonSearchPur" th:href="@{/viewMarketListing/{id}(id = ${listing.id})}"><span>View Listing</span></a></td>
 						</tr>
 					</tbody>
 				</table>
