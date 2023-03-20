@@ -206,20 +206,20 @@
 
 			<div class="card-body mx-auto flex-fill">
 				<div class="d-flex justify-content-center">
-					<h1>Home Page</h1>
+					<h1>Pseudo eBay</h1>
 
 				</div>
 				<div class="card-body">
 					<form action="search" th:action="@{/search}" th:object="${widget}" method="get" class="mx-4">
 						<div class="row">
-							<div class="col-sm-1">
-								<a class="btn btn-secondary" th:onclick="myFunction()"><span>Filter</span></a>
-							</div>
-							<div class="col-sm-2">
+							<div class="col-sm-2 mb-2">
 								<input class="form-control" type="search" value="" id="SearchBar" placeholder="Search item" name="searchString">
 							</div>
-							<div class="col-sm-1">
+							<div class="col">
 								<input class="btn btn-primary" type = "submit" value="Search" id="SearchButton">
+							</div>
+							<div class="col" style="justify-content:right; display:flex">
+								<a class="btn btn-secondary" th:onclick="myFunction()"><span>Filter</span></a>
 							</div>
 						</div>
 						<script>
@@ -718,7 +718,7 @@
 
 
 						</script>
-						<div class="row mx-4">
+						<div class="row">
 							<div class="col-2">
 							<label style="display:none;" class="form-label" id="category"for="categories">Select Category:</label>
 							<select class="form-select" id="categories" name="category" style="width:auto;display:none;">
@@ -726,7 +726,7 @@
 							</select>
 							</div>
 							<div class="col-10">
-							<label style="display:none;"class="form-label" id="subcategory"for="subCategories">Select SubCategory:</label><br>
+							<label style="display:none;"class="form-label" id="subcategory"for="subCategories">Select Sub-category:</label><br>
 							<select class="form-select" id="subCategories" name="subCategory" style="width:auto;display:none;">
 								<option value="all">All</option>
 							</select>
@@ -1476,7 +1476,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="row mx-4">
+						<div class="row">
 							<p style = "display:none;" id="rating"th:text="${sellerRating.ratingName}"></p>
 							<div class="form-group">
 
@@ -1502,14 +1502,14 @@
 							<h2>Purchased Items</h2>
 						</div>
 						<div class="card-body">
-							<table class="table table-bordered table-sm">
+							<table class="uniTableForm">
 								<thead class="table-primary">
 									<tr>
-										<th scope="col">Purchase Date</th>
-										<th scope="col">Number Bought</th>
-										<th scope="col">Net Price</th>
-										<th scope="col">Product Name</th>
-										<th scope="col">View Order</th>
+										<td scope="col" style="background-color: #89CFF0"><h5>Purchase Date</h5></td>
+										<td scope="col" style="background-color: #89CFF0"><h5>Number Bought</h5></td>
+										<td scope="col" style="background-color: #89CFF0"><h5>Net Price</h5></td>
+										<td scope="col" style="background-color: #89CFF0"><h5>Product Name</h5></td>
+										<td scope="col" style="background-color: #89CFF0"><h5>View Order</h5></td>
 									</tr>
 								</thead>
 								<tbody>
@@ -1521,8 +1521,8 @@
 											<p>$<span  th:text="${purchase.totalPriceAfterTaxes}"></span></p>
 										</td>
 										<td class="text" th:text="${purchase.marketListing.widgetSold.name}">
-										<td class="text">
-											<a class="btn btn-success" th:href="@{viewTransactionDetails/{transId}(transId = ${purchase.id})}">
+										<td>
+											<a class="buttonSearchPur" th:href="@{viewTransactionDetails/{transId}(transId = ${purchase.id})}">
 												Open Purchase
 											</a>
 										</td>
@@ -1539,14 +1539,14 @@
 							<h2>Sold Items</h2>
 						</div>
 						<div class="card-body">
-							<table class="table table-bordered table-sm">
+							<table class="uniTableForm">
 								<thead class="table-primary">
 									<tr>
-										<th scope="col">Purchase Date</th>
-										<th scope="col">Number Bought</th>
-										<th scope="col">Profit</th>
-										<th scope="col">Item Name</th>
-										<th scope="col">View Order</th>
+										<td scope="col" style="background-color: #89CFF0"><h5>Purchase Date</h5></td>
+										<td scope="col" style="background-color: #89CFF0"><h5>Number Bought</h5></td>
+										<td scope="col" style="background-color: #89CFF0"><h5>Profit</h5></td>
+										<td scope="col" style="background-color: #89CFF0"><h5>Item Name</h5></td>
+										<td scope="col" style="background-color: #89CFF0"><h5>View Order</h5></td>
 									</tr>
 								</thead>
 								<tbody>
@@ -1557,7 +1557,7 @@
 										<td class="text">$<span th:text="${sold.sellerProfit}"></span> </td>
 										<td class="text" th:text="${sold.marketListing.widgetSold.name}">
 										<td class="text">
-											<a class="btn btn-success" th:href="@{viewTransactionDetails/{transId}(transId = ${sold.id})}">
+											<a class="buttonSearchPur" th:href="@{viewTransactionDetails/{transId}(transId = ${sold.id})}">
 												Open Sold Item
 											</a>
 										</td>
@@ -1574,13 +1574,13 @@
 							<h2>Your Listings</h2>
 						</div>
 						<div class="card-body">
-							<table class="table table-bordered table-sm">
+							<table class="uniTableForm">
 								<thead class="table-primary">
 									<tr>
-										<th scope="col">Item Name</th>
-										<th scope="col">Item Description</th>
-										<th scope="col">Price</th>
-										<th scope="col">Link to Item</th>
+										<td scope="col" style="background-color: #89CFF0"><h5>Item Name</h5></td>
+										<td scope="col" style="background-color: #89CFF0"><h5>Item Description</h5></td>
+										<td scope="col" style="background-color: #89CFF0"><h5>Price</h5></td>
+										<td scope="col" style="background-color: #89CFF0"><h5>Link to Item</h5></td>
 									</tr>
 								</thead>
 								<tbody>
@@ -1591,7 +1591,7 @@
                                			 	<td class="text">
                                     			<p>$<span  th:text="${listing.pricePerItem}"></span></p>
                                 			</td>
-                                			<td><a class="btn btn-success" th:href="@{/viewMarketListing/{id}(id = ${listing.id})}"><span>View Listing</span></a></td>
+                                			<td><a class="buttonSearchPur" th:href="@{/viewMarketListing/{id}(id = ${listing.id})}"><span>View Listing</span></a></td>
                             			</th:block>
                         			</tr>
 								</tbody>
