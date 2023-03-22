@@ -2,6 +2,7 @@ package edu.sru.cpsc.webshopping.domain.user;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import edu.sru.cpsc.webshopping.domain.billing.DomainBillingSpringTest;
 import edu.sru.cpsc.webshopping.domain.user.Statistics.Category;
+import edu.sru.cpsc.webshopping.util.enums.MessageType;
 
 @SpringBootTest(classes = {DomainUserSpringTest.class})
 /*
@@ -97,23 +99,77 @@ public class DomainUserSpringTest {
 	
 	/*
 	 * Tests the messaging system
-	 * currently not working
 	 */
 	@Test
 	void messageTest(){
 		Message message = new Message();
+		User mySpam = new User();
+		User myTrash = new User();
+		User offender = new User();
+		User oldOwner = new User();
+		User oldReceiver = new User();
+		User owner = new User();
+		User receiver = new User();
+		User spamOwner = new User();
+		User spamOwnerReceiver = new User();
+		User trashOwner = new User();
+		User trashOwnerReceiver = new User();
+		LocalDateTime toTrashOwner = LocalDateTime.now();
+		LocalDateTime toTrashReceiver = LocalDateTime.now();
+		LocalDateTime expireOwner = LocalDateTime.now();
+		LocalDateTime expireReceiver = LocalDateTime.now();
+		
 		message.setMsgDate("Oct. 6");
+		message.setContent("Hello");
+		message.setDateSentToTrashOwner(toTrashOwner);
+		message.setDateSentToTrashReceiver(toTrashReceiver);
+		message.setExpireDateOwner(expireOwner);
+		message.setExpireDateReceiver(expireReceiver);
+		message.setId(0);
+		message.setMessageType(MessageType.SPAM);
+		message.setMySpam(mySpam);
+		message.setMyTrash(myTrash);
+		message.setOffender("offender");
+		message.setOldOwner(oldOwner);
+		message.setOldReceiver(oldReceiver);
+		message.setOwner(owner);
+		message.setReceiver(receiver);
+		message.setReceiverName("receiverName");
+		message.setReviewerName("reviewerName");
+		message.setSender("sender");
+		message.setSpamOwner(spamOwner);
+		message.setSpamOwnerReceiver(spamOwnerReceiver);
+		message.setSpamReporter("report");
+		message.setSubject("subject");
+		message.setTrashOwner(trashOwner);
+		message.setTrashOwnerReceiver(trashOwnerReceiver);
+		message.setUserFeedback("feedback");
 			
 		assertEquals("Oct. 6", message.getMsgDate());
-		message.getDateSentToTrashOwner();
-		message.getExpireDateOwner();
-		message.getDateSentToTrashReceiver();
-		message.getExpireDateReceiver();
-		message.resetDateSentToTrashOwner();
-		message.resetExpireDateOwner();
-		message.resetDateSentToTrashReceiver();
-		message.resetExpireDateReceiver();
-		message.toString();
+		assertEquals("Hello", message.getContent());
+		assertEquals(toTrashOwner, message.getDateSentToTrashOwner());
+		assertEquals(toTrashReceiver, message.getDateSentToTrashReceiver());
+		assertEquals(expireOwner, message.getExpireDateOwner());
+		assertEquals(expireReceiver, message.getExpireDateReceiver());
+		assertEquals(0, message.getId());
+		assertEquals(MessageType.SPAM, message.getMessageType());
+		assertEquals(mySpam, message.getMySpam());
+		assertEquals(myTrash, message.getMyTrash());
+		assertEquals("offender", message.getOffender());
+		assertEquals(oldOwner, message.getOldOwner());
+		assertEquals(oldReceiver, message.getOldReceiver());
+		assertEquals(owner, message.getOwner());
+		assertEquals(receiver, message.getReceiver());
+		assertEquals("receiverName", message.getReceiverName());
+		assertEquals("reviewerName", message.getReviewerName());
+		assertEquals("sender", message.getSender());
+		assertEquals(spamOwner, message.getSpamOwner());
+		assertEquals(spamOwnerReceiver, message.getSpamOwnerReceiver());
+		assertEquals("report", message.getSpamReporter());
+		assertEquals("subject", message.getSubject());
+		assertEquals(trashOwner, message.getTrashOwner());
+		assertEquals(trashOwnerReceiver, message.getTrashOwnerReceiver());
+		assertEquals("feedback", message.getUserFeedback());
 	}
 	
 	
