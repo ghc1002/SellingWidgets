@@ -5,7 +5,7 @@ import org.junit.Test;
 
 
 public class AddWidgetControllerTest {
-	public static AddWidgetController Widget = new AddWidgetController(null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); 
+	public static AddWidgetController Widget = new AddWidgetController(null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null); 
 	@BeforeAll
 	public static void newWidget() {
 
