@@ -155,6 +155,7 @@ public class AddWidgetController {
 	private final String UPLOAD_DIR = "src/main/resources/static/images/userImages/";
 
 	public AddWidgetController(WidgetRepository widgetRepository, CategoryController categories, ApplianceDryersRepository dryerRepository, WidgetImageRepository widgetImageRepository,
+
 			ApplianceMicrowaveRepository microwaveRepository, ApplianceRefrigeratorRepository fridgeRepository, 
 			ApplianceWashersRepository washerRepository, ApplianceBlenderRepository blenderRepository, ElectronicsComputersRepository computerRepository, 
 			ElectronicsVideoGamesRepository videoGameRepository, VehicleCarRepository carRepository, 
@@ -195,7 +196,6 @@ public class AddWidgetController {
 		if (userController.getCurrently_Logged_In() == null) {
 			throw new IllegalStateException("Not logged in.");
 		}
-
 		model.addAttribute("categories", categories.getAllCategories());
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "addWidget";
