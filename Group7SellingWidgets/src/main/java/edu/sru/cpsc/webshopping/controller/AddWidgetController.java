@@ -136,6 +136,7 @@ public class AddWidgetController {
 	LawnCare_LawnMower_Parts mowerPart;
 	Widget_General generalWidget;
 	Set<WidgetImage> listingImages = new HashSet<>();
+	CategoryController categories;
 	MarketListing marketListing;
 	private Widget widgetStorage;
 	private String category;
@@ -152,7 +153,7 @@ public class AddWidgetController {
 
 	private final String UPLOAD_DIR = "src/main/resources/static/images/userImages/";
 
-	public AddWidgetController(WidgetRepository widgetRepository, ApplianceDryersRepository dryerRepository, WidgetImageRepository widgetImageRepository,
+	public AddWidgetController(WidgetRepository widgetRepository,CategoryController categories, ApplianceDryersRepository dryerRepository, WidgetImageRepository widgetImageRepository,
 			ApplianceMicrowaveRepository microwaveRepository, ApplianceRefrigeratorRepository fridgeRepository, 
 			ApplianceWashersRepository washerRepository, ApplianceBlenderRepository blenderRepository, ElectronicsComputersRepository computerRepository, 
 			ElectronicsVideoGamesRepository videoGameRepository, VehicleCarRepository carRepository, 
@@ -161,6 +162,7 @@ public class AddWidgetController {
 			MarketListingRepository marketListingRepos, WidgetController widgetController, UserController userController, 
 			MarketListingDomainController marketListingController, UserRepository userRepo, LawnCareLawnMowerRepository mowerRepository, WidgetGeneralRepository generalRepository)
 	{
+		this.categories = categories;		
 		this.widgetRepository = widgetRepository;
 		this.applianceRepository = applianceRepository;
 		this.electronicsRepository = electronicsRepository;
@@ -192,12 +194,8 @@ public class AddWidgetController {
 		if (userController.getCurrently_Logged_In() == null) {
 			throw new IllegalStateException("Not logged in.");
 		}
-		Set<String> categories = new HashSet<>();
-		for (Pair<String, String> stringStringPair : PreLoad.categoryConfiguration()) {
-			String left = stringStringPair.getLeft();
-			categories.add(left);
-		}
-		model.addAttribute("categories", categories);
+		
+		model.addAttribute("categories", categories.getAllCategories());
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "addWidget";
 	}

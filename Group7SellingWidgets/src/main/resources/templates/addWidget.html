@@ -30,63 +30,15 @@
 		  margin-right: 8px;
 		  font-size: 12px;
 		}
+		.addLabel:hover{
+			background-color: #D3D3D3;
+		}
 	</style>
 </head>
 
 <!-- NAV BAR -->
 <header>
-  <!-- if no user is logged in... -->
-  <nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)"
-       th:if="${user == null}">
-    <div class="container-fluid">
-      <!-- Left justified unordered list -->
-      <ul class="navbar nav">
-        <li class="nav-item"><a class="navbar-brand" th:href="@{/index}">
-          <img src="/images/pseudo_ebay_icon.png"
-               alt="Home"
-               style="width:64px; height:64px;"></img></a></li>
-      </ul>
-      <!-- Right justified unordered list -->
-      <ul class="navbar nav ms-md-auto">
-        <li class="nav-item ms-md-auto"><a class="nav-link text-white"
-                                           style="font-family:'Gemunu Libre'; font-size: 1.5em"
-                                           th:href="@{/newUser}">Sign Up</a></li>
-        <li class="nav-item ms-md-auto"><a class="nav-link text-white"
-                                           style="font-family:'Gemunu Libre'; font-size: 1.5em"
-                                           th:href="@{/homePage}">Log In</a></li>
-      </ul>
-    </div>
-  </nav>
-  <!-- if a user is logged in... -->
-  <nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)"
-       th:unless="${user == null}">
-    <div class="container-fluid">
-      <!-- Left justified unordered list -->
-      <ul class="navbar nav">
-        <li class="nav-item"><a class="navbar-brand" th:href="@{/homePage}">
-          <img src="/images/pseudo_ebay_icon.png"
-               alt="Home"
-               style="width:64px; height:64px;"></img></a></li>
-      </ul>
-      <!-- Right justified unordered list -->
-      <ul class="navbar nav ms-md-auto">
-        <li class="nav-item">
-          <div class="dropdown">
-            <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-              <img th:src="@{/images/default_user_icon.png}" th:text=" ${user.username}" style="width:50px; height:50px"></img>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
-              <li><h5 class="dropdown-header">My Account</h5></li>
-              <li><a class="dropdown-item" th:href="@{/userDetails}">Personal Info</a></li>
-              <li><a class="dropdown-item" th:href="@{/userDetails/paymentDetails}">Payment Info</a></li>
-              <li><hr class="dropdown-divider"></hr></li>
-              <li><a class="dropdown-item" href="/do_the_logout">Log Out</a></li>
-            </ul>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </nav>
+  <div th:insert="header :: header"></div>
 </header>
 <!-- END NAV BAR -->
 
@@ -115,91 +67,16 @@
 	    </ul>
   	</div>
 	<div class="card h-100 w-100">
-		<div class="card-header d-flex justify-content-center"><h1>Create a Listing</h1></div>
    		<div class="card-body">
-      		<div class="card w-50" style="margin-left: auto; margin-right: auto;">
-        		<div class="card-header d-flex justify-content-center"><h2>Select a Category</h2></div>
-       			<form action="#" th:action="@{/createWidget}" method="post">
+      		<div class="card" style="width: fit-content; height: fit-content">
+        		<div class="card-header d-flex" style="text-align: left; padding-left: 6px"><h4>Categories</h4></div>
        				<div class="card-body">
-       					<!-- The nested conditional statements are to ensure proper sizing of buttons.
-	            			 The logic is as follows: Create row if list contains at least one of the two categories... -->
-       					<!--<div class="row" th:if="${#lists.contains(categories, 'electronics') || #lists.contains(categories, 'electronic_parts')}">-->
-       					<!-- ...if row contains both categories, create a column for each with 100% button sizing -->
-       						<th:block th:if="${#lists.contains(categories, 'electronics') && #lists.contains(categories, 'electronic_parts')}">
-       							<div class="col">
-	              					<input type="radio" class="btn-check" name="category" id="electronic" value="electronic">
-	              					<label class="btn btn-outline-primary w-100 m-2" for="electronic">Electronics</label>
-	            				</div>
-		            			<div class="col">
-            						<input type="radio" class="btn-check" name="category" id="electronic_parts" value="electronic_parts">
-            						<label class="btn btn-outline-primary w-100 m-2" for="electronic_parts">Electronics Parts</label>
-		            			</div>	
-       						</th:block>
-	            			<!-- ...if row does not contain this category, create column for other category with 50% button sizing and center it -->
-       						<!--<th:block th:unless="${#lists.contains(categories, 'electronics')}">-->
-       						<div class="col d-flex justify-content-center">
-            						<input type="radio" class="btn-check" name="category" id="appliance" value="appliance" checked>
-            						<label class="btn btn-outline-primary w-50 m-2" for="appliance">Appliances</label>
-            					</div>
-	            				<div class="col d-flex justify-content-center">
-            						<input type="radio" class="btn-check" name="category" id="appliance_parts" value="appliance_parts">
-            						<label class="btn btn-outline-primary w-50 m-2" for="appliance_parts">Appliances Parts</label>
-            					</div>
-            					<div class="col d-flex justify-content-center">
-	              					<input type="radio" class="btn-check" name="category" id="electronic" value="electronic">
-	              					<label class="btn btn-outline-primary w-50 m-2" for="electronic">Electronics</label>
-	            				</div>
-       							<div class="col d-flex justify-content-center">
-            						<input type="radio" class="btn-check" name="category" id="electronic_parts" value="electronic_parts">
-            						<label class="btn btn-outline-primary w-50 m-2" for="electronic_parts">Electronics Parts</label>
-		            			</div>
-		            			<div class="col d-flex justify-content-center">
-            						<input type="radio" class="btn-check" name="category" id="lawnCare" value="lawnCare">
-            						<label class="btn btn-outline-primary w-50 m-2" for="lawnCare">Lawn Care</label>
-		            			</div>
-		            		<!--</th:block>-->
-		            		<!-- ...if row does not contain this category, create column for other category with 50% button sizing and center it -->
-       						<!--<th:block th:unless="${#lists.contains(categories, 'electronic_parts')}">-->
-       							
-       						<!--</th:block>-->
-	            		<!--</div>-->
-	            		
-	         			<!-- Same as above -->
-	            		<!--<div class="row" th:if="${#lists.contains(categories, 'appliance_parts') || #lists.contains(categories, 'vehicle_parts')}">-->
-	            			<!--<th:block th:unless="${#lists.contains(categories, 'appliance_parts')}">-->
-	            				
-	            			<!--</th:block>-->
-	            			<!--<th:block th:unless="${#lists.contains(categories, 'vehicle_parts')}">-->
-	            				
-	            			<!--</th:block>-->
-       					<!--</div>-->
-       					<div class="col d-flex justify-content-center">
-       						
-            					<!--<th:block th:if="${#lists.contains(categories, 'lawnCare_parts')}">-->
-            						<input type="radio" class="btn-check" name="category" id="lawnCare_parts" value="lawnCare_parts">
-            						<label class="btn btn-outline-primary w-50 m-2" for="lawnCare_parts">Lawn Care Parts</label>
-            					<!--</th:block>	-->
-            					
+       					<th:block th:each="category: ${categories}">
+       						<div class="addLabel" style="border-radius: 25px;">
+       							<a th:href="@{/{id}(id = ${category.link})}" th:text="${category.display}" style="text-decoration:none"></a>
        						</div>
-       						<div class="col d-flex justify-content-center">
-            						<input type="radio" class="btn-check" name="category" id="vehicle" value="vehicle">
-            						<label class="btn btn-outline-primary w-50 m-2" for="vehicle">Vehicles</label>
-            					</div>
-	            				<div class="col d-flex justify-content-center">
-            						<input type="radio" class="btn-check" name="category" id="vehicle_parts" value="vehicle_parts">
-            						<label class="btn btn-outline-primary w-50 m-2" for="vehicle_parts">Vehicles Parts</label>
-	            				</div>
-       						<div class="col"> <!-- Hidden button keeps the row with one visible button even. -->
-	            				<button class="btn w-100" visible="hidden"></button>
-	            			</div>
-       					
+       					</th:block>
         			</div>
-        			<div class="card-footer d-flex justify-content-center">
-        				<a class="btn btn-danger w-25 mx-4" href="/homePage">Cancel</a>
-        				<input th:if="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" class="btn btn-success w-25 mx-4" type="submit" value="Next">
-            			<input th:unless="${user.directDepositDetails != null && (user.paypal != null || user.paymentDetails != null)}" class="btn btn-success w-25 mx-4" type="submit" value="Next" disabled>
-        			</div>
-       			</form>
         	</div>
       	</div>
     </div>

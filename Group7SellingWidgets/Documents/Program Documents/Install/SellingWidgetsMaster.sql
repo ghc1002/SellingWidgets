@@ -214,6 +214,8 @@ DROP TABLE IF EXISTS `category`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `category` (
   `name` varchar(255) NOT NULL,
+  `display` varchar(255) NOT NULL,
+  `link` varchar(255) NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -224,7 +226,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES ('appliance'),('appliance_parts'),('electronic'),('electronic_parts'),('lawnCare'),('lawnCare_parts'),('vehicle'),('vehicle_parts');
+INSERT INTO `category` VALUES ('appliance', 'Appliances', 'addAppliance'), ('appliance_parts', 'Appliance Parts', 'addApplianceParts'), ('electronic', 'Electronics', 'addElectronic'), ('electronic_parts', 'Electronic Parts', 'addElectronicParts'), ('lawnCare', 'Lawn Care', 'addLawnCare'), ('lawnCare_parts', 'Lawn Care Parts', 'addLawnCareParts'), ('vehicle', 'Vehicles', 'addVehicle'), ('vehicle_parts', 'Vehicle Parts', 'addVehicleParts');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1308,4 +1310,3 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-

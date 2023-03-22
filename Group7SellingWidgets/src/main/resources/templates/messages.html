@@ -42,58 +42,7 @@ table.center {
 
 <!-- NAV BAR -->
 <header>
-	<!-- if no user is logged in... -->
-	<nav class="navbar navbar-expand-sm fixed-top"
-		style="background-color: rgb(25, 41, 77)" th:if="${user == null}">
-		<div class="container-fluid">
-			<!-- Left justified unordered list -->
-			<ul class="navbar nav">
-				<li class="nav-item"><a class="navbar-brand"
-					th:href="@{/index}"> <img
-						src="/images/pseudo_ebay_icon.png" alt="Home"
-						style="width: 64px; height: 64px;"></img></a></li>
-			</ul>
-			<!-- Right justified unordered list -->
-			<ul class="navbar nav ms-md-auto">
-				<li class="nav-item ms-md-auto"><a class="nav-link text-white"
-					style="font-family: 'Gemunu Libre'; font-size: 1.5em"
-					th:href="@{/newUser}">Sign Up</a></li>
-				<li class="nav-item ms-md-auto"><a class="nav-link text-white"
-					style="font-family: 'Gemunu Libre'; font-size: 1.5em"
-					th:href="@{/homePage}">Log In</a></li>
-			</ul>
-		</div>
-	</nav>
-	<!-- if a user is logged in... -->
-	<nav class="navbar navbar-expand-sm fixed-top"
-		style="background-color: rgb(25, 41, 77)" th:unless="${user == null}">
-		<div class="container-fluid">
-			<!-- Left justified unordered list -->
-			<ul class="navbar nav">
-				<li class="nav-item"><a class="navbar-brand"
-					th:href="@{/homePage}"> <img
-						src="/images/pseudo_ebay_icon.png" alt="Home"
-						style="width: 64px; height: 64px;"></img></a></li>
-			</ul>
-			<!-- Right justified unordered list -->
-			<ul class="navbar nav ms-md-auto">
-				<li class="nav-item">
-					<div class="dropdown">
-						<a class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-							<img th:src="@{/images/default_user_icon.png}" th:text=" ${user.username}" style="width:50px; height:50px"></img>
-						</a>
-						<ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
-							<li><h5 class="dropdown-header">My Account</h5></li>
-							<li><a class="dropdown-item" th:href="@{/userDetails}">Personal Info</a></li>
-							<li><a class="dropdown-item" th:href="@{/userDetails/paymentDetails}">Payment Info</a></li>
-							<li><hr class="dropdown-divider"></hr></li>
-							<li><a class="dropdown-item" href="/do_the_logout">Log Out</a></li>
-						</ul>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</nav>
+	<div th:insert="header :: header"></div>
 </header>
 <!-- END NAV BAR -->
 
@@ -102,7 +51,7 @@ table.center {
 		<!-- SIDE NAV BAR -->
 		<th:block th:switch="${user.role}">
 			<div th:case="ROLE_ADMIN">
-				<div class="grid-item item3">
+				<div class="grid-item item3" style="height: 150%">
 					<ul>
 						<li><a class="submit4" th:href="@{/searchTickets}"><span>Search
 									Tickets</span></a><br></li>
@@ -521,7 +470,7 @@ table.center {
 		<!-- END SIDE NAV BAR -->
 
 		<div class="container-fluid align-items-center"
-			style="background-color: rgb(212, 183, 145)">
+			style="background-color: rgb(255,235,205)">
 			<div class="row" style="background-color: white">
 				<h1 class="d-flex justify-content-center">Message Center</h1>
 			</div>
@@ -540,24 +489,24 @@ table.center {
 						<!-- IF IN INBOX -->
 						<div th:case="home" class="row">
 							<div class="col-1 border border-2 border-bottom-0 border-dark"
-								style="background-color: rgb(212, 183, 145)">
+								style="background-color: rgb(245,222,179)">
 								<span class="d-flex justify-content-center"
 									style="font-size: 24px;"> Inbox </span>
 							</div>
 							<div class="col-1 border border-2 border-dark"
-								style="background-color: rgb(216, 189, 154)">
+								style="background-color: rgb(245,222,179)">
 								<a class="d-flex justify-content-center"
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/outbox}"> Sent </a>
 							</div>
 							<div class="col-1 border border-2 border-dark"
-								style="background-color: rgb(216, 189, 154)">
+								style="background-color: rgb(245,222,179)">
 								<a class="d-flex justify-content-center"
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/spambox}"> Spam </a>
 							</div>
 							<div class="col-1 border border-2 border-dark"
-								style="background-color: rgb(216, 189, 154)">
+								style="background-color: rgb(245,222,179)">
 								<a class="d-flex justify-content-center"
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/trashbox}"> Trash </a>
@@ -569,24 +518,24 @@ table.center {
 						<!-- IF IN SENT -->
 						<div th:case="outbox" class="row">
 							<div class="col-1 border border-2 border-dark"
-								style="background-color: rgb(216, 189, 154)">
+								style="background-color: rgb(245,222,179)">
 								<a class="d-flex justify-content-center"
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/messages}"> Inbox </a>
 							</div>
 							<div class="col-1 border border-2 border-bottom-0 border-dark"
-								style="background-color: rgb(212, 183, 145)">
+								style="background-color: rgb(245,222,179)">
 								<span class="d-flex justify-content-center"
 									style="font-size: 24px;"> Sent </span>
 							</div>
 							<div class="col-1 border border-2 border-dark"
-								style="background-color: rgb(216, 189, 154)">
+								style="background-color: rgb(245,222,179)">
 								<a class="d-flex justify-content-center"
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/spambox}"> Spam </a>
 							</div>
 							<div class="col-1 border border-2 border-dark"
-								style="background-color: rgb(216, 189, 154)">
+								style="background-color: rgb(245,222,179)">
 								<a class="d-flex justify-content-center"
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/trashbox}"> Trash </a>
@@ -598,25 +547,25 @@ table.center {
 						<!-- IF IN TRASH -->
 						<div th:case="trashBox" class="row">
 							<div class="col-1 border border-2 border-dark"
-								style="background-color: rgb(216, 189, 154)">
+								style="background-color: rgb(245,222,179)">
 								<a class="d-flex justify-content-center"
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/messages}"> Inbox </a>
 							</div>
 							<div class="col-1 border border-2 border-dark"
-								style="background-color: rgb(216, 189, 154)">
+								style="background-color: rgb(245,222,179)">
 								<a class="d-flex justify-content-center"
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/outbox}"> Sent </a>
 							</div>
 							<div class="col-1 border border-2 border-dark"
-								style="background-color: rgb(216, 189, 154)">
+								style="background-color: rgb(245,222,179)">
 								<a class="d-flex justify-content-center"
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/spambox}"> Spam </a>
 							</div>
 							<div class="col-1 border border-2 border-bottom-0 border-dark"
-								style="background-color: rgb(212, 183, 145)">
+								style="background-color: rgb(245,222,179)">
 								<span class="d-flex justify-content-center"
 									style="font-size: 24px;"> Trash </span>
 							</div>
@@ -627,24 +576,24 @@ table.center {
 						<!-- IF IN SPAM -->
 						<div th:case="spamBox" class="row">
 							<div class="col-1 border border-2 border-dark"
-								style="background-color: rgb(216, 189, 154)">
+								style="background-color: rgb(245,222,179)">
 								<a class="d-flex justify-content-center"
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/messages}"> Inbox </a>
 							</div>
 							<div class="col-1 border border-2 border-dark"
-								style="background-color: rgb(216, 189, 154)">
+								style="background-color: rgb(245,222,179)">
 								<a class="d-flex justify-content-center"
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/outbox}"> Sent </a>
 							</div>
 							<div class="col-1 border border-2 border-bottom-0 border-dark"
-								style="background-color: rgb(212, 183, 145)">
+								style="background-color: rgb(245,222,179)">
 								<span class="d-flex justify-content-center"
 									style="font-size: 24px;"> Spam </span>
 							</div>
 							<div class="col-1 border border-2 border-dark"
-								style="background-color: rgb(216, 189, 154)">
+								style="background-color: rgb(245,222,179)">
 								<a class="d-flex justify-content-center"
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/trashbox}"> Trash </a>

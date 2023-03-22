@@ -960,7 +960,7 @@
                 				<td style="background-color: #89CFF0"> View Outbox</td>
                 				<td style="background-color: #89CFF0"> View Trash</td>
                 				<td style="background-color: #89CFF0"> Edit User</td>
-                				<td style="background-color: #89CFF0"> User's Market Listings</td>
+                				<td style="background-color: #89CFF0"> View User Profile</td>
               				</tr>
               				<th:block th:each="user: ${users}">
                 				<tr>
@@ -970,8 +970,7 @@
                   					<td><a th:href="@{/viewSpecificUserOutbox/{id}(id = ${user.id})}">Outbox</a></td>
                   					<td><a th:href="@{/viewSpecificUserTrash/{id}(id = ${user.id})}">Trash</a></td>
                   					<td><a th:href="@{/editUserButton/{id}(id = ${user.id})}">Edit User</a></td>
-                  					<td>View</td>
-                  					<!-- NEEDS TO BE IMPLEMENTED <td><a th:href="@{/viewListing/{id}(id = ${user.id})}">View</a></td> -->
+                  					<td><a th:href="@{/viewUserProfile/{id}(id = ${user.id})}">View</a></td>
                 				</tr>
               				</th:block>
             			</table>
@@ -1025,7 +1024,7 @@
 				                <td style="background-color: #89CFF0"> View Outbox</td>
 				                <td style="background-color: #89CFF0"> View Trash</td>
 				                <td style="background-color: #89CFF0"> Edit User</td>
-				                <td style="background-color: #89CFF0"> User's Market Listings</td>
+				                <td style="background-color: #89CFF0"> View User Profile</td>
 				              </tr>
 				              <th:block th:each="myusers: ${myusers}">
 				                <tr>
@@ -1035,8 +1034,7 @@
 				                	<td><a th:href="@{/viewSpecificUserOutbox/{id}(id = ${myusers?.id})}">Outbox</a></td>
 				                	<td><a th:href="@{/viewSpecificUserTrash/{id}(id = ${myusers?.id})}">Trash</a></td>
 				                	<td><a th:href="@{/editUserButton/{id}(id = ${myusers?.id})}">Edit User</a></td>
-				                	<td>View</td>
-				                	<!-- NEEDS TO BE IMPLEMENTED <td><a th:href="@{/viewListing/{id}(id = ${myusers?.id})}">View</a></td> -->
+				                	<td><a th:href="@{/viewUserProfile/{id}(id = ${myusers?.id})}">View</a></td>
 				                </tr>
 				              </th:block>
               			</table>
@@ -1060,7 +1058,7 @@
 				                <td style="background-color: #89CFF0"> View Outbox</td>
 				                <td style="background-color: #89CFF0"> View Trash</td>
 				                <td style="background-color: #89CFF0"> Edit User</td>
-				                <td style="background-color: #89CFF0"> User's Market Listings</td>
+				                <td style="background-color: #89CFF0"> View User Profile</td>
 				              </tr>
 				              <tr>
 				                <td><a th:href="@{/searchUser/{id}(id = ${searchedUser.id})}" th:text="${searchedUser.username}"></a></td>
@@ -1069,8 +1067,7 @@
 				                <td><a th:href="@{/viewSpecificUserOutbox/{id}(id = ${searchedUser.id})}">Outbox</a></td>
 				                <td><a th:href="@{/viewSpecificUserTrash/{id}(id = ${searchedUser.id})}">Trash</a> </td>
 				                <td><a th:href="@{/editUserButton/{id}(id = ${searchedUser.id})}">Edit User</a></td>
-				                <td>View</td>
-				                <!-- NEEDS TO BE IMPLEMENTED <td><a th:href="@{/viewListing/{id}(id = ${searchedUser.id})}">View User's Market Listing</a></td> -->
+				                <td><a th:href="@{/viewUserProfile/{id}(id = ${searchedUser.id})}">View</a></td>
 				              </tr>
               			</table>
            			</div>
