@@ -196,6 +196,9 @@ public class AddWidgetController {
 		if (userController.getCurrently_Logged_In() == null) {
 			throw new IllegalStateException("Not logged in.");
 		}
+    
+		setPage("widgets");
+    
 		model.addAttribute("categories", categories.getAllCategories());
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "addWidget";
