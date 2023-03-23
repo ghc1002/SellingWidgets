@@ -71,4 +71,68 @@ public class DomainWidgetsLawncareSpringTest {
 		assertEquals("tool", widget.getToolType());
 		assertEquals("small", widget.getYardSize());
 	}
+	
+	/*
+	 * Tests that the widget attributes are loaded 
+	 */
+	@Test
+	void widget_LawnCare_PartsTest() {
+		Widget_LawnCare_Parts widget = new Widget_LawnCare_Parts();
+		widget.setCategory("lawncare");
+		widget.setDescription("black");
+		widget.setId(12);
+		widget.setName("Steve");
+		widget.setSubCategory("garden");
+		widget.setBrand("B&D");
+		widget.setColor("black");
+		widget.setPartName("part");
+		widget.setModel("model");
+		widget.setMadeIn("China");
+		
+		assertEquals("lawncare", widget.getCategory());
+		assertEquals("black", widget.getDescription());
+		assertEquals(12, widget.getId());
+		assertEquals("Steve", widget.getName());
+		assertEquals("garden", widget.getSubCategory());
+		assertEquals("B&D", widget.getBrand());
+		assertEquals("black", widget.getColor());
+		assertEquals("part", widget.getPartName());
+		assertEquals("model", widget.getModel());
+		assertEquals("China", widget.getMadeIn());
+	}
+	
+	/*
+	 * Tests that the widget attributes are loaded 
+	 */
+	@Test
+	void LawnCare_LawnMower_Parts() {
+		LawnCare_LawnMower_Parts widget = new LawnCare_LawnMower_Parts();
+		widget.setCategory("lawncare");
+		widget.setDescription("black");
+		widget.setId(12);
+		widget.setName("Steve");
+		widget.setSubCategory("garden");
+		widget.setBrand("B&D");
+		widget.setColor("black");
+		widget.setPartName("part");
+		widget.setModel("model");
+		widget.setMadeIn("China");
+		widget.setMaterial("metal");
+		widget.setCondition("bad");
+		widget.setWarranty("war");
+		
+		assertEquals("lawncare", widget.getCategory());
+		assertEquals("black", widget.getDescription());
+		assertEquals(12, widget.getId());
+		assertEquals("Steve", widget.getName());
+		assertEquals("garden", widget.getSubCategory());
+		assertEquals("B&D", widget.getBrand());
+		assertEquals("black", widget.getColor());
+		assertEquals("part", widget.getPartName());
+		assertEquals("model", widget.getModel());
+		assertEquals("China", widget.getMadeIn());
+		assertEquals("metal", widget.getMaterial());
+		assertEquals("bad", widget.getCondition());
+		assertEquals("war", widget.getWarranty());
+	}
 }

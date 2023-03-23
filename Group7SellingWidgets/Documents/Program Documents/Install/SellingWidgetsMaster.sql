@@ -214,8 +214,6 @@ DROP TABLE IF EXISTS `category`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `category` (
   `name` varchar(255) NOT NULL,
-  `display` varchar(255) NOT NULL,
-  `link` varchar(255) NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -226,7 +224,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES ('appliance', 'Appliances', 'addAppliance'), ('appliance_parts', 'Appliance Parts', 'addApplianceParts'), ('electronic', 'Electronics', 'addElectronic'), ('electronic_parts', 'Electronic Parts', 'addElectronicParts'), ('lawnCare', 'Lawn Care', 'addLawnCare'), ('lawnCare_parts', 'Lawn Care Parts', 'addLawnCareParts'), ('vehicle', 'Vehicles', 'addVehicle'), ('vehicle_parts', 'Vehicle Parts', 'addVehicleParts');
+INSERT INTO `category` VALUES ('appliance'),('appliance_parts'),('electronic'),('electronic_parts'),('lawnCare'),('lawnCare_parts'),('vehicle'),('vehicle_parts');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -414,7 +412,7 @@ CREATE TABLE `market_listing` (
 
 LOCK TABLES `market_listing` WRITE;
 /*!40000 ALTER TABLE `market_listing` DISABLE KEYS */;
-INSERT INTO `market_listing` VALUES (3,_binary '',500.00,40,1,2,NULL),(5,_binary '',50.20,50,1,4,NULL),(7,_binary '',70.00,27,1,6,NULL),(25,_binary '',10.00,410,20,24,NULL),(36,_binary '\0',250.00,0,34,35,'34oldmac.jpeg'),(38,_binary '\0',20.00,0,34,37,'34ratechetandclank.jpg'),(40,_binary '\0',500.00,1,34,39,'34broken dryer.jpeg'),(42,_binary '\0',50.00,1,34,41,'34brand new microwave.jpeg'),(45,_binary '\0',500.00,1,43,44,'43new fridge.jpeg'),(47,_binary '\0',2000.00,0,43,46,'43oldford.jpeg'),(49,_binary '\0',300.00,1,43,48,'43teslamower.jpeg'),(66,_binary '\0',800.00,20,1,65,'1surface-laptop-4-4-625x417-c.jpg'),(70,_binary '\0',40.00,80,1,69,'1surface-laptop-4-4-625x417-c.jpg'),(144,_binary '\0',50.00,2,1,143,'11mario64box.jpg'),(155,_binary '\0',50.00,1,1,154,'1microwave.jpeg'),(166,_binary '\0',500.00,25,1,165,'1dryer.jpeg');
+INSERT INTO `market_listing` VALUES (3,_binary '',500.00,40,1,2,NULL),(5,_binary '',50.20,50,1,4,NULL),(7,_binary '',70.00,27,1,6,NULL),(25,_binary '',10.00,410,20,24,NULL),(36,_binary '\0',250.00,0,34,35,'34oldmac.jpeg'),(38,_binary '\0',20.00,0,34,37,'34ratechetandclank.jpg'),(40,_binary '\0',500.00,1,34,39,'34broken dryer.jpeg'),(42,_binary '\0',50.00,1,34,41,'34brand new microwave.jpeg'),(45,_binary '\0',500.00,1,43,44,'43new fridge.jpeg'),(47,_binary '\0',2000.00,0,43,46,'43oldford.jpeg'),(49,_binary '\0',300.00,1,43,48,'43teslamower.jpeg'),(144,_binary '\0',50.00,2,1,143,'11mario64box.jpg'),(155,_binary '\0',50.00,1,1,154,'1microwave.jpeg'),(166,_binary '\0',500.00,25,1,165,'1dryer.jpeg');
 /*!40000 ALTER TABLE `market_listing` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -636,99 +634,6 @@ INSERT INTO `shipping_address` VALUES (54,'05212','Jacob','152 Street','Arkansas
 UNLOCK TABLES;
 
 --
--- Table structure for table `sidebar`
---
-
-DROP TABLE IF EXISTS `sidebar`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sidebar` (
-  `tabid` bigint NOT NULL,
-  `display_text` varchar(255) DEFAULT NULL,
-  `link_to` varchar(255) DEFAULT NULL,
-  `role` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`tabid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
--- 
--- Dumping data for table `sidebar`
---
-
-LOCK TABLES `sidebar` WRITE;
-/*!40000 ALTER TABLE `sidebar` DISABLE KEYS */;
-INSERT INTO `sidebar` VALUES (1, 'Home Page', '/employee', 'ROLE_ADMIN'),
-							(2, 'Search Tickets', '/searchTickets', 'ROLE_ADMIN'),
-							(3, 'Add User', '/createButton', 'ROLE_ADMIN'),
-                            (4, 'Search Users', '/searchButton', 'ROLE_ADMIN'),
-                            (5, 'Search Items', '/searchWidgetButton', 'ROLE_ADMIN'),
-                            (6, 'Items Info', '/widgetsInfo', 'ROLE_ADMIN'),
-                            (7, 'View a Message', '/searchMessageButton', 'ROLE_ADMIN'),
-                            (8, 'My Messages', '/messages', 'ROLE_ADMIN'),
-
-                            (9, 'Home Page', '/employee', 'ROLE_ADMIN_SHADOW'),
-                            (10, 'Search Tickets', '/searchTickets', 'ROLE_ADMIN_SHADOW'),
-                            (11, 'Search Users', '/searchButton', 'ROLE_ADMIN_SHADOW'),
-                            (12, 'Search Widgets', '/searchWidgetButton', 'ROLE_ADMIN_SHADOW'),
-                            (13, 'Widgets Info', '/widgetsInfo', 'ROLE_ADMIN_SHADOW'),
-                            (14, 'View a Message', '/searchMessageButton', 'ROLE_ADMIN_SHADOW'),
-                            (15, 'My Messages', '/messages', 'ROLE_ADMIN_SHADOW'),
-
-                            (16, 'Home Page', '/employee', 'ROLE_TECHNICALSERVICE'),
-                            (17, 'Search Tickets', '/searchTickets', 'ROLE_TECHNICALSERVICE'),
-                            (18, 'Search Users', '/searchButton', 'ROLE_TECHNICALSERVICE'),
-                            (19, 'Search Widgets', '/searchWidgetButton', 'ROLE_TECHNICALSERVICE'),
-                            (20, 'Widgets Info', '/widgetsInfo', 'ROLE_TECHNICALSERVICE'),
-                            (21, 'View a Message', '/searchMessageButton', 'ROLE_TECHNICALSERVICE'),
-                            (22, 'My Messages', '/messages', 'ROLE_TECHNICALSERVICE'),
-
-                            (23, 'Home Page', '/employee', 'ROLE_SECURITY'),
-                            (24, 'Search Tickets', '/searchTickets', 'ROLE_SECURITY'),
-                            (25, 'Search Users', '/searchButton', 'ROLE_SECURITY'),
-                            (26, 'Search Widgets', '/searchWidgetButton', 'ROLE_SECURITY'),
-                            (27, 'Widgets Info', '/widgetsInfo', 'ROLE_SECURITY'),
-                            (28, 'View a Message', '/searchMessageButton', 'ROLE_SECURITY'),
-                            (29, 'My Messages', '/messages', 'ROLE_SECURITY'),
-
-                            (30, 'Home Page', '/employee', 'ROLE_SALES'),
-                            (31, 'Statistics', '/statButton', 'ROLE_SALES'),
-                            (32, 'Search Users', '/searchButton', 'ROLE_SALES'),
-                            (33, 'Search Widgets', '/searchWidgetButton', 'ROLE_SALES'),
-                            (34, 'Widgets Info', '/widgetsInfo', 'ROLE_SALES'),
-                            (35, 'View a Message', '/searchMessageButton', 'ROLE_SALES'),
-                            (36, 'My Messages', '/messages', 'ROLE_SALES'),
-
-                            (37, 'Home Page', '/employee', 'ROLE_HIRINGMANAGER'),
-                            (38, 'New Applications', '/searchApplicationsButton(id = ${1})', 'ROLE_HIRINGMANAGER'),
-                            (39, 'Reviewed Applications', '/searchApplicationsButton(id = ${2})', 'ROLE_HIRINGMANAGER'),
-                            (40, 'My Messages', '/messages', 'ROLE_HIRINGMANAGER'),
-
-                            (41, 'Home Page', '/employee', 'ROLE_HELPDESK_ADMIN'),
-                            (42, 'Search Tickets', '/searchTickets', 'ROLE_HELPDESK_ADMIN'),
-                            (43, 'Search Users', '/searchButton', 'ROLE_HELPDESK_ADMIN'),
-                            (44, 'Search Widgets', '/searchWidgetButton', 'ROLE_HELPDESK_ADMIN'),
-                            (45, 'Widgets Info', '/widgetsInfo', 'ROLE_HELPDESK_ADMIN'),
-                            (46, 'View a Message', '/searchMessageButton', 'ROLE_HELPDESK_ADMIN'),
-                            (47, 'My Messages', '/messages', 'ROLE_HELPDESK_ADMIN'),
-
-                            (48, 'Home Page', '/employee', 'ROLE_HELPDESK_REGULAR'),
-                            (49, 'Search Tickets', '/searchTickets', 'ROLE_HELPDESK_REGULAR'),
-                            (50, 'Search Users', '/searchButton', 'ROLE_HELPDESK_REGULAR'),
-                            (51, 'Search Widgets', '/searchWidgetButton', 'ROLE_HELPDESK_REGULAR'),
-                            (52, 'Widgets Info', '/widgetsInfo', 'ROLE_HELPDESK_REGULAR'),
-                            (53, 'View a Message', '/searchMessageButton', 'ROLE_HELPDESK_REGULAR'),
-                            (54, 'My Messages', '/messages', 'ROLE_HELPDESK_REGULAR'),
-
-                            (55, 'Home', '/homePage', 'ROLE_USER'),
-                            (56, 'Browse', '/BrowseWidgetsButton', 'ROLE_USER'),
-                            (57, 'Sell Items', '/addWidget', 'ROLE_USER'),
-                            (58, 'Tickets', '/tickets', 'ROLE_USER'),
-                            (59, 'Friends', '/friends', 'ROLE_USER'),
-                            (60, 'Messages', '/messages', 'ROLE_USER');
-/*!40000 ALTER TABLE `sidebar` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `state_details`
 --
 
@@ -903,7 +808,7 @@ CREATE TABLE `transaction` (
 
 LOCK TABLES `transaction` WRITE;
 /*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
-INSERT INTO `transaction` VALUES (56,'2022-03-06',50,NULL,1,25,55,NULL,532.50,500.00,20,50),(76,'2022-04-24',1,NULL,1,36,75,226.31,266.25,250.00,34,50),(81,'2022-04-24',1,NULL,1,38,80,17.68,20.80,20.00,34,50),(88,'2022-04-24',20,NULL,20,70,87,729.30,858.00,800.00,1,50),(161,'2022-04-25',1,NULL,1,47,160,1802.00,2120.00,2000.00,43,50);
+INSERT INTO `transaction` VALUES (56,'2022-03-06',50,NULL,1,25,55,NULL,532.50,500.00,20,50),(76,'2022-04-24',1,NULL,1,36,75,226.31,266.25,250.00,34,50),(81,'2022-04-24',1,NULL,1,38,80,17.68,20.80,20.00,34,50),(161,'2022-04-25',1,NULL,1,47,160,1802.00,2120.00,2000.00,43,50);
 /*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -968,7 +873,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,_binary '\0',_binary '\0','2022-02-20',_binary '\0',_binary '\0','','test@tester.com','fqdqmdyoha',_binary '','$2a$10$yynCjuGntBkkX2m859LnBeYyJ9TS5N6ryrZ2lO.OOBuq5jR1Bzkzq','ROLE_USER','userDeschere','userName',NULL,NULL,50,0,NULL,NULL,63,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1surface-laptop-4-4-625x417-c.jpg',71),(8,_binary '\0',_binary '\0','2022-02-20',_binary '\0',_binary '\0',NULL,'tewatwe@test.com','xowotnxnvu',_binary '','$2a$10$FnrxvrCjxbBjjl5XWI2nCOUpqvTlCp2LVpIsfhbSq0U60B5xuHxRK','ROLE_USER','tewatwaetwedesc','newUser',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(19,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0',NULL,'test1@tester.com','gxfoqjzfoa',_binary '','$2a$10$Z1nwcoVJZGu2ZBeZzLdbQeo9/OzpANnt9a8OgwTaCPGdN5J3sk6K6','ROLE_USER','Nicholas','nickd',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(20,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0','Jacob_Tester','test2@tester.com','lhglseppzh',_binary '','$2a$10$gDzbpcKSKRDQh6mS.e0hr.vtcfg.oNmg.nd8JJlgiZqKwlF2EwWHy','ROLE_USER','Jacob','userName2',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,83),(21,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0',NULL,'namer@name.com','ghkkllstnu',_binary '','$2a$10$.pRuDcQzwJxBzLsgjRmTNeqPIJ4Ncc2zSgEhCWvMNg3ZQwQM3rzJW','ROLE_USER','Timothy','timd',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(34,_binary '\0',_binary '\0','2022-03-06',_binary '\0',_binary '\0',NULL,'mtest9293@gmail.com','zihbbotswb',_binary '','$2a$10$ebFOJs88r6QnskKpSnDYpuG9NaHEno0b2xkjI1worC.MR3AUbDkFO','ROLE_USER','','testAcc',NULL,NULL,NULL,200,'password',_binary '�\�\0ur\0[Ljava.lang.String;�\�V\�\�{G\0\0xp\0\0\0pppppppppppppppppppp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(43,_binary '\0',_binary '\0','2022-03-06',_binary '\0',_binary '\0',NULL,'mtest9294@gmail.com','lxbgkkmlva',_binary '','$2a$10$WH1rexv507TIwZ2RCSevf.t7Xj9ks7NdUEzDG4NMp7sfWXDp.P8V.','ROLE_USER','','nickTest',NULL,NULL,NULL,200,'password',_binary '�\�\0ur\0[Ljava.lang.String;�\�V\�\�{G\0\0xp\0\0\0pppppppppppppppppppp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(58,_binary '\0',_binary '\0','2022-03-07',_binary '\0',_binary '\0',NULL,'tmd1021@sru.edu',NULL,_binary '','$2a$10$YjpI0ak3J9eKKHjlii0heevip93h9NDOtqAxacc0v.D8x2xlgKuJy','ROLE_ADMIN','','useradminwidget',NULL,NULL,NULL,200,'useradmin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(59,_binary '\0',_binary '\0','2022-03-07',_binary '\0',_binary '\0',NULL,'test@test.com',NULL,_binary '','$2a$10$.GndlDgEzXtOTmOYpDHlVO9GSwKbU5QdHZLGg6j9.ar4Ba/H/KnE2','ROLE_USER',NULL,'testuser',NULL,NULL,NULL,200,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(106,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'taddamd1021@sru.edu',NULL,_binary '','$2a$10$4rVpuQuJCO7h.ksC36YWp.87jvj5OpHKDsTXgtf4Nb9ei57uSNb9G','ROLE_CUSTOMERSERVICE',NULL,'usercustomerwidget',NULL,NULL,NULL,200,'pethfexgpd',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(108,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tmsddawd1021@sru.edu',NULL,_binary '','$2a$10$2gMfUVv/rmUV8M0cDk5bjOeh8A2j0bQXL3x3TgHHDk8H7UHLab4LS','ROLE_TECHNICALSERVICE',NULL,'usertechwidget',NULL,NULL,NULL,200,'qgghmmftrb',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(110,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tdsdmsdad1021@sru.edu',NULL,_binary '','$2a$10$Oaoq39cwIcN14Ais2oe5xe.1HpLg9rIREn5EXLVfwUIdPAhpGFes2','ROLE_HIRINGMANAGER',NULL,'userhiringwidget',NULL,NULL,NULL,200,'xplsbsuloo',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(112,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tsdmsadwdsdwa1021@sru.edu',NULL,_binary '','$2a$10$PY6jwIQfE5cRJVfUXdxaQOB.1wqqnbmj1.edNMKtUAwdqZ8PALDkC','ROLE_SALES',NULL,'usersaleswidget',NULL,NULL,NULL,200,'ejvemzxkzs',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(114,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tasdwmdawd1021@sru.edu',NULL,_binary '','$2a$10$6Hoouh4QNJ7SthcQCTf3qOLdhMscfoPxDSkXwQjB0u/Yqb7997xZu','ROLE_SECURITY',NULL,'usersecuritywidget',NULL,NULL,NULL,200,'viqxomlryx',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(122,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'dougherty.tdoc@gmail.com','uygchacaey',_binary '','$2a$10$Conjpd7KR1GQI/Ik2GtguON8G2.9WB1y0hiDEBdy7KyYSkG/ks/IW','ROLE_USER','','timuser',NULL,NULL,NULL,200,'mvarjpzssz',NULL,NULL,'Timothy','Dougherty','+14127124259','+1       USA','What is your mother\'s maiden name?','What is your favorite band?','What is your favorite beverage?','peterson','rush','sprite',NULL,NULL);
+INSERT INTO `user` VALUES (1,_binary '\0',_binary '\0','2022-02-20',_binary '\0',_binary '\0','','test@tester.com','fqdqmdyoha',_binary '','$2a$10$yynCjuGntBkkX2m859LnBeYyJ9TS5N6ryrZ2lO.OOBuq5jR1Bzkzq','ROLE_USER','userDeschere','userName',NULL,NULL,50,0,NULL,NULL,63,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1surface-laptop-4-4-625x417-c.jpg',71),(8,_binary '\0',_binary '\0','2022-02-20',_binary '\0',_binary '\0',NULL,'tewatwe@test.com','xowotnxnvu',_binary '','$2a$10$FnrxvrCjxbBjjl5XWI2nCOUpqvTlCp2LVpIsfhbSq0U60B5xuHxRK','ROLE_USER','tewatwaetwedesc','newUser',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(19,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0',NULL,'test@tester.com','gxfoqjzfoa',_binary '','$2a$10$Z1nwcoVJZGu2ZBeZzLdbQeo9/OzpANnt9a8OgwTaCPGdN5J3sk6K6','ROLE_USER','Nicholas','nickd',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(20,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0','Jacob_Tester','test@tester.com','lhglseppzh',_binary '','$2a$10$gDzbpcKSKRDQh6mS.e0hr.vtcfg.oNmg.nd8JJlgiZqKwlF2EwWHy','ROLE_USER','Jacob','userName2',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,83),(21,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0',NULL,'namer@name.com','ghkkllstnu',_binary '','$2a$10$.pRuDcQzwJxBzLsgjRmTNeqPIJ4Ncc2zSgEhCWvMNg3ZQwQM3rzJW','ROLE_USER','Timothy','timd',NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(34,_binary '\0',_binary '\0','2022-03-06',_binary '\0',_binary '\0',NULL,'mtest9293@gmail.com','zihbbotswb',_binary '','$2a$10$ebFOJs88r6QnskKpSnDYpuG9NaHEno0b2xkjI1worC.MR3AUbDkFO','ROLE_USER','','testAcc',NULL,NULL,NULL,200,'password',_binary '�\�\0ur\0[Ljava.lang.String;�\�V\�\�{G\0\0xp\0\0\0pppppppppppppppppppp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(43,_binary '\0',_binary '\0','2022-03-06',_binary '\0',_binary '\0',NULL,'mtest9293@gmail.com','lxbgkkmlva',_binary '','$2a$10$WH1rexv507TIwZ2RCSevf.t7Xj9ks7NdUEzDG4NMp7sfWXDp.P8V.','ROLE_USER','','nickTest',NULL,NULL,NULL,200,'password',_binary '�\�\0ur\0[Ljava.lang.String;�\�V\�\�{G\0\0xp\0\0\0pppppppppppppppppppp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(58,_binary '\0',_binary '\0','2022-03-07',_binary '\0',_binary '\0',NULL,'tmd1021@sru.edu',NULL,_binary '','$2a$10$YjpI0ak3J9eKKHjlii0heevip93h9NDOtqAxacc0v.D8x2xlgKuJy','ROLE_ADMIN','','useradminwidget',NULL,NULL,NULL,200,'useradmin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(59,_binary '\0',_binary '\0','2022-03-07',_binary '\0',_binary '\0',NULL,'test@test.com',NULL,_binary '','$2a$10$.GndlDgEzXtOTmOYpDHlVO9GSwKbU5QdHZLGg6j9.ar4Ba/H/KnE2','ROLE_USER',NULL,'testuser',NULL,NULL,NULL,200,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(106,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'taddamd1021@sru.edu',NULL,_binary '','$2a$10$4rVpuQuJCO7h.ksC36YWp.87jvj5OpHKDsTXgtf4Nb9ei57uSNb9G','ROLE_CUSTOMERSERVICE',NULL,'usercustomerwidget',NULL,NULL,NULL,200,'pethfexgpd',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(108,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tmsddawd1021@sru.edu',NULL,_binary '','$2a$10$2gMfUVv/rmUV8M0cDk5bjOeh8A2j0bQXL3x3TgHHDk8H7UHLab4LS','ROLE_TECHNICALSERVICE',NULL,'usertechwidget',NULL,NULL,NULL,200,'qgghmmftrb',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(110,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tdsdmsdad1021@sru.edu',NULL,_binary '','$2a$10$Oaoq39cwIcN14Ais2oe5xe.1HpLg9rIREn5EXLVfwUIdPAhpGFes2','ROLE_HIRINGMANAGER',NULL,'userhiringwidget',NULL,NULL,NULL,200,'xplsbsuloo',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(112,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tsdmsadwdsdwa1021@sru.edu',NULL,_binary '','$2a$10$PY6jwIQfE5cRJVfUXdxaQOB.1wqqnbmj1.edNMKtUAwdqZ8PALDkC','ROLE_SALES',NULL,'usersaleswidget',NULL,NULL,NULL,200,'ejvemzxkzs',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(114,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tasdwmdawd1021@sru.edu',NULL,_binary '','$2a$10$6Hoouh4QNJ7SthcQCTf3qOLdhMscfoPxDSkXwQjB0u/Yqb7997xZu','ROLE_SECURITY',NULL,'usersecuritywidget',NULL,NULL,NULL,200,'viqxomlryx',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(122,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'dougherty.tdoc@gmail.com','uygchacaey',_binary '','$2a$10$Conjpd7KR1GQI/Ik2GtguON8G2.9WB1y0hiDEBdy7KyYSkG/ks/IW','ROLE_USER','','timuser',NULL,NULL,NULL,200,'mvarjpzssz',NULL,NULL,'Timothy','Dougherty','+14127124259','+1       USA','What is your mother\'s maiden name?','What is your favorite band?','What is your favorite beverage?','peterson','rush','sprite',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1191,7 +1096,7 @@ CREATE TABLE `widget_image` (
 
 LOCK TABLES `widget_image` WRITE;
 /*!40000 ALTER TABLE `widget_image` DISABLE KEYS */;
-INSERT INTO `widget_image` VALUES (36,'34oldmac.jpeg',36),(38,'34ratechetandclank.jpg',38),(40,'34broken dryer.jpeg',40),(42,'34brand new microwave.jpeg',42),(45,'43new fridge.jpeg',45),(47,'43oldford.jpeg',47),(49,'43teslamower.jpeg',49),(66,'1surface-laptop-4-4-625x417-c.jpg',66),(70,'1surface-laptop-4-4-625x417-c.jpg',70),(144,'11mario64box.jpg',144),(155,'1microwave.jpeg',155),(166,'1dryer.jpeg',166);
+INSERT INTO `widget_image` VALUES (36,'34oldmac.jpeg',36),(38,'34ratechetandclank.jpg',38),(40,'34broken dryer.jpeg',40),(42,'34brand new microwave.jpeg',42),(45,'43new fridge.jpeg',45),(47,'43oldford.jpeg',47),(49,'43teslamower.jpeg',49),(144,'11mario64box.jpg',144),(155,'1microwave.jpeg',155),(166,'1dryer.jpeg',166);
 /*!40000 ALTER TABLE `widget_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1298,7 +1203,7 @@ CREATE TABLE `widgets_info` (
 
 LOCK TABLES `widgets_info` WRITE;
 /*!40000 ALTER TABLE `widgets_info` DISABLE KEYS */;
-INSERT INTO `widgets_info` VALUES (1,'entertainment_use','computer','widget_electronics',_binary ''),(2,'office_use','computer','widget_electronics',_binary ''),(3,'gpu','computer','electronics_computers',_binary ''),(4,'memory','computer','electronics_computers',_binary ''),(5,'processor','computer','electronics_computers',_binary ''),(6,'storage','computer','electronics_computers',_binary ''),(7,'entertainment_use','videoGame','widget_electronics',_binary ''),(8,'office_use','videoGame','widget_electronics',_binary ''),(9,'console','videoGame','electronics_video_games',_binary ''),(10,'developer','videoGame','electronics_video_games',_binary ''),(11,'item_condition','videoGame','electronics_video_games',_binary ''),(12,'title','videoGame','electronics_video_games',_binary ''),(13,'color','dryer','widget_appliance',_binary ''),(14,'height','dryer','widget_appliance',_binary ''),(15,'item_condition','dryer','widget_appliance',_binary ''),(16,'length','dryer','widget_appliance',_binary ''),(17,'width','dryer','widget_appliance',_binary ''),(18,'brand','dryer','appliance_dryers',_binary ''),(19,'material','dryer','appliance_dryers',_binary ''),(20,'model','dryer','appliance_dryers',_binary ''),(21,'color','blender','widget_appliance',_binary ''),(22,'height','blender','widget_appliance',_binary ''),(23,'item_condition','blender','widget_appliance',_binary ''),(24,'length','blender','widget_appliance',_binary ''),(25,'width','blender','widget_appliance',_binary ''),(26,'brand','blender','appliance_blender',_binary ''),(27,'material','blender','appliance_blender',_binary ''),(28,'model','blender','appliance_blender',_binary ''),(29,'capacity','blender','appliance_blender',_binary ''),(30,'color','microwave','widget_appliance',_binary ''),(31,'height','microwave','widget_appliance',_binary ''),(32,'item_condition','microwave','widget_appliance',_binary ''),(33,'length','microwave','widget_appliance',_binary ''),(34,'width','microwave','widget_appliance',_binary ''),(35,'brand','microwave','appliance_microwave',_binary ''),(36,'material','microwave','appliance_microwave',_binary ''),(37,'model','microwave','appliance_microwave',_binary ''),(38,'color','refrigerator','widget_appliance',_binary ''),(39,'height','refrigerator','widget_appliance',_binary ''),(40,'item_condition','refrigerator','widget_appliance',_binary ''),(41,'length','refrigerator','widget_appliance',_binary ''),(42,'width','refrigerator','widget_appliance',_binary ''),(43,'brand','refrigerator','appliance_refrigerator',_binary ''),(44,'material','refrigerator','appliance_refrigerator',_binary ''),(45,'model','refrigerator','appliance_refrigerator',_binary ''),(46,'color','washer','widget_appliance',_binary ''),(47,'height','washer','widget_appliance',_binary ''),(48,'item_condition','washer','widget_appliance',_binary ''),(49,'length','washer','widget_appliance',_binary ''),(50,'width','washer','widget_appliance',_binary ''),(51,'brand','washer','appliance_washers',_binary ''),(52,'material','washer','appliance_washers',_binary ''),(53,'model','washer','appliance_washers',_binary ''),(54,'item_condition','car','widget_vehicles',_binary ''),(55,'terrain','car','widget_vehicles',_binary ''),(56,'road_safe','car','widget_vehicles',_binary ''),(57,'make','car','vehicle_car',_binary ''),(58,'model','car','vehicle_car',_binary ''),(59,'transmission_type','car','vehicle_car',_binary ''),(60,'wheel_drive','car','vehicle_car',_binary ''),(61,'year','car','vehicle_car',_binary ''),(62,'tool_type','lawnMower','widget_lawn_care',_binary ''),(63,'yard_size','lawnMower','widget_lawn_care',_binary ''),(64,'blade_width','lawnMower','lawn_care_lawn_mower',_binary ''),(65,'brand','lawnMower','lawn_care_lawn_mower',_binary ''),(66,'power_source','lawnMower','lawn_care_lawn_mower',_binary '');
+INSERT INTO `widgets_info` VALUES (1,'entertainment_use','computer','widget_electronics',_binary ''),(2,'office_use','computer','widget_electronics',_binary ''),(3,'gpu','computer','electronics_computers',_binary ''),(4,'memory','computer','electronics_computers',_binary ''),(5,'processor','computer','electronics_computers',_binary ''),(6,'storage','computer','electronics_computers',_binary ''),(7,'entertainment_use','videoGame','widget_electronics',_binary ''),(8,'office_use','videoGame','widget_electronics',_binary ''),(9,'console','videoGame','electronics_video_games',_binary ''),(10,'developer','videoGame','electronics_video_games',_binary ''),(11,'item_condition','videoGame','electronics_video_games',_binary ''),(12,'title','videoGame','electronics_video_games',_binary ''),(13,'color','dryer','widget_appliance',_binary ''),(14,'height','dryer','widget_appliance',_binary ''),(15,'item_condition','dryer','widget_appliance',_binary ''),(16,'length','dryer','widget_appliance',_binary ''),(17,'width','dryer','widget_appliance',_binary ''),(18,'brand','dryer','appliance_dryers',_binary ''),(19,'material','dryer','appliance_dryers',_binary ''),(20,'model','dryer','appliance_dryers',_binary ''),(21,'color','blender','widget_appliance',_binary ''),(22,'height','blender','widget_appliance',_binary ''),(23,'item_condition','blender','widget_appliance',_binary ''),(24,'length','blender','widget_appliance',_binary ''),(25,'width','blender','widget_appliance',_binary ''),(26,'brand','blender','appliance_blender',_binary ''),(27,'material','blender','appliance_blender',_binary ''),(28,'model','blender','appliance_blender',_binary ''),(29,'capacity','blender','appliance_blender',_binary ''),(30,'color','microwave','widget_appliance',_binary ''),(31,'height','microwave','widget_appliance',_binary ''),(32,'item_condition','microwave','widget_appliance',_binary ''),(33,'length','microwave','widget_appliance',_binary ''),(34,'width','microwave','widget_appliance',_binary ''),(35,'brand','microwave','appliance_microwave',_binary ''),(36,'material','microwave','appliance_microwave',_binary ''),(37,'model','microwave','appliance_microwave',_binary ''),(38,'color','refrigerator','widget_appliance',_binary ''),(39,'height','refrigerator','widget_appliance',_binary ''),(40,'item_condition','refrigerator','widget_appliance',_binary ''),(41,'length','refrigerator','widget_appliance',_binary ''),(42,'width','refrigerator','widget_appliance',_binary ''),(43,'brand','refrigerator','appliance_refrigerator',_binary ''),(44,'material','refrigerator','appliance_refrigerator',_binary ''),(45,'model','refrigerator','appliance_refrigerator',_binary ''),(46,'color','washer','widget_appliance',_binary ''),(47,'height','washer','widget_appliance',_binary ''),(48,'item_condition','washer','widget_appliance',_binary ''),(49,'length','washer','widget_appliance',_binary ''),(50,'width','washer','widget_appliance',_binary ''),(51,'brand','washer','appliance_washers',_binary ''),(52,'material','washer','appliance_washers',_binary ''),(53,'model','washer','appliance_washers',_binary ''),(54,'item_condition','car','widget_vehicles',_binary ''),(55,'terrain','car','widget_vehicles',_binary ''),(56,'road_safe','car','widget_vehicles',_binary ''),(57,'make','car','vehicle_car',_binary ''),(58,'model','car','vehicle_car',_binary ''),(59,'transmission_type','car','vehicle_car',_binary ''),(60,'wheel_drive','car','vehicle_car',_binary ''),(61,'year','car','vehicle_car',_binary ''),(62,'tool_type','lawnMower','widget_lawn_care',_binary ''),(63,'yard_size','lawnMower','widget_lawn_care',_binary ''),(64,'blade_width','lawnMower','lawn_care_lawn_mower',_binary ''),(65,'brand','lawnMower','lawn_care_lawn_mower',_binary '');
 /*!40000 ALTER TABLE `widgets_info` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

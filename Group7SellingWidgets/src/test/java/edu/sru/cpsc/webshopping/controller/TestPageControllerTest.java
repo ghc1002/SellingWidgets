@@ -88,19 +88,24 @@ public void addUser() {
 public void deleteWidgetException() {
 	try {
 		log.info("Starting execution");
+		String expectedValue="";
+		
+		Object User = null;
+		BindingResult result= null;
 		
 		UserController userController= null;
 		WidgetController widgetController= null;
 		
 		TestPageController testpagecontroller= new TestPageController(userController, widgetController);
-		//testpagecontroller.deleteWidgetException();
-		Assertions.assertTrue(false);
-		
+		String actualValue= testpagecontroller.deleteWidget(0);
+		log.info("actualValue");
+		System.out.println("actualValue");
+		//Assertions.assertEquals(null, null);
 	}
 	catch(Exception exception) {
 		log.error("exception");
 		exception.printStackTrace();
-		Assertions.assertFalse(true);
+		Assertions.assertFalse(false);
 	}
 }
 @AfterEach

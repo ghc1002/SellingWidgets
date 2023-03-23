@@ -84,4 +84,49 @@ public class DomainWidgetsVehiclesSpringTest {
 		assertEquals("bumpy", widget.getTerrain());
 	}
 
+	/*
+	 * Tests that the attributes are added correctly for the vehicle_parts
+	 */
+	@Test
+	void widget_Vehicles_Parts() {
+		Widget_Vehicles_Parts parts = new Widget_Vehicles_Parts();
+		
+		parts.setBrand("Ford");
+		parts.setCategory("cat");
+		parts.setColor("brown");
+		parts.setDescription("desc");
+		parts.setId(0);
+		parts.setMadeIn("America");
+		parts.setModel("model");
+		parts.setName("engine");
+		parts.setPartName("eugine");
+		parts.setSubCategory("parts");
+		
+		assertEquals("cat", parts.getCategory());
+		assertEquals("Ford", parts.getBrand());
+		assertEquals("brown", parts.getColor());
+		assertEquals("desc", parts.getDescription());
+		assertEquals(0, parts.getId());
+		assertEquals("America", parts.getMadeIn());
+		assertEquals("model", parts.getModel());
+		assertEquals("engine", parts.getName());
+		assertEquals("eugine", parts.getPartName());
+		assertEquals("parts", parts.getSubCategory());
+	}
+	
+	/*
+	 * Tests that the attributes are added correctly for the car_parts
+	 */
+	@Test
+	void vehicle_Car_Parts() {
+		Vehicle_Car_Parts parts = new Vehicle_Car_Parts();
+		
+		parts.setCondition("bad");
+		parts.setMaterial("sheet metal");
+		parts.setWarranty("none");
+		
+		assertEquals("bad", parts.getCondition());
+		assertEquals("sheet metal", parts.getMaterial());
+		assertEquals("none", parts.getWarranty());
+	}
 }

@@ -78,4 +78,96 @@ public class DomainWidgetsElectronicsSpringTest {
 		assertEquals("subcategory", widget.getSubCategory());
 	}
 
+	/*
+	 * Tests that the electronics attributes are valid
+	 */
+	@Test
+	void widget_Electronics_PartsTest() {
+		Widget_Electronics_Parts widget = new Widget_Electronics_Parts();
+		widget.setCategory("electronics");
+		widget.setDescription("shiny");
+		widget.setId(3);
+		widget.setName("Emilie");
+		widget.setSubCategory("subcategory");
+		widget.setBrand("brand");
+		widget.setMadeIn("China");
+		widget.setModel("model");
+		widget.setPartName("part");
+		
+		assertEquals("electronics", widget.getCategory());
+		assertEquals("shiny", widget.getDescription());
+		assertEquals(3, widget.getId());
+		assertEquals("Emilie", widget.getName());
+		assertEquals("subcategory", widget.getSubCategory());
+		assertEquals("brand", widget.getBrand());
+		assertEquals("China", widget.getMadeIn());
+		assertEquals("model", widget.getModel());
+		assertEquals("part", widget.getPartName());
+	}
+	
+	/*
+	 * Tests that the electronics attributes are valid
+	 */
+	@Test
+	void Electronics_Computers_PartsTest() {
+		Electronics_Computers_Parts widget = new Electronics_Computers_Parts();
+		widget.setCategory("electronics");
+		widget.setDescription("shiny");
+		widget.setId(3);
+		widget.setName("Emilie");
+		widget.setSubCategory("subcategory");
+		widget.setBrand("brand");
+		widget.setMadeIn("China");
+		widget.setModel("model");
+		widget.setPartName("part");
+		widget.setMaterial("mat");
+		widget.setCondition("con");
+		widget.setWarranty("war");
+		
+		assertEquals("electronics", widget.getCategory());
+		assertEquals("shiny", widget.getDescription());
+		assertEquals(3, widget.getId());
+		assertEquals("Emilie", widget.getName());
+		assertEquals("subcategory", widget.getSubCategory());
+		assertEquals("brand", widget.getBrand());
+		assertEquals("China", widget.getMadeIn());
+		assertEquals("model", widget.getModel());
+		assertEquals("part", widget.getPartName());
+		assertEquals("mat", widget.getMaterial());
+		assertEquals("con", widget.getCondition());
+		assertEquals("war", widget.getWarranty());
+	}
+	
+	/*
+	 * Tests that the electronics attributes are valid
+	 */
+	@Test
+	void Electronics_VideoGames_PartsTest() {
+		Electronics_VideoGames_Parts widget = new Electronics_VideoGames_Parts();
+		widget.setCategory("electronics");
+		widget.setDescription("shiny");
+		widget.setId(3);
+		widget.setName("Emilie");
+		widget.setSubCategory("subcategory");
+		widget.setBrand("brand");
+		widget.setMadeIn("China");
+		widget.setModel("model");
+		widget.setPartName("part");
+		widget.setMaterial("mat");
+		widget.setCondition("con");
+		widget.setWarranty("war");
+		
+		assertEquals("electronics", widget.getCategory());
+		assertEquals("shiny", widget.getDescription());
+		assertEquals(3, widget.getId());
+		assertEquals("Emilie", widget.getName());
+		assertEquals("subcategory", widget.getSubCategory());
+		assertEquals("brand", widget.getBrand());
+		assertEquals("China", widget.getMadeIn());
+		assertEquals("model", widget.getModel());
+		assertEquals("part", widget.getPartName());
+		assertEquals("mat", widget.getMaterial());
+		assertEquals("con", widget.getCondition());
+		assertEquals("war", widget.getWarranty());
+	}
 }

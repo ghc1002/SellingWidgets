@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 
 import edu.sru.cpsc.webshopping.controller.AddWidgetControllerTest;
 import edu.sru.cpsc.webshopping.controller.ApplicantDomainControllerTest;
-import edu.sru.cpsc.webshopping.controller.CategoryControllerTest;
 import edu.sru.cpsc.webshopping.controller.EmailControllerTest;
 import edu.sru.cpsc.webshopping.controller.EmployeeControllerTest;
 import edu.sru.cpsc.webshopping.controller.FriendRequestControllerTest;
@@ -55,7 +54,7 @@ import edu.sru.cpsc.webshopping.util.enums.WebshoppingUtilEnumsSpringTest;
  */
 
 @RunWith(Suite.class)
-@SuiteClasses({SellingWidgetsTests.class, AddWidgetControllerTest.class, ApplicantDomainControllerTest.class, CategoryControllerTest.class, EmailControllerTest.class,
+@SuiteClasses({SellingWidgetsTests.class, AddWidgetControllerTest.class, ApplicantDomainControllerTest.class, EmailControllerTest.class,
 	EmployeeControllerTest.class, FriendRequestControllerTest.class, IndexControllerTest.class, LandingPageControllerTest.class, MarketListingControllerTest.class, MarketListingDomainControllerTest.class,
 	MessageControllerTest.class, ShippingDomainControllerTest.class, StatisticsDomainControllerTest.class, TestPageControllerTest.class, TicketPageControllerTest.class, TransactionControllerSpringTest.class, 
 	TransactionControllerTest.class, UserDetailsControllerTest.class, UserListDomainControllerTest.class, UtilityControllerTest.class, WebshoppingControllerSpringTest.class, 

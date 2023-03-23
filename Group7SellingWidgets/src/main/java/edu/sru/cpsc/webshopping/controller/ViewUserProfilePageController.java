@@ -75,7 +75,7 @@ public class ViewUserProfilePageController {
 		this.soldItems = Arrays.stream(this.soldItems).filter(item -> !item.isDeleted()).toArray(MarketListing[]::new);
 		this.rating = ratingController.determineRating(selectedUser);
 		this.messagePaneOpen = false;
-		model.addAttribute("user", selectedUser);
+		model.addAttribute("selectedUser", selectedUser);
 		itemsEachPage = new Vector<Vector<MarketListing>>();
 		if (soldItems.length == 0) {
 			// If no sold items, add a blank page
@@ -92,6 +92,7 @@ public class ViewUserProfilePageController {
 			}
 		}
 		reloadPageModel(model);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "viewUserProfile";
 	}
 	
