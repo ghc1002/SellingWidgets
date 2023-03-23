@@ -42,11 +42,7 @@
 
 		<div class="grid-item item5">
 			<th:block th:switch="${page}">
-				<a class="submit" style="height: 30px; width: 70px;"
-					th:href="@{/newUser}"><span>Sign Up</span></a>
-				<a class="submit" style="height: 30px; width: 70px;"
-					th:href="@{/login}"><span>Log In</span></a>
-				<div th:case="searchWidgetSellerMarketListing">
+				<div style="margin-top: 40px" th:case="searchWidgetSellerMarketListing">
 
 					<th:block th:each="searchedMarkets: ${allMarketListings}"
 						th:unless="${searchedMarkets.qtyAvailable == 0 || searchedMarkets.isDeleted == true}">

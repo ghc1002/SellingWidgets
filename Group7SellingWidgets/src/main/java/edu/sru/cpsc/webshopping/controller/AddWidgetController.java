@@ -6,6 +6,7 @@ import edu.sru.cpsc.webshopping.domain.market.MarketListing;
 import edu.sru.cpsc.webshopping.domain.widgets.WidgetImage;
 import edu.sru.cpsc.webshopping.domain.market.MarketListingCSVModel;
 import edu.sru.cpsc.webshopping.domain.user.User;
+import edu.sru.cpsc.webshopping.domain.widgets.Category;
 import edu.sru.cpsc.webshopping.domain.widgets.Widget;
 import edu.sru.cpsc.webshopping.domain.widgets.WidgetImage;
 import edu.sru.cpsc.webshopping.domain.widgets.Widget_General;
@@ -153,7 +154,8 @@ public class AddWidgetController {
 
 	private final String UPLOAD_DIR = "src/main/resources/static/images/userImages/";
 
-	public AddWidgetController(WidgetRepository widgetRepository,CategoryController categories, ApplianceDryersRepository dryerRepository, WidgetImageRepository widgetImageRepository,
+	public AddWidgetController(WidgetRepository widgetRepository, CategoryController categories, ApplianceDryersRepository dryerRepository, WidgetImageRepository widgetImageRepository,
+
 			ApplianceMicrowaveRepository microwaveRepository, ApplianceRefrigeratorRepository fridgeRepository, 
 			ApplianceWashersRepository washerRepository, ApplianceBlenderRepository blenderRepository, ElectronicsComputersRepository computerRepository, 
 			ElectronicsVideoGamesRepository videoGameRepository, VehicleCarRepository carRepository, 
@@ -162,7 +164,7 @@ public class AddWidgetController {
 			MarketListingRepository marketListingRepos, WidgetController widgetController, UserController userController, 
 			MarketListingDomainController marketListingController, UserRepository userRepo, LawnCareLawnMowerRepository mowerRepository, WidgetGeneralRepository generalRepository)
 	{
-		this.categories = categories;		
+		this.categories = categories;
 		this.widgetRepository = widgetRepository;
 		this.applianceRepository = applianceRepository;
 		this.electronicsRepository = electronicsRepository;
@@ -194,8 +196,9 @@ public class AddWidgetController {
 		if (userController.getCurrently_Logged_In() == null) {
 			throw new IllegalStateException("Not logged in.");
 		}
-		
+    
 		setPage("widgets");
+    
 		model.addAttribute("categories", categories.getAllCategories());
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "addWidget";

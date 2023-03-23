@@ -186,5 +186,208 @@ public class DomainWidgetsAppliancesSpringTest {
 		assertEquals("Alexis", widget.getName());
 		assertEquals("subcategory", widget.getSubCategory());
 	}
+	
+	/*
+	 * Tests if the appliance attributes are added
+	 */
+	@Test
+	void widget_Appliance_PartsTest() {
+		Widget_Appliance_Parts widget = new Widget_Appliance_Parts();
+		widget.setCategory("category");
+		widget.setDescription("description");
+		widget.setId(1);
+		widget.setName("Alexis");
+		widget.setSubCategory("subcategory");
+		widget.setBrand("brand");
+		widget.setColor("blue");
+		widget.setMadeIn("China");
+		widget.setModel("model");
+		widget.setPartName("part");
+		
+		assertEquals("category", widget.getCategory());
+		assertEquals("description", widget.getDescription());
+		assertEquals(1, widget.getId());
+		assertEquals("Alexis", widget.getName());
+		assertEquals("subcategory", widget.getSubCategory());
+		assertEquals("brand", widget.getBrand());
+		assertEquals("blue", widget.getColor());
+		assertEquals("China", widget.getMadeIn());
+		assertEquals("model", widget.getModel());
+		assertEquals("part", widget.getPartName());
+	}
 
+	/*
+	 * Tests if the appliance attributes are added
+	 */
+	@Test
+	void Appliance_Blender_PartsTest() {
+		Appliance_Blender_Parts widget = new Appliance_Blender_Parts();
+		widget.setCategory("category");
+		widget.setDescription("description");
+		widget.setId(1);
+		widget.setName("Alexis");
+		widget.setSubCategory("subcategory");
+		widget.setBrand("brand");
+		widget.setColor("blue");
+		widget.setMadeIn("China");
+		widget.setModel("model");
+		widget.setPartName("part");
+		widget.setMaterial("mat");
+		widget.setCondition("con");
+		widget.setWarranty("war");
+		
+		assertEquals("category", widget.getCategory());
+		assertEquals("description", widget.getDescription());
+		assertEquals(1, widget.getId());
+		assertEquals("Alexis", widget.getName());
+		assertEquals("subcategory", widget.getSubCategory());
+		assertEquals("brand", widget.getBrand());
+		assertEquals("blue", widget.getColor());
+		assertEquals("China", widget.getMadeIn());
+		assertEquals("model", widget.getModel());
+		assertEquals("part", widget.getPartName());
+		assertEquals("mat", widget.getMaterial());
+		assertEquals("con", widget.getCondition());
+		assertEquals("war", widget.getWarranty());
+	}
+	
+	/*
+	 * Tests if the appliance attributes are added
+	 */
+	@Test
+	void Appliance_Dryer_PartsTest() {
+		Appliance_Dryer_Parts widget = new Appliance_Dryer_Parts();
+		widget.setCategory("category");
+		widget.setDescription("description");
+		widget.setId(1);
+		widget.setName("Alexis");
+		widget.setSubCategory("subcategory");
+		widget.setBrand("brand");
+		widget.setColor("blue");
+		widget.setMadeIn("China");
+		widget.setModel("model");
+		widget.setPartName("part");
+		widget.setMaterial("mat");
+		widget.setCondition("con");
+		widget.setWarranty("war");
+		
+		assertEquals("category", widget.getCategory());
+		assertEquals("description", widget.getDescription());
+		assertEquals(1, widget.getId());
+		assertEquals("Alexis", widget.getName());
+		assertEquals("subcategory", widget.getSubCategory());
+		assertEquals("brand", widget.getBrand());
+		assertEquals("blue", widget.getColor());
+		assertEquals("China", widget.getMadeIn());
+		assertEquals("model", widget.getModel());
+		assertEquals("part", widget.getPartName());
+		assertEquals("mat", widget.getMaterial());
+		assertEquals("con", widget.getCondition());
+		assertEquals("war", widget.getWarranty());
+	}
+	
+	/*
+	 * Tests if the appliance attributes are added
+	 */
+	@Test
+	void Appliance_Microwave_PartsTest() {
+		Appliance_Microwave_Parts widget = new Appliance_Microwave_Parts();
+		widget.setCategory("category");
+		widget.setDescription("description");
+		widget.setId(1);
+		widget.setName("Alexis");
+		widget.setSubCategory("subcategory");
+		widget.setBrand("brand");
+		widget.setColor("blue");
+		widget.setMadeIn("China");
+		widget.setModel("model");
+		widget.setPartName("part");
+		widget.setMaterial("mat");
+		widget.setCondition("con");
+		widget.setWarranty("war");
+		
+		assertEquals("category", widget.getCategory());
+		assertEquals("description", widget.getDescription());
+		assertEquals(1, widget.getId());
+		assertEquals("Alexis", widget.getName());
+		assertEquals("subcategory", widget.getSubCategory());
+		assertEquals("brand", widget.getBrand());
+		assertEquals("blue", widget.getColor());
+		assertEquals("China", widget.getMadeIn());
+		assertEquals("model", widget.getModel());
+		assertEquals("part", widget.getPartName());
+		assertEquals("mat", widget.getMaterial());
+		assertEquals("con", widget.getCondition());
+		assertEquals("war", widget.getWarranty());
+	}
+	
+	/*
+	 * Tests if the appliance attributes are added
+	 */
+	@Test
+	void Appliance_Refrigerator_PartsTest() {
+		Appliance_Refrigerator_Parts widget = new Appliance_Refrigerator_Parts();
+		widget.setCategory("category");
+		widget.setDescription("description");
+		widget.setId(1);
+		widget.setName("Alexis");
+		widget.setSubCategory("subcategory");
+		widget.setBrand("brand");
+		widget.setColor("blue");
+		widget.setMadeIn("China");
+		widget.setModel("model");
+		widget.setPartName("part");
+		widget.setMaterial("mat");
+		widget.setCondition("con");
+		widget.setWarranty("war");
+		
+		assertEquals("category", widget.getCategory());
+		assertEquals("description", widget.getDescription());
+		assertEquals(1, widget.getId());
+		assertEquals("Alexis", widget.getName());
+		assertEquals("subcategory", widget.getSubCategory());
+		assertEquals("brand", widget.getBrand());
+		assertEquals("blue", widget.getColor());
+		assertEquals("China", widget.getMadeIn());
+		assertEquals("model", widget.getModel());
+		assertEquals("part", widget.getPartName());
+		assertEquals("mat", widget.getMaterial());
+		assertEquals("con", widget.getCondition());
+		assertEquals("war", widget.getWarranty());
+	}
+	
+	/*
+	 * Tests if the appliance attributes are added
+	 */
+	@Test
+	void Appliance_Washer_PartsTest() {
+		Appliance_Washers_Parts widget = new Appliance_Washers_Parts();
+		widget.setCategory("category");
+		widget.setDescription("description");
+		widget.setId(1);
+		widget.setName("Alexis");
+		widget.setSubCategory("subcategory");
+		widget.setBrand("brand");
+		widget.setColor("blue");
+		widget.setMadeIn("China");
+		widget.setModel("model");
+		widget.setPartName("part");
+		widget.setMaterial("mat");
+		widget.setCondition("con");
+		widget.setWarranty("war");
+		
+		assertEquals("category", widget.getCategory());
+		assertEquals("description", widget.getDescription());
+		assertEquals(1, widget.getId());
+		assertEquals("Alexis", widget.getName());
+		assertEquals("subcategory", widget.getSubCategory());
+		assertEquals("brand", widget.getBrand());
+		assertEquals("blue", widget.getColor());
+		assertEquals("China", widget.getMadeIn());
+		assertEquals("model", widget.getModel());
+		assertEquals("part", widget.getPartName());
+		assertEquals("mat", widget.getMaterial());
+		assertEquals("con", widget.getCondition());
+		assertEquals("war", widget.getWarranty());
+	}
 }

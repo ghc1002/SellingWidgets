@@ -9,7 +9,11 @@ import edu.sru.cpsc.webshopping.domain.widgets.WidgetImage;
 import edu.sru.cpsc.webshopping.domain.market.MarketListing;
 
 public class WidgetImageDomainTest {
+	@Test
 	
+	/*
+	 * Tests the WidgetImage domain
+	 */
 	void WidgetImageTest()
 	{
 		MarketListing ML = new MarketListing();

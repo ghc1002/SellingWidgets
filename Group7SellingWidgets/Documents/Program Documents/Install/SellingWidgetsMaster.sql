@@ -214,8 +214,6 @@ DROP TABLE IF EXISTS `category`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `category` (
   `name` varchar(255) NOT NULL,
-  `display` varchar(255) NOT NULL,
-  `link` varchar(255) NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -226,7 +224,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES ('appliance', 'Appliances', 'addAppliance'), ('appliance_parts', 'Appliance Parts', 'addApplianceParts'), ('electronic', 'Electronics', 'addElectronic'), ('electronic_parts', 'Electronic Parts', 'addElectronicParts'), ('lawnCare', 'Lawn Care', 'addLawnCare'), ('lawnCare_parts', 'Lawn Care Parts', 'addLawnCareParts'), ('vehicle', 'Vehicles', 'addVehicle'), ('vehicle_parts', 'Vehicle Parts', 'addVehicleParts');
+INSERT INTO `category` VALUES ('appliance'),('appliance_parts'),('electronic'),('electronic_parts'),('lawnCare'),('lawnCare_parts'),('vehicle'),('vehicle_parts');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -414,36 +412,8 @@ CREATE TABLE `market_listing` (
 
 LOCK TABLES `market_listing` WRITE;
 /*!40000 ALTER TABLE `market_listing` DISABLE KEYS */;
-INSERT INTO `market_listing` VALUES (3,_binary '',500.00,40,1,2,NULL),(5,_binary '',50.20,50,1,4,NULL),(7,_binary '',70.00,27,1,6,NULL),(25,_binary '',10.00,410,20,24,NULL),(36,_binary '\0',250.00,0,34,35,'34oldmac.jpeg'),(38,_binary '\0',20.00,0,34,37,'34ratechetandclank.jpg'),(40,_binary '\0',500.00,1,34,39,'34broken dryer.jpeg'),(42,_binary '\0',50.00,1,34,41,'34brand new microwave.jpeg'),(45,_binary '\0',500.00,1,43,44,'43new fridge.jpeg'),(47,_binary '\0',2000.00,0,43,46,'43oldford.jpeg'),(49,_binary '\0',300.00,1,43,48,'43teslamower.jpeg'),(66,_binary '\0',800.00,20,1,65,'1surface-laptop-4-4-625x417-c.jpg'),(70,_binary '\0',40.00,80,1,69,'1surface-laptop-4-4-625x417-c.jpg'),(144,_binary '\0',50.00,2,1,143,'11mario64box.jpg'),(155,_binary '\0',50.00,1,1,154,'1microwave.jpeg'),(166,_binary '\0',500.00,25,1,165,'1dryer.jpeg');
+INSERT INTO `market_listing` VALUES (3,_binary '',500.00,40,1,2,NULL),(5,_binary '',50.20,50,1,4,NULL),(7,_binary '',70.00,27,1,6,NULL),(25,_binary '',10.00,410,20,24,NULL),(36,_binary '\0',250.00,0,34,35,'34oldmac.jpeg'),(38,_binary '\0',20.00,0,34,37,'34ratechetandclank.jpg'),(40,_binary '\0',500.00,1,34,39,'34broken dryer.jpeg'),(42,_binary '\0',50.00,1,34,41,'34brand new microwave.jpeg'),(45,_binary '\0',500.00,1,43,44,'43new fridge.jpeg'),(47,_binary '\0',2000.00,0,43,46,'43oldford.jpeg'),(49,_binary '\0',300.00,1,43,48,'43teslamower.jpeg'),(144,_binary '\0',50.00,2,1,143,'11mario64box.jpg'),(155,_binary '\0',50.00,1,1,154,'1microwave.jpeg'),(166,_binary '\0',500.00,25,1,165,'1dryer.jpeg');
 /*!40000 ALTER TABLE `market_listing` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
---
--- Table structure for table `widget_image`
---
-
-DROP TABLE IF EXISTS `widget_image`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `widget_image` (
-  `id` bigint NOT NULL,
-  `image_name` varchar(255) DEFAULT NULL,
-  `market_listing_id` bigint DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKqudapab12tq3aorl9cok3b9kj` (`market_listing_id`),
-  CONSTRAINT `FKqudapab12tq3aorl9cok3b9kj` FOREIGN KEY (`market_listing_id`) REFERENCES `market_listing` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `widget_image`
---
-
-LOCK TABLES `widget_image` WRITE;
-/*!40000 ALTER TABLE `widget_image` DISABLE KEYS */;
-INSERT INTO `widget_image` VALUES (36,'34oldmac.jpeg',36),(38,'34ratechetandclank.jpg',38),(40,'34broken dryer.jpeg',40),(42,'34brand new microwave.jpeg',42),(45,'43new fridge.jpeg',45),(47,'43oldford.jpeg',47),(49,'43teslamower.jpeg',49),(66,'1surface-laptop-4-4-625x417-c.jpg',66),(70,'1surface-laptop-4-4-625x417-c.jpg',70),(144,'11mario64box.jpg',144),(155,'1microwave.jpeg',155),(166,'1dryer.jpeg',166);
-/*!40000 ALTER TABLE `widget_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -838,7 +808,7 @@ CREATE TABLE `transaction` (
 
 LOCK TABLES `transaction` WRITE;
 /*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
-INSERT INTO `transaction` VALUES (56,'2022-03-06',50,NULL,1,25,55,NULL,532.50,500.00,20,50),(76,'2022-04-24',1,NULL,1,36,75,226.31,266.25,250.00,34,50),(81,'2022-04-24',1,NULL,1,38,80,17.68,20.80,20.00,34,50),(88,'2022-04-24',20,NULL,20,70,87,729.30,858.00,800.00,1,50),(161,'2022-04-25',1,NULL,1,47,160,1802.00,2120.00,2000.00,43,50);
+INSERT INTO `transaction` VALUES (56,'2022-03-06',50,NULL,1,25,55,NULL,532.50,500.00,20,50),(76,'2022-04-24',1,NULL,1,36,75,226.31,266.25,250.00,34,50),(81,'2022-04-24',1,NULL,1,38,80,17.68,20.80,20.00,34,50),(161,'2022-04-25',1,NULL,1,47,160,1802.00,2120.00,2000.00,43,50);
 /*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1104,6 +1074,33 @@ INSERT INTO `widget_electronics` VALUES (35,'1','Yes'),(37,'Yes','Yes'),(65,'1',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `widget_image`
+--
+
+DROP TABLE IF EXISTS `widget_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `widget_image` (
+  `id` bigint NOT NULL,
+  `image_name` varchar(255) DEFAULT NULL,
+  `market_listing_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKqudapab12tq3aorl9cok3b9kj` (`market_listing_id`),
+  CONSTRAINT `FKqudapab12tq3aorl9cok3b9kj` FOREIGN KEY (`market_listing_id`) REFERENCES `market_listing` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `widget_image`
+--
+
+LOCK TABLES `widget_image` WRITE;
+/*!40000 ALTER TABLE `widget_image` DISABLE KEYS */;
+INSERT INTO `widget_image` VALUES (36,'34oldmac.jpeg',36),(38,'34ratechetandclank.jpg',38),(40,'34broken dryer.jpeg',40),(42,'34brand new microwave.jpeg',42),(45,'43new fridge.jpeg',45),(47,'43oldford.jpeg',47),(49,'43teslamower.jpeg',49),(144,'11mario64box.jpg',144),(155,'1microwave.jpeg',155),(166,'1dryer.jpeg',166);
+/*!40000 ALTER TABLE `widget_image` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `widget_lawn_care`
 --
 
@@ -1206,7 +1203,7 @@ CREATE TABLE `widgets_info` (
 
 LOCK TABLES `widgets_info` WRITE;
 /*!40000 ALTER TABLE `widgets_info` DISABLE KEYS */;
-INSERT INTO `widgets_info` VALUES (1,'entertainment_use','computer','widget_electronics',_binary ''),(2,'office_use','computer','widget_electronics',_binary ''),(3,'gpu','computer','electronics_computers',_binary ''),(4,'memory','computer','electronics_computers',_binary ''),(5,'processor','computer','electronics_computers',_binary ''),(6,'storage','computer','electronics_computers',_binary ''),(7,'entertainment_use','videoGame','widget_electronics',_binary ''),(8,'office_use','videoGame','widget_electronics',_binary ''),(9,'console','videoGame','electronics_video_games',_binary ''),(10,'developer','videoGame','electronics_video_games',_binary ''),(11,'item_condition','videoGame','electronics_video_games',_binary ''),(12,'title','videoGame','electronics_video_games',_binary ''),(13,'color','dryer','widget_appliance',_binary ''),(14,'height','dryer','widget_appliance',_binary ''),(15,'item_condition','dryer','widget_appliance',_binary ''),(16,'length','dryer','widget_appliance',_binary ''),(17,'width','dryer','widget_appliance',_binary ''),(18,'brand','dryer','appliance_dryers',_binary ''),(19,'material','dryer','appliance_dryers',_binary ''),(20,'model','dryer','appliance_dryers',_binary ''),(21,'color','blender','widget_appliance',_binary ''),(22,'height','blender','widget_appliance',_binary ''),(23,'item_condition','blender','widget_appliance',_binary ''),(24,'length','blender','widget_appliance',_binary ''),(25,'width','blender','widget_appliance',_binary ''),(26,'brand','blender','appliance_blender',_binary ''),(27,'material','blender','appliance_blender',_binary ''),(28,'model','blender','appliance_blender',_binary ''),(29,'capacity','blender','appliance_blender',_binary ''),(30,'color','microwave','widget_appliance',_binary ''),(31,'height','microwave','widget_appliance',_binary ''),(32,'item_condition','microwave','widget_appliance',_binary ''),(33,'length','microwave','widget_appliance',_binary ''),(34,'width','microwave','widget_appliance',_binary ''),(35,'brand','microwave','appliance_microwave',_binary ''),(36,'material','microwave','appliance_microwave',_binary ''),(37,'model','microwave','appliance_microwave',_binary ''),(38,'color','refrigerator','widget_appliance',_binary ''),(39,'height','refrigerator','widget_appliance',_binary ''),(40,'item_condition','refrigerator','widget_appliance',_binary ''),(41,'length','refrigerator','widget_appliance',_binary ''),(42,'width','refrigerator','widget_appliance',_binary ''),(43,'brand','refrigerator','appliance_refrigerator',_binary ''),(44,'material','refrigerator','appliance_refrigerator',_binary ''),(45,'model','refrigerator','appliance_refrigerator',_binary ''),(46,'color','washer','widget_appliance',_binary ''),(47,'height','washer','widget_appliance',_binary ''),(48,'item_condition','washer','widget_appliance',_binary ''),(49,'length','washer','widget_appliance',_binary ''),(50,'width','washer','widget_appliance',_binary ''),(51,'brand','washer','appliance_washers',_binary ''),(52,'material','washer','appliance_washers',_binary ''),(53,'model','washer','appliance_washers',_binary ''),(54,'item_condition','car','widget_vehicles',_binary ''),(55,'terrain','car','widget_vehicles',_binary ''),(56,'road_safe','car','widget_vehicles',_binary ''),(57,'make','car','vehicle_car',_binary ''),(58,'model','car','vehicle_car',_binary ''),(59,'transmission_type','car','vehicle_car',_binary ''),(60,'wheel_drive','car','vehicle_car',_binary ''),(61,'year','car','vehicle_car',_binary ''),(62,'tool_type','lawnMower','widget_lawn_care',_binary ''),(63,'yard_size','lawnMower','widget_lawn_care',_binary ''),(64,'blade_width','lawnMower','lawn_care_lawn_mower',_binary ''),(65,'brand','lawnMower','lawn_care_lawn_mower',_binary ''),(66,'power_source','lawnMower','lawn_care_lawn_mower',_binary '');
+INSERT INTO `widgets_info` VALUES (1,'entertainment_use','computer','widget_electronics',_binary ''),(2,'office_use','computer','widget_electronics',_binary ''),(3,'gpu','computer','electronics_computers',_binary ''),(4,'memory','computer','electronics_computers',_binary ''),(5,'processor','computer','electronics_computers',_binary ''),(6,'storage','computer','electronics_computers',_binary ''),(7,'entertainment_use','videoGame','widget_electronics',_binary ''),(8,'office_use','videoGame','widget_electronics',_binary ''),(9,'console','videoGame','electronics_video_games',_binary ''),(10,'developer','videoGame','electronics_video_games',_binary ''),(11,'item_condition','videoGame','electronics_video_games',_binary ''),(12,'title','videoGame','electronics_video_games',_binary ''),(13,'color','dryer','widget_appliance',_binary ''),(14,'height','dryer','widget_appliance',_binary ''),(15,'item_condition','dryer','widget_appliance',_binary ''),(16,'length','dryer','widget_appliance',_binary ''),(17,'width','dryer','widget_appliance',_binary ''),(18,'brand','dryer','appliance_dryers',_binary ''),(19,'material','dryer','appliance_dryers',_binary ''),(20,'model','dryer','appliance_dryers',_binary ''),(21,'color','blender','widget_appliance',_binary ''),(22,'height','blender','widget_appliance',_binary ''),(23,'item_condition','blender','widget_appliance',_binary ''),(24,'length','blender','widget_appliance',_binary ''),(25,'width','blender','widget_appliance',_binary ''),(26,'brand','blender','appliance_blender',_binary ''),(27,'material','blender','appliance_blender',_binary ''),(28,'model','blender','appliance_blender',_binary ''),(29,'capacity','blender','appliance_blender',_binary ''),(30,'color','microwave','widget_appliance',_binary ''),(31,'height','microwave','widget_appliance',_binary ''),(32,'item_condition','microwave','widget_appliance',_binary ''),(33,'length','microwave','widget_appliance',_binary ''),(34,'width','microwave','widget_appliance',_binary ''),(35,'brand','microwave','appliance_microwave',_binary ''),(36,'material','microwave','appliance_microwave',_binary ''),(37,'model','microwave','appliance_microwave',_binary ''),(38,'color','refrigerator','widget_appliance',_binary ''),(39,'height','refrigerator','widget_appliance',_binary ''),(40,'item_condition','refrigerator','widget_appliance',_binary ''),(41,'length','refrigerator','widget_appliance',_binary ''),(42,'width','refrigerator','widget_appliance',_binary ''),(43,'brand','refrigerator','appliance_refrigerator',_binary ''),(44,'material','refrigerator','appliance_refrigerator',_binary ''),(45,'model','refrigerator','appliance_refrigerator',_binary ''),(46,'color','washer','widget_appliance',_binary ''),(47,'height','washer','widget_appliance',_binary ''),(48,'item_condition','washer','widget_appliance',_binary ''),(49,'length','washer','widget_appliance',_binary ''),(50,'width','washer','widget_appliance',_binary ''),(51,'brand','washer','appliance_washers',_binary ''),(52,'material','washer','appliance_washers',_binary ''),(53,'model','washer','appliance_washers',_binary ''),(54,'item_condition','car','widget_vehicles',_binary ''),(55,'terrain','car','widget_vehicles',_binary ''),(56,'road_safe','car','widget_vehicles',_binary ''),(57,'make','car','vehicle_car',_binary ''),(58,'model','car','vehicle_car',_binary ''),(59,'transmission_type','car','vehicle_car',_binary ''),(60,'wheel_drive','car','vehicle_car',_binary ''),(61,'year','car','vehicle_car',_binary ''),(62,'tool_type','lawnMower','widget_lawn_care',_binary ''),(63,'yard_size','lawnMower','widget_lawn_care',_binary ''),(64,'blade_width','lawnMower','lawn_care_lawn_mower',_binary ''),(65,'brand','lawnMower','lawn_care_lawn_mower',_binary '');
 /*!40000 ALTER TABLE `widgets_info` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1218,4 +1215,3 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
