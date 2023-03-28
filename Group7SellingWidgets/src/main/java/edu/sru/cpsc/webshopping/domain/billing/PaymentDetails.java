@@ -1,12 +1,16 @@
 package edu.sru.cpsc.webshopping.domain.billing;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
 import org.springframework.lang.NonNull;
+
+import edu.sru.cpsc.webshopping.domain.user.User;
 
 
 /**
@@ -41,6 +45,9 @@ public class PaymentDetails {
 	
 	@NonNull
 	private String postalCode;
+	
+	@ManyToOne(cascade = CascadeType.MERGE)
+	private User user;
 
 	public long getId() {
 		return id;
@@ -106,6 +113,14 @@ public class PaymentDetails {
 		this.last4Digits = last4Digits;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	// Sets the non-id fields of the calling PaymentDetails to match that of the passed PaymentDetails
 	public void transferFields(PaymentDetails other) {
 		this.cardType = other.cardType;
@@ -127,4 +142,5 @@ public class PaymentDetails {
 		this.securityCode = form.getSecurityCode();
 		this.postalCode = form.getPostalCode();
 	}
+
 }

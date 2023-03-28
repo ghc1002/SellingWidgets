@@ -2,6 +2,8 @@ package edu.sru.cpsc.webshopping.domain.user;
 
 
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,6 +26,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +38,7 @@ import edu.sru.cpsc.webshopping.domain.billing.Paypal;
 import edu.sru.cpsc.webshopping.domain.market.MarketListing;
 import edu.sru.cpsc.webshopping.domain.market.Transaction;
 import edu.sru.cpsc.webshopping.domain.widgets.Widget;
+import edu.sru.cpsc.webshopping.domain.widgets.WidgetImage;
 
 
 // Model for users (both buyers and sellers) of the web shopping platform
@@ -51,6 +56,7 @@ public class User implements UserDetails {
         this.marketListings = user.marketListings;
         this.transactions = user.transactions;
         this.userRole = user.userRole;
+        this.defaultPaymentDetails = user.defaultPaymentDetails;
         this.sellerRating = user.sellerRating;
         this.accountExpired = user.accountExpired;
         this.accountLocked = user.accountLocked;
@@ -145,9 +151,8 @@ public class User implements UserDetails {
 		inverseJoinColumns = @JoinColumn(name = "WidgetId"))
 	private Set<Widget> wishlistedWidgets;
 	
-	@NonNull
-	@OneToOne
-	private PaymentDetails paymentDetails;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	private Set<PaymentDetails> paymentDetails;
 	
 	@NonNull
 	@OneToOne
@@ -197,6 +202,11 @@ public class User implements UserDetails {
 	private boolean credentialsExpired;
 	@NonNull
 	private boolean disabledAccount;
+	
+	@NonNull
+	@OneToOne
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private PaymentDetails defaultPaymentDetails;
 	
 	@Override
 	public String getPassword() {
@@ -442,14 +452,21 @@ public class User implements UserDetails {
 		this.wishlistedWidgets = wishlistedWidgets;
 	}
 
-	public PaymentDetails getPaymentDetails() {
+	public PaymentDetails getDefaultPaymentDetails() {
+		return defaultPaymentDetails;
+	}
+
+	public void setDefaultPaymentDetails(PaymentDetails defaultPaymentDetails) {
+		this.defaultPaymentDetails = defaultPaymentDetails;
+	}
+
+	public Set<PaymentDetails> getPaymentDetails() {
 		return paymentDetails;
 	}
 
-	public void setPaymentDetails(PaymentDetails paymentDetails) {
+	public void setPaymentDetails(Set<PaymentDetails> paymentDetails) {
 		this.paymentDetails = paymentDetails;
 	}
-
 
 	public Paypal getPaypal() {
 		return paypal;

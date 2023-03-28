@@ -237,18 +237,47 @@
 				<!-- Payment details submenu -->
 				<form method="post" action="#" th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}"
 					th:action="@{/submitPaymentDetailsAction}" th:object="${paymentDetails}">
-					<div th:if="${paymentDetails2 != null}">
-					<div class="d-flex justify-content-center">
-						<h2>Current Payment Details</h2>
+					<div th:if="${savedDetails != null}">
+						<div class="d-flex justify-content-center">
+							<h2>Current Payment Details</h2>
+						</div>
+						<div th:if="${defaultPaymentDetails != null}" class="d-flex justify-content-center">
+							<h3 th:inline="text">Default:&nbsp[[${defaultPaymentDetails.cardType}]]&nbspEnding In:&nbsp[[${defaultPaymentDetails.last4Digits}]]</h3>
+							<a style="margin-left:5px; margin-right: 5px;" class="btn btn-lg btn-success" th:href="@{/updatePaymentDetails/{id}(id = ${defaultPaymentDetails.id})}">Edit</a>
+							<a style="margin-left:5px; margin-right: 5px;" class="btn btn-lg btn-danger" th:href="@{/deleteExistingPaymentDetails/{id}(id = ${defaultPaymentDetails.id})}">X</a>
+						</div>
+						<th:block th:if="${defaultPaymentDetails == null}">
+						<div th:each="detail: ${savedDetails}" class="d-flex justify-content-center">
+							<h3 th:inline="text">[[${detail.cardType}]]&nbspEnding In:&nbsp[[${detail.last4Digits}]]</h3>
+							<a style="margin-left:5px; margin-right: 5px;" class="btn btn-lg btn-success" th:href="@{/makeDefaultPaymentDetails/{id}(id = ${detail.id})}">Make Default</a>
+							<a style="margin-left:5px; margin-right: 5px;" class="btn btn-lg btn-success" th:href="@{/updatePaymentDetails/{id}(id = ${detail.id})}">Edit</a>
+							<a style="margin-left:5px; margin-right: 5px;" class="btn btn-lg btn-danger" th:href="@{/deleteExistingPaymentDetails/{id}(id = ${detail.id})}">X</a>
+						</div>
+						</th:block>
+						
+						<th:block th:unless="${defaultPaymentDetails == null}">
+						<div th:each="detail: ${savedDetails}" class="d-flex justify-content-center">
+						<th:block th:if="${detail.id != defaultPaymentDetails.id}">
+							<h3 th:inline="text">[[${detail.cardType}]]&nbspEnding In:&nbsp[[${detail.last4Digits}]]</h3>
+							<a style="margin-left:5px; margin-right: 5px;" class="btn btn-lg btn-success" th:href="@{/makeDefaultPaymentDetails/{id}(id = ${detail.id})}">Make Default</a>
+							<a style="margin-left:5px; margin-right: 5px;" class="btn btn-lg btn-success" th:href="@{/updatePaymentDetails/{id}(id = ${detail.id})}">Edit</a>
+							<a style="margin-left:5px; margin-right: 5px;" class="btn btn-lg btn-danger" th:href="@{/deleteExistingPaymentDetails/{id}(id = ${detail.id})}">X</a>
+						</th:block>
+						</div>
+						</th:block>
 					</div>
+					<div th:unless="${savedDetails != null}">
 					<div class="d-flex justify-content-center">
-						<h3 th:text=" ${paymentDetails2.cardType}"></h3>
-						<h3>&nbspEnding In:&nbsp</h3>
-						<h3 th:text=" ${paymentDetails2.last4Digits}"></h3>
+						<h2>Currently No Saved Payment Details</h2>
 					</div>
 					</div>
+					<div th:if="${!addNew || update}">
+					<h3 class="d-flex justify-content-center"><a class="btn btn-lg btn-success" th:href="@{/addNewCard}">Add New Card</a></h3>
+					</div>
+					<div th:if="${addNew}">
 					<div class="d-flex justify-content-center">
-						<h2>Update Payment Details</h2>
+						<h2 th:if="${!update}">Add New Payment Details</h2>
+						<h2 th:unless="${!update}">Update Payment Details</h2>
 					</div>
 					
 					<div class="row">
@@ -299,12 +328,12 @@
 					</div>
 	
 					<div class="d-flex justify-content-evenly mb-3">
-						<button type="submit" name="submit" class="btn btn-lg btn-success">Update</button>
-						<button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" 
-								data-bs-target="#paymentDetailsModal"
-								th:if="${currUser.paymentDetails != null}">Delete Existing</button>
+						<button th:if="${!update}" type="submit" name="submit" class="btn btn-lg btn-success">Add</button>
+						<button th:unless="${!update}" type="submit" name="update" class="btn btn-lg btn-success">update</button>
 						<button type="button" class="btn btn-lg btn-danger" disabled
 								th:if="${currUser.paymentDetails == null}">No Payment Details Added</button>
+						<a class="btn btn-lg btn-success" th:href="@{/goBackToMain}">Back</a>
+					</div>
 					</div>
 				</form>
 				

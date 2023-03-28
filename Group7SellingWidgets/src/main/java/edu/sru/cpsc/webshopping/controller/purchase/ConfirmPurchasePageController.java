@@ -14,6 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,6 +35,7 @@ import edu.sru.cpsc.webshopping.domain.billing.ShippingAddress;
 import edu.sru.cpsc.webshopping.domain.market.MarketListing;
 import edu.sru.cpsc.webshopping.domain.market.Shipping;
 import edu.sru.cpsc.webshopping.domain.market.Transaction;
+import edu.sru.cpsc.webshopping.domain.user.User;
 import edu.sru.cpsc.webshopping.repository.market.ShippingRepository;
 import edu.sru.cpsc.webshopping.repository.market.TransactionRepository;
 import edu.sru.cpsc.webshopping.repository.billing.PaymentDetailsRepository;
@@ -97,14 +99,19 @@ public class ConfirmPurchasePageController {
 		this.prevListing = prevListing;
 		this.address = address;
 		paypal = new Paypal_Form();
+		User user = userController.getCurrently_Logged_In();
 		model.addAttribute("purchase", purchase);
 		model.addAttribute("marketListing", prevListing);
 		model.addAttribute("widget", prevListing.getWidgetSold());
 		model.addAttribute("paymentDetails", details);
 		model.addAttribute("cardTypes", cardController.getAllCardTypes());
 		model.addAttribute("paypal", paypal);
-		model.addAttribute("user", userController.getCurrently_Logged_In());
-	    model.addAttribute("paymentDetails2", userController.getCurrently_Logged_In().getPaymentDetails());
+		model.addAttribute("user", user);
+		model.addAttribute("defaultDetails", user.getDefaultPaymentDetails());
+		if(user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty())
+			model.addAttribute("allDetails", null);
+		else
+			model.addAttribute("allDetails", payDetController.getPaymentDetailsByUser(user));
 		model.addAttribute("existingSecurityCode", new String());
 		return "confirmPurchase";
 	}
@@ -123,12 +130,14 @@ public class ConfirmPurchasePageController {
 	 */
 	
 	@RequestMapping(value = "/confirmPurchase/existingCard", method = RequestMethod.POST, params = "submit")
-	public String submitPurchaseExistingCard(@Validated @ModelAttribute("existingSecurityCode") String existingSecurityCode, BindingResult result, Model model) {
+	public String submitPurchaseExistingCard(@Validated @ModelAttribute("selected_payment_details") Long id, @Validated @ModelAttribute("existingSecurityCode") String existingSecurityCode, BindingResult result, Model model) {
 		if (this.userController.getCurrently_Logged_In() == null) {
 			throw new IllegalStateException("Cannot purchase an item when not logged in.");
 		}
 		// Test that payment details are valid
-		if (userController.matchExistingCard(existingSecurityCode, userController.getCurrently_Logged_In())) {
+		System.out.println(id);
+		PaymentDetails currDetails = payDetRepository.findById(id).get();
+		if (payDetController.matchExistingCard(existingSecurityCode, currDetails)) {
 			// Update market listing to reflect purchase
 			marketListingController.marketListingPurchaseUpdate(prevListing, purchase.getQtyBought());
 			// Creates an unfinished shipping label, to be filled out later by the seller
@@ -137,7 +146,7 @@ public class ConfirmPurchasePageController {
 			shipping.setTransaction(purchase);
 			shipping.setAddress(address);
 			purchase.setShippingEntry(shipping);
-			purchase.setPaymentDetails(userController.getCurrently_Logged_In().getPaymentDetails());
+			purchase.setPaymentDetails(currDetails);
 			transController.addTransaction(purchase);
 			return "redirect:/homePage";
 		}
@@ -148,7 +157,7 @@ public class ConfirmPurchasePageController {
 			for (FieldError item : result.getFieldErrors()) {
 				model.addAttribute(item.getField() + "Err", item.getDefaultMessage());		
 			}
-			
+			User user = userController.getCurrently_Logged_In();
 			model.addAttribute("securityCodeErr", "Security code doesn't match current user's saved card");		
 			model.addAttribute("purchase", purchase);
 			model.addAttribute("marketListing", prevListing);
@@ -157,8 +166,13 @@ public class ConfirmPurchasePageController {
 			model.addAttribute("errMessage", "Payment Details Invalid");
 			model.addAttribute("paypal", paypal);
 			model.addAttribute("cardTypes", cardController.getAllCardTypes());
-			model.addAttribute("user", userController.getCurrently_Logged_In());
-			model.addAttribute("paymentDetails2", userController.getCurrently_Logged_In().getPaymentDetails());
+			model.addAttribute("user", user);
+			model.addAttribute("defaultDetails", userController.getCurrently_Logged_In().getDefaultPaymentDetails());
+			if(user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty())
+				model.addAttribute("allDetails", null);
+			else
+				model.addAttribute("allDetails", payDetController.getPaymentDetailsByUser(user));
+			model.addAttribute("existingSecurityCode", new String());
 			return "confirmPurchase";
 		}
 	}
@@ -231,6 +245,8 @@ public class ConfirmPurchasePageController {
 			}
 			if(userDetController.cardFarFuture(paymentDetails) && paymentDetails.getExpirationDate() != "")
 				model.addAttribute("cardError", "The expiration date is an impossible number of years in the future");
+			
+			User user = userController.getCurrently_Logged_In();
 			model.addAttribute("purchase", purchase);
 			model.addAttribute("marketListing", prevListing);
 			model.addAttribute("widget", prevListing.getWidgetSold());
@@ -239,8 +255,13 @@ public class ConfirmPurchasePageController {
 			model.addAttribute("paypal", paypal);
 			model.addAttribute("useThis", true);			
 			model.addAttribute("cardTypes", cardController.getAllCardTypes());
-			model.addAttribute("user", userController.getCurrently_Logged_In());
-			model.addAttribute("paymentDetails2", userController.getCurrently_Logged_In().getPaymentDetails());
+			model.addAttribute("user", user);
+			model.addAttribute("defaultDetails", userController.getCurrently_Logged_In().getDefaultPaymentDetails());
+			if(user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty())
+				model.addAttribute("allDetails", null);
+			else
+				model.addAttribute("allDetails", payDetController.getPaymentDetailsByUser(user));
+			model.addAttribute("existingSecurityCode", new String());
 			return "confirmPurchase";
 		}
 	}

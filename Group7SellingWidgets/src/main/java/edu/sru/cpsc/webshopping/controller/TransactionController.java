@@ -1,5 +1,7 @@
 package edu.sru.cpsc.webshopping.controller;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.sru.cpsc.webshopping.domain.billing.PaymentDetails;
 import edu.sru.cpsc.webshopping.domain.market.MarketListing;
 import edu.sru.cpsc.webshopping.domain.market.Transaction;
 import edu.sru.cpsc.webshopping.domain.user.User;
@@ -71,6 +74,12 @@ public class TransactionController {
 	@GetMapping("get-users-purchases")
 	public Iterable<Transaction> getUserPurchases(@Validated User user) {
 		return repository.findByBuyer(user);
+	}
+	
+	@Transactional
+	@GetMapping("find-by-payment-details")
+	public List<Transaction> findByPaymentDetails(@Validated PaymentDetails details) {
+		return repository.findByPaymentDetails(details);
 	}
 	
 	/**
