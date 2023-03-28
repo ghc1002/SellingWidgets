@@ -350,6 +350,7 @@ table.right {
 
 table.addUserTable td{
 	height:50px;
+	border: 2px solid black;
 	border-color: black;
 	padding-left: 8px;
 	width: 120px;
