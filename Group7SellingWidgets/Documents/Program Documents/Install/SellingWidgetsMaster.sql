@@ -214,6 +214,7 @@ DROP TABLE IF EXISTS `category`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `category` (
   `name` varchar(255) NOT NULL,
+  `display` varchar(255) NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -224,7 +225,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES ('appliance'),('appliance_parts'),('electronic'),('electronic_parts'),('lawnCare'),('lawnCare_parts'),('vehicle'),('vehicle_parts');
+INSERT INTO `category` VALUES ('vehicle_parts', 'Vehicle Parts');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -695,6 +696,7 @@ DROP TABLE IF EXISTS `subcategory`;
 CREATE TABLE `subcategory` (
   `name` varchar(255) NOT NULL,
   `parent` varchar(255) DEFAULT NULL,
+  `display` varchar(255) NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -705,7 +707,7 @@ CREATE TABLE `subcategory` (
 
 LOCK TABLES `subcategory` WRITE;
 /*!40000 ALTER TABLE `subcategory` DISABLE KEYS */;
-INSERT INTO `subcategory` VALUES ('washer', 'appliance'), ('dryer', 'appliance'), ('microwave', 'appliance'), ('fridge', 'appliance'), ('blender', 'appliance'), ('washer_parts', 'appliance_parts'), ('dryer_parts', 'appliance_parts'), ('microwave_parts', 'appliance_parts'), ('fridge_parts', 'appliance_parts'), ('blender_parts', 'appliance_parts'), ('computer', 'electronic'), ('videoGame', 'electronic'), ('computer_parts', 'electronic_parts'), ('videoGame_parts', 'electronic_parts'), ('lawnMower', 'lawnCare'), ('mower_parts', 'lawnCare_parts'), ('car', 'vehicle'), ('car_parts', 'vehicle_parts');
+INSERT INTO `subcategory` VALUES ('washer', 'appliance', 'Washers'), ('dryer', 'appliance', 'Dryers'), ('microwave', 'appliance', 'Microwaves'), ('fridge', 'appliance', 'Refrigerators'), ('blender', 'appliance', 'Blenders'), ('washer_parts', 'appliance_parts', 'Washer Parts'), ('dryer_parts', 'appliance_parts', 'Dryer Parts'), ('microwave_parts', 'appliance_parts', 'Microwave Parts'), ('fridge_parts', 'appliance_parts', 'Refrigerator Parts'), ('blender_parts', 'appliance_parts', 'Blender Parts'), ('computer', 'electronic', 'Computers'), ('videoGame', 'electronic', 'Video Games'), ('computer_parts', 'electronic_parts', 'Computer Parts'), ('videoGame_parts', 'electronic_parts', 'Video Game Parts'), ('lawnMower', 'lawnCare', 'Lawnmowers'), ('mower_parts', 'lawnCare_parts', 'Lawnmower Parts'), ('car', 'vehicle', 'Vehicles'), ('car_parts', 'vehicle_parts', 'Car Parts');
 /*!40000 ALTER TABLE `subcategory` ENABLE KEYS */;
 UNLOCK TABLES;
 

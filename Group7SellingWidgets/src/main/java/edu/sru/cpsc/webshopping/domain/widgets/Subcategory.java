@@ -11,7 +11,7 @@ public class Subcategory{
 	
 	@Id
 	private String name;
-	
+	private String display;
 	@NonNull
 	@Column
 	private String parent;
@@ -30,6 +30,13 @@ public class Subcategory{
 
 	public void setParent(String parent) {
 		this.parent = parent;
+	}
+	public String getDisplay() {
+		return display;
+	}
+
+	public void setDisplay(String display) {
+		this.display = display;
 	}
 
 
