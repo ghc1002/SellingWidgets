@@ -34,6 +34,18 @@
 			background-color: #D3D3D3;
 		}
 	</style>
+	<script>
+		function showSub(){
+			
+			var x = document.getElementById("sub");
+			if (x.style.display === "block"){
+				x.style.display = "none";
+			}else{
+				x.style.display = "block";
+			}
+			
+		}
+	</script>
 </head>
 
 <!-- NAV BAR -->
@@ -73,8 +85,13 @@
        				<div class="card-body">
        					<th:block th:each="category: ${categories}">
        						<div class="addLabel" style="border-radius: 25px;">
-       							<a th:href="@{/{id}(id = ${category.link})}" th:text="${category.display}" style="text-decoration:none"></a>
+       							<button onclick="showSub()"><p th:text="${category.display}"></p></button>
        						</div>
+       						<th:block th:each="subcategory: ${subcategories}">
+       							<div id="sub" style="display: none;" th:if="${subcategory.parent} == ${category.name}">
+       								<button><p th:text="${subcategory.display}"></p></button>
+       							</div>
+       						</th:block>
        					</th:block>
         			</div>
         	</div>
