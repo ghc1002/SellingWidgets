@@ -138,6 +138,7 @@ public class AddWidgetController {
 	Widget_General generalWidget;
 	Set<WidgetImage> listingImages = new HashSet<>();
 	CategoryController categories;
+	SubcategoryController subcategories;
 	MarketListing marketListing;
 	private Widget widgetStorage;
 	private String category;
@@ -154,7 +155,8 @@ public class AddWidgetController {
 
 	private final String UPLOAD_DIR = "src/main/resources/static/images/userImages/";
 
-	public AddWidgetController(WidgetRepository widgetRepository, CategoryController categories, ApplianceDryersRepository dryerRepository, WidgetImageRepository widgetImageRepository,
+
+	public AddWidgetController(WidgetRepository widgetRepository, CategoryController categories, SubcategoryController subcategories, ApplianceDryersRepository dryerRepository, WidgetImageRepository widgetImageRepository,
 			ApplianceMicrowaveRepository microwaveRepository, ApplianceRefrigeratorRepository fridgeRepository, 
 			ApplianceWashersRepository washerRepository, ApplianceBlenderRepository blenderRepository, ElectronicsComputersRepository computerRepository, 
 			ElectronicsVideoGamesRepository videoGameRepository, VehicleCarRepository carRepository, 
@@ -164,6 +166,7 @@ public class AddWidgetController {
 			MarketListingDomainController marketListingController, UserRepository userRepo, LawnCareLawnMowerRepository mowerRepository, WidgetGeneralRepository generalRepository)
 	{
 		this.categories = categories;
+		this.subcategories = subcategories;
 		this.widgetRepository = widgetRepository;
 		this.applianceRepository = applianceRepository;
 		this.electronicsRepository = electronicsRepository;
@@ -195,7 +198,10 @@ public class AddWidgetController {
 		if (userController.getCurrently_Logged_In() == null) {
 			throw new IllegalStateException("Not logged in.");
 		}
+		setPage("widgets");
+		
 		model.addAttribute("categories", categories.getAllCategories());
+		model.addAttribute("subcategories", subcategories.getAllSubcategories());
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "addWidget";
 	}

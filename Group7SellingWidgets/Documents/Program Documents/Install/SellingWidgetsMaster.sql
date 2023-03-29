@@ -214,6 +214,7 @@ DROP TABLE IF EXISTS `category`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `category` (
   `name` varchar(255) NOT NULL,
+  `display` varchar(255) NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -224,7 +225,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES ('appliance'),('appliance_parts'),('electronic'),('electronic_parts'),('lawnCare'),('lawnCare_parts'),('vehicle'),('vehicle_parts');
+INSERT INTO `category` VALUES ('vehicle_parts', 'Vehicle Parts');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -414,34 +415,6 @@ LOCK TABLES `market_listing` WRITE;
 /*!40000 ALTER TABLE `market_listing` DISABLE KEYS */;
 INSERT INTO `market_listing` VALUES (3,_binary '',500.00,40,1,2,NULL),(5,_binary '',50.20,50,1,4,NULL),(7,_binary '',70.00,27,1,6,NULL),(25,_binary '',10.00,410,20,24,NULL),(36,_binary '\0',250.00,0,34,35,'34oldmac.jpeg'),(38,_binary '\0',20.00,0,34,37,'34ratechetandclank.jpg'),(40,_binary '\0',500.00,1,34,39,'34broken dryer.jpeg'),(42,_binary '\0',50.00,1,34,41,'34brand new microwave.jpeg'),(45,_binary '\0',500.00,1,43,44,'43new fridge.jpeg'),(47,_binary '\0',2000.00,0,43,46,'43oldford.jpeg'),(49,_binary '\0',300.00,1,43,48,'43teslamower.jpeg'),(144,_binary '\0',50.00,2,1,143,'11mario64box.jpg'),(155,_binary '\0',50.00,1,1,154,'1microwave.jpeg'),(166,_binary '\0',500.00,25,1,165,'1dryer.jpeg');
 /*!40000 ALTER TABLE `market_listing` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
---
--- Table structure for table `widget_image`
---
-
-DROP TABLE IF EXISTS `widget_image`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `widget_image` (
-  `id` bigint NOT NULL,
-  `image_name` varchar(255) DEFAULT NULL,
-  `market_listing_id` bigint DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKqudapab12tq3aorl9cok3b9kj` (`market_listing_id`),
-  CONSTRAINT `FKqudapab12tq3aorl9cok3b9kj` FOREIGN KEY (`market_listing_id`) REFERENCES `market_listing` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `widget_image`
---
-
-LOCK TABLES `widget_image` WRITE;
-/*!40000 ALTER TABLE `widget_image` DISABLE KEYS */;
-INSERT INTO `widget_image` VALUES (36,'34oldmac.jpeg',36),(38,'34ratechetandclank.jpg',38),(40,'34broken dryer.jpeg',40),(42,'34brand new microwave.jpeg',42),(45,'43new fridge.jpeg',45),(47,'43oldford.jpeg',47),(49,'43teslamower.jpeg',49),(144,'11mario64box.jpg',144),(155,'1microwave.jpeg',155),(166,'1dryer.jpeg',166);
-/*!40000 ALTER TABLE `widget_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -726,6 +699,7 @@ DROP TABLE IF EXISTS `subcategory`;
 CREATE TABLE `subcategory` (
   `name` varchar(255) NOT NULL,
   `parent` varchar(255) DEFAULT NULL,
+  `display` varchar(255) NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -736,7 +710,7 @@ CREATE TABLE `subcategory` (
 
 LOCK TABLES `subcategory` WRITE;
 /*!40000 ALTER TABLE `subcategory` DISABLE KEYS */;
-INSERT INTO `subcategory` VALUES ('washer', 'appliance'), ('dryer', 'appliance'), ('microwave', 'appliance'), ('fridge', 'appliance'), ('blender', 'appliance'), ('washer_parts', 'appliance_parts'), ('dryer_parts', 'appliance_parts'), ('microwave_parts', 'appliance_parts'), ('fridge_parts', 'appliance_parts'), ('blender_parts', 'appliance_parts'), ('computer', 'electronic'), ('videoGame', 'electronic'), ('computer_parts', 'electronic_parts'), ('videoGame_parts', 'electronic_parts'), ('lawnMower', 'lawnCare'), ('mower_parts', 'lawnCare_parts'), ('car', 'vehicle'), ('car_parts', 'vehicle_parts');
+INSERT INTO `subcategory` VALUES ('washer', 'appliance', 'Washers'), ('dryer', 'appliance', 'Dryers'), ('microwave', 'appliance', 'Microwaves'), ('fridge', 'appliance', 'Refrigerators'), ('blender', 'appliance', 'Blenders'), ('washer_parts', 'appliance_parts', 'Washer Parts'), ('dryer_parts', 'appliance_parts', 'Dryer Parts'), ('microwave_parts', 'appliance_parts', 'Microwave Parts'), ('fridge_parts', 'appliance_parts', 'Refrigerator Parts'), ('blender_parts', 'appliance_parts', 'Blender Parts'), ('computer', 'electronic', 'Computers'), ('videoGame', 'electronic', 'Video Games'), ('computer_parts', 'electronic_parts', 'Computer Parts'), ('videoGame_parts', 'electronic_parts', 'Video Game Parts'), ('lawnMower', 'lawnCare', 'Lawnmowers'), ('mower_parts', 'lawnCare_parts', 'Lawnmower Parts'), ('car', 'vehicle', 'Vehicles'), ('car_parts', 'vehicle_parts', 'Car Parts');
 /*!40000 ALTER TABLE `subcategory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1105,6 +1079,33 @@ INSERT INTO `widget_electronics` VALUES (35,'1','Yes'),(37,'Yes','Yes'),(65,'1',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `widget_image`
+--
+
+DROP TABLE IF EXISTS `widget_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `widget_image` (
+  `id` bigint NOT NULL,
+  `image_name` varchar(255) DEFAULT NULL,
+  `market_listing_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKqudapab12tq3aorl9cok3b9kj` (`market_listing_id`),
+  CONSTRAINT `FKqudapab12tq3aorl9cok3b9kj` FOREIGN KEY (`market_listing_id`) REFERENCES `market_listing` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `widget_image`
+--
+
+LOCK TABLES `widget_image` WRITE;
+/*!40000 ALTER TABLE `widget_image` DISABLE KEYS */;
+INSERT INTO `widget_image` VALUES (36,'34oldmac.jpeg',36),(38,'34ratechetandclank.jpg',38),(40,'34broken dryer.jpeg',40),(42,'34brand new microwave.jpeg',42),(45,'43new fridge.jpeg',45),(47,'43oldford.jpeg',47),(49,'43teslamower.jpeg',49),(144,'11mario64box.jpg',144),(155,'1microwave.jpeg',155),(166,'1dryer.jpeg',166);
+/*!40000 ALTER TABLE `widget_image` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `widget_lawn_care`
 --
 
@@ -1218,5 +1219,5 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

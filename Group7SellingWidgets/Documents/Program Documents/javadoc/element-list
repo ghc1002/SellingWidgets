@@ -4,9 +4,11 @@ edu.sru.cpsc.webshopping.controller
 edu.sru.cpsc.webshopping.controller.billing
 edu.sru.cpsc.webshopping.controller.misc
 edu.sru.cpsc.webshopping.controller.purchase
+edu.sru.cpsc.webshopping.controller.sidebar
 edu.sru.cpsc.webshopping.domain.billing
 edu.sru.cpsc.webshopping.domain.market
 edu.sru.cpsc.webshopping.domain.misc
+edu.sru.cpsc.webshopping.domain.sidebar
 edu.sru.cpsc.webshopping.domain.user
 edu.sru.cpsc.webshopping.domain.widgets
 edu.sru.cpsc.webshopping.domain.widgets.appliances
@@ -18,6 +20,7 @@ edu.sru.cpsc.webshopping.repository.billing
 edu.sru.cpsc.webshopping.repository.market
 edu.sru.cpsc.webshopping.repository.message
 edu.sru.cpsc.webshopping.repository.misc
+edu.sru.cpsc.webshopping.repository.sidebar
 edu.sru.cpsc.webshopping.repository.stats
 edu.sru.cpsc.webshopping.repository.ticket
 edu.sru.cpsc.webshopping.repository.user

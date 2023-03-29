@@ -90,7 +90,7 @@ public class MessagePageController {
 					
 			
 			
-			setPage("home");
+			setPage("messages");
 			
 			model.addAttribute("view",getViewMessage());
 			model.addAttribute("page",page);
