@@ -155,7 +155,6 @@ public class AddWidgetController {
 
 	private final String UPLOAD_DIR = "src/main/resources/static/images/userImages/";
 
-
 	public AddWidgetController(WidgetRepository widgetRepository, CategoryController categories, SubcategoryController subcategories, ApplianceDryersRepository dryerRepository, WidgetImageRepository widgetImageRepository,
 			ApplianceMicrowaveRepository microwaveRepository, ApplianceRefrigeratorRepository fridgeRepository, 
 			ApplianceWashersRepository washerRepository, ApplianceBlenderRepository blenderRepository, ElectronicsComputersRepository computerRepository, 
