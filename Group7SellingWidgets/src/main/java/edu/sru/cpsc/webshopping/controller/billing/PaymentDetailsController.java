@@ -56,7 +56,7 @@ public class PaymentDetailsController {
 	
 	@Transactional
 	public void addPaymentDetails(@Validated PaymentDetails details) {
-		System.out.println("update payment details database function called");
+		System.out.println("add payment details database function called");
 		
 		// Encode fields
 		details.setCardholderName(passwordEncoder.encode(details.getCardholderName()));

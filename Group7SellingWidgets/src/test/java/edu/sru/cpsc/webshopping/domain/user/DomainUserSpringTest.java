@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import edu.sru.cpsc.webshopping.domain.billing.DomainBillingSpringTest;
+import edu.sru.cpsc.webshopping.domain.billing.PaymentDetails;
 import edu.sru.cpsc.webshopping.domain.user.Statistics.Category;
 import edu.sru.cpsc.webshopping.util.enums.MessageType;
 
@@ -229,6 +230,8 @@ public class DomainUserSpringTest {
 	@Test
 	void userTest() {
 		User user = new User();
+		PaymentDetails details = new PaymentDetails();
+		details.setLast4Digits("1234");
 		user.setFirstName("Heidi");
 		user.setLastName("Bednarz");
 		user.setUsername("HeidiB");
@@ -253,6 +256,7 @@ public class DomainUserSpringTest {
 		user.setCaptcha("abc");
 		user.setHiddenCaptcha("abc");
 		user.setRealCaptcha("abc");
+		user.setDefaultPaymentDetails(details);
 		user.setMarketListings(null);
 		user.setInbox(null);
 		user.setEnabled(false);
@@ -285,6 +289,7 @@ public class DomainUserSpringTest {
 		assertEquals("abc", user.getCaptcha());
 		assertEquals("abc", user.getHiddenCaptcha());
 		assertEquals("abc", user.getRealCaptcha());
+		assertEquals("1234", user.getDefaultPaymentDetails().getLast4Digits());
 		assertEquals(null, user.getMarketListings());
 		assertEquals(null, user.getInbox());
 		assertEquals(false, user.getEnabled());

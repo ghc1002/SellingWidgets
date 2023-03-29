@@ -86,6 +86,7 @@ public class UserDetailsController {
 	private boolean addNew = false;
 	private boolean update = false;
 	private long id2;
+	private long updateId = -1;
 	private PaymentDetailsRepository payDetRepo;
 	private PaymentDetailsController payDetCont;
 	private SUB_MENU selectedMenu;
@@ -149,6 +150,7 @@ public class UserDetailsController {
 		else
 			model.addAttribute("savedDetails", payDetCont.getPaymentDetailsByUser(user));
 		model.addAttribute("addNew", addNew);
+		model.addAttribute("updateId", updateId);
 		model.addAttribute("update", update);
 		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
 		model.addAttribute("selectedMenu", selectedMenu);
@@ -160,6 +162,7 @@ public class UserDetailsController {
 	{
 		update = false;
 		addNew = true;
+		updateId = -1;
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
@@ -168,6 +171,7 @@ public class UserDetailsController {
 	{
 		update = false;
 		addNew = false;
+		updateId = -1;
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
@@ -176,7 +180,8 @@ public class UserDetailsController {
 	{
 		update = true;
 		this.id2 = id;
-		addNew = true;
+		addNew = false;
+		updateId = id;
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
@@ -420,9 +425,11 @@ public class UserDetailsController {
 		PD.add(payDetCont.getPaymentDetail(id2, model));
 		Set<PaymentDetails> PD2 = new HashSet<>(PD);
 		user.setPaymentDetails(PD2);
+		model.addAttribute("user", user);
 		userRepository.save(user);
 		addNew = false;
 		update = false;
+		updateId = -1;
 		return "redirect:/userDetails/paymentDetails";
 	}
 
@@ -433,6 +440,7 @@ public class UserDetailsController {
 	 * @param model
 	 * @return
 	 */
+	@Transactional
 	@RequestMapping(value = "/deleteExistingPaymentDetails/{id}")
 	public String deleteExisting(@PathVariable("id") long id) {
 		System.out.println("entered udcont");
@@ -449,6 +457,7 @@ public class UserDetailsController {
 			userRepository.save(user);
 		}
 		List<PaymentDetails> PD = new ArrayList<>(user.getPaymentDetails());
+		System.out.println(PD.size());
 		if(PD.size()==1)
 			PD.remove(0);
 		else
@@ -463,11 +472,14 @@ public class UserDetailsController {
 			user.setPaymentDetails(null);
 		else
 			user.setPaymentDetails(new HashSet<>(PD));
-		currDetails.setUser(null);
 		if(transController.findByPaymentDetails(currDetails).isEmpty())
 		{
 			payDetCont.deletePaymentDetails(currDetails);
 		}
+		currDetails.setUser(null);
+		addNew = false;
+		update = false;
+		updateId = -1;
 		return "redirect:/userDetails/paymentDetails";
 	}
 	

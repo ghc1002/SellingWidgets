@@ -522,7 +522,6 @@ public class LandingPageController {
 
       return "redirect:employee";
     }
-
     widgetModel.addAttribute("widgets", widgetController.getAllWidgets());
     listingModel.addAttribute("listings", marketController.getAllListings());
     Iterable<Transaction> purchases =
@@ -535,7 +534,9 @@ public class LandingPageController {
     setPage("home");
     listingModel.addAttribute("page", getPage());
     widgetModel.addAttribute("page", getPage());
+    listingModel.addAttribute("headerUser", user);
     listingModel.addAttribute("user", user);
+    widgetModel.addAttribute("headerUser", user);
     // Add filter categories
     Iterable<Appliance_Dryers> dryer = widgetController.getAllDryers();
     for (Map.Entry<String, HashSet<String>> entry :

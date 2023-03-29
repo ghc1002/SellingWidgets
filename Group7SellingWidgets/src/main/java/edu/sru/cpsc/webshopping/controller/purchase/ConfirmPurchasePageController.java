@@ -221,7 +221,7 @@ public class ConfirmPurchasePageController {
 			purchase.setShippingEntry(shipping);
 			if(!payDetController.checkDuplicateCard(currDetails))
 			{
-					payDetController.addPaymentDetails(currDetails);
+					userDetController.createDetails(paymentDetails, result, model);
 					System.out.println("option 1");
 			}
 			else
@@ -229,7 +229,6 @@ public class ConfirmPurchasePageController {
 				currDetails = payDetController.getPaymentDetailsByCardNumberAndExpirationDate(currDetails);
 				System.out.println(currDetails.getId());
 			}
-			purchase.setPaymentDetails(currDetails);
 			transController.addTransaction(purchase);
 			return "redirect:/homePage";
 		}
