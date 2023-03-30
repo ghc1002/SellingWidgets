@@ -33,52 +33,53 @@
 	      })
 	    });
 	  </script>
+	  <script>
+	  	var timer = 0;								//timer intializer set to zero
+	    var idleCheck = setInterval(function(){		
+	      ++timer;									//increases variable timer via interval
+	      document.onmousemove = resetIdleClock;	//resets timer on user mouse move
+	      document.onload = resetIdleClock;			//resets timer when page is intialized
+	      document.onclick = resetIdleClock;		//resets timer on user click
+	      document.onkeydown = resetIdleClock;		//when key is pressed on page
+	      		
+	      if(timer == 75000){						//if statement captures when idle timer reaches 5 mins
+	      	lockUserAccount();						//alert message indictating to user they have been logged out
+	      	window.location.href = "http://localhost:8080/do_the_logout";		//logs user out and redircts to home page
+	      	}
+	      		
+	      	function resetIdleClock(){				//function to reset timer variable
+	      		timer = 0;
+	      	}
+	      	
+	      	function lockUserAccount(){				//function to alert use they have been logged out
+	      		window.alert("logged-out due to inactivity, re-validation required")
+	      	}
+	      	
+	     });
+    </script>
 	</head>
+
+<body>
 
 	<!-- HEADER BAR -->
 	<div th:insert="header :: header"></div>
 	<!-- END HEADER BAR -->
 
 	<!-- SIDEBAR -->
-  <div th:insert="sideNavBar :: sideNavBar"></div>
-  <!-- SIDEBAR -->
+  <div th:insert="navBar :: navBar"></div>
+  <!-- END SIDEBAR -->
 
-<body style="display: flex; margin-top: 96px">
-  <div class="d-flex">
-  <script>
-  	var timer = 0;								//timer intializer set to zero
-    var idleCheck = setInterval(function(){		
-      ++timer;									//increases variable timer via interval
-      document.onmousemove = resetIdleClock;	//resets timer on user mouse move
-      document.onload = resetIdleClock;			//resets timer when page is intialized
-      document.onclick = resetIdleClock;		//resets timer on user click
-      document.onkeydown = resetIdleClock;		//when key is pressed on page
-      		
-      if(timer == 75000){						//if statement captures when idle timer reaches 5 mins
-      	lockUserAccount();						//alert message indictating to user they have been logged out
-      	window.location.href = "http://localhost:8080/do_the_logout";		//logs user out and redircts to home page
-      	}
-      		
-      	function resetIdleClock(){				//function to reset timer variable
-      		timer = 0;
-      	}
-      	
-      	function lockUserAccount(){				//function to alert use they have been logged out
-      		window.alert("logged-out due to inactivity, re-validation required")
-      	}
-      	
-     });
-    </script>
+  <div>
     <th:block th:switch="${masterPage}">
       <div th:case="base">
         <th:block th:switch="${page}">
           <div th:case="begin">
-            <table class="center">
+            <table style="text-align: center;">
               <tr>
                 <th> Welcome to the Employee Home Page</th>
               </tr>
               <tr>
-                <td> Click the buttons on the left hand side to get started</td>
+                <td> Click the buttons on the top navigation bar to get started</td>
               </tr>
               <tr>
                 <th> Clicking the <i>Pseudo Ebay</i> logo in the top-left will bring you back to this screen</th>
@@ -87,7 +88,7 @@
                 <td> Various employee roles share this workspace. Depending on your role you may not
                   have proper authority to access everything that you click on. In that case, you
                   may see a screen saying you do not have the proper authority. To get back, either
-                  click home or one of the other buttons on the side bar
+                  click home or one of the other buttons on the top navigation bar.
                 </td>
               </tr>
               <tr>
@@ -124,28 +125,28 @@
             </form>
           </div>
           <div th:case="ticket">
-          	<div class ="card h-100 w-100">
-              	<div class="card-body" style="padding-top: 24px;">
-              		<div class="card" style="width: fit-content; height: fit-content; float:left">
-						<table class="uniTableForm">
-							<tr>
+          	<div class="card h-100 w-100">
+              <div class="card-body" style="padding-top: 24px;">
+              		<div class="card" style="width: 80%; height: fit-content; margin-left: auto; margin-right: auto;"> <!-- Morrow -->
+										<table class="uniTableForm">
+											<tr>
                 				<th:block th:if="${user.role == 'ROLE_ADMIN'}">
-                 					<td colspan="15" style="background-color: #D3D3D3"><h4>Tickets</h4></td>
+                 					<td colspan="15" style="background-color: #D3D3D3; text-align: center;"><h4>Tickets</h4></td>
                 				</th:block>
                 				<th:block th:unless="${user.role == 'ROLE_ADMIN'}">
-                  					<td colspan="11">Tickets</td>
+                  				<td colspan="11" style="background-color: #D3D3D3; text-align: center;">Tickets</td>
                 				</th:block>
               				</tr>
               				<tr>
-                				<td colspan="1" style="background-color: #89CFF0">Ticket ID</td>
-                				<td colspan="2" style="background-color: #89CFF0">Reporter</td>
-                				<td colspan="2" style="background-color: #89CFF0">Currently Assigned To</td>
-                				<td colspan="2" style="background-color: #89CFF0">User Level</td>
+                				<td colspan="1" style="background-color: #89CFF0">Ticket ID:</td>
+                				<td colspan="2" style="background-color: #89CFF0">Reporter:</td>
+                				<td colspan="2" style="background-color: #89CFF0">Currently Assigned To:</td>
+                				<td colspan="2" style="background-color: #89CFF0">User Level:</td>
                					<th:block th:if="${user.role == 'ROLE_ADMIN'}">
-                  					<td colspan="4" style="background-color: #89CFF0">Update Assignee</td>
+                  					<td colspan="4" style="background-color: #89CFF0">Update Assignee:</td>
                 				</th:block>
-                				<td colspan="2" style="background-color: #89CFF0">State</td>
-                				<td colspan="2" style="background-color: #89CFF0">Ticket Actions</td>
+                				<td colspan="2" style="background-color: #89CFF0">State:</td>
+                				<td colspan="2" style="background-color: #89CFF0">Ticket Actions:</td>
               				</tr>
               				 <th:block th:each="ticket: ${tickets}">
                 				<tr>
@@ -424,11 +425,11 @@
             <form th:action="@{/createEmployee}" th:object="${useradd}" method="post">
               <div class ="card h-100 w-100">
               	<div class="card-body" style="padding-top: 24px;">
-              		<div class="card" style="width: fit-content; height: fit-content; float:left">
+              		<div class="card" style="width: fit-content; height: fit-content; margin-left: auto; margin-right: auto;">
               			<table class="addUserTable">
               				<thead>
               					<tr>
-              						<td colspan="2" style="background-color: #D3D3D3;"><h4>Add User</h4></td>
+              						<td colspan="2" style="background-color: #D3D3D3; text-align: center;"><h4>Add User</h4></td>
               					</tr>
               				</thead>
               				<tbody>
@@ -480,7 +481,7 @@
               <div th:case="create">
                 <div class ="card h-100 w-100">
               		<div class="card-body" style="padding-top: 24px;">
-              			<div class="card" style="width: fit-content; height: fit-content; float:left">
+              			<div class="card" style="width: fit-content; height: fit-content; margin-left: auto; margin-right: auto;">
               				<table class="addUserSuccess">
               					<tr>
               						<td colspan="3" style="background-color: rgb(4, 179, 87);">Creation Successful</td>
@@ -493,7 +494,7 @@
               <div th:case="createFail">
               	<div class ="card h-100 w-100">
               		<div class="card-body" style="padding-top: 24px;">
-              			<div class="card" style="width: fit-content; height: fit-content; float:left">
+              			<div class="card" style="width: fit-content; height: fit-content; margin-left: auto; margin-right: auto;">
               				<table class="addUserCreateFail">
               					<tr>
                     				<td colspan="3"> Creation Fail</td>
@@ -513,19 +514,19 @@
             <form th:action="@{/viewWidgetListing}" method="post">
             	<div class ="card h-100 w-100">
               		<div class="card-body" style="padding-top: 24px;">
-              			<div class="card" style="width: fit-content; height: fit-content; float:left">
+              			<div class="card" style="width: fit-content; height: fit-content; margin-left: auto; margin-right: auto;">
               				<table class="uniTableForm">
               					<thead>
               						<tr>
-              							<td colspan="5" style="background-color: #D3D3D3"><h2>Search Widgets</h2></td>
+              							<td colspan="5" style="background-color: #D3D3D3; text-align: center;"><h2>Search Widgets</h2></td>
               						</tr>
 									<tr>
-      									<td colspan="1">Search Widgets</td>
+      									<td colspan="1">Search By Name:</td>
       									<td colspan="2"><input type="text" id="widgetNameInput" name="name"></td>
            								<td colspan="2"><input type="submit" style="height:75%; text-align: center; " class="buttonSearchUser" value="Search"></td>	
       								</tr>
       								<tr>
-            							<td colspan="4" style="background-color: #D3D3D3"><h4>Widget</h4></td>
+            							<td colspan="4" style="background-color: #D3D3D3; text-align: center;"><h4>Widget</h4></td>
       								</tr>
       								<tr>
             							<td style="background-color: #89CFF0">View Listing</td>
@@ -743,10 +744,10 @@
           <div th:case="search">
 		  	<div class ="card h-100 w-100">
               	<div class="card-body" style="padding-top: 24px;">
-              		<div class="card" style="width: fit-content; height: fit-content; float:left">
+              		<div class="card" style="width: fit-content; height: fit-content; margin-left: auto; margin-right: auto;">
               			<table class="uniTableForm">
               				<tr>
-                				<td colspan="7" style="background-color: #D3D3D3"><h2>Search For Users</h2></td>
+                				<td colspan="7" style="background-color: #D3D3D3; text-align: center;"><h2>Search For Users</h2></td>
               				</tr>
               				<tr>
                 				<form th:action="@{/searchUser}" method="post">
@@ -756,7 +757,7 @@
                 				</form>
               				</tr>
               				<tr>
-                				<td colspan="7" style="background-color: #D3D3D3"><h4>All User's Information</h4></td>
+                				<td colspan="7" style="background-color: #D3D3D3; text-align: center;"><h4>All User's Information</h4></td>
               				</tr>
               				<tr>
                 				<td style="background-color: #89CFF0"> Username</td>
@@ -882,10 +883,10 @@
           <div th:case="searchMessage">
           	<div class ="card h-100 w-100">
               	<div class="card-body" style="padding-top: 24px;">
-              		<div class="card" style="width: fit-content; height: fit-content; float:left">
+              		<div class="card" style="width: fit-content; height: fit-content; margin-left: auto; margin-right: auto;">
               			<table class="uniTableForm">
               				<tr>
-              					<td colspan="5" style="background-color: #D3D3D3"><h2>View Messages</h2></td>
+              					<td colspan="5" style="background-color: #D3D3D3; text-align: center;"><h2>View Messages</h2></td>
               				</tr>
               				<tr>
                 				<td style="background-color: #89CFF0"> Username</td>

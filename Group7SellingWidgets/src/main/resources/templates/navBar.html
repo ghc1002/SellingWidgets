@@ -4,42 +4,54 @@
 		<meta charset="ISO-8859-1">
 	</head>
 	
-	<nav th:fragment="sideNavBar" class="navbar navbar-dark bg-dark align-items-start" style="height: 150%; width: 200px;">
+	<nav th:fragment="navBar" class="navbar navbar-dark bg-dark">
 		<th:block th:switch="${user.role}">
 			
-			<!-- Basic User Sidebar CURRENTLY NOT WORKING CORRECTLY
-			<div th:case="ROLE_USER" class="container align-items-center">
-				<ul class="nav nav-pills align-items-center">
+			<div th:case="ROLE_USER">
+				<ul class="nav nav-pills">
 					<li class="nav-item">
 						<a th:if="${page == 'home'}" th:href="@{/homePage}" class="submit4 nav-link active"><span>Home</span></a>
 						<a th:unless="${page == 'home'}" th:href="@{/homePage}" class="submit4"><span>Home</span></a>
 					</li>
 					<li class="nav-item">
 						<a th:if="${page == 'searchWidgetSellerMarketListing'}" th:href="@{/BrowseWidgetsButton}" class="submit4 nav-link active"><span>Browse</span></a>
-						<a th:if="${page != 'searchWidgetSellerMarketListing'}" th:href="@{/BrowseWidgetsButton}" class="submit4"><span>Browse</span></a>
+						<a th:unless="${page == 'searchWidgetSellerMarketListing'}" th:href="@{/BrowseWidgetsButton}" class="submit4"><span>Browse</span></a>
 					</li>
 					<li class="nav-item">
 						<a th:if="${page == 'widgets'}" th:href="@{/addWidget}" class="submit4 nav-link active"><span>Sell Items</span></a>
-						<a th:unless="${page != 'widgets'}" th:href="@{/addWidget}" class="submit4"><span>Sell Items</span></a>
+						<a th:unless="${page == 'widgets'}" th:href="@{/addWidget}" class="submit4"><span>Sell Items</span></a>
 					</li>
 					<li class="nav-item">
 						<a th:if="${page == 'messages'}" th:href="@{/messages}" class="submit4 nav-link active"><span>Messages</span></a>
-						<a th:unless="${page != 'messages'}" th:href="@{/messages}" class="submit4"><span>Messages</span></a>
+						<a th:unless="${page == 'messages'}" th:href="@{/messages}" class="submit4"><span>Messages</span></a>
 					</li>
-					<li class="nav-item">
-						<a th:if="${page == 'tickets'}" th:href="@{/tickets}" class="submit4 nav-link active"><span>Tickets</span></a>
-						<a th:unless="${page == 'tickets'}" th:href="@{/tickets}" class="submit4 nav-link active"><span>Tickets</span></a>
+					<li class="nav-item pointer" style="position: relative; z-index: 10;">
+						<a th:if="${page == 'tickets' || page == 'createTickets'}" class="submit4 nav-link dropdown-toggle active" data-bs-toggle="dropdown"><span>Tickets</span></a>
+						<a th:unless="${page == 'tickets' || page == 'createTickets'}" class="submit4 nav-link dropdown-toggle" data-bs-toggle="dropdown"><span>Tickets</span></a>
+						<div class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+							<a th:if="${page == 'tickets'}" class="submit4 nav-link active" th:href="@{/tickets}"><span>My Tickets</span></a>
+		        	<a th:unless="${page == 'tickets'}" class="submit4" th:href="@{/tickets}"><span>My Tickets</span></a>
+							<a th:if="${page == 'createTickets'}" class="submit4 nav-link active" th:href="@{/createTickets}"><span>Add Ticket</span></a>
+							<a th:unless="${page == 'createTickets'}" class="submit4" th:href="@{/createTickets}"><span>Add Ticket</span></a>
+						</div>
 					</li>
 					<li class="nav-item">
 						<a th:if="${page == 'friends'}" th:href="@{/friends}" class="submit4 nav-link active">Friends</a>
-						<a th:unless="${page != 'friends'}" th:href="@{/friends}" class="submit4">Friends</a>
+						<a th:unless="${page == 'friends'}" th:href="@{/friends}" class="submit4">Friends</a>
+					</li>
+					<li th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}" class="nav-item">
+						<a th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}" th:href="@{/userDetails/paymentDetails}" class="submit4 nav-link dropdown-toggle active">Card Info</a>
+						<a th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}" th:href="@{/userDetails/paymentDetails}" class="submit4">Card Info</a>
+					</li>
+					<li th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}" class="nav-item">
+						<a th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}" th:href="@{/userDetails/depositDetails}" class="submit4 nav-link dropdown-toggle active">Direct Deposit</a>
+						<a th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}" th:href="@{/userDetails/depositDetails}" class="submit4">Direct Deposit</a>
 					</li>
 				</ul>
 			</div>
-			-->
 			
-			<div th:case="ROLE_ADMIN" class="container align-items-center">
-				<ul class="nav nav-pills align-items-center">
+			<div th:case="ROLE_ADMIN">
+				<ul class="nav nav-pills">
 					<li class="nav-item">
 						<a th:if="${page == 'begin'}" class="submit4 nav-link active" th:href="@{/employee}"><span>Employee Home</span></a>
 						<a th:unless="${page == 'begin'}" class="submit4" th:href="@{/employee}"><span>Employee Home</span></a>
@@ -70,7 +82,7 @@
 					</li>
 					<li class="nav-item">
 						<a th:if="${page == 'messages'}" class="submit4 nav-link active" th:href="@{/messages}"><span>My Messages</span></a>
-						<a th:if="${page != 'messages'}" class="submit4" th:href="@{/messages}"><span>My Messages</span></a>
+						<a th:unless="${page == 'messages'}" class="submit4" th:href="@{/messages}"><span>My Messages</span></a>
 					</li>
 				</ul>
 			</div>

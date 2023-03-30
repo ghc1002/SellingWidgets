@@ -1,474 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="ISO-8859-1">
-<title>Messages</title>
-
-<link th:href="@{/styles/messages.css}" rel="stylesheet" />
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-	crossorigin="anonymous" type="text/javascript"></script>
-<style type="text/css">
-header {
-	margin-bottom: 96px;
-}
-
-th {
-	border: 2px solid #002147;
-	background-color: #e9ecef;
-	height: 20px;
-}
-
-td {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	border: 2px solid #002147;
-	margin-bottom: .5em;
-	height: 20px;
-}
-
-table.center {
-	margin-left: auto;
-	margin-right: auto;
-}
-</style>
+	<head>
+	<meta charset="ISO-8859-1">
+	<title>Messages</title>
+	
+	<link th:href="@{/styles/messages.css}" rel="stylesheet" />
+	<link th:href="@{/styles/button.css}" rel="stylesheet"/>
+	<link th:href="@{/styles/landing.css}" rel="stylesheet"/>
+	<link th:href="@{/styles/employee_page.css}" rel="stylesheet"/>
+	<link
+		href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+		rel="stylesheet"
+		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+		crossorigin="anonymous">
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		crossorigin="anonymous" type="text/javascript"></script>
+	<style type="text/css">
+	th {
+		border: 2px solid #002147;
+		background-color: #e9ecef;
+		height: 20px;
+	}
+	
+	td {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		border: 2px solid #002147;
+		margin-bottom: .5em;
+		height: 20px;
+	}
+	
+	table.center {
+		margin-left: auto;
+		margin-right: auto;
+	}
+	</style>
 </head>
 
-<!-- NAV BAR -->
-<header>
-	<div th:insert="header :: header"></div>
-</header>
-<!-- END NAV BAR -->
-
 <body>
-	<div id="page">
-		<!-- SIDE NAV BAR -->
-		<th:block th:switch="${user.role}">
-			<div th:case="ROLE_ADMIN">
-				<div class="grid-item item3" style="height: 150%">
-					<ul>
-						<li><a class="submit4" th:href="@{/searchTickets}"><span>Search
-									Tickets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/createButton}"><span>Add
-									Employee</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchButton}"><span>Search
-									Users</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchWidgetButton}"><span>Search
-									Items</span></a><br></li>
-						<li><a class="submit4" th:href="@{/widgetsInfo}"><span>Items
-									Info</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchMessageButton}"><span>View
-									a Message</span></a><br></li>
-						<li><a class="submit4"
-							style="color: #AED6F1; font-size: 14px"><span>My
-									Messages</span></a><br></li>
-						<!-- subtabs for message specific stuff -->
-						<ul>
-							<li class="nav-item"><a th:if="${page == 'home'}"
-								class="submit4 nav-link active pb-3" th:href="@{/messages}"><span>Inbox</span></a>
-								<a th:unless="${page == 'home'}" class="submit4 pb-3"
-								th:href="@{/messages}"><span>Inbox</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'outbox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/outbox}"><span>Sent</span></a>
-								<a th:unless="${page == 'outbox'}" class="submit4 pb-3"
-								th:href="@{/outbox}"><span>Sent</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'spamBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/spambox}"><span>Spam</span></a>
-								<a th:unless="${page == 'spamBox'}" class="submit4 pb-3"
-								th:href="@{/spambox}"><span>Spam</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'trashBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/trashbox}"><span>Trash</span></a>
-								<a th:unless="${page == 'trashBox'}" class="submit4 active pb-3"
-								th:href="@{/trashbox}"><span>Trash</span></a></li>
-							<li class="nav-item"><a class="submit4 pb-3" type="button"
-								data-bs-toggle="modal" data-bs-target="#modalCompose">Compose</a>
-							</li>
-						</ul>
-					</ul>
-				</div>
-			</div>
 
-			<div th:case="ROLE_ADMIN_SHADOW">
-				<div class="grid-item item3">
-					<ul>
-						<li><a class="submit4" th:href="@{/employee}"><span>World
-									of Widgets Employee Home Page</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchTickets}"><span>Search
-									Tickets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchButton}"><span>Search
-									Users</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchWidgetButton}"><span>Search
-									Widgets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/widgetsInfo}"><span>Widgets
-									Info</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchMessageButton}"><span>View
-									a Message</span></a><br></li>
-						<li><a class="submit4"
-							style="color: #AED6F1; font-size: 14px"><span>My
-									Messages</span></a><br></li>
-						<!-- subtabs for message specific stuff -->
-						<ul>
-							<li class="nav-item"><a th:if="${page == 'home'}"
-								class="submit4 nav-link active pb-3" th:href="@{/messages}"><span>Inbox</span></a>
-								<a th:unless="${page == 'home'}" class="submit4 pb-3"
-								th:href="@{/messages}"><span>Inbox</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'outbox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/outbox}"><span>Sent</span></a>
-								<a th:unless="${page == 'outbox'}" class="submit4 pb-3"
-								th:href="@{/outbox}"><span>Sent</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'spamBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/spambox}"><span>Spam</span></a>
-								<a th:unless="${page == 'spamBox'}" class="submit4 pb-3"
-								th:href="@{/spambox}"><span>Spam</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'trashBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/trashbox}"><span>Trash</span></a>
-								<a th:unless="${page == 'trashBox'}" class="submit4 active pb-3"
-								th:href="@{/trashbox}"><span>Trash</span></a></li>
-							<li class="nav-item"><a class="submit4 pb-3" type="button"
-								data-bs-toggle="modal" data-bs-target="#modalCompose">Compose</a>
-							</li>
-						</ul>
-						<!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
-					</ul>
-				</div>
-			</div>
-			<div th:case="ROLE_TECHNICALSERVICE">
-				<div class="grid-item item3">
-					<ul>
-						<li><a class="submit4" th:href="@{/employee}"><span>World
-									of Widgets Employee Home Page</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchTickets}"><span>Search
-									Tickets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchButton}"><span>Search
-									Users</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchWidgetButton}"><span>Search
-									Widgets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/widgetsInfo}"><span>Widgets
-									Info</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchMessageButton}"><span>View
-									a Message</span></a><br></li>
-						<li><a class="submit4"
-							style="color: #AED6F1; font-size: 14px"><span>My
-									Messages</span></a><br></li>
-						<!-- subtabs for message specific stuff -->
-						<ul>
-							<li class="nav-item"><a th:if="${page == 'home'}"
-								class="submit4 nav-link active pb-3" th:href="@{/messages}"><span>Inbox</span></a>
-								<a th:unless="${page == 'home'}" class="submit4 pb-3"
-								th:href="@{/messages}"><span>Inbox</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'outbox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/outbox}"><span>Sent</span></a>
-								<a th:unless="${page == 'outbox'}" class="submit4 pb-3"
-								th:href="@{/outbox}"><span>Sent</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'spamBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/spambox}"><span>Spam</span></a>
-								<a th:unless="${page == 'spamBox'}" class="submit4 pb-3"
-								th:href="@{/spambox}"><span>Spam</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'trashBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/trashbox}"><span>Trash</span></a>
-								<a th:unless="${page == 'trashBox'}" class="submit4 active pb-3"
-								th:href="@{/trashbox}"><span>Trash</span></a></li>
-							<li class="nav-item"><a class="submit4 pb-3" type="button"
-								data-bs-toggle="modal" data-bs-target="#modalCompose">Compose</a>
-							</li>
-						</ul>
-						<!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
-					</ul>
-				</div>
-			</div>
-			<div th:case="ROLE_CUSTOMERSERVICE">
-				<div class="grid-item item3">
-					<ul>
-						<li><a class="submit4" th:href="@{/employee}"><span>World
-									of Widgets Employee Home Page</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchTickets}"><span>Search
-									Tickets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchButton}"><span>Search
-									Users</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchWidgetButton}"><span>Search
-									Widgets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/widgetsInfo}"><span>Widgets
-									Info</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchMessageButton}"><span>View
-									a Message</span></a><br></li>
-						<li><a class="submit4"
-							style="color: #AED6F1; font-size: 14px"><span>My
-									Messages</span></a><br></li>
-						<!-- subtabs for message specific stuff -->
-						<ul>
-							<li class="nav-item"><a th:if="${page == 'home'}"
-								class="submit4 nav-link active pb-3" th:href="@{/messages}"><span>Inbox</span></a>
-								<a th:unless="${page == 'home'}" class="submit4 pb-3"
-								th:href="@{/messages}"><span>Inbox</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'outbox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/outbox}"><span>Sent</span></a>
-								<a th:unless="${page == 'outbox'}" class="submit4 pb-3"
-								th:href="@{/outbox}"><span>Sent</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'spamBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/spambox}"><span>Spam</span></a>
-								<a th:unless="${page == 'spamBox'}" class="submit4 pb-3"
-								th:href="@{/spambox}"><span>Spam</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'trashBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/trashbox}"><span>Trash</span></a>
-								<a th:unless="${page == 'trashBox'}" class="submit4 active pb-3"
-								th:href="@{/trashbox}"><span>Trash</span></a></li>
-							<li class="nav-item"><a class="submit4 pb-3" type="button"
-								data-bs-toggle="modal" data-bs-target="#modalCompose">Compose</a>
-							</li>
-						</ul>
-						<!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
-					</ul>
-				</div>
-			</div>
-			<div th:case="ROLE_SECURITY">
-				<div class="grid-item item3">
-					<ul>
-						<li><a class="submit4" th:href="@{/employee}"><span>World
-									of Widgets Employee Home Page</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchTickets}"><span>Search
-									Tickets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchButton}"><span>Search
-									Users</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchWidgetButton}"><span>Search
-									Widgets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/widgetsInfo}"><span>Widgets
-									Info</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchMessageButton}"><span>View
-									a Message</span></a><br></li>
-						<li><a class="submit4"
-							style="color: #AED6F1; font-size: 14px"><span>My
-									Messages</span></a><br></li>
-						<!-- subtabs for message specific stuff -->
-						<ul>
-							<li class="nav-item"><a th:if="${page == 'home'}"
-								class="submit4 nav-link active pb-3" th:href="@{/messages}"><span>Inbox</span></a>
-								<a th:unless="${page == 'home'}" class="submit4 pb-3"
-								th:href="@{/messages}"><span>Inbox</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'outbox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/outbox}"><span>Sent</span></a>
-								<a th:unless="${page == 'outbox'}" class="submit4 pb-3"
-								th:href="@{/outbox}"><span>Sent</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'spamBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/spambox}"><span>Spam</span></a>
-								<a th:unless="${page == 'spamBox'}" class="submit4 pb-3"
-								th:href="@{/spambox}"><span>Spam</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'trashBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/trashbox}"><span>Trash</span></a>
-								<a th:unless="${page == 'trashBox'}" class="submit4 active pb-3"
-								th:href="@{/trashbox}"><span>Trash</span></a></li>
-							<li class="nav-item"><a class="submit4 pb-3" type="button"
-								data-bs-toggle="modal" data-bs-target="#modalCompose">Compose</a>
-							</li>
-						</ul>
-						<!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
-					</ul>
-				</div>
-			</div>
-			<div th:case="ROLE_SALES">
-				<div class="grid-item item3">
-					<ul>
-						<li><a class="submit4" th:href="@{/employee}"><span>World
-									of Widgets Employee Home Page</span></a><br></li>
-						<li><a class="submit4" th:href="@{/statButton}"><span>Statistics</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchButton}"><span>Search
-									Users</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchWidgetButton}"><span>Search
-									Widgets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/widgetsInfo}"><span>Widgets
-									Info</span></a><br></li>
-						<li><a class="submit4"
-							style="color: #AED6F1; font-size: 14px"><span>My
-									Messages</span></a><br></li>
-						<!-- subtabs for message specific stuff -->
-						<ul>
-							<li class="nav-item"><a th:if="${page == 'home'}"
-								class="submit4 nav-link active pb-3" th:href="@{/messages}"><span>Inbox</span></a>
-								<a th:unless="${page == 'home'}" class="submit4 pb-3"
-								th:href="@{/messages}"><span>Inbox</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'outbox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/outbox}"><span>Sent</span></a>
-								<a th:unless="${page == 'outbox'}" class="submit4 pb-3"
-								th:href="@{/outbox}"><span>Sent</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'spamBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/spambox}"><span>Spam</span></a>
-								<a th:unless="${page == 'spamBox'}" class="submit4 pb-3"
-								th:href="@{/spambox}"><span>Spam</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'trashBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/trashbox}"><span>Trash</span></a>
-								<a th:unless="${page == 'trashBox'}" class="submit4 active pb-3"
-								th:href="@{/trashbox}"><span>Trash</span></a></li>
-							<li class="nav-item"><a class="submit4 pb-3" type="button"
-								data-bs-toggle="modal" data-bs-target="#modalCompose">Compose</a>
-							</li>
-						</ul>
-						<!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
-					</ul>
-				</div>
-			</div>
-			<div th:case="ROLE_HIRINGMANAGER">
-				<div class="grid-item item3">
-					<ul>
-						<li><a class="submit4" th:href="@{/employee}"><span>World
-									of Widgets Employee Home Page</span></a><br></li>
-						<li><a class="submit4"
-							th:href="@{/searchApplicationsButton(id = ${1})}"><span>New
-									Applications</span></a><br></li>
-						<li><a class="submit4"
-							th:href="@{/searchApplicationsButton(id = ${2})}"><span>Reviewed
-									Applications</span></a><br></li>
-						<li><a class="submit4"
-							style="color: #AED6F1; font-size: 14px"><span>My
-									Messages</span></a><br></li>
-						<!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
-					</ul>
-				</div>
-			</div>
-			<div th:case="ROLE_HELPDESK_ADMIN">
-				<div class="grid-item item3">
-					<ul>
-						<li><a class="submit4" th:href="@{/employee}"><span>World
-									of Widgets Employee Home Page</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchTickets}"><span>Search
-									Tickets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchButton}"><span>Search
-									Users</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchWidgetButton}"><span>Search
-									Widgets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/widgetsInfo}"><span>Widgets
-									Info</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchMessageButton}"><span>View
-									a Message</span></a><br></li>
-						<li><a class="submit4"
-							style="color: #AED6F1; font-size: 14px"><span>My
-									Messages</span></a><br></li>
-						<!-- subtabs for message specific stuff -->
-						<ul>
-							<li class="nav-item"><a th:if="${page == 'home'}"
-								class="submit4 nav-link active pb-3" th:href="@{/messages}"><span>Inbox</span></a>
-								<a th:unless="${page == 'home'}" class="submit4 pb-3"
-								th:href="@{/messages}"><span>Inbox</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'outbox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/outbox}"><span>Sent</span></a>
-								<a th:unless="${page == 'outbox'}" class="submit4 pb-3"
-								th:href="@{/outbox}"><span>Sent</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'spamBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/spambox}"><span>Spam</span></a>
-								<a th:unless="${page == 'spamBox'}" class="submit4 pb-3"
-								th:href="@{/spambox}"><span>Spam</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'trashBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/trashbox}"><span>Trash</span></a>
-								<a th:unless="${page == 'trashBox'}" class="submit4 active pb-3"
-								th:href="@{/trashbox}"><span>Trash</span></a></li>
-							<li class="nav-item"><a class="submit4 pb-3" type="button"
-								data-bs-toggle="modal" data-bs-target="#modalCompose">Compose</a>
-							</li>
-						</ul>
-						<!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
-					</ul>
-				</div>
-			</div>
-			<div th:case="ROLE_HELPDESK_REGULAR">
-				<div class="grid-item item3">
-					<ul>
-						<li><a class="submit4" th:href="@{/employee}"><span>World
-									of Widgets Employee Home Page</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchTickets}"><span>Search
-									Tickets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchButton}"><span>Search
-									Users</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchWidgetButton}"><span>Search
-									Widgets</span></a><br></li>
-						<li><a class="submit4" th:href="@{/widgetsInfo}"><span>Widgets
-									Info</span></a><br></li>
-						<li><a class="submit4" th:href="@{/searchMessageButton}"><span>View
-									a Message</span></a><br></li>
-						<li><a class="submit4"
-							style="color: #AED6F1; font-size: 14px"><span>My
-									Messages</span></a><br></li>
-						<!-- subtabs for message specific stuff -->
-						<ul>
-							<li class="nav-item"><a th:if="${page == 'home'}"
-								class="submit4 nav-link active pb-3" th:href="@{/messages}"><span>Inbox</span></a>
-								<a th:unless="${page == 'home'}" class="submit4 pb-3"
-								th:href="@{/messages}"><span>Inbox</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'outbox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/outbox}"><span>Sent</span></a>
-								<a th:unless="${page == 'outbox'}" class="submit4 pb-3"
-								th:href="@{/outbox}"><span>Sent</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'spamBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/spambox}"><span>Spam</span></a>
-								<a th:unless="${page == 'spamBox'}" class="submit4 pb-3"
-								th:href="@{/spambox}"><span>Spam</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'trashBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/trashbox}"><span>Trash</span></a>
-								<a th:unless="${page == 'trashBox'}" class="submit4 active pb-3"
-								th:href="@{/trashbox}"><span>Trash</span></a></li>
-							<li class="nav-item"><a class="submit4 pb-3" type="button"
-								data-bs-toggle="modal" data-bs-target="#modalCompose">Compose</a>
-							</li>
-						</ul>
-						<!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
-					</ul>
-				</div>
-			</div>
+	<!-- HEADER BAR -->
+	<div th:insert="header :: header"></div>
+	<!-- END HEADER BAR -->
 
-			<div th:case="ROLE_USER">
-				<div class="grid-item item3">
-					<ul>
-						<li><a class="submit4" th:href="@{/homePage}"><span>Home</span></a><br>
-						</li>
-						<li><a class="submit4" th:href="@{/BrowseWidgetsButton}"><span>Browse</span></a></li>
-						<li><a
-							th:if="${user.directDepositDetails != null &amp;&amp; (user.paypal != null || user.paymentDetails != null)}"
-							href="/addWidget" class="submit4"> Sell Items </a> <a
-							th:unless="${user.directDepositDetails != null &amp;&amp; (user.paypal != null || user.paymentDetails != null)}"
-							href="#" data-bs-toggle="modal" data-bs-target="#sellErrorModal"
-							class="submit4"><span>Sell Items</span></a></li>
-						<li><a class="submit4"
-							style="color: #AED6F1; font-size: 14px"><span>Messages</span></a>
-						</li>
+	<!-- SIDEBAR -->
+  <div th:insert="navBar :: navBar"></div>
+  <!-- END SIDEBAR -->
 
-						<!-- subtabs for message specific stuff -->
-						<ul>
-							<li class="nav-item"><a th:if="${page == 'home'}"
-								class="submit4 nav-link active pb-3" th:href="@{/messages}"><span>Inbox</span></a>
-								<a th:unless="${page == 'home'}" class="submit4 pb-3"
-								th:href="@{/messages}"><span>Inbox</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'outbox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/outbox}"><span>Sent</span></a>
-								<a th:unless="${page == 'outbox'}" class="submit4 pb-3"
-								th:href="@{/outbox}"><span>Sent</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'spamBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/spambox}"><span>Spam</span></a>
-								<a th:unless="${page == 'spamBox'}" class="submit4 pb-3"
-								th:href="@{/spambox}"><span>Spam</span></a></li>
-							<li class="nav-item"><a th:if="${page == 'trashBox'}"
-								class="submit4 nav-link active pb-3" th:href="@{/trashbox}"><span>Trash</span></a>
-								<a th:unless="${page == 'trashBox'}" class="submit4 active pb-3"
-								th:href="@{/trashbox}"><span>Trash</span></a></li>
-							<li class="nav-item"><a class="submit4 pb-3" type="button"
-								data-bs-toggle="modal" data-bs-target="#modalCompose">Compose</a>
-							</li>
-						</ul>
-
-						<!-- resuming regular tabs -->
-
-						<li><a class="submit4" th:href="@{/tickets}"><span>Tickets</span></a>
-						</li>
-						<li><a class="submit4" th:href="@{/friends}"><span>Friends</span></a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</th:block>
-		<!-- END SIDE NAV BAR -->
-
+	<div>
 		<div class="container-fluid align-items-center"
 			style="background-color: rgb(255,235,205)">
 			<div class="row" style="background-color: white">
@@ -487,7 +68,7 @@ table.center {
   	 -->
 
 						<!-- IF IN INBOX -->
-						<div th:case="home" class="row">
+						<div th:case="messages" class="row">
 							<div class="col-1 border border-2 border-bottom-0 border-dark"
 								style="background-color: rgb(245,222,179)">
 								<span class="d-flex justify-content-center"
@@ -510,6 +91,9 @@ table.center {
 								<a class="d-flex justify-content-center"
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/trashbox}"> Trash </a>
+							</div>
+							<div class="col-1 border border-2 border-dark" style="background-color: rgb(245,222,179)">
+								<a class="d-flex justify-content-center" style="font-size: 24px; color: black; text-decoration: none;" data-bs-toggle="modal" data-bs-target="#modalCompose"> Compose </a>
 							</div>
 							<div
 								class="col-1 border border-2 border-start-0 border-top-0 border-end-0 border-dark d-flex flex-fill"
@@ -540,6 +124,9 @@ table.center {
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/trashbox}"> Trash </a>
 							</div>
+							<div class="col-1 border border-2 border-dark" style="background-color: rgb(245,222,179)">
+								<a class="d-flex justify-content-center" style="font-size: 24px; color: black; text-decoration: none;" data-bs-toggle="modal" data-bs-target="#modalCompose"> Compose </a>
+							</div>
 							<div
 								class="col-1 border border-2 border-start-0 border-top-0 border-end-0 border-dark d-flex flex-fill"
 								style="background-color: white"></div>
@@ -568,6 +155,9 @@ table.center {
 								style="background-color: rgb(245,222,179)">
 								<span class="d-flex justify-content-center"
 									style="font-size: 24px;"> Trash </span>
+							</div>
+							<div class="col-1 border border-2 border-dark" style="background-color: rgb(245,222,179)">
+								<a class="d-flex justify-content-center" style="font-size: 24px; color: black; text-decoration: none;" data-bs-toggle="modal" data-bs-target="#modalCompose"> Compose </a>
 							</div>
 							<div
 								class="col-1 border border-2 border-start-0 border-top-0 border-end-0 border-dark d-flex flex-fill"
@@ -598,6 +188,42 @@ table.center {
 									style="font-size: 24px; color: black; text-decoration: none;"
 									th:href="@{/trashbox}"> Trash </a>
 							</div>
+							<div class="col-1 border border-2 border-dark" style="background-color: rgb(245,222,179)">
+								<a class="d-flex justify-content-center" style="font-size: 24px; color: black; text-decoration: none;" data-bs-toggle="modal" data-bs-target="#modalCompose"> Compose </a>
+							</div>
+							<div
+								class="col-1 border border-2 border-start-0 border-top-0 border-end-0 border-dark d-flex flex-fill"
+								style="background-color: white"></div>
+						</div>
+						<!-- IF IN Compose -->
+						<div th:case="spamBox" class="row">
+							<div class="col-1 border border-2 border-dark"
+								style="background-color: rgb(245,222,179)">
+								<a class="d-flex justify-content-center"
+									style="font-size: 24px; color: black; text-decoration: none;"
+									th:href="@{/messages}"> Inbox </a>
+							</div>
+							<div class="col-1 border border-2 border-dark"
+								style="background-color: rgb(245,222,179)">
+								<a class="d-flex justify-content-center"
+									style="font-size: 24px; color: black; text-decoration: none;"
+									th:href="@{/outbox}"> Sent </a>
+							</div>
+							<div class="col-1 border border-2 border-dark"
+								style="background-color: rgb(245,222,179)">
+								<a class="d-flex justify-content-center"
+									style="font-size: 24px; color: black; text-decoration: none;"
+									th:href="@{/spambox}"> Spam </a>
+							</div>
+							<div class="col-1 border border-2 border-dark"
+								style="background-color: rgb(245,222,179)">
+								<a class="d-flex justify-content-center"
+									style="font-size: 24px; color: black; text-decoration: none;"
+									th:href="@{/trashbox}"> Trash </a>
+							</div>
+							<div class="col-1 border border-2 border-bottom-0 border-dark" style="background-color: rgb(245,222,179)">
+								<a class="d-flex justify-content-center" style="font-size: 24px; color: black; text-decoration: none;" data-bs-toggle="modal" data-bs-target="#modalCompose"> Compose </a>
+							</div>
 							<div
 								class="col-1 border border-2 border-start-0 border-top-0 border-end-0 border-dark d-flex flex-fill"
 								style="background-color: white"></div>
@@ -611,16 +237,13 @@ table.center {
 									<!-- Header -->
 									<div class="modal-header">
 										<h4 class="modal-title">Compose a Message</h4>
-										<button type="button" class="btn-close"
-											data-bs-dismiss="modal"></button>
+										<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 									</div>
 
 									<!-- Body -->
 									<div class="modal-body">
-										<form th:action="@{/sendmail}" onsubmit="lockSend()"
-											method="post" id="sendForm" action="">
-											<table class="center"
-												style="background-color: #faf0e6; border: 2px solid #002147; width: 75%;">
+										<form th:action="@{/sendmail}" onsubmit="lockSend()" method="post" id="sendForm" action="">
+											<table style="background-color: #faf0e6; border: 2px solid #002147;">
 												<tr>
 													<td><div>
 															<label> To : <input type="text" name="recipient" />
@@ -637,7 +260,7 @@ table.center {
 												<tr>
 													<td><div>
 															<label> Message: </label>
-														</div> <textarea id="message" name="message" rows="4" cols="50"></textarea>
+														</div> <textarea id="message" name="message" rows="4" cols="40"></textarea>
 
 													</td>
 												</tr>
@@ -775,7 +398,7 @@ table.center {
 									<p id="trashButton" style="visibility: hidden;"></p>
 									<p id="trashButton2" style="visibility: hidden;"></p>
 								</div>
-								<div th:case="home">
+								<div th:case="messages">
 									<input id="trashButton" th:formaction="@{/trash}"
 										style="width: 300px; bottom: 0px; visibility: hidden; z-index: 101;"
 										class="submit3" type="submit" value="Send  to Trash" /> <input
@@ -795,17 +418,12 @@ table.center {
 
 
 							</th:block>
-							<table class="fixed center" style="width: 75%;">
-
+							<table class="container-fluid" style="width: 75%;">
 								<tr>
-
 									<th:block th:switch="${page}">
 										<th style="width: 40px"><input type="checkbox" /></th>
-
-
 										<th>Open Message</th>
-
-										<div th:case="home">
+										<div th:case="messages">
 											<th>From</th>
 										</div>
 										<div th:case="sent">
@@ -840,7 +458,7 @@ table.center {
 												th:href="@{/openMessage/{id}(id = ${mailbox.id})}">Open</a>
 											</td>
 											<td>
-												<div th:case="home">
+												<div th:case="messages">
 													<p th:text="${mailbox.sender}"></p>
 												</div>
 												<div th:case="sent">

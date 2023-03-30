@@ -2,21 +2,23 @@
 <html lang="en" xmlns:th="http:www.thymeleaf.org">
 	<head>
 		<meta charset="ISO-8859-1">
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gemunu%20Libre">
 	</head>
 	
-	<div th:fragment="header">
+	<header th:fragment="header">
 		
 		<!-- Nav Bar For Guest User -->
-		<nav class="navbar navbar-expand-sm fixed-top" style="background-color: rgb(25,41,77)">
+		<nav class="navbar navbar-expand-sm" style="background-color: rgb(25,41,77)">
 			<div class="container-fluid">
 				
 				<!-- Unbiased Left Justified Unordered List -->
-				<ul class="navbar nav">
-					<li class="nav-item">
-						<a class="navbar-brand" th:href="@{/index}"><img src="/images/pseudo_ebay_icon.png" alt="Home" style="width:64px; height:64px;"></img></a>
-					</li>
-				</ul>
+				<th:block th:switch="${user.role}">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a th:case="ROLE_USER" class="navbar-brand" th:href="@{/homePage}"><img src="/images/pseudo_ebay_icon.png" alt="Home" style="width:64px; height:64px;"></img></a>
+							<a th:case="ROLE_ADMIN" class="navbar-brand" th:href="@{/employee}"><img src="/images/pseudo_ebay_icon.png" alt="Home" style="width:64px; height:64px;"></img></a>
+						</li>
+					</ul>
+				</th:block>
 				<!-- End Unbiased Left Justified Unordered List -->
 					
 				<!-- No Logged In User Right Justified Unordered List -->
@@ -31,12 +33,12 @@
 				<!-- End No Logged In User Right Justified Unordered List -->
 				
 				<!-- Basic User Right Justified Unordered List -->
-				<ul th:if="${user.role} == ROLE_USER" class="navbar nav ms-md-auto">
-					<li class="nav-item">
-						<div class="dropdown"> 
+				<ul th:if="${user.role} == ROLE_USER" class="navbar-nav ms-md-auto">
+					<li class="nav-item pointer" style="position: relative; z-index: 10;">
+						<div class="dropdown">
 							<a class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-								<img th:if="${user.userImage != null}" th:src="@{/images/userImages/{icon}(icon = ${user.userImage})}" th:text=" ${user.username}" style="width:50px; height:50px; padding-right:3px"></img>
-								<img th:unless="${user.userImage != null}" th:src="@{/images/userImages/default_user_icon.png}" th:text=" ${user.username}" style="width:50px; height:50px; padding-right:3px"></img>
+								<img th:if="${user.userImage != null}" th:src="@{/images/userImages/{icon}(icon = ${user.userImage})}" th:text=" ${user.username}" style="width:50px; height:50px; padding-right:15px;"></img>
+								<img th:unless="${user.userImage != null}" th:src="@{/images/userImages/default_user_icon.png}" th:text=" ${user.username}" style="width:50px; height:50px; padding-right:15px;"></img>
 							</a>
 							<ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
 								<li><h5 class="dropdown-header">My Account</h5></li>
@@ -51,7 +53,7 @@
 				<!-- Basic User Right Justified Unordered List -->
 				
 				<!-- Admin Right Justified Unordered List -->
-				<ul th:if="${user.role} == ROLE_ADMIN" class="navbar nav ms-md-auto">
+				<ul th:if="${user.role} == ROLE_ADMIN" class="navbar-nav ms-md-auto">
 					<li class="nav-item ms-md-auto">
 						<a class="nav-link text-white" style="font-family:'Gemunu Libre'; font-size: 1.5em" href="/do_the_logout"> Log Out </a>
 					</li>
@@ -62,5 +64,5 @@
 				
 			</div>
 		</nav>
-	</div>
+	</header>
 </html>
