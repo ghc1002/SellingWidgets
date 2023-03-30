@@ -2,14 +2,23 @@ package edu.sru.cpsc.webshopping.controller;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
 import java.util.Set;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.sru.cpsc.webshopping.controller.billing.CardTypeController;
+import edu.sru.cpsc.webshopping.controller.billing.PaymentDetailsController;
 import edu.sru.cpsc.webshopping.controller.billing.SellerRatingController;
 import edu.sru.cpsc.webshopping.domain.billing.DirectDepositDetails;
 import edu.sru.cpsc.webshopping.domain.billing.DirectDepositDetails_Form;
@@ -38,6 +48,7 @@ import edu.sru.cpsc.webshopping.domain.billing.Paypal_Form;
 import edu.sru.cpsc.webshopping.domain.market.Transaction;
 import edu.sru.cpsc.webshopping.domain.user.Message;
 import edu.sru.cpsc.webshopping.domain.user.User;
+import edu.sru.cpsc.webshopping.repository.billing.PaymentDetailsRepository;
 import edu.sru.cpsc.webshopping.repository.user.UserRepository;
 import edu.sru.cpsc.webshopping.secure.UserDetailsServiceImpl;
 
@@ -59,7 +70,8 @@ enum SUB_MENU {
 
 @Controller
 public class UserDetailsController {
-
+	@PersistenceContext
+	private EntityManager entityManager;
 	private UserRepository userRepository;
 	private UserController userController;
 	private UserDetailsServiceImpl userDetails;
@@ -71,6 +83,12 @@ public class UserDetailsController {
 	private String creationDate;
 	private String userDescription;
 	private String email;
+	private boolean addNew = false;
+	private boolean update = false;
+	private long id2;
+	private long updateId = -1;
+	private PaymentDetailsRepository payDetRepo;
+	private PaymentDetailsController payDetCont;
 	private SUB_MENU selectedMenu;
 	
 
@@ -78,11 +96,15 @@ public class UserDetailsController {
 
 	public UserDetailsController(UserController userController, UserRepository userRepository, 
 			TransactionController transController, CardTypeController cardController,
-			SellerRatingController ratingController)
+			SellerRatingController ratingController, PaymentDetailsRepository payDetRepo,
+			PaymentDetailsController payDetCont)
 	{
 		this.userController = userController;
 		this.userRepository = userRepository;
 		this.cardController = cardController;
+		this.payDetRepo = payDetRepo;
+		this.payDetCont = payDetCont;
+		this.transController = transController;
 	}
 
 	@RequestMapping("/userDetails")
@@ -112,10 +134,6 @@ public class UserDetailsController {
 		model.addAttribute("paypalDetails", new Paypal_Form());
 		// Model for updating Payment Details
 		model.addAttribute("paymentDetails", new PaymentDetails_Form());
-		if(userController.getCurrently_Logged_In().getPaymentDetails() != null)
-		{
-			model.addAttribute("paymentDetails2", userController.getCurrently_Logged_In().getPaymentDetails());
-		}
 		model.addAttribute("cardTypes", cardController.getAllCardTypes());
 		// Model for updating Direct Deposit Details
 		DirectDepositDetails_Form details = new DirectDepositDetails_Form();
@@ -123,9 +141,48 @@ public class UserDetailsController {
 		User user  = new User();
 		user = userController.getCurrently_Logged_In();
 		model.addAttribute("user", user);
+		if(user.getDefaultPaymentDetails() != null)
+			model.addAttribute("defaultPaymentDetails", payDetCont.getPaymentDetail(user.getDefaultPaymentDetails().getId(), null));
+		else
+			model.addAttribute("defaultPaymentDetails", null);
+		if(user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty())
+			model.addAttribute("savedDetails", null);
+		else
+			model.addAttribute("savedDetails", payDetCont.getPaymentDetailsByUser(user));
+		model.addAttribute("addNew", addNew);
+		model.addAttribute("updateId", updateId);
+		model.addAttribute("update", update);
 		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
 		model.addAttribute("selectedMenu", selectedMenu);
 		return "userDetails";
+	}
+	
+	@RequestMapping("/addNewCard")
+	public String addNewCard(Model model)
+	{
+		update = false;
+		addNew = true;
+		updateId = -1;
+		return "redirect:/userDetails/paymentDetails";
+	}
+	
+	@RequestMapping("/goBackToMain")
+	public String backToMain(Model model)
+	{
+		update = false;
+		addNew = false;
+		updateId = -1;
+		return "redirect:/userDetails/paymentDetails";
+	}
+	
+	@RequestMapping("/updatePaymentDetails/{id}")
+	public String updateCard(@PathVariable("id") long id, Model model)
+	{
+		update = true;
+		this.id2 = id;
+		addNew = false;
+		updateId = id;
+		return "redirect:/userDetails/paymentDetails";
 	}
 	
 	@RequestMapping("/userDetails/paypalDetails")
@@ -292,15 +349,13 @@ public class UserDetailsController {
 		return "redirect:/userDetails";
 	}
 	
-	
 	/**
 	 * Creates or updates the PaymentDetails associated with the logged in user
 	 * @param details the filled out PaymentDetails from the page's form
 	 * @return 	a redirection string pointing to the userDetails page
 	 */
-	@RequestMapping(value = "/submitPaymentDetailsAction", 
-			method = RequestMethod.POST, params="submit")
-	public String sendUpdate(@Validated @ModelAttribute("paymentDetails") PaymentDetails_Form details, BindingResult result, Model model) {
+	@PostMapping(value = "/submitPaymentDetailsAction", params="submit")
+	public String createDetails(@Validated @ModelAttribute("paymentDetails") PaymentDetails_Form details, BindingResult result, Model model) {
 		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
 		model.addAttribute("selectedMenu", selectedMenu);
 		System.out.println(details.getExpirationDate());
@@ -319,10 +374,65 @@ public class UserDetailsController {
 		}
 		PaymentDetails payment = new PaymentDetails();
 		payment.buildFromForm(details);
-		this.userController.updatePaymentDetails(payment);
+		payment.setUser(userController.getCurrently_Logged_In());
+		User user = userController.getCurrently_Logged_In();
+		Set<PaymentDetails> PD = user.getPaymentDetails();
+		if(PD == null)
+			PD = new HashSet<PaymentDetails>();
+		PD.add(payment);
+		user.setPaymentDetails(PD);
+		payDetCont.addPaymentDetails(payment);
+		userRepository.save(user);
+		addNew = false;
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
+	
+	/**
+	 * Creates or updates the PaymentDetails associated with the logged in user
+	 * @param details the filled out PaymentDetails from the page's form
+	 * @return 	a redirection string pointing to the userDetails page
+	 */
+	@PostMapping(value = "/submitPaymentDetailsAction", params="update")
+	public String sendUpdate(@Validated @ModelAttribute("paymentDetails") PaymentDetails_Form details, BindingResult result, Model model) {
+		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
+		model.addAttribute("selectedMenu", selectedMenu);
+		PaymentDetails currDetails = payDetCont.getPaymentDetail(id2, model);
+		System.out.println(details.getExpirationDate());
+		if (result.hasErrors() || paymentDetailsConstraintsFailed(details)) {
+			// Add error messages
+			if (cardExpired(details))
+				model.addAttribute("cardError", "The credit card is expired.");
+			if(cardFarFuture(details))
+				model.addAttribute("cardError", "The expiration date is an impossible number of years in the future");
+			model.addAttribute("errMessage", "Your updated payment details has errors.");
+			// Add back page data
+			model.addAttribute("cardTypes", cardController.getAllCardTypes());
+			model.addAttribute("directDepositDetails", new DirectDepositDetails_Form());
+			loadUserData(model);
+			return "/userDetails";
+		}
+		PaymentDetails payment = new PaymentDetails();
+		payment.buildFromForm(details);
+		payDetCont.updatePaymentDetails(payment, currDetails);
+		User user = userController.getCurrently_Logged_In();		
+		Set<PaymentDetails> pDetails = user.getPaymentDetails();
+		List<PaymentDetails> PD = new ArrayList<>(pDetails);
+		for(PaymentDetails payDet : PD)
+			if(payDet.getId() == id2)
+				currDetails = payDet;
+		PD.remove(PD.indexOf(currDetails));
+		PD.add(payDetCont.getPaymentDetail(id2, model));
+		Set<PaymentDetails> PD2 = new HashSet<>(PD);
+		user.setPaymentDetails(PD2);
+		model.addAttribute("user", user);
+		userRepository.save(user);
+		addNew = false;
+		update = false;
+		updateId = -1;
+		return "redirect:/userDetails/paymentDetails";
+	}
+
 	/**
 	 * deletes the existing payment details of a user
 	 * @param details The paymentDetails_Form to be deleted
@@ -330,20 +440,63 @@ public class UserDetailsController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/submitPaymentDetailsAction", 
-			method = RequestMethod.POST, params="delete")
-	public String deleteExisting(@Validated @ModelAttribute("paymentDetails") PaymentDetails_Form details, BindingResult result, Model model) {
+	@Transactional
+	@RequestMapping(value = "/deleteExistingPaymentDetails/{id}")
+	public String deleteExisting(@PathVariable("id") long id) {
+		System.out.println("entered udcont");
+		User user = userController.getCurrently_Logged_In();
 		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
-		model.addAttribute("selectedMenu", selectedMenu);
-		if (userController.getCurrently_Logged_In().getPaymentDetails() == null) {
-			model.addAttribute("errMessage", "Your payment details have already been deleted.");
-			// Add back page data
-			model.addAttribute("cardTypes", cardController.getAllCardTypes());
-			model.addAttribute("directDepositDetails", new DirectDepositDetails_Form());
-			loadUserData(model);
-			return "userDetails";
+		int index = -1;
+		System.out.println(id);
+		PaymentDetails currDetails = payDetCont.getPaymentDetail(id, null);
+		if(user.getDefaultPaymentDetails() != null && currDetails.getId() == user.getDefaultPaymentDetails().getId())
+		{
+			System.out.println("detached");
+			entityManager.detach(user.getDefaultPaymentDetails());
+			user.setDefaultPaymentDetails(null);
+			userRepository.save(user);
 		}
-		this.userController.deletePaymentDetails();
+		List<PaymentDetails> PD = new ArrayList<>(user.getPaymentDetails());
+		System.out.println(PD.size());
+		if(PD.size()==1)
+			PD.remove(0);
+		else
+			for(PaymentDetails details : PD)
+			{
+				if(details.getId() == currDetails.getId())
+					index = PD.indexOf(details);
+			}
+		if(index != -1)
+			PD.remove(index);
+		if(PD.isEmpty())
+			user.setPaymentDetails(null);
+		else
+			user.setPaymentDetails(new HashSet<>(PD));
+		if(transController.findByPaymentDetails(currDetails).isEmpty())
+		{
+			payDetCont.deletePaymentDetails(currDetails);
+		}
+		currDetails.setUser(null);
+		addNew = false;
+		update = false;
+		updateId = -1;
+		return "redirect:/userDetails/paymentDetails";
+	}
+	
+	/**
+	 * Changes the current default payment details to another set of payment details
+	 * @param id
+	 * @return
+	 */
+	@Transactional
+	@RequestMapping(value = "/makeDefaultPaymentDetails/{id}")
+	public String makeDefaultPaymentDetails(@PathVariable("id") long id) {
+		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
+		User user = userController.getCurrently_Logged_In();
+		PaymentDetails currDetails = payDetCont.getPaymentDetail(id, null);
+		user.setDefaultPaymentDetails(currDetails);
+		System.out.println(user.getDefaultPaymentDetails().getCardType());
+		userRepository.save(user);
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
