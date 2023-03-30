@@ -9,7 +9,6 @@ public class Category{
 	@Id
 	private String name;
 	private String display;
-	private String link;
 
 	public String getName() {
 		return name;
@@ -25,12 +24,5 @@ public class Category{
 
 	public void setDisplay(String display) {
 		this.display = display;
-	}
-	public String getLink() {
-		return link;
-	}
-
-	public void setLink(String link) {
-		this.link = link;
 	}
 }

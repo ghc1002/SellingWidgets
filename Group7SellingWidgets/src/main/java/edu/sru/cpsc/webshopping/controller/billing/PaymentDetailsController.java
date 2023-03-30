@@ -1,5 +1,7 @@
 package edu.sru.cpsc.webshopping.controller.billing;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -40,9 +42,13 @@ public class PaymentDetailsController {
 	 * @param details details to delete
 	 */
 	public void deletePaymentDetails(PaymentDetails details) {
+		System.out.println("entered pdcont");
 		PaymentDetails dbDetails = entityManager.find(PaymentDetails.class, details.getId());
 		if (dbDetails != null)
+		{
+			System.out.println(dbDetails.getId());
 			paymentDetailsRepository.deleteById(dbDetails.getId());
+		}
 	}
 	
 	@Autowired
@@ -50,7 +56,7 @@ public class PaymentDetailsController {
 	
 	@Transactional
 	public void addPaymentDetails(@Validated PaymentDetails details) {
-		System.out.println("update payment details database function called");
+		System.out.println("add payment details database function called");
 		
 		// Encode fields
 		details.setCardholderName(passwordEncoder.encode(details.getCardholderName()));
@@ -69,6 +75,11 @@ public class PaymentDetailsController {
 	public Iterable<PaymentDetails> getAllPaymentDetails() {
 		Iterable<PaymentDetails> paymentDetails = paymentDetailsRepository.findAll();
 		return paymentDetails;
+	}
+	
+	@RequestMapping("/get-payment-details-by-user") 
+	public PaymentDetails[] getPaymentDetailsByUser(@PathVariable("user") User user) {
+		return paymentDetailsRepository.findAllByUser(user).toArray(PaymentDetails[]::new);
 	}
 	
 	/**
@@ -116,5 +127,41 @@ public class PaymentDetailsController {
 				return PD;
 		}
 		return details;
+	}
+	
+	/**
+	 * Saves or updates the current PaymentDetails of the user
+	 * PaymentDetails is encoded using BCryptPasswordEncoder and then stored in the database
+	 * @param details new PaymentDetails to save
+	 * @exception IllegalStateException is thrown if the user is not logged in
+	 */
+	@PostMapping("/update-payment-details") 
+	@Transactional
+	public void updatePaymentDetails(@Validated PaymentDetails details, @Validated PaymentDetails currDetails) {
+		System.out.println("update payment details database function called");
+		currDetails = paymentDetailsRepository.findById(currDetails.getId()).get();
+		// Encode fields
+		details.setId(currDetails.getId());
+		details.setCardholderName(passwordEncoder.encode(details.getCardholderName()));
+		details.setCardNumber(passwordEncoder.encode(details.getCardNumber()));
+		details.setLast4Digits(details.getLast4Digits());
+		details.setCardType(details.getCardType());
+		details.setExpirationDate(passwordEncoder.encode(details.getExpirationDate()));
+		details.setPostalCode(passwordEncoder.encode(details.getPostalCode()));
+		details.setSecurityCode(passwordEncoder.encode(details.getSecurityCode()));
+		// No assigned details - add to user
+		PaymentDetails curr = entityManager.find(PaymentDetails.class, currDetails.getId());
+		curr.transferFields(details);
+		paymentDetailsRepository.save(curr);
+	}
+	
+	public boolean matchExistingCard(String secCode, PaymentDetails details)
+	{
+		if(passwordEncoder.matches(secCode, details.getSecurityCode()))
+		{
+			return true;
+		}
+		else
+			return false;
 	}
 }

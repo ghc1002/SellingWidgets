@@ -23,6 +23,10 @@
 				font-size: 12px;
 			}
 			
+			label {
+			display: inline-block;
+			}
+			
 		</style>
 	</head>
 	
@@ -68,7 +72,7 @@
 					</div>
 					<!-- used if the user has existing card details and wishes to use them -->
 					<div class="accordion" id="payment-methods">
-					<div class="accordion-item" th:if="${paymentDetails2 != null}">
+					<div class="accordion-item" th:if="${defaultDetails != null && selectedDetails == null}">
 							<h2 class="accordion-header">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#existingAccordion">
 									Pay via Existing Credit Card
@@ -79,13 +83,35 @@
 									<div class="d-flex justify-content-center">
 									<h2>Current Payment Details</h2>
 								</div>
-								<div class="d-flex justify-content-center">
-									<h3 th:text=" ${paymentDetails2.cardType}"></h3>
-									<h3>&nbspEnding In:&nbsp</h3>
-									<h3 th:text=" ${paymentDetails2.last4Digits}"></h3>
-								</div>
-									<form method="post" action="#" class="row g-3 d-flex justify-content-center my-2"
+								<form method="post" action="#" class="row g-3 d-flex justify-content-center my-2"
 										th:action="@{/confirmPurchase/existingCard}">
+								<ul>
+								<li th:if="${defaultDetails != null}" class="d-flex justify-content-center">
+									<input type="radio" th:id="${defaultDetails.id}" name="selected_payment_details" th:value="${defaultDetails.id}" checked>
+									<label style="font-size: 1.17em; font-weight: bolder;" th:for="${defaultDetails.id}" th:inline="text">
+									&nbspDefault:&nbsp[[${defaultDetails.cardType}]]&nbspEnding In:&nbsp[[${defaultDetails.last4Digits}]]							
+									</label>
+								</li>
+								<th:block th:if="${defaultDetails == null}">
+								<li th:each="detail: ${allDetails}" class="d-flex justify-content-center">
+									<input type="radio" th:id="${detail.id}" name="selected_payment_details" th:value="${detail.id}"></input>
+									<label style="font-size: 1.17em; font-weight: bolder;" th:for="${detail.id}" th:inline="text">
+									&nbsp[[${detail.cardType}]]&nbspEnding In:&nbsp[[${detail.last4Digits}]]							
+									</label>
+								</li>
+								</th:block>
+								
+								<th:block th:unless="${defaultDetails == null}">
+								<li th:each="detail: ${allDetails}" class="d-flex justify-content-center">
+								<th:block th:if="${detail.id != defaultDetails.id}">
+									<input type="radio" th:id="${detail.id}" name="selected_payment_details" th:value="${detail.id}">
+									<label style="font-size: 1.17em; font-weight: bolder;" th:for="${detail.id}" th:inline="text">
+									&nbsp[[${detail.cardType}]]&nbspEnding In:&nbsp[[${detail.last4Digits}]]							
+									</label>
+								</th:block>
+								</li>
+								</th:block>
+								</ul>
 										<div class="d-flex justify-content-center">
 											<h2>Payment Method</h2>
 										</div>
@@ -112,7 +138,7 @@
 									Pay via Credit Card
 								</button>
 							</h2>
-							<div id="creditAccordion" class="accordion-collapse collapse" th:classappend="${paymentDetails2 == null || useThis != null ? 'show' : ''}" data-bs-parent="#payment-methods">
+							<div id="creditAccordion" class="accordion-collapse collapse" th:classappend="${defaultDetails == null || useThis != null ? 'show' : ''}" data-bs-parent="#payment-methods">
 								<div class="accordion-body">
 									<form method="post" action="#" class="row g-3 d-flex justify-content-center my-2"
 										th:action="@{/confirmPurchase/submitPurchase}"  th:object="${paymentDetails}">

@@ -97,7 +97,6 @@ public class ConfirmPurchasePageControllerTest {
 		validDetailsForm.setExpirationDate(LocalDate.now().toString());
 		validDetailsForm.setPostalCode("44525");
 		validDetailsForm.setSecurityCode("1234");
-		userController.updatePaymentDetails(validDetailsForm);
 		// Add Paypal details to user
 		Paypal validPaypal = new Paypal();
 		validPaypal.setPaypalLogin("testemail@test.com");

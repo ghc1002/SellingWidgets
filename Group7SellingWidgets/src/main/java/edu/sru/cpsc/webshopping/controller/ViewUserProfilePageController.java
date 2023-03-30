@@ -69,6 +69,8 @@ public class ViewUserProfilePageController {
 	 */
 	@RequestMapping("/viewUserProfile/{userId}")
 	public String openUserProfile(@PathVariable("userId") long userId, Model model) {
+		User user = userController.getCurrently_Logged_In();
+		model.addAttribute("user", user);
 		this.pageNumber = 1;
 		this.selectedUser = userController.getUser(userId, null);
 		this.soldItems = listingController.getListingbyUser(selectedUser);
@@ -105,6 +107,8 @@ public class ViewUserProfilePageController {
 	@RequestMapping("/viewUserProfile/changePage/{pageNumber}")
 	public String changePageNumber(@PathVariable("pageNumber") int pageNumber, Model model) {
 		// pageNumber is not read from page as zero indexed for user readability reasons
+		User user = userController.getCurrently_Logged_In();
+		model.addAttribute("user", user);
 		if (pageNumber <= 0 || pageNumber > itemsEachPage.size()) {
 			throw new IllegalArgumentException("Invalid page number for viewUserProfilePage");
 		}
@@ -122,6 +126,8 @@ public class ViewUserProfilePageController {
 	 */
 	@RequestMapping("/viewUserProfile/openListing/{listingId}")
 	public String openListing(@PathVariable("listingId") long listingId, Model model) {
+		User user = userController.getCurrently_Logged_In();
+		model.addAttribute("user", user);
 		return "redirect:/viewMarketListing/" + listingId;
 	}
 	
@@ -132,6 +138,8 @@ public class ViewUserProfilePageController {
 	 */
 	@RequestMapping("/viewUserProfile/openMessagePane")
 	public String openMessagePane(Model model) {
+		User user = userController.getCurrently_Logged_In();
+		model.addAttribute("user", user);
 		System.out.println("open message pane");
 		this.messagePaneOpen = true;
 		reloadPageModel(model);
@@ -145,6 +153,8 @@ public class ViewUserProfilePageController {
 	 */
 	@RequestMapping("/viewUserProfile/closeMessagePane")
 	public String closeMessagePane(Model model) {
+		User user = userController.getCurrently_Logged_In();
+		model.addAttribute("user", user);
 		this.messagePaneOpen = false;
 		reloadPageModel(model);
 		return "viewUserProfile";
@@ -160,6 +170,8 @@ public class ViewUserProfilePageController {
 	@RequestMapping("/viewUserProfile/sendMessage")
 	public String sendMessage(@RequestParam("message") String content, @RequestParam("subject") String subject, Model model)
 	{
+		User user = userController.getCurrently_Logged_In();
+		model.addAttribute("user", user);
 		if (content.isBlank() || subject.isBlank()) { 
 			reloadPageModel(model);
 		}

@@ -122,9 +122,9 @@ public class UserController {
 	 * @param details new PaymentDetails to save
 	 * @exception IllegalStateException is thrown if the user is not logged in
 	 */
-	@PostMapping("/update-payment-details") 
+	@PostMapping("/update-default-payment-details") 
 	@Transactional
-	public void updatePaymentDetails(@Validated PaymentDetails details) {
+	public void updateDefaultPaymentDetails(@Validated PaymentDetails details) {
 		System.out.println("update payment details database function called");
 		if (Currently_Logged_In == null) {
 			throw new IllegalStateException("Error updating payment details: User not logged in.");
@@ -141,16 +141,16 @@ public class UserController {
 		// No assigned details - add to user
 		if (user.getPaymentDetails() == null) {
 			entityManager.persist(details);
-			user.setPaymentDetails(details);
+			user.setDefaultPaymentDetails(details);
 			entityManager.merge(user);
 		}
 		else {
-			PaymentDetails curr = entityManager.find(PaymentDetails.class, user.getPaymentDetails().getId());
+			PaymentDetails curr = entityManager.find(PaymentDetails.class, user.getDefaultPaymentDetails().getId());
 			curr.transferFields(details);
-			user.setPaymentDetails(curr);
+			user.setDefaultPaymentDetails(curr);
 			entityManager.merge(user);
 		}
-		Currently_Logged_In.setPaymentDetails(details);
+		Currently_Logged_In.setDefaultPaymentDetails(details);
 	}
 	
 	/**
@@ -164,20 +164,6 @@ public class UserController {
 		Currently_Logged_In.setPaypal(null);
 		userRepository.save(user);
 		paypalController.deletePaypalDetails(details);
-	}
-	
-	/**
-	 * Deletes the PaymentDetails associated with the user
-	 */
-	@Transactional
-	public void deletePaymentDetails()
-	{
-		User user = entityManager.find(User.class, Currently_Logged_In.getId());
-		PaymentDetails details = user.getPaymentDetails();
-		user.setPaymentDetails(null);
-		Currently_Logged_In.setPaymentDetails(null);
-		userRepository.save(user);
-		paymentDetailsController.deletePaymentDetails(details);
 	}
 	
 	/**
@@ -214,34 +200,6 @@ public class UserController {
 		boolean isValid = true;
 		isValid = isValid && passwordEncoder.matches(details.getPaypalLogin(), encodedDetails.getPaypalLogin());
 		isValid = isValid && passwordEncoder.matches(details.getPaypalPassword(), encodedDetails.getPaypalPassword());
-		return isValid;
-	}
-	
-	/**
-	 * Returns true if the passed details matches the currently logged in User's PaymentDetails
-	 * Returns false if they do not match
-	 * The comparison is done using the BCryptPasswordEncoder matches functionality
-	 * @param details the raw PaymentDetails to compare with the stored PaymentDetails
-	 * @return boolean
-	 * @exception IllegalStateException is thrown if the user is not logged in
-	 * @exception IllegalStateException is thrown if the user has no saved PaymentDetails
-	 */
-	@GetMapping("/verify-payment-details")
-	@Transactional
-	public boolean verifyPaymentDetails(@Validated PaymentDetails details) {
-		if (Currently_Logged_In == null) {
-			throw new IllegalStateException("No logged in user when attempting to verify payment details.");
-		}
-		else if (Currently_Logged_In.getPaymentDetails() == null) {
-			throw new IllegalStateException("User does not have an added PaymentDetails for verifying.");
-		}
-		PaymentDetails encodedDetails = Currently_Logged_In.getPaymentDetails();
-		boolean isValid = true;
-		isValid = isValid && passwordEncoder.matches(details.getCardholderName(), encodedDetails.getCardholderName());
-		isValid = isValid && passwordEncoder.matches(details.getCardNumber(), encodedDetails.getCardNumber());
-		isValid = isValid && passwordEncoder.matches(details.getExpirationDate(), encodedDetails.getExpirationDate());
-		isValid = isValid && passwordEncoder.matches(details.getPostalCode(), encodedDetails.getPostalCode());
-		isValid = isValid && passwordEncoder.matches(details.getSecurityCode(), encodedDetails.getSecurityCode());
 		return isValid;
 	}
 	
@@ -412,13 +370,5 @@ public class UserController {
 		
 	}
 	
-	public boolean matchExistingCard(String secCode, User user)
-	{
-		if(passwordEncoder.matches(secCode, user.getPaymentDetails().getSecurityCode()))
-		{
-			return true;
-		}
-		else
-			return false;
-	}
+
 }
