@@ -24,6 +24,18 @@
 				background-color: #D3D3D3;
 			}
 		</style>
+		<script>
+			function showSub(){
+				
+				var x = document.getElementById("sub");
+				if (x.style.display === "block"){
+					x.style.display = "none";
+				}else{
+					x.style.display = "block";
+				}
+				
+			}
+		</script>
 	</head>
 
 	<body>
@@ -33,28 +45,27 @@
 		<!-- END HEADER BAR -->
 	
 		<!-- SIDEBAR -->
-	  <div th:insert="navBar :: navBar"></div>
-	  <!-- END SIDEBAR -->
+	 	<div th:insert="navBar :: navBar"></div>
+	  	<!-- END SIDEBAR -->
 	
-    <div class="card h-100 w-100">
-        <div class="card-body">
-            <div class="card" style="width: fit-content; height: fit-content">
-              <div class="card-header d-flex" style="text-align: left; padding-left: 6px"><h4>Categories</h4></div>
-                <div class="card-body">
-                  <th:block th:each="category: ${categories}">
-                    <div class="addLabel" style="border-radius: 25px;">
-                      <button onclick="showSub()"><p th:text="${category.display}"></p></button>
-                    </div>
-                    <th:block th:each="subcategory: ${subcategories}">
-                      <div id="sub" style="display: none;" th:if="${subcategory.parent} == ${category.name}">
-                        <button><p th:text="${subcategory.display}"></p></button>
-                      </div>
-                    </th:block>
-                    </th:block>
-                  </div>
-              </div>
+    	<div class="card h-100 w-100">
+        	<div class="card-body">
+            	<div class="card" style="width: fit-content; height: fit-content">
+              		<div class="card-header d-flex" style="text-align: left; padding-left: 6px"><h4>Categories</h4></div>
+                		<div class="card-body">
+                  			<th:block th:each="category: ${categories}">
+                    			<div class="addLabel" style="border-radius: 25px;">
+                      				<button onclick="showSub()"><p th:text="${category.display}"></p></button>
+                    			</div>
+                    			<th:block th:each="subcategory: ${subcategories}">
+                     				 <div id="sub" style="display: none;" th:if="${subcategory.parent} == ${category.name}">
+                        				<button><p th:text="${subcategory.display}"></p></button>
+                      				</div>
+                    			</th:block>
+                    		</th:block>
+                  		</div>
+              	</div>
             </div>
         </div>
-    </div>
   </body>
 </html>
