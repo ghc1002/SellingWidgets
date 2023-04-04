@@ -1,6 +1,8 @@
 package edu.sru.cpsc.webshopping.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,16 +41,23 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import edu.sru.cpsc.webshopping.controller.billing.CardTypeController;
 import edu.sru.cpsc.webshopping.controller.billing.PaymentDetailsController;
 import edu.sru.cpsc.webshopping.controller.billing.SellerRatingController;
+import edu.sru.cpsc.webshopping.controller.billing.StateDetailsController;
 import edu.sru.cpsc.webshopping.domain.billing.DirectDepositDetails;
 import edu.sru.cpsc.webshopping.domain.billing.DirectDepositDetails_Form;
 import edu.sru.cpsc.webshopping.domain.billing.PaymentDetails;
 import edu.sru.cpsc.webshopping.domain.billing.PaymentDetails_Form;
 import edu.sru.cpsc.webshopping.domain.billing.Paypal;
 import edu.sru.cpsc.webshopping.domain.billing.Paypal_Form;
+import edu.sru.cpsc.webshopping.domain.billing.ShippingAddress;
+import edu.sru.cpsc.webshopping.domain.billing.ShippingAddress_Form;
+import edu.sru.cpsc.webshopping.domain.billing.StateDetails;
+import edu.sru.cpsc.webshopping.domain.market.Shipping;
 import edu.sru.cpsc.webshopping.domain.market.Transaction;
 import edu.sru.cpsc.webshopping.domain.user.Message;
 import edu.sru.cpsc.webshopping.domain.user.User;
 import edu.sru.cpsc.webshopping.repository.billing.PaymentDetailsRepository;
+import edu.sru.cpsc.webshopping.repository.billing.ShippingAddressRepository;
+import edu.sru.cpsc.webshopping.repository.market.ShippingRepository;
 import edu.sru.cpsc.webshopping.repository.user.UserRepository;
 import edu.sru.cpsc.webshopping.secure.UserDetailsServiceImpl;
 
@@ -65,7 +74,8 @@ enum SUB_MENU {
 	USER_DETAILS,
 	PAYMENT_DETAILS,
 	PAYPAL_DETAILS,
-	DEPOSIT_DETAILS
+	DEPOSIT_DETAILS,
+	SHIPPING_DETAILS
 }
 
 @Controller
@@ -85,11 +95,15 @@ public class UserDetailsController {
 	private String email;
 	private boolean addNew = false;
 	private boolean update = false;
+	private boolean relogin = false;
 	private long id2;
 	private long updateId = -1;
 	private PaymentDetailsRepository payDetRepo;
 	private PaymentDetailsController payDetCont;
 	private SUB_MENU selectedMenu;
+	private ShippingAddressDomainController shippingController;
+	private ShippingAddressRepository shippingRepository;
+	private StateDetailsController stateDetailsController;
 	
 
 
@@ -97,7 +111,8 @@ public class UserDetailsController {
 	public UserDetailsController(UserController userController, UserRepository userRepository, 
 			TransactionController transController, CardTypeController cardController,
 			SellerRatingController ratingController, PaymentDetailsRepository payDetRepo,
-			PaymentDetailsController payDetCont)
+			PaymentDetailsController payDetCont, ShippingAddressDomainController shippingController,
+			ShippingAddressRepository shippingRepository, StateDetailsController stateDetailsController)
 	{
 		this.userController = userController;
 		this.userRepository = userRepository;
@@ -105,6 +120,9 @@ public class UserDetailsController {
 		this.payDetRepo = payDetRepo;
 		this.payDetCont = payDetCont;
 		this.transController = transController;
+		this.shippingController = shippingController;
+		this.shippingRepository = shippingRepository;
+		this.stateDetailsController = stateDetailsController;
 	}
 
 	@RequestMapping("/userDetails")
@@ -157,6 +175,41 @@ public class UserDetailsController {
 		return "userDetails";
 	}
 	
+	@RequestMapping("/userDetails/shippingDetails")
+	public String openShippingDetails(Model model) {
+		loadUserData(model);
+		
+		model.addAttribute("shippingDetails", new ShippingAddress_Form());
+		User user = userController.getCurrently_Logged_In();
+		model.addAttribute("user", user);
+		selectedMenu = SUB_MENU.SHIPPING_DETAILS;
+		model.addAttribute("selectedMenu", selectedMenu);
+		model.addAttribute("states", stateDetailsController.getAllStates());
+		if(user.getDefaultShipping() != null)
+			model.addAttribute("defaultShippingDetails", user.getDefaultShipping());
+		else
+			model.addAttribute("defaultShippingDetails", null);
+		if(user.getShippingDetails() != null && user.getShippingDetails().isEmpty())
+			model.addAttribute("savedShippingDetails", null);
+		else
+			model.addAttribute("savedShippingDetails", shippingController.getShippingDetailsByUser(user));
+		model.addAttribute("addNew", addNew);
+		model.addAttribute("updateId", updateId);
+		model.addAttribute("update", update);
+		model.addAttribute("relogin", relogin);
+		return "userDetails";
+	}
+	
+	@RequestMapping("/addShippingDetails")
+	public String addShippingDetails(Model model)
+	{
+		relogin = true;
+		update = false;
+		addNew = true;
+		updateId = -1;
+		return "redirect:/userDetails/shippingDetails";
+	}
+	
 	@RequestMapping("/addNewCard")
 	public String addNewCard(Model model)
 	{
@@ -166,13 +219,23 @@ public class UserDetailsController {
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
-	@RequestMapping("/goBackToMain")
-	public String backToMain(Model model)
+	@RequestMapping("/goBackToMainPD")
+	public String backToMainPD(Model model)
 	{
 		update = false;
 		addNew = false;
 		updateId = -1;
 		return "redirect:/userDetails/paymentDetails";
+	}
+	
+	@RequestMapping("/goBackToMainSD")
+	public String backToMainSD(Model model)
+	{
+		update = false;
+		addNew = false;
+		updateId = -1;
+		relogin = false;
+		return "redirect:/userDetails/shippingDetails";
 	}
 	
 	@RequestMapping("/updatePaymentDetails/{id}")
@@ -312,7 +375,7 @@ public class UserDetailsController {
 	 */
 	@RequestMapping(value = "/submitDepositDetailsAction", 
 			method = RequestMethod.POST, params="submit")
-	public String sendUpdate(
+	public String sendUpdateDD(
 			@Validated @ModelAttribute("directDepositDetails") DirectDepositDetails_Form details,
 			BindingResult result, Model model) {
 		selectedMenu = SUB_MENU.DEPOSIT_DETAILS;
@@ -394,7 +457,7 @@ public class UserDetailsController {
 	 * @return 	a redirection string pointing to the userDetails page
 	 */
 	@PostMapping(value = "/submitPaymentDetailsAction", params="update")
-	public String sendUpdate(@Validated @ModelAttribute("paymentDetails") PaymentDetails_Form details, BindingResult result, Model model) {
+	public String sendUpdatePD(@Validated @ModelAttribute("paymentDetails") PaymentDetails_Form details, BindingResult result, Model model) {
 		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
 		model.addAttribute("selectedMenu", selectedMenu);
 		PaymentDetails currDetails = payDetCont.getPaymentDetail(id2, model);
@@ -508,7 +571,7 @@ public class UserDetailsController {
 	 * @return
 	 */
 	@RequestMapping(value = "/submitPaypalDetailsAction", method = RequestMethod.POST, params="submit")
-	public String sendUpdate(@Validated @ModelAttribute("paypalDetails") Paypal_Form details, BindingResult result, Model model) {
+	public String sendUpdatePPD(@Validated @ModelAttribute("paypalDetails") Paypal_Form details, BindingResult result, Model model) {
 		selectedMenu = SUB_MENU.PAYPAL_DETAILS;
 		model.addAttribute("selectedMenu", selectedMenu);
 		if (result.hasErrors()) {
@@ -549,6 +612,153 @@ public class UserDetailsController {
 		return "redirect:/userDetails";
 	}
 	
+	@RequestMapping("/updateShippingDetails/{id}")
+	public String updateShipping(@PathVariable("id") long id, Model model)
+	{
+		update = true;
+		this.id2 = id;
+		addNew = false;
+		updateId = id;
+		relogin = true;
+		return "redirect:/userDetails/shippingDetails";
+	}
+	
+	@PostMapping(value = "/submitShippingAddressAction", params="submit")
+	public String createShippingDetails(@Validated @ModelAttribute("shippingDetails") ShippingAddress_Form details, BindingResult result, @RequestParam("stateId") String stateId, Model model) {
+		selectedMenu = SUB_MENU.SHIPPING_DETAILS;
+		model.addAttribute("selectedMenu", selectedMenu);
+		if (result.hasErrors() || shippingAddressConstraintsFailed(details)) {
+			// Add error messages
+			model.addAttribute("shippingError", "Address does not exist");
+			model.addAttribute("shippingDetails", new ShippingAddress_Form());
+			loadUserData(model);
+			return "/userDetails";
+		}
+		ShippingAddress shipping = new ShippingAddress();
+		details.setState(stateDetailsController.getState(stateId));
+		shipping.buildFromForm(details);
+		shipping.setUser(userController.getCurrently_Logged_In());
+		User user = userController.getCurrently_Logged_In();
+		Set<ShippingAddress> SA = user.getShippingDetails();
+		if(SA == null)
+			SA = new HashSet<ShippingAddress>();
+		SA.add(shipping);
+		user.setShippingDetails(SA);
+		shippingController.addShippingAddress(shipping);
+		userRepository.save(user);
+		addNew = false;
+		return "redirect:/userDetails/shippingDetails";
+	}
+	
+	
+	/**
+	 * Creates or updates the PaymentDetails associated with the logged in user
+	 * @param details the filled out PaymentDetails from the page's form
+	 * @return 	a redirection string pointing to the userDetails page
+	 */
+	@PostMapping(value = "/submitShippingAddressAction", params="update")
+	public String sendUpdateSA(@Validated @ModelAttribute("shippingDetail") ShippingAddress_Form details, BindingResult result, @RequestParam("stateId") String stateId, Model model) {
+		selectedMenu = SUB_MENU.SHIPPING_DETAILS;
+		model.addAttribute("selectedMenu", selectedMenu);
+		ShippingAddress currDetails = shippingController.getShippingAddressEntry(id2);
+		if (result.hasErrors() || shippingAddressConstraintsFailed(details)) {
+			// Add error messages
+			model.addAttribute("shippingError", "Address does not exist");
+			model.addAttribute("shippingDetails", new ShippingAddress_Form());
+			loadUserData(model);
+			return "/userDetails";
+		}
+		ShippingAddress shipping = new ShippingAddress();
+		details.setState(stateDetailsController.getState(stateId));
+		shipping.buildFromForm(details);
+		shippingController.updateShippingAddress(shipping, currDetails);
+		User user = userController.getCurrently_Logged_In();		
+		Set<ShippingAddress> sAddress = user.getShippingDetails();
+		List<ShippingAddress> SA = new ArrayList<>(sAddress);
+		for(ShippingAddress address : SA)
+			if(address.getId() == id2)
+				currDetails = address;
+		SA.remove(SA.indexOf(currDetails));
+		SA.add(shippingController.getShippingAddressEntry(id2));
+		Set<ShippingAddress> SA2 = new HashSet<>(SA);
+		user.setShippingDetails(SA2);
+		model.addAttribute("user", user);
+		userRepository.save(user);
+		addNew = false;
+		update = false;
+		updateId = -1;
+		return "redirect:/userDetails/shippingDetails";
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/deleteExistingShippingDetails/{id}")
+	public String deleteExistingShipping(@PathVariable("id") long id) {
+		System.out.println("entered udcont");
+		User user = userController.getCurrently_Logged_In();
+		selectedMenu = SUB_MENU.SHIPPING_DETAILS;
+		int index = -1;
+		System.out.println(id);
+		ShippingAddress currDetails = shippingController.getShippingAddressEntry(id);
+		if(user.getDefaultShipping() != null && currDetails.getId() == user.getDefaultShipping().getId())
+		{
+			System.out.println("detached");
+			entityManager.detach(user.getDefaultShipping());
+			user.setDefaultShipping(null);
+			userRepository.save(user);
+		}
+		List<ShippingAddress> SD = new ArrayList<>(user.getShippingDetails());
+		System.out.println(SD.size());
+		if(SD.size()==1)
+			SD.remove(0);
+		else
+			for(ShippingAddress details : SD)
+			{
+				if(details.getId() == currDetails.getId())
+					index = SD.indexOf(details);
+			}
+		if(index != -1)
+			SD.remove(index);
+		if(SD.isEmpty())
+			user.setShippingDetails(null);
+		else
+			user.setShippingDetails(new HashSet<>(SD));
+		if(transController.findByShippingDetails(currDetails).isEmpty())
+		{
+			shippingController.deleteShippingAddress(currDetails);
+		}
+		currDetails.setUser(null);
+		addNew = false;
+		update = false;
+		updateId = -1;
+		return "redirect:/userDetails/shippingDetails";
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/makeDefaultShippingDetails/{id}")
+	public String makeDefaultShippingDetails(@PathVariable("id") long id) {
+		selectedMenu = SUB_MENU.SHIPPING_DETAILS;
+		User user = userController.getCurrently_Logged_In();
+		ShippingAddress currDetails = shippingController.getShippingAddressEntry(id);
+		user.setDefaultShipping(currDetails);
+		System.out.println(user.getDefaultShipping().getStreetAddress());
+		userRepository.save(user);
+		return "redirect:/userDetails/shippingDetails";
+	}
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@PostMapping(value = "/submitShippingAddressAction", params="loginInfo")
+	public String relogin(@RequestParam("usernameSA") String username, @RequestParam("passwordSA") String password, Model model) {
+		if(!validateLoginInfo(username, password))
+		{
+			model.addAttribute("loginError", "Incorrect Username or Password Entered");
+			return "redirect:/userDetails/shippingDetails";
+		}
+		relogin = false;
+		return "redirect:/userDetails/shippingDetails";
+	}
+	
 	/**
 	 * Checks if the non Spring Validation constraints are met by the passed for
 	 * @param form The PaymentDetails_Form to check
@@ -556,6 +766,26 @@ public class UserDetailsController {
 	 */
 	public boolean paymentDetailsConstraintsFailed(PaymentDetails_Form form) {
 		return cardExpired(form);
+	}
+	
+	public boolean shippingAddressConstraintsFailed(ShippingAddress_Form form) {
+		return addressExists(form);
+	}
+	
+	public boolean addressExists(ShippingAddress_Form shipping)
+	{
+		return false;
+	}
+	
+	public boolean validateLoginInfo(String username, String password)
+	{
+		User user = userController.getCurrently_Logged_In();
+		System.out.println(username.equals(user.getUsername()));
+		System.out.println(passwordEncoder.matches(password, user.getPassword()));
+		if(username.equals(user.getUsername()) && passwordEncoder.matches(password, user.getPassword()))
+			return true;
+		
+		return false;
 	}
 	
 	/**

@@ -35,7 +35,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import edu.sru.cpsc.webshopping.domain.billing.DirectDepositDetails;
 import edu.sru.cpsc.webshopping.domain.billing.PaymentDetails;
 import edu.sru.cpsc.webshopping.domain.billing.Paypal;
+import edu.sru.cpsc.webshopping.domain.billing.ShippingAddress;
 import edu.sru.cpsc.webshopping.domain.market.MarketListing;
+import edu.sru.cpsc.webshopping.domain.market.Shipping;
 import edu.sru.cpsc.webshopping.domain.market.Transaction;
 import edu.sru.cpsc.webshopping.domain.widgets.Widget;
 import edu.sru.cpsc.webshopping.domain.widgets.WidgetImage;
@@ -154,6 +156,9 @@ public class User implements UserDetails {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private Set<PaymentDetails> paymentDetails;
 	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	private Set<ShippingAddress> shippingDetails;
+	
 	@NonNull
 	@OneToOne
 	private Paypal paypal;
@@ -207,6 +212,11 @@ public class User implements UserDetails {
 	@OneToOne
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private PaymentDetails defaultPaymentDetails;
+	
+	@NonNull
+	@OneToOne
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private ShippingAddress defaultShipping;
 	
 	@Override
 	public String getPassword() {
@@ -482,6 +492,23 @@ public class User implements UserDetails {
 
 	public void setDirectDepositDetails(DirectDepositDetails directDepositDetails) {
 		this.directDepositDetails = directDepositDetails;
+	}
+
+
+	public Set<ShippingAddress> getShippingDetails() {
+		return shippingDetails;
+	}
+
+	public void setShippingDetails(Set<ShippingAddress> shippingDetails) {
+		this.shippingDetails = shippingDetails;
+	}
+
+	public ShippingAddress getDefaultShipping() {
+		return defaultShipping;
+	}
+
+	public void setDefaultShipping(ShippingAddress defaultShipping) {
+		this.defaultShipping = defaultShipping;
 	}
 
 	public String getUserImage() {

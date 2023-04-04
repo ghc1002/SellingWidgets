@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.sru.cpsc.webshopping.domain.billing.PaymentDetails;
+import edu.sru.cpsc.webshopping.domain.billing.ShippingAddress;
 import edu.sru.cpsc.webshopping.domain.market.MarketListing;
+import edu.sru.cpsc.webshopping.domain.market.Shipping;
 import edu.sru.cpsc.webshopping.domain.market.Transaction;
 import edu.sru.cpsc.webshopping.domain.user.User;
 import edu.sru.cpsc.webshopping.repository.market.MarketListingRepository;
@@ -80,6 +82,13 @@ public class TransactionController {
 	@GetMapping("find-by-payment-details")
 	public List<Transaction> findByPaymentDetails(@Validated PaymentDetails details) {
 		return repository.findByPaymentDetails(details);
+	}
+	
+	@Transactional
+	@GetMapping("find-by-shipping-details")
+	public List<Transaction> findByShippingDetails(@Validated ShippingAddress details) {
+		Shipping shipping = shippingRepository.findByAddress(details);
+		return repository.findByShippingEntry(shipping);
 	}
 	
 	/**

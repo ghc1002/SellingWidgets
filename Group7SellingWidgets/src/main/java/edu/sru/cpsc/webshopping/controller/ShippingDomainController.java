@@ -7,9 +7,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.sru.cpsc.webshopping.domain.billing.PaymentDetails;
 import edu.sru.cpsc.webshopping.domain.market.Shipping;
+import edu.sru.cpsc.webshopping.domain.user.User;
 import edu.sru.cpsc.webshopping.repository.market.ShippingRepository;
 
 /**
@@ -36,6 +39,21 @@ public class ShippingDomainController {
 		return shippingRepository.findById(shippingId).orElseThrow(() 
 				-> new IllegalArgumentException("Invalid ID passed to getShippingEntry"));
 	}
+	
+	/**
+	 * Deletes the sent shipping details
+	 * @param details
+	 */
+	public void deleteShipping(Shipping details) {
+		System.out.println("entered pdcont");
+		Shipping shippingDetails = entityManager.find(Shipping.class, details.getId());
+		if (shippingDetails != null)
+		{
+			System.out.println(shippingDetails.getId());
+			shippingRepository.deleteById(shippingDetails.getId());
+		}
+	}
+	
 	
 	/**
 	 * Edits the fields of the associated Shipping row to match the values of the passed Shipping item

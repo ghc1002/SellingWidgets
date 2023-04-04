@@ -1,12 +1,16 @@
 package edu.sru.cpsc.webshopping.domain.billing;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.springframework.lang.NonNull;
+
+import edu.sru.cpsc.webshopping.domain.user.User;
 
 
 /**
@@ -30,6 +34,9 @@ public class ShippingAddress {
 	@NonNull
 	@OneToOne
 	private StateDetails state;
+	
+	@ManyToOne(cascade = CascadeType.MERGE)
+	private User user;
 
 	public long getId() {
 		return id;
@@ -71,6 +78,22 @@ public class ShippingAddress {
 		this.state = state;
 	}
 	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	// Sets the non-id fields of the calling PaymentDetails to match that of the passed PaymentDetails
+		public void transferFields(ShippingAddress other) {
+			this.state = other.state;
+			this.postalCode = other.postalCode;
+			this.streetAddress = other.streetAddress;
+			this.recipient = other.recipient;
+		}
+
 	public boolean buildFromForm(ShippingAddress_Form other) {
 		this.recipient = other.getRecipient();
 		this.streetAddress = other.getStreetAddress();
