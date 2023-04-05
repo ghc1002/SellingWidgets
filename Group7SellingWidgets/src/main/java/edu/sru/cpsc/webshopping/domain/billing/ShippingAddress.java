@@ -1,12 +1,16 @@
 package edu.sru.cpsc.webshopping.domain.billing;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.springframework.lang.NonNull;
+
+import edu.sru.cpsc.webshopping.domain.user.User;
 
 
 /**
@@ -25,11 +29,20 @@ public class ShippingAddress {
 	private String streetAddress;
 	
 	@NonNull
+	private String extraLocationInfo;
+	
+	@NonNull
 	private String postalCode;
+	
+	@NonNull
+	private String city;
 	
 	@NonNull
 	@OneToOne
 	private StateDetails state;
+	
+	@ManyToOne(cascade = CascadeType.MERGE)
+	private User user;
 
 	public long getId() {
 		return id;
@@ -55,6 +68,14 @@ public class ShippingAddress {
 		this.streetAddress = streetAddress;
 	}
 
+	public String getExtraLocationInfo() {
+		return extraLocationInfo;
+	}
+
+	public void setExtraLocationInfo(String extraLocationInfo) {
+		this.extraLocationInfo = extraLocationInfo;
+	}
+
 	public String getPostalCode() {
 		return postalCode;
 	}
@@ -71,11 +92,39 @@ public class ShippingAddress {
 		this.state = state;
 	}
 	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+		// Sets the non-id fields of the calling PaymentDetails to match that of the passed PaymentDetails
+		public void transferFields(ShippingAddress other) {
+			this.state = other.state;
+			this.postalCode = other.postalCode;
+			this.streetAddress = other.streetAddress;
+			this.extraLocationInfo = other.extraLocationInfo;
+			this.recipient = other.recipient;
+			this.city = other.city;
+		}
+
 	public boolean buildFromForm(ShippingAddress_Form other) {
 		this.recipient = other.getRecipient();
 		this.streetAddress = other.getStreetAddress();
+		this.extraLocationInfo = other.getExtraLocationInfo();
 		this.postalCode = other.getPostalCode();
 		this.state = other.getState();
+		this.city = other.getCity();
 		return true;
 	}
 }

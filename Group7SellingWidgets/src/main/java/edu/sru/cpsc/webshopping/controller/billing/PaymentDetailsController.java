@@ -105,7 +105,7 @@ public class PaymentDetailsController {
 			return true;
 	}
 	
-	@RequestMapping("/get-payment-detail") 
+	@RequestMapping({"/get-payment-detail/{id}"}) 
 	public PaymentDetails getPaymentDetail(@PathVariable("id") long id, Model model) {
 		PaymentDetails paymentDetails = paymentDetailsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid ID passed to find a user"));
 		return paymentDetails;

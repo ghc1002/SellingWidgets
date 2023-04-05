@@ -9,6 +9,7 @@ import edu.sru.cpsc.webshopping.controller.UserListDomainController;
 import edu.sru.cpsc.webshopping.controller.WidgetController;
 import edu.sru.cpsc.webshopping.controller.WidgetImageController;
 import edu.sru.cpsc.webshopping.controller.billing.SellerRatingController;
+import edu.sru.cpsc.webshopping.domain.billing.ShippingAddress;
 import edu.sru.cpsc.webshopping.domain.market.MarketListing;
 import edu.sru.cpsc.webshopping.domain.market.Transaction;
 import edu.sru.cpsc.webshopping.domain.user.Message;
@@ -72,6 +73,7 @@ public class MarketListingPageController {
   WidgetImageController widgetImageController;
   MessageDomainController msgcontrol;
   EmailController emailController;
+  ConfirmPurchasePageController purchaseController;
   SellerRatingController ratingController;
   UserListDomainController userListController;
   // Repositories passed to ConfirmPurchasePage
@@ -90,10 +92,12 @@ public class MarketListingPageController {
       WidgetController widgetController,
       WidgetImageController widgetImageController,
       SellerRatingController ratingController,
-      UserListDomainController userListController) {
+      UserListDomainController userListController,
+      ConfirmPurchasePageController purchaseController) {
     this.marketListingController = marketListingController;
     this.transController = transController;
     this.userController = userController;
+    this.purchaseController = purchaseController;
     this.shippingPage = shippingPage;
     this.msgcontrol = msgcontrol;
     this.widgetImageController = widgetImageController;
@@ -316,7 +320,7 @@ public class MarketListingPageController {
     // Add shipping entry if user confirms purchase on next page
     purchaseAttempt.setShippingEntry(null);
     model.addAttribute("user", userController.getCurrently_Logged_In());
-    return shippingPage.openConfirmShippingPage(heldListing, purchaseAttempt, model);
+    return this.purchaseController.openConfirmPurchasePage(null, heldListing, purchaseAttempt, model, true);
   }
 
   /**

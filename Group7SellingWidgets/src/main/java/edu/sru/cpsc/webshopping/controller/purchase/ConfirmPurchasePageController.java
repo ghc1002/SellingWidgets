@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.validation.Valid;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -53,6 +54,8 @@ public class ConfirmPurchasePageController {
 	private PaymentDetailsRepository payDetRepository;
 	private ShippingAddress address;
 	private Paypal_Form paypal;
+	@Lazy
+	private PurchaseShippingAddressPageController shippingController;
 	// SQL Controllers
 	private TransactionController transController;
 	private PaymentDetailsController payDetController;
@@ -60,10 +63,13 @@ public class ConfirmPurchasePageController {
 	private UserController userController;
 	private CardTypeController cardController;
 	private UserDetailsController userDetController;
+	private boolean isPersisted;
+	private ShippingAddress selectedAddress;
 	
 	ConfirmPurchasePageController(MarketListingDomainController marketListingController, 
 									UserController userController, TransactionController transController, UserDetailsController userDetController, 
-									CardTypeController cardController, PaymentDetailsController payDetController, PaymentDetailsRepository payDetRepository) {
+									CardTypeController cardController, PaymentDetailsController payDetController, PaymentDetailsRepository payDetRepository,
+									PurchaseShippingAddressPageController shippingController) {
 		this.marketListingController = marketListingController;
 		this.payDetController = payDetController;
 		this.payDetRepository = payDetRepository;
@@ -71,6 +77,7 @@ public class ConfirmPurchasePageController {
 		this.transController = transController;
 		this.cardController = cardController;
 		this.userDetController = userDetController;
+		this.shippingController = shippingController;
 	}
 	
 	/**
@@ -82,9 +89,14 @@ public class ConfirmPurchasePageController {
 	 * @return String for the confirmPurchase page
 	 */
 	@RequestMapping("/confirmPurchase")
-	public String openConfirmPurchasePage(ShippingAddress address, MarketListing prevListing, Transaction purchaseOrder, Model model) {
+	public String openConfirmPurchasePage(ShippingAddress address, MarketListing prevListing, Transaction purchaseOrder, Model model, boolean persisted) {
 		// Setup purchase with total price and profit
-		purchase = purchaseOrder;
+		this.purchase = purchaseOrder;
+		isPersisted = persisted;
+		if(address == null && userController.getCurrently_Logged_In().getDefaultShipping() != null)
+			address = userController.getCurrently_Logged_In().getDefaultShipping();
+		if(address != null)
+		{
 		BigDecimal salesTaxPercentage = address.getState().getSalesTaxRate()
 				.divide(new BigDecimal(100));
 		BigDecimal afterSalesTax = purchase.getTotalPriceBeforeTaxes()
@@ -93,6 +105,7 @@ public class ConfirmPurchasePageController {
 		BigDecimal finalSellerProfit = afterSalesTax.subtract(
 				afterSalesTax.multiply(Transaction.WEBSITE_CUT_PERCENTAGE));
 		purchase.setSellerProfit(finalSellerProfit);
+		}
 		
 		// Prepare a form for verifying the user's payment details
 		details = new PaymentDetails();
@@ -100,6 +113,10 @@ public class ConfirmPurchasePageController {
 		this.address = address;
 		paypal = new Paypal_Form();
 		User user = userController.getCurrently_Logged_In();
+		if(address == null)
+			model.addAttribute("selectedAddress", null);
+		else
+			model.addAttribute("selectedAddress", address);
 		model.addAttribute("purchase", purchase);
 		model.addAttribute("marketListing", prevListing);
 		model.addAttribute("widget", prevListing.getWidgetSold());
@@ -137,7 +154,7 @@ public class ConfirmPurchasePageController {
 		// Test that payment details are valid
 		System.out.println(id);
 		PaymentDetails currDetails = payDetRepository.findById(id).get();
-		if (payDetController.matchExistingCard(existingSecurityCode, currDetails)) {
+		if (payDetController.matchExistingCard(existingSecurityCode, currDetails) && address != null) {
 			// Update market listing to reflect purchase
 			marketListingController.marketListingPurchaseUpdate(prevListing, purchase.getQtyBought());
 			// Creates an unfinished shipping label, to be filled out later by the seller
@@ -147,7 +164,7 @@ public class ConfirmPurchasePageController {
 			shipping.setAddress(address);
 			purchase.setShippingEntry(shipping);
 			purchase.setPaymentDetails(currDetails);
-			transController.addTransaction(purchase);
+			transController.addTransaction(purchase, isPersisted);
 			return "redirect:/homePage";
 		}
 		// Transaction failed - post error
@@ -160,6 +177,8 @@ public class ConfirmPurchasePageController {
 			User user = userController.getCurrently_Logged_In();
 			model.addAttribute("securityCodeErr", "Security code doesn't match current user's saved card");		
 			model.addAttribute("purchase", purchase);
+			if(address == null)
+				model.addAttribute("noAddress", "Please enter a shipping address");
 			model.addAttribute("marketListing", prevListing);
 			model.addAttribute("widget", prevListing.getWidgetSold());
 			model.addAttribute("paymentDetails", details);
@@ -210,7 +229,7 @@ public class ConfirmPurchasePageController {
 			throw new IllegalStateException("Cannot purchase an item when not logged in.");
 		}
 		// Test that payment details are valid
-		if (!paymentDetailsInvalid(paymentDetails) && !result.hasErrors()) {
+		if (!paymentDetailsInvalid(paymentDetails) && !result.hasErrors() && address != null) {
 			// Update market listing to reflect purchase
 			marketListingController.marketListingPurchaseUpdate(prevListing, purchase.getQtyBought());
 			// Creates an unfinished shipping label, to be filled out later by the seller
@@ -229,7 +248,8 @@ public class ConfirmPurchasePageController {
 				currDetails = payDetController.getPaymentDetailsByCardNumberAndExpirationDate(currDetails);
 				System.out.println(currDetails.getId());
 			}
-			transController.addTransaction(purchase);
+			if(transController.getTransaction(purchase.getId()) != null &&  !transController.getTransaction(purchase.getId()).equals(purchase))
+				transController.addTransaction(purchase, isPersisted);
 			return "redirect:/homePage";
 		}
 		// Transaction failed - post error
@@ -246,6 +266,8 @@ public class ConfirmPurchasePageController {
 				model.addAttribute("cardError", "The expiration date is an impossible number of years in the future");
 			
 			User user = userController.getCurrently_Logged_In();
+			if(address == null)
+				model.addAttribute("noAddress", "Please enter a shipping address");
 			model.addAttribute("purchase", purchase);
 			model.addAttribute("marketListing", prevListing);
 			model.addAttribute("widget", prevListing.getWidgetSold());
@@ -300,7 +322,7 @@ public class ConfirmPurchasePageController {
 			shipping.setTransaction(purchase);
 			shipping.setAddress(address);
 			purchase.setShippingEntry(shipping);
-			transController.addTransaction(purchase);
+			transController.addTransaction(purchase, isPersisted);
 			return "redirect:/homePage";
 		}
 		else {
@@ -342,6 +364,11 @@ public class ConfirmPurchasePageController {
 	public String cancelPurchase() {
 		System.out.println("cancel purchase paypal");
 		return "redirect:/viewMarketListing/" + prevListing.getId();
+	}
+	
+	@RequestMapping(value = "/toShipping")
+	public String toShipping(Model model) {
+		return this.shippingController.openConfirmShippingPage(prevListing, purchase, model);
 	}
 	
 	/**
