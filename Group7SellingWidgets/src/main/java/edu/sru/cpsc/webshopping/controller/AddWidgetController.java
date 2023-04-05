@@ -139,6 +139,7 @@ public class AddWidgetController {
 	Set<WidgetImage> listingImages = new HashSet<>();
 	CategoryController categories;
 	SubcategoryController subcategories;
+	FieldsController fields;
 	MarketListing marketListing;
 	private Widget widgetStorage;
 	private String category;
@@ -155,7 +156,7 @@ public class AddWidgetController {
 
 	private final String UPLOAD_DIR = "src/main/resources/static/images/userImages/";
 
-	public AddWidgetController(WidgetRepository widgetRepository, CategoryController categories, SubcategoryController subcategories, ApplianceDryersRepository dryerRepository, WidgetImageRepository widgetImageRepository,
+	public AddWidgetController(WidgetRepository widgetRepository, CategoryController categories, SubcategoryController subcategories, FieldsController fields, ApplianceDryersRepository dryerRepository, WidgetImageRepository widgetImageRepository,
 			ApplianceMicrowaveRepository microwaveRepository, ApplianceRefrigeratorRepository fridgeRepository, 
 			ApplianceWashersRepository washerRepository, ApplianceBlenderRepository blenderRepository, ElectronicsComputersRepository computerRepository, 
 			ElectronicsVideoGamesRepository videoGameRepository, VehicleCarRepository carRepository, 
@@ -166,6 +167,7 @@ public class AddWidgetController {
 	{
 		this.categories = categories;
 		this.subcategories = subcategories;
+		this.fields = fields;
 		this.widgetRepository = widgetRepository;
 		this.applianceRepository = applianceRepository;
 		this.electronicsRepository = electronicsRepository;
@@ -662,6 +664,7 @@ public class AddWidgetController {
 	{
 		carPart = new Vehicle_Car_Parts();
 		model.addAttribute("car_parts", carPart);
+		model.addAttribute("fields", fields.getAllFields());
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "addCarParts";
 	}

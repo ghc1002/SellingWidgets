@@ -15,6 +15,7 @@ public class Subcategory{
 	@NonNull
 	@Column
 	private String parent;
+	private String contract;
 
 	public String getName() {
 		return name;
@@ -37,6 +38,14 @@ public class Subcategory{
 
 	public void setDisplay(String display) {
 		this.display = display;
+	}
+	
+	public String getContract() {
+		return contract;
+	}
+
+	public void setContract(String contract) {
+		this.contract = contract;
 	}
 
 
