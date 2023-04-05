@@ -20,9 +20,16 @@
 				font-size: 12px;
 			}
 			
-			.addLabel:hover{
-				background-color: #D3D3D3;
+			#catbutton{
+				display:flex;
+				background-color:white;
+				border-radius:10px;
 			}
+			a.subcat{
+				text-decoration:none;
+				padding-left: 20px;
+			}
+			
 		</style>
 		<script>
 			function showSub(){
@@ -54,12 +61,12 @@
               		<div class="card-header d-flex" style="text-align: left; padding-left: 6px"><h4>Categories</h4></div>
                 		<div class="card-body">
                   			<th:block th:each="category: ${categories}">
-                    			<div class="addLabel" style="border-radius: 25px;">
-                      				<button onclick="showSub()"><p th:text="${category.display}"></p></button>
+                    			<div class="cat" style="border-radius: 25px;">
+                      				<button id="catbutton" onclick="showSub()"><p th:text="${category.display}" style="margin-bottom: 0rem"></p></button>
                     			</div>
                     			<th:block th:each="subcategory: ${subcategories}">
                      				 <div id="sub" style="display: none;" th:if="${subcategory.parent} == ${category.name}">
-                        				<button><p th:text="${subcategory.display}"></p></button>
+                        				<a class="subcat" th:href="${subcategory.contract}" th:text="${subcategory.display}"></a>
                       				</div>
                     			</th:block>
                     		</th:block>

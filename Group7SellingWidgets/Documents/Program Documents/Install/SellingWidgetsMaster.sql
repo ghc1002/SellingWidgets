@@ -336,6 +336,31 @@ INSERT INTO `electronics_video_games` VALUES ('ps2','Insomniac','good','Ratchet 
 UNLOCK TABLES;
 
 --
+-- Table structure for table `fields`
+--
+
+DROP TABLE IF EXISTS `fields`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `fields` (
+  `name` varchar(255) NOT NULL,
+  `display` varchar(255) NOT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fields`
+--
+
+LOCK TABLES `fields` WRITE;
+/*!40000 ALTER TABLE `fields` DISABLE KEYS */;
+INSERT INTO `fields` VALUES ('name', 'Item Title'), ('description', 'Description'), ('model', 'Model'), ('brand', 'Brand'), ('color', 'Color'), ('madeIn', 'Made In'), ('material', 'Material'), ('warrenty', 'Warranty'), ('condition', 'Condition');
+/*!40000 ALTER TABLE `fields` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
 -- Table structure for table `hibernate_sequence`
 --
 
@@ -705,6 +730,7 @@ CREATE TABLE `subcategory` (
   `name` varchar(255) NOT NULL,
   `parent` varchar(255) DEFAULT NULL,
   `display` varchar(255) NOT NULL,
+  `contract` varchar(255) NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -715,7 +741,7 @@ CREATE TABLE `subcategory` (
 
 LOCK TABLES `subcategory` WRITE;
 /*!40000 ALTER TABLE `subcategory` DISABLE KEYS */;
-INSERT INTO `subcategory` VALUES ('washer', 'appliance', 'Washers'), ('dryer', 'appliance', 'Dryers'), ('microwave', 'appliance', 'Microwaves'), ('fridge', 'appliance', 'Refrigerators'), ('blender', 'appliance', 'Blenders'), ('washer_parts', 'appliance_parts', 'Washer Parts'), ('dryer_parts', 'appliance_parts', 'Dryer Parts'), ('microwave_parts', 'appliance_parts', 'Microwave Parts'), ('fridge_parts', 'appliance_parts', 'Refrigerator Parts'), ('blender_parts', 'appliance_parts', 'Blender Parts'), ('computer', 'electronic', 'Computers'), ('videoGame', 'electronic', 'Video Games'), ('computer_parts', 'electronic_parts', 'Computer Parts'), ('videoGame_parts', 'electronic_parts', 'Video Game Parts'), ('lawnMower', 'lawnCare', 'Lawnmowers'), ('mower_parts', 'lawnCare_parts', 'Lawnmower Parts'), ('car', 'vehicle', 'Vehicles'), ('car_parts', 'vehicle_parts', 'Car Parts');
+INSERT INTO `subcategory` VALUES ('car_parts', 'vehicle_parts', 'Car Parts', 'addCarParts');
 /*!40000 ALTER TABLE `subcategory` ENABLE KEYS */;
 UNLOCK TABLES;
 
