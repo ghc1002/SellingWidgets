@@ -434,105 +434,73 @@ return "messages";
 		return page;
 	}
 
-
-
 	public void setPage(String page) {
 		this.page = page;
 	}
-
-
 
 	public int[] getId() {
 		return id;
 	}
 
-
-
 	public void setId(int[] id) {
 		this.id = id;
 	}
-
-
 
 	public String getPage2() {
 		return page2;
 	}
 
-
-
 	public void setPage2(String page2) {
 		this.page2 = page2;
 	}
 
-
-
 	public Message[] getMailbox() {
 		return mailbox;
 	}
+	
 	public Message getMailboxSingle(int i) {
 		return mailbox[i];
 	}
-
-
 
 	public void setMailbox(Message[] mailbox) {
 		this.mailbox = mailbox;
 	}
 
-
 	public int getPageNumber() {
 		return pageNumber;
 	}
-
-
 
 	public void setPageNumber(int pageNumber) {
 		this.pageNumber = pageNumber;
 	}
 
-
-
 	public Message getTempMessage() {
 		return tempMessage;
 	}
-
-
 
 	public void setTempMessage(Message tempMessage) {
 		this.tempMessage = tempMessage;
 	}
 
-
-
-
-
-
-public boolean getViewMessage() {
-	return this.viewMessage;
-}
+	public boolean getViewMessage() {
+		return this.viewMessage;
+	}
+	
 	public void setViewMessage(boolean viewMessage) {
 		this.viewMessage = viewMessage;
 	}
-
-
 
 	public String getPage3() {
 		return page3;
 	}
 
-
-
 	public void setPage3(String page3) {
 		this.page3 = page3;
 	}
 
-
-
 	public String getPage4() {
 		return page4;
 	}
-
-
 
 	public void setPage4(String page4) {
 		this.page4 = page4;
