@@ -620,6 +620,7 @@ CREATE TABLE `shipping_address` (
   `postal_code` varchar(255) DEFAULT NULL,
   `recipient` varchar(255) DEFAULT NULL,
   `street_address` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
   `state_state_name` varchar(255) DEFAULT NULL,
   `user_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -636,7 +637,7 @@ CREATE TABLE `shipping_address` (
 
 LOCK TABLES `shipping_address` WRITE;
 /*!40000 ALTER TABLE `shipping_address` DISABLE KEYS */;
-INSERT INTO `shipping_address` VALUES (54,'05212','Jacob','152 Street','Arkansas',1),(74,'55442','Jacob','1st Road','Arkansas',NULL),(79,'54667','Jacob','1st Road','Hawaii',NULL),(86,'43415','new user','2nd Road','California',NULL),(91,'12345','fdsa','fdas','Alabama',NULL),(159,'16057','Billy Bob','1 Morrow Way Slippery Rock','Pennsylvania',NULL);
+INSERT INTO `shipping_address` VALUES (54,'05212','Jacob','152 Street','Leads','Arkansas',1),(74,'55442','Jacob','1st Road','Tymle','Arkansas',NULL),(79,'54667','Jacob','1st Road','Letier','Hawaii',NULL),(86,'43415','new user','2nd Road','Wyming','California',NULL),(91,'12345','fdsa','fdas','Zora','Alabama',NULL),(159,'16057','Billy Bob','1 Morrow Way','Slippery Rock','Pennsylvania',NULL);
 /*!40000 ALTER TABLE `shipping_address` ENABLE KEYS */;
 UNLOCK TABLES;
 

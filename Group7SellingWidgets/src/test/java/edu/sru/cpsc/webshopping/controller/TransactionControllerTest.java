@@ -28,7 +28,7 @@ public class TransactionControllerTest {
 	@BeforeAll
 	public static void newTransaction() {
 	
-		Widget.addTransaction(null);
+		Widget.addTransaction(null, null);
 		Widget.addTransaction(null, null);
 		Widget.cancelTransaction(null);
 		Widget.equals(Widget);
@@ -63,7 +63,7 @@ public class TransactionControllerTest {
 		@Test
 		public void addTransaction() {
 			String actual = null;
-			assertsEquals(Widget.addTransaction(null), actual);
+			assertsEquals(Widget.addTransaction(null, true), actual);
 		}
 		@Test
 		public void cancelTransaction() {

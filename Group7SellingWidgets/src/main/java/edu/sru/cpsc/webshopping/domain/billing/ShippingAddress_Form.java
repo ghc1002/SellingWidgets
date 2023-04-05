@@ -19,6 +19,9 @@ public class ShippingAddress_Form {
 	private String postalCode;
 	
 	private StateDetails state;
+	
+	@NotEmpty(message = "The city cannot be empty.")
+	private String city;
 
 	public String getRecipient() {
 		return recipient;
@@ -50,5 +53,13 @@ public class ShippingAddress_Form {
 
 	public void setState(StateDetails selectedState) {
 		this.state = selectedState;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 }

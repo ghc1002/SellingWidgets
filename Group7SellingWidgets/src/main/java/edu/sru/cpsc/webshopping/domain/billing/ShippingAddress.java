@@ -32,6 +32,9 @@ public class ShippingAddress {
 	private String postalCode;
 	
 	@NonNull
+	private String city;
+	
+	@NonNull
 	@OneToOne
 	private StateDetails state;
 	
@@ -86,12 +89,21 @@ public class ShippingAddress {
 		this.user = user;
 	}
 	
-	// Sets the non-id fields of the calling PaymentDetails to match that of the passed PaymentDetails
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+		// Sets the non-id fields of the calling PaymentDetails to match that of the passed PaymentDetails
 		public void transferFields(ShippingAddress other) {
 			this.state = other.state;
 			this.postalCode = other.postalCode;
 			this.streetAddress = other.streetAddress;
 			this.recipient = other.recipient;
+			this.city = other.city;
 		}
 
 	public boolean buildFromForm(ShippingAddress_Form other) {
@@ -99,6 +111,7 @@ public class ShippingAddress {
 		this.streetAddress = other.getStreetAddress();
 		this.postalCode = other.getPostalCode();
 		this.state = other.getState();
+		this.city = other.getCity();
 		return true;
 	}
 }

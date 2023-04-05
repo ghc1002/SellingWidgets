@@ -58,10 +58,9 @@ public class TransactionController {
 	 */
 	@Transactional
 	@PostMapping("add-transaction")
-	public Transaction addTransaction(@Validated Transaction transaction) {
+	public Transaction addTransaction(@Validated Transaction transaction, boolean alreadyPersisted) {
 		MarketListing ml = entityManager.find(MarketListing.class, transaction.getMarketListing().getId());
 		// Shipping entry and the associated address are created at the same time as the Transaction
-		entityManager.persist(transaction.getShippingEntry().getAddress());
 		entityManager.persist(transaction.getShippingEntry());
 		transaction.setMarketListing(ml);
 		return repository.save(transaction);

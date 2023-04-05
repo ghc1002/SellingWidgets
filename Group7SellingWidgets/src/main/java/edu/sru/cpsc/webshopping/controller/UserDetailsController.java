@@ -37,6 +37,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 
 import edu.sru.cpsc.webshopping.controller.billing.CardTypeController;
 import edu.sru.cpsc.webshopping.controller.billing.PaymentDetailsController;
@@ -96,6 +98,7 @@ public class UserDetailsController {
 	private boolean addNew = false;
 	private boolean update = false;
 	private boolean relogin = false;
+	private boolean loginError = false;
 	private long id2;
 	private long updateId = -1;
 	private PaymentDetailsRepository payDetRepo;
@@ -178,7 +181,7 @@ public class UserDetailsController {
 	@RequestMapping("/userDetails/shippingDetails")
 	public String openShippingDetails(Model model) {
 		loadUserData(model);
-		
+		model.addAttribute("loginError", loginError);
 		model.addAttribute("shippingDetails", new ShippingAddress_Form());
 		User user = userController.getCurrently_Logged_In();
 		model.addAttribute("user", user);
@@ -231,6 +234,7 @@ public class UserDetailsController {
 	@RequestMapping("/goBackToMainSD")
 	public String backToMainSD(Model model)
 	{
+		loginError = false;
 		update = false;
 		addNew = false;
 		updateId = -1;
@@ -357,6 +361,7 @@ public class UserDetailsController {
 		creationDate = user.getCreationDate();
 		displayName = user.getDisplayName();
 		email = user.getEmail();
+		model.addAttribute("user", user);
 		model.addAttribute("userName", userName);
 		model.addAttribute("userDescription", userDescription);
 		model.addAttribute("creationDate", creationDate);
@@ -629,8 +634,26 @@ public class UserDetailsController {
 		model.addAttribute("selectedMenu", selectedMenu);
 		if (result.hasErrors() || shippingAddressConstraintsFailed(details)) {
 			// Add error messages
+			User user = userController.getCurrently_Logged_In();
 			model.addAttribute("shippingError", "Address does not exist");
 			model.addAttribute("shippingDetails", new ShippingAddress_Form());
+			model.addAttribute("user", user);
+			model.addAttribute("states", stateDetailsController.getAllStates());
+			if(user.getDefaultShipping() != null)
+				model.addAttribute("defaultShippingDetails", user.getDefaultShipping());
+			else
+				model.addAttribute("defaultShippingDetails", null);
+			if(user.getShippingDetails() != null && user.getShippingDetails().isEmpty())
+				model.addAttribute("savedShippingDetails", null);
+			else
+				model.addAttribute("savedShippingDetails", shippingController.getShippingDetailsByUser(user));
+			for (FieldError error : result.getFieldErrors()) {
+				model.addAttribute(error.getField() + "Err", error.getDefaultMessage());
+			}
+			model.addAttribute("addNew", addNew);
+			model.addAttribute("updateId", updateId);
+			model.addAttribute("update", update);
+			model.addAttribute("relogin", relogin);
 			loadUserData(model);
 			return "/userDetails";
 		}
@@ -663,8 +686,26 @@ public class UserDetailsController {
 		ShippingAddress currDetails = shippingController.getShippingAddressEntry(id2);
 		if (result.hasErrors() || shippingAddressConstraintsFailed(details)) {
 			// Add error messages
+			User user = userController.getCurrently_Logged_In();
 			model.addAttribute("shippingError", "Address does not exist");
 			model.addAttribute("shippingDetails", new ShippingAddress_Form());
+			model.addAttribute("user", user);
+			model.addAttribute("states", stateDetailsController.getAllStates());
+			if(user.getDefaultShipping() != null)
+				model.addAttribute("defaultShippingDetails", user.getDefaultShipping());
+			else
+				model.addAttribute("defaultShippingDetails", null);
+			if(user.getShippingDetails() != null && user.getShippingDetails().isEmpty())
+				model.addAttribute("savedShippingDetails", null);
+			else
+				model.addAttribute("savedShippingDetails", shippingController.getShippingDetailsByUser(user));
+			for (FieldError error : result.getFieldErrors()) {
+				model.addAttribute(error.getField() + "Err", error.getDefaultMessage());
+			}
+			model.addAttribute("addNew", addNew);
+			model.addAttribute("updateId", updateId);
+			model.addAttribute("update", update);
+			model.addAttribute("relogin", relogin);
 			loadUserData(model);
 			return "/userDetails";
 		}
@@ -752,9 +793,10 @@ public class UserDetailsController {
 	public String relogin(@RequestParam("usernameSA") String username, @RequestParam("passwordSA") String password, Model model) {
 		if(!validateLoginInfo(username, password))
 		{
-			model.addAttribute("loginError", "Incorrect Username or Password Entered");
+			loginError = true;
 			return "redirect:/userDetails/shippingDetails";
 		}
+		loginError = false;
 		relogin = false;
 		return "redirect:/userDetails/shippingDetails";
 	}
