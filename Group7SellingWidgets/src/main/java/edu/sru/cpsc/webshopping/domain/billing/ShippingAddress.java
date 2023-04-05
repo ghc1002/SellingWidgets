@@ -29,6 +29,9 @@ public class ShippingAddress {
 	private String streetAddress;
 	
 	@NonNull
+	private String extraLocationInfo;
+	
+	@NonNull
 	private String postalCode;
 	
 	@NonNull
@@ -63,6 +66,14 @@ public class ShippingAddress {
 
 	public void setStreetAddress(String streetAddress) {
 		this.streetAddress = streetAddress;
+	}
+
+	public String getExtraLocationInfo() {
+		return extraLocationInfo;
+	}
+
+	public void setExtraLocationInfo(String extraLocationInfo) {
+		this.extraLocationInfo = extraLocationInfo;
 	}
 
 	public String getPostalCode() {
@@ -102,6 +113,7 @@ public class ShippingAddress {
 			this.state = other.state;
 			this.postalCode = other.postalCode;
 			this.streetAddress = other.streetAddress;
+			this.extraLocationInfo = other.extraLocationInfo;
 			this.recipient = other.recipient;
 			this.city = other.city;
 		}
@@ -109,6 +121,7 @@ public class ShippingAddress {
 	public boolean buildFromForm(ShippingAddress_Form other) {
 		this.recipient = other.getRecipient();
 		this.streetAddress = other.getStreetAddress();
+		this.extraLocationInfo = other.getExtraLocationInfo();
 		this.postalCode = other.getPostalCode();
 		this.state = other.getState();
 		this.city = other.getCity();

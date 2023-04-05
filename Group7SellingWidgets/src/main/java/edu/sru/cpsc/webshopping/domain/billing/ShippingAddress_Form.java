@@ -15,6 +15,8 @@ public class ShippingAddress_Form {
 	@NotEmpty(message = "Street Address cannot be empty.")
 	private String streetAddress;
 	
+	private String extraLocationInfo;
+	
 	@Size(min = 5, max = 5, message = "The Postal Code must have five numbers")
 	private String postalCode;
 	
@@ -37,6 +39,14 @@ public class ShippingAddress_Form {
 
 	public void setStreetAddress(String streetAddress) {
 		this.streetAddress = streetAddress;
+	}
+
+	public String getExtraLocationInfo() {
+		return extraLocationInfo;
+	}
+
+	public void setExtraLocationInfo(String extraLocationInfo) {
+		this.extraLocationInfo = extraLocationInfo;
 	}
 
 	public String getPostalCode() {

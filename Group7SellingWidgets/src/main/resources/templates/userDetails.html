@@ -442,6 +442,12 @@
 											<p th:if="${streetAddressErr != null}" th:text="${streetAddressErr}"></p></td>
 									</tr>
 									<tr>
+										<td colspan="3" style="background-color: #89CFF0"><label for="extraLocationInfo" class="form-label">Apt, suite, unit, building, floor, etc.</label></td>
+									</tr>
+									<tr>
+										<td colspan="3"><input type="text" th:field="*{extraLocationInfo}" class="form-control"></input></td>
+									</tr>
+									<tr>
 										<td style="background-color: #89CFF0"><label for="city" class="form-label">City</label></td>
 										<td style="background-color: #89CFF0"><label for="state" class="form-label">State</label></td>
 										<td style="background-color: #89CFF0"><label for="postalCode" class="form-label">Postal Code</label></td>
