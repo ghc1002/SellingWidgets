@@ -53,6 +53,10 @@ public class PurchaseShippingAddressPageController {
 	private ShippingAddressDomainController shippingController;
 	private boolean relogin = true;
 	private boolean loginEr = false;
+	private boolean toShipping = true;
+	private boolean allSelected = false;
+	private PaymentDetails details;
+	private boolean modifyPayment = false;
 	private ShippingAddressRepository addressRepository;
 	
 	public PurchaseShippingAddressPageController(StateDetailsController stateDetailsController,
@@ -77,18 +81,28 @@ public class PurchaseShippingAddressPageController {
 	 * @return the confirmShippingAddressPage page
 	 */
 	@RequestMapping("/confirmShipping")
-	public String openConfirmShippingPage(MarketListing prevListing, Transaction purchaseOrder, Model model) {
+	public String openConfirmShippingPage(Boolean relogin, MarketListing prevListing, Transaction purchaseOrder, PaymentDetails details, Model model) {
 		System.out.println("shipping test");
+		if(relogin != null)
+			this.relogin = relogin;
+		if(details != null)
+			this.details = details;
 		if(purchaseOrder.getTotalPriceBeforeTaxes() != null)
 			this.purchaseOrder = purchaseOrder;
 		if(prevListing.getPricePerItem() != null)
 			this.prevListing = prevListing;
-		System.out.println(purchaseOrder.toString() + " atmostphere");
 		model.addAttribute("shippingAddress", new ShippingAddress_Form());
 		User user = userController.getCurrently_Logged_In();
 		model.addAttribute("user", user);
-		model.addAttribute("relogin", relogin);
+		model.addAttribute("selectedPayment", details);
+		model.addAttribute("allSelected", allSelected);
+		model.addAttribute("marketListing", this.prevListing);
+		model.addAttribute("widget", this.prevListing.getWidgetSold());
+		model.addAttribute("relogin", this.relogin);
+		model.addAttribute("purchase", this.purchaseOrder);
 		model.addAttribute("loginEr", loginEr);
+		model.addAttribute("modifyPayment", modifyPayment);
+		model.addAttribute("toShipping", toShipping);
 		model.addAttribute("states", stateDetailsController.getAllStates());
 		if(user.getDefaultShipping() != null)
 			model.addAttribute("defaultShippingDetails", user.getDefaultShipping());
@@ -98,7 +112,7 @@ public class PurchaseShippingAddressPageController {
 			model.addAttribute("savedShippingDetails", null);
 		else
 			model.addAttribute("savedShippingDetails", shippingController.getShippingDetailsByUser(user));
-		return "confirmShippingAddressPage";
+		return "confirmPurchase";
 	}
 	
 	/**
@@ -113,13 +127,20 @@ public class PurchaseShippingAddressPageController {
 	public String submitAddress(@Validated @ModelAttribute("shippingAddress") ShippingAddress_Form address, BindingResult result, @RequestParam("stateId") String stateId, Model model) {
 		// If there are errors, then refresh the page
 		if (result.hasErrors()) {
-			model.addAttribute("shippingAddress", shippingAddress);
+			model.addAttribute("shippingAddress", new ShippingAddress_Form());
 			model.addAttribute("states", states);	
 			// Add errors to model
 			User user = userController.getCurrently_Logged_In();
 			model.addAttribute("user", user);
 			model.addAttribute("relogin", relogin);
 			model.addAttribute("loginEr", loginEr);
+			model.addAttribute("modifyPayment", modifyPayment);
+			model.addAttribute("allSelected", allSelected);
+			model.addAttribute("purchase", purchaseOrder);
+			model.addAttribute("marketListing", this.prevListing);
+			model.addAttribute("toShipping", toShipping);
+			model.addAttribute("widget", this.prevListing.getWidgetSold());
+			model.addAttribute("selectedPayment", details);
 			model.addAttribute("states", stateDetailsController.getAllStates());
 			if(user.getDefaultShipping() != null)
 				model.addAttribute("defaultShippingDetails", user.getDefaultShipping());
@@ -132,10 +153,8 @@ public class PurchaseShippingAddressPageController {
 			for (FieldError error : result.getFieldErrors()) {
 				model.addAttribute(error.getField() + "Err", error.getDefaultMessage());
 			}
-			return "confirmShippingAddressPage";
+			return "confirmPurchase";
 		}
-		System.out.println(purchaseOrder.getTotalPriceBeforeTaxes()+ "failure");
-		System.out.println(stateId);
 		StateDetails selectedState = stateDetailsController.getState(stateId);
 		address.setState(selectedState);
 		System.out.println(address.getState().getStateName());
@@ -145,20 +164,35 @@ public class PurchaseShippingAddressPageController {
 		shippingController.addShippingAddress(validatedAddress);
 		relogin = false;
 		this.persistAddress(validatedAddress);
-		return this.purchasePageController.openConfirmPurchasePage(validatedAddress, prevListing, purchaseOrder, model, false);
+		return this.purchasePageController.initializePurchasePage(validatedAddress, prevListing, purchaseOrder, model);
 	}
 	
+	/**
+	 * If the user selects a saved address then set that as the shipping address
+	 * and send it to the purchasing page
+	 * @param id
+	 * @param result
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/confirmShipping/existingAddress", method = RequestMethod.POST, params = "submit")
 	public String submitExistingAddress(
 			@Validated @ModelAttribute("selected_shipping_details") Long id, BindingResult result, Model model) {
 		// If there are errors, then refresh the page
 		if (result.hasErrors()) {
-			model.addAttribute("shippingAddress", shippingAddress);
+			model.addAttribute("shippingAddress", new ShippingAddress_Form());
 			model.addAttribute("states", states);	
 			User user = userController.getCurrently_Logged_In();
 			model.addAttribute("user", user);
+			model.addAttribute("allSelected", allSelected);
 			model.addAttribute("relogin", relogin);
 			model.addAttribute("loginEr", loginEr);
+			model.addAttribute("modifyPayment", modifyPayment);
+			model.addAttribute("purchase", purchaseOrder);
+			model.addAttribute("marketListing", this.prevListing);
+			model.addAttribute("toShipping", toShipping);
+			model.addAttribute("widget", this.prevListing.getWidgetSold());
+			model.addAttribute("selectedPayment", details);
 			model.addAttribute("states", stateDetailsController.getAllStates());
 			if(user.getDefaultShipping() != null)
 				model.addAttribute("defaultShippingDetails", user.getDefaultShipping());
@@ -172,18 +206,11 @@ public class PurchaseShippingAddressPageController {
 			for (FieldError error : result.getFieldErrors()) {
 				model.addAttribute(error.getField() + "Err", error.getDefaultMessage());
 			}
-			return "confirmShippingAddressPage";
+			return "confirmPurchase";
 		}
-		ShippingAddress validatedAddress = shippingController.getShippingAddressEntry(id);
-		return this.purchasePageController.openConfirmPurchasePage(validatedAddress, prevListing, purchaseOrder, model, true);
-	}
-	
-	@RequestMapping(value = "/confirmShipping/existingAddress", method = RequestMethod.POST, params = "cancel")
-	public String cancelExistingAddress(
-			) {
 		relogin = true;
-		loginEr = false;
-		return "redirect:/viewMarketListing/" + prevListing.getId();
+		ShippingAddress validatedAddress = shippingController.getShippingAddressEntry(id);
+		return this.purchasePageController.initializePurchasePage(validatedAddress, prevListing, purchaseOrder, model);
 	}
 	
 	/**
@@ -201,9 +228,13 @@ public class PurchaseShippingAddressPageController {
 			Model model) {
 		relogin = true;
 		loginEr = false;
-		return "redirect:/viewMarketListing/" + prevListing.getId();
+		return this.purchasePageController.initializePurchasePage(userController.getCurrently_Logged_In().getDefaultShipping(), prevListing, purchaseOrder, model);
 	}
 	
+	/**
+	 * if the user selects back this will bring them back to the confirm shipping main menu
+	 * @return
+	 */
 	@RequestMapping(value = "/confirmShipping/submitAddress/back")
 	public String backAddress() {
 		relogin = true;
@@ -214,6 +245,15 @@ public class PurchaseShippingAddressPageController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	
+	/**
+	 * If a user tries to add a new address this will need to verify their identity using their login credentials
+	 * this will take them and send them to be verified. Works as the logic
+	 * @param username
+	 * @param password
+	 * @param model
+	 * @return
+	 */
 	@PostMapping(value = "/confirmShipping/submitAddress", params="loginInfo")
 	public String relogin(@RequestParam("usernameSA") String username, @RequestParam("passwordSA") String password, Model model) {
 		if(!validateLoginInfo(username, password))
@@ -233,6 +273,12 @@ public class PurchaseShippingAddressPageController {
 		addressRepository.save(address);
 	}
 	
+	/**
+	 * verifies a users login credentials when they try to add a new address for shipping
+	 * @param username
+	 * @param password
+	 * @return
+	 */
 	public boolean validateLoginInfo(String username, String password)
 	{
 		User user = userController.getCurrently_Logged_In();

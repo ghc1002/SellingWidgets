@@ -20,19 +20,23 @@ import edu.sru.cpsc.webshopping.repository.market.ShippingRepository;
 
 @RestController
 public class ShippingAddressDomainController {
-
+		
+		private UserController userController;
 		private ShippingAddressRepository shippingAddressRepository;
 		@PersistenceContext
 		private EntityManager entityManager;
 		
-		public ShippingAddressDomainController(ShippingAddressRepository shippingAddressRepository) {
+		public ShippingAddressDomainController(ShippingAddressRepository shippingAddressRepository,
+												UserController userController) {
 			this.shippingAddressRepository = shippingAddressRepository;
+			this.userController = userController;
 		}
 		
 		@Transactional
 		public void addShippingAddress(@Validated ShippingAddress details) {
 			System.out.println("add shipping details database function called");
-		
+				if(userController.getCurrently_Logged_In().getDefaultShipping() == null)
+					userController.getCurrently_Logged_In().setDefaultShipping(details);
 				entityManager.persist(details);
 			
 		}

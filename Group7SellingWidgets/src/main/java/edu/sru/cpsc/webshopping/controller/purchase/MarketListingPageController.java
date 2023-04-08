@@ -310,6 +310,7 @@ public class MarketListingPageController {
       reloadModel(model);
       return "viewMarketListing";
     }
+    User user = userController.getCurrently_Logged_In();
     Transaction purchaseAttempt = new Transaction();
     purchaseAttempt.setBuyer(userController.getCurrently_Logged_In());
     purchaseAttempt.setSeller(heldListing.getSeller());
@@ -320,7 +321,7 @@ public class MarketListingPageController {
     // Add shipping entry if user confirms purchase on next page
     purchaseAttempt.setShippingEntry(null);
     model.addAttribute("user", userController.getCurrently_Logged_In());
-    return this.purchaseController.openConfirmPurchasePage(null, heldListing, purchaseAttempt, model, true);
+    return this.purchaseController.initializePurchasePage(user.getDefaultShipping(), heldListing, purchaseAttempt, model);
   }
 
   /**
