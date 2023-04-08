@@ -1759,7 +1759,7 @@ public class EmployeeController {
   }
 
   @RequestMapping({"/viewWidgetListing"})
-  public String searchOneListing(@RequestParam("name") String name, Model model) {
+  public String searchOneListing(@RequestParam("name") String name, @RequestParam("filterSearch") String filter, Model model) {
     getAllMarketListings().clear();
     getAllWidgets().clear();
     getAllSellers().clear();
@@ -1780,8 +1780,20 @@ public class EmployeeController {
     for (int i = 0; i < allWidgetNames.length; i++) {
       allWidgetNames[i] = getAllWidgets().get(i).getName();
     }
+    
+    String[] allWidgetDesc = new String[getAllWidgets().size()];
+    for (int i = 0; i < allWidgetDesc.length; i++) {
+      allWidgetDesc[i] = getAllWidgets().get(i).getDescription();
+    }
+    
+    String[] allWidgetCate = new String[getAllWidgets().size()];
+    for (int i = 0; i < allWidgetCate.length; i++) {
+      allWidgetCate[i] = getAllWidgets().get(i).getCategory();
+    }
 
     model.addAttribute("widgetNames", allWidgetNames);
+    model.addAttribute("widgetDesc", allWidgetDesc);
+    model.addAttribute("widgetCate", allWidgetCate);
     User user = userController.getCurrently_Logged_In();
     setMasterPage("query");
     model.addAttribute("masterPage", getMasterPage());
@@ -1804,16 +1816,32 @@ public class EmployeeController {
     model.addAttribute("user", user);
     model.addAttribute("page", page);
     model.addAttribute("roleList", roleList);
-
+    
+    
     int count = 0;
-    for (int i = 0; i < getAllWidgets().size(); i++) {
-      if (getAllWidgets().get(i).getName().contains(name)) {
-        count++;
-        System.out.println("count first" + count);
-      }
-    }
-    if (count == 0) {
-      System.out.println("count 2nd" + count);
+    if(filter.equals("name")) {
+	    for (int i = 0; i < getAllWidgets().size(); i++) {
+	      if (getAllWidgets().get(i).getName().contains(name)) {
+	        count++;
+	        System.out.println("count first" + count);
+	      }
+	    }
+    }else if(filter.equals("description")) {
+    	for (int i = 0; i < getAllWidgets().size(); i++) {
+  	      if (getAllWidgets().get(i).getDescription().contains(name)) {
+  	        count++;
+  	        System.out.println("count first" + count);
+  	      }
+  	    }
+    }else if(filter.equals("category")) {
+    	for (int i = 0; i < getAllWidgets().size(); i++) {
+  	      if (getAllWidgets().get(i).getCategory().contains(name)) {
+  	        count++;
+  	        System.out.println("count first" + count);
+  	      }
+  	    }
+    }else if(count == 0){
+      System.out.println("count 2nd" + count + filter + name);
       setPage2("widgetSearchFailed");
       model.addAttribute("user", user);
       model.addAttribute("page2", page2);
@@ -1829,18 +1857,46 @@ public class EmployeeController {
     getSearchedUserListings().clear();
     getSearchedUserWidgets().clear();
     getSearchedUserSellers().clear();
-
-    int j = 0;
-    for (int i = 0; i < searchedWidgets.length; i++) {
-      if (searchedWidgets[i].getName().contains(name)) {
-        System.out.println("count" + count);
-
-        getSearchedUserListings().add(market.getListingByWidget(searchedWidgets[i]));
-        getSearchedUserWidgets().add(searchedWidgets[i]);
-        getSearchedUserSellers().add(getSearchedUserListings().get(j).getSeller());
-        j++;
-        count++;
-      }
+    
+    if(filter.equals("name")) {
+	    int j = 0;
+	    for (int i = 0; i < searchedWidgets.length; i++) {
+	      if (searchedWidgets[i].getName().contains(name)) {
+	        System.out.println("count" + count);
+	
+	        getSearchedUserListings().add(market.getListingByWidget(searchedWidgets[i]));
+	        getSearchedUserWidgets().add(searchedWidgets[i]);
+	        getSearchedUserSellers().add(getSearchedUserListings().get(j).getSeller());
+	        j++;
+	        count++;
+	      }
+	    }
+    }else if(filter.equals("description")) {
+    	int j = 0;
+	    for (int i = 0; i < searchedWidgets.length; i++) {
+	      if (searchedWidgets[i].getDescription().contains(name)) {
+	        System.out.println("count" + count);
+	
+	        getSearchedUserListings().add(market.getListingByWidget(searchedWidgets[i]));
+	        getSearchedUserWidgets().add(searchedWidgets[i]);
+	        getSearchedUserSellers().add(getSearchedUserListings().get(j).getSeller());
+	        j++;
+	        count++;
+	      }
+	    }
+    }else if(filter.equals("category")) {
+    	int j = 0;
+	    for (int i = 0; i < searchedWidgets.length; i++) {
+	      if (searchedWidgets[i].getCategory().contains(name)) {
+	        System.out.println("count" + count);
+	
+	        getSearchedUserListings().add(market.getListingByWidget(searchedWidgets[i]));
+	        getSearchedUserWidgets().add(searchedWidgets[i]);
+	        getSearchedUserSellers().add(getSearchedUserListings().get(j).getSeller());
+	        j++;
+	        count++;
+	      }
+	    }
     }
     count = 0;
     setPage2("widget");

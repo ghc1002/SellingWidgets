@@ -521,9 +521,23 @@
               							<td colspan="5" style="background-color: #D3D3D3; text-align: center;"><h2>Search Widgets</h2></td>
               						</tr>
 									<tr>
-      									<td colspan="1">Search By Name:</td>
+      									<td colspan="1">Search By:
+      										<div>
+	      										<input type="radio" value="name" name="filterSearch" id="name" checked>
+	      										<label for="name">Name</label>
+	      									</div>
+	      									<div>
+	      										<input type="radio" value="description" name="filterSearch" id="description">
+	      										<label for="description">Description</label>
+	      									</div>
+	      									<div>
+	      										<input type="radio" value="category" name="filterSearch" id="category">
+	      										<label for="category">Category</label>
+      										</div>
+      									</td>
       									<td colspan="2"><input type="text" id="widgetNameInput" name="name"></td>
-           								<td colspan="2"><input type="submit" style="height:75%; text-align: center; " class="buttonSearchUser" value="Search"></td>	
+           								<td colspan="2"><input type="submit" style="height:75%; text-align: center; " class="buttonSearchUser" value="Search">
+           								<a th:href="@{/searchWidgetButton}">Reset</a></td>	
       								</tr>
       								<tr>
             							<td colspan="4" style="background-color: #D3D3D3; text-align: center;"><h4>Widget</h4></td>
