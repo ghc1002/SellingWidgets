@@ -12,6 +12,15 @@
 	  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 		<title>Confirm Purchase</title>
 		<style>
+		input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+  
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
 			#page {
 				display: flex;
 				height: calc(100vh - 60px);
@@ -44,27 +53,12 @@
 		
 		<div id="page">
 		
-			<div class="card mx-auto h-100 w-100">
+			<div style="width:33%;" class="card mx-auto h-auto mw-30">
 				<div class="card-header d-flex justify-content-center">
 					<h1>Confirm Purchase</h1>
 				</div>
-				<div class="d-flex justify-content-center">
-					<h2>Shipping Address</h2>
-				</div>
-				<div style="margin-bottom: 4px" th:if="${selectedAddress != null}" class="d-flex justify-content-center">
-					<h3 th:inline="text">Address:&nbsp[[${selectedAddress.streetAddress}]],&nbsp[[${selectedAddress.city}]],&nbsp[[${selectedAddress.state.stateName}]],&nbsp[[${selectedAddress.postalCode}]]</h3>
-				</div>
-				<th:block th:if="${selectedAddress == null}">
-					<h2 th:text="${noAddress}"></h2>
-					<h2 class="d-flex justify-content-center"><a class="btn btn-lg btn-success" th:href="@{/toShipping}">Add</a></h2>
-				</th:block>
-				<th:block th:unless="${selectedAddress == null}">
-					<h2 class="d-flex justify-content-center"><a class="btn btn-lg btn-success" th:href="@{/toShipping}">Change</a></h2>
-				</th:block>
-				<div th:if="${errMessage != null}" th:text="${errMessage}" class="alert alert-danger d-flex justify-content-center my-3">
-				</div> 
 				<div class="card-body">
-					<div class="my-2">
+				<div class="my-2">
 						<div class="d-flex justify-content-center">
 							<h2>Purchase Details</h2>
 						</div>
@@ -83,15 +77,61 @@
 							</ul>
 						</div>
 					</div>
+					<hr>
+				<div class="d-flex justify-content-center">
+					<h2>Shipping Address</h2>
+				</div>
+				<div style="margin-bottom: 4px" th:if="${selectedAddress != null}" class="d-flex justify-content-center">
+					<h3 th:inline="text">Address:&nbsp[[${selectedAddress.streetAddress}]],&nbsp[[${selectedAddress.city}]],&nbsp[[${selectedAddress.state.stateName}]],&nbsp[[${selectedAddress.postalCode}]]</h3>
+				</div>
+				<div th:unless="${selectedAddress !=null}" class="d-flex justify-content-center">
+					<h3>A Shipping Address Must Be Added</h3>
+				</div>
+				<th:block th:if="${toShipping == false}">
+				<th:block th:if="${selectedAddress == null}">
+					<h2 class="d-flex justify-content-center"><a class="btn btn-lg btn-success" th:href="@{/toShipping}">Add</a></h2>
+				</th:block>
+				<th:block th:unless="${selectedAddress == null}">
+					<h2 class="d-flex justify-content-center"><a class="btn btn-lg btn-success" th:href="@{/toShipping}">Change</a></h2>
+				</th:block>
+				</th:block>
+				
+				<th:block th:if="${toShipping}">
+					<div th:insert="confirmShippingAddressPage :: confirmShippingAddressPage"></div>
+				</th:block>
+				<hr>
+				<div th:if="${errMessage != null}" th:text="${errMessage}" class="alert alert-danger d-flex justify-content-center my-3">
+				</div> 
+				
+				<div th:if="${!modifyPayment}" class="d-flex justify-content-center">
+					<h2>Payment Details</h2>
+				</div>
+				
+				<div th:if="${toShipping and !modifyPayment  or allSelected and !modifyPayment}">
+					<div style="margin-bottom: 4px" th:if="${selectedPayment != null}" class="d-flex justify-content-center">
+						<h3 th:inline="text">&nbsp[[${selectedPayment.cardType}]]&nbspEnding In:&nbsp[[${selectedPayment.last4Digits}]]</h3>
+					</div>
+					<div th:unless="${selectedPayment != null}">
+						<h3>No Payment Details to Display</h3>
+					</div>
+					<th:block th:if="${selectedPayment == null}">
+					<h2 class="d-flex justify-content-center"><a class="btn btn-lg btn-success" th:href="@{/modifyPayment}">Add</a></h2>
+					</th:block>
+					<th:block th:unless="${selectedPayment == null}">
+						<h2 class="d-flex justify-content-center"><a class="btn btn-lg btn-success" th:href="@{/modifyPayment}">Change</a></h2>
+					</th:block>
+				</div>
+				
+				<div th:if="${toShipping == false and allSelected == false or modifyPayment}">
 					<!-- used if the user has existing card details and wishes to use them -->
 					<div class="accordion" id="payment-methods">
-					<div class="accordion-item" th:if="${defaultDetails != null && selectedDetails == null}">
+					<div class="accordion-item" th:if="${allDetails != null}">
 							<h2 class="accordion-header">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#existingAccordion">
 									Pay via Existing Credit Card
 								</button>
 							</h2>
-							<div id="existingAccordion" class="accordion-collapse collapse" th:classappend="${useThis == null ? 'show' : ''}" data-bs-parent="#payment-methods">
+							<div id="existingAccordion" class="accordion-collapse collapse" th:classappend="${allDetails != null && useThis == null ? 'show' : ''}" data-bs-parent="#payment-methods">
 								<div class="accordion-body">
 									<div class="d-flex justify-content-center">
 									<h2>Current Payment Details</h2>
@@ -107,7 +147,7 @@
 								</li>
 								<th:block th:if="${defaultDetails == null}">
 								<li th:each="detail: ${allDetails}" class="d-flex justify-content-center">
-									<input type="radio" th:id="${detail.id}" name="selected_payment_details" th:value="${detail.id}"></input>
+									<input type="radio" th:id="${detail.id}" name="selected_payment_details" th:value="${detail.id}" th:checked="${defaultDetails == null}"></input>
 									<label style="font-size: 1.17em; font-weight: bolder;" th:for="${detail.id}" th:inline="text">
 									&nbsp[[${detail.cardType}]]&nbspEnding In:&nbsp[[${detail.last4Digits}]]							
 									</label>
@@ -131,14 +171,13 @@
 											<div class="mb-3 col-sm-4 justify-content-center">
 												<label for="securityCode" class="form-label ">Security Code for Confirmation</label>
 												<input type="number" class="form-control" name="existingSecurityCode" id="securityCode" th:value="${existingSecurityCode}"></input>
-												<p th:text="${securityCodeErr}" th:if="${securityCodeErr != null}"></p>
+												<p th:text="${exSecurityCodeErr}" th:if="${exSecurityCodeErr != null}"></p>
 											</div>
 
 										<!-- Purchase decisions -->
 										<div class="d-flex justify-content-center mb-3">
-											<button class="btn btn-danger btn-lg" style="margin-right: 15px;" type="submit" name="cancel">Cancel</button>
 											<button class="btn btn-primary btn-lg"
-												 type="submit" name="submit">Purchase Item</button>
+												 type="submit" name="submit">Confirm</button>
 											
 										</div>
 									</form>
@@ -151,58 +190,67 @@
 									Pay via Credit Card
 								</button>
 							</h2>
-							<div id="creditAccordion" class="accordion-collapse collapse" th:classappend="${defaultDetails == null || useThis != null ? 'show' : ''}" data-bs-parent="#payment-methods">
+							<div id="creditAccordion" class="accordion-collapse collapse" th:classappend="${allDetails == null || useThis != null ? 'show' : ''}" data-bs-parent="#payment-methods">
 								<div class="accordion-body">
 									<form method="post" action="#" class="row g-3 d-flex justify-content-center my-2"
 										th:action="@{/confirmPurchase/submitPurchase}"  th:object="${paymentDetails}">
-										<div class="d-flex justify-content-center ">
-											<h2>Payment Method</h2>
-										</div>
-										<div class="row">
-											<div class="mb-3 col-sm-4">
-												<label for="cardType" class="form-label">Card Type</label>
-												<select class="form-select" id="cardType" name="cardType">
+									<table style="width:20vw; justify-content:center; margin-left:auto; margin-right:auto;" class="uniTableForm">
+										<thead>
+											<tr>
+												<td colspan="3" style="background-color: #D3D3D3;"><h2>Payment Method</h2></td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan="3" style="background-color: #89CFF0"><label for="cardType" class="form-label">Card Type</label></td>
+											</tr>
+											<tr>
+												<td colspan="3"><select class="form-select" id="cardType" name="cardType">
 													<option th:each="type : ${cardTypes}"
 														th:value="${type.cardType}" th:text="${type.cardType}">
 													</option>
-												</select>
-												<p th:if="${cardTypeErr != ''}" th:text="${cardTypeErr}">
-											</div>
-											<div class="mb-3 col-sm-4">
-												<label for="cardholderName" class="form-label">Cardholder Name</label>
-												<input type="text" class="form-control" th:field="*{cardholderName}"></input>
-												<p th:text="${cardholderNameErr}" th:if="${cardholderNameErr != null}"></p>
-											</div>
-											<div class="mb-3 col-sm-4">
-												<label for="cardNumber" class="form-label">Card Number</label>
-												<input type="number" class="form-control" th:field="*{cardNumber}"></input>
+												</select></td>
+											</tr>
+											<tr>
+												<td colspan="3" style="background-color: #89CFF0"><label for="cardholderName" class="form-label">Cardholder Name</label></td>
+											</tr>
+											<tr>
+												<td colspan="3"><input type="text" class="form-control" th:field="*{cardholderName}"></input>
+											</td>
+											</tr>
+											<tr>
+												<td colspan="3" style="background-color: #89CFF0"><label for="cardNumber" class="form-label">Card Number</label></td>
+											</tr>
+											<tr>
+												<td colspan="3"><input type="number" class="form-control" th:field="*{cardNumber}"></input>
 												<p th:text="${cardNumberErr}" th:if="${cardNumberErr != null}"></p>
-											</div>
-										</div>
-										<div class="row">
-											<div class="mb-3 col-sm-4">
-												<label for="expirationDate" class="form-label">Expiration Date</label>
-												<input type="date" class="form-control" th:field="*{expirationDate}"></input>
+											</td>
+											</tr>
+											<tr>
+												<td style="background-color: #89CFF0"><label for="expirationDate" class="form-label">Expiration Date</label></td>
+												<td style="background-color: #89CFF0"><label for="securityCode" class="form-label">Security Code</label></td>
+												<td style="background-color: #89CFF0"><label for="postalCode" class="form-label">Postal Code</label></td>
+											</tr>
+											<tr>
+												<td><input type="month" class="form-control" th:field="*{expirationDate}"></input>
 												<p th:text="${expirationDateErr}" th:if="${expirationDateErr != null}"></p>
-												<p th:text="${cardError}" th:if="${cardError != null}"></p>
-											</div>
-											<div class="mb-3 col-sm-4">
-												<label for="securityCode" class="form-label">Security Code</label>
-												<input type="number" class="form-control" name="securityCode" id="securityCode" th:field="*{securityCode}"></input>
-												<p th:text="${securityCodeErr}" th:if="${securityCodeErr != null}"></p>
-											</div>
-											<div class="mb-3 col-sm-4">
-												<label for="postalCode" class="form-label">Postal Code</label>
-												<input type="number" class="form-control" name="postalCode" id="postalCode" th:field="*{postalCode}"></input>
+												<p th:if="${cardError}" th:text="${cardError}"></p></td>
+												<td><input type="number" class="form-control" name="securityCode" id="securityCode" th:field="*{securityCode}"></input>
+												<p th:text="${securityCodeErr}" th:if="${securityCodeErr != null}"></p></td>
+												<td><input type="number" class="form-control" name="postalCode" id="postalCode" th:field="*{postalCode}"></input>
 												<p th:text="${postalCodeErr}" th:if="${postalCodeErr != null}"></p>
-											</div>
-										</div>
+												</td>
+											</tr>
+											<!-- <button type="button" class="btn btn-lg btn-danger" disabled
+													th:if="${currUser.directDepositDetails == null}">No Deposit Details Added</button></div> -->
+										</tbody>
+									</table>
 
 										<!-- Purchase decisions -->
-										<div class="d-flex justify-content-evenly mb-3">
-											<button class="btn btn-danger btn-lg" type="submit" name="cancel">Cancel</button>
-											<button class="btn btn-primary btn-lg"
-												 type="submit" name="submit">Purchase Item</button>
+										<div class="d-flex justify-content-center mb-3">
+											<button style="margin-right:100px;" class="btn btn-danger btn-lg" type="submit" name="cancel">Cancel</button>
+											<button style="margin-right:100px;" class="btn btn-primary btn-lg"
+												 type="submit" name="submit">Confirm</button>
 											
 										</div>
 									</form>
@@ -244,6 +292,19 @@
 							</div>
 						</div> -->
 					</div>
+					
+				</div>
+				<div th:if="${allSelected and toShipping == false and modifyPayment == false}" class="w-40">
+					<hr>
+					<div class="d-flex justify-content-center">
+						<h3 style="word-break:keep-all;">If these details are correct then <br>
+						please press Purchase to continue</h3>
+					</div>
+					<div style="margin-bottom: 4px" th:if="${selectedAddress != null}" class="d-flex justify-content-center">
+						<a style="margin-right:100px;" th:href="@{/attemptPurchase}" class="btn btn-primary btn-lg" >Purchase</a>
+						<a class="btn btn-danger btn-lg" th:href=@{/cancel-purchase} style="margin-right:100px;">Cancel</a>	
+					</div>
+				</div>
 				</div>
 			</div>
 		</div>

@@ -95,12 +95,16 @@ public class UserDetailsController {
 	private String creationDate;
 	private String userDescription;
 	private String email;
-	private boolean addNew = false;
-	private boolean update = false;
+	private boolean addNewPD = false;
+	private boolean updatePD = false;
+	private boolean addNewSA = false;
+	private boolean updateSA = false;
 	private boolean relogin = false;
 	private boolean loginError = false;
-	private long id2;
-	private long updateId = -1;
+	private long id2PD;
+	private long updateIdPD = -1;
+	private long id2SA;
+	private long updateIdSA = -1;
 	private PaymentDetailsRepository payDetRepo;
 	private PaymentDetailsController payDetCont;
 	private SUB_MENU selectedMenu;
@@ -170,9 +174,9 @@ public class UserDetailsController {
 			model.addAttribute("savedDetails", null);
 		else
 			model.addAttribute("savedDetails", payDetCont.getPaymentDetailsByUser(user));
-		model.addAttribute("addNew", addNew);
-		model.addAttribute("updateId", updateId);
-		model.addAttribute("update", update);
+		model.addAttribute("addNew", addNewPD);
+		model.addAttribute("updateId", updateIdPD);
+		model.addAttribute("update", updatePD);
 		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
 		model.addAttribute("selectedMenu", selectedMenu);
 		return "userDetails";
@@ -196,9 +200,9 @@ public class UserDetailsController {
 			model.addAttribute("savedShippingDetails", null);
 		else
 			model.addAttribute("savedShippingDetails", shippingController.getShippingDetailsByUser(user));
-		model.addAttribute("addNew", addNew);
-		model.addAttribute("updateId", updateId);
-		model.addAttribute("update", update);
+		model.addAttribute("addNew", addNewSA);
+		model.addAttribute("updateId", updateIdSA);
+		model.addAttribute("update", updateSA);
 		model.addAttribute("relogin", relogin);
 		return "userDetails";
 	}
@@ -207,27 +211,27 @@ public class UserDetailsController {
 	public String addShippingDetails(Model model)
 	{
 		relogin = true;
-		update = false;
-		addNew = true;
-		updateId = -1;
+		updateSA = false;
+		addNewSA = true;
+		updateIdSA = -1;
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
 	@RequestMapping("/addNewCard")
 	public String addNewCard(Model model)
 	{
-		update = false;
-		addNew = true;
-		updateId = -1;
+		updatePD = false;
+		addNewPD = true;
+		updateIdPD = -1;
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
 	@RequestMapping("/goBackToMainPD")
 	public String backToMainPD(Model model)
 	{
-		update = false;
-		addNew = false;
-		updateId = -1;
+		updatePD = false;
+		addNewPD = false;
+		updateIdPD = -1;
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
@@ -235,9 +239,9 @@ public class UserDetailsController {
 	public String backToMainSD(Model model)
 	{
 		loginError = false;
-		update = false;
-		addNew = false;
-		updateId = -1;
+		updateSA = false;
+		addNewSA = false;
+		updateIdSA = -1;
 		relogin = false;
 		return "redirect:/userDetails/shippingDetails";
 	}
@@ -245,10 +249,10 @@ public class UserDetailsController {
 	@RequestMapping("/updatePaymentDetails/{id}")
 	public String updateCard(@PathVariable("id") long id, Model model)
 	{
-		update = true;
-		this.id2 = id;
-		addNew = false;
-		updateId = id;
+		updatePD = true;
+		this.id2PD = id;
+		addNewPD = false;
+		updateIdPD = id;
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
@@ -429,6 +433,7 @@ public class UserDetailsController {
 		System.out.println(details.getExpirationDate());
 		if (result.hasErrors() || paymentDetailsConstraintsFailed(details)) {
 			// Add error messages
+			User user = userController.getCurrently_Logged_In();
 			if (cardExpired(details))
 				model.addAttribute("cardError", "The credit card is expired.");
 			if(cardFarFuture(details))
@@ -437,6 +442,17 @@ public class UserDetailsController {
 			// Add back page data
 			model.addAttribute("cardTypes", cardController.getAllCardTypes());
 			model.addAttribute("directDepositDetails", new DirectDepositDetails_Form());
+			if(user.getDefaultPaymentDetails() != null)
+				model.addAttribute("defaultPaymentDetails", payDetCont.getPaymentDetail(user.getDefaultPaymentDetails().getId(), null));
+			else
+				model.addAttribute("defaultPaymentDetails", null);
+			if(user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty())
+				model.addAttribute("savedDetails", null);
+			else
+				model.addAttribute("savedDetails", payDetCont.getPaymentDetailsByUser(user));
+			model.addAttribute("addNew", addNewPD);
+			model.addAttribute("updateId", updateIdPD);
+			model.addAttribute("update", updatePD);
 			loadUserData(model);
 			return "/userDetails";
 		}
@@ -449,9 +465,11 @@ public class UserDetailsController {
 			PD = new HashSet<PaymentDetails>();
 		PD.add(payment);
 		user.setPaymentDetails(PD);
+		if(user.getDefaultPaymentDetails() == null)
+			user.setDefaultPaymentDetails(payment);
 		payDetCont.addPaymentDetails(payment);
 		userRepository.save(user);
-		addNew = false;
+		addNewPD = false;
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
@@ -465,10 +483,11 @@ public class UserDetailsController {
 	public String sendUpdatePD(@Validated @ModelAttribute("paymentDetails") PaymentDetails_Form details, BindingResult result, Model model) {
 		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
 		model.addAttribute("selectedMenu", selectedMenu);
-		PaymentDetails currDetails = payDetCont.getPaymentDetail(id2, model);
+		PaymentDetails currDetails = payDetCont.getPaymentDetail(id2PD, model);
 		System.out.println(details.getExpirationDate());
 		if (result.hasErrors() || paymentDetailsConstraintsFailed(details)) {
 			// Add error messages
+			User user = userController.getCurrently_Logged_In();
 			if (cardExpired(details))
 				model.addAttribute("cardError", "The credit card is expired.");
 			if(cardFarFuture(details))
@@ -477,6 +496,17 @@ public class UserDetailsController {
 			// Add back page data
 			model.addAttribute("cardTypes", cardController.getAllCardTypes());
 			model.addAttribute("directDepositDetails", new DirectDepositDetails_Form());
+			if(user.getDefaultPaymentDetails() != null)
+				model.addAttribute("defaultPaymentDetails", payDetCont.getPaymentDetail(user.getDefaultPaymentDetails().getId(), null));
+			else
+				model.addAttribute("defaultPaymentDetails", null);
+			if(user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty())
+				model.addAttribute("savedDetails", null);
+			else
+				model.addAttribute("savedDetails", payDetCont.getPaymentDetailsByUser(user));
+			model.addAttribute("addNew", addNewPD);
+			model.addAttribute("updateId", updateIdPD);
+			model.addAttribute("update", updatePD);
 			loadUserData(model);
 			return "/userDetails";
 		}
@@ -487,17 +517,17 @@ public class UserDetailsController {
 		Set<PaymentDetails> pDetails = user.getPaymentDetails();
 		List<PaymentDetails> PD = new ArrayList<>(pDetails);
 		for(PaymentDetails payDet : PD)
-			if(payDet.getId() == id2)
+			if(payDet.getId() == id2PD)
 				currDetails = payDet;
 		PD.remove(PD.indexOf(currDetails));
-		PD.add(payDetCont.getPaymentDetail(id2, model));
+		PD.add(payDetCont.getPaymentDetail(id2PD, model));
 		Set<PaymentDetails> PD2 = new HashSet<>(PD);
 		user.setPaymentDetails(PD2);
 		model.addAttribute("user", user);
 		userRepository.save(user);
-		addNew = false;
-		update = false;
-		updateId = -1;
+		addNewPD = false;
+		updatePD = false;
+		updateIdPD = -1;
 		return "redirect:/userDetails/paymentDetails";
 	}
 
@@ -545,9 +575,9 @@ public class UserDetailsController {
 			payDetCont.deletePaymentDetails(currDetails);
 		}
 		currDetails.setUser(null);
-		addNew = false;
-		update = false;
-		updateId = -1;
+		addNewPD = false;
+		updatePD = false;
+		updateIdPD = -1;
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
@@ -620,10 +650,10 @@ public class UserDetailsController {
 	@RequestMapping("/updateShippingDetails/{id}")
 	public String updateShipping(@PathVariable("id") long id, Model model)
 	{
-		update = true;
-		this.id2 = id;
-		addNew = false;
-		updateId = id;
+		updateSA = true;
+		this.id2SA = id;
+		addNewSA = false;
+		updateIdSA = id;
 		relogin = true;
 		return "redirect:/userDetails/shippingDetails";
 	}
@@ -650,9 +680,9 @@ public class UserDetailsController {
 			for (FieldError error : result.getFieldErrors()) {
 				model.addAttribute(error.getField() + "Err", error.getDefaultMessage());
 			}
-			model.addAttribute("addNew", addNew);
-			model.addAttribute("updateId", updateId);
-			model.addAttribute("update", update);
+			model.addAttribute("addNew", addNewSA);
+			model.addAttribute("updateId", updateIdSA);
+			model.addAttribute("update", updateSA);
 			model.addAttribute("relogin", relogin);
 			loadUserData(model);
 			return "/userDetails";
@@ -669,7 +699,7 @@ public class UserDetailsController {
 		user.setShippingDetails(SA);
 		shippingController.addShippingAddress(shipping);
 		userRepository.save(user);
-		addNew = false;
+		addNewSA = false;
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
@@ -683,7 +713,7 @@ public class UserDetailsController {
 	public String sendUpdateSA(@Validated @ModelAttribute("shippingDetail") ShippingAddress_Form details, BindingResult result, @RequestParam("stateId") String stateId, Model model) {
 		selectedMenu = SUB_MENU.SHIPPING_DETAILS;
 		model.addAttribute("selectedMenu", selectedMenu);
-		ShippingAddress currDetails = shippingController.getShippingAddressEntry(id2);
+		ShippingAddress currDetails = shippingController.getShippingAddressEntry(id2SA);
 		if (result.hasErrors() || shippingAddressConstraintsFailed(details)) {
 			// Add error messages
 			User user = userController.getCurrently_Logged_In();
@@ -702,9 +732,9 @@ public class UserDetailsController {
 			for (FieldError error : result.getFieldErrors()) {
 				model.addAttribute(error.getField() + "Err", error.getDefaultMessage());
 			}
-			model.addAttribute("addNew", addNew);
-			model.addAttribute("updateId", updateId);
-			model.addAttribute("update", update);
+			model.addAttribute("addNew", addNewSA);
+			model.addAttribute("updateId", updateIdSA);
+			model.addAttribute("update", updateSA);
 			model.addAttribute("relogin", relogin);
 			loadUserData(model);
 			return "/userDetails";
@@ -717,17 +747,17 @@ public class UserDetailsController {
 		Set<ShippingAddress> sAddress = user.getShippingDetails();
 		List<ShippingAddress> SA = new ArrayList<>(sAddress);
 		for(ShippingAddress address : SA)
-			if(address.getId() == id2)
+			if(address.getId() == id2SA)
 				currDetails = address;
 		SA.remove(SA.indexOf(currDetails));
-		SA.add(shippingController.getShippingAddressEntry(id2));
+		SA.add(shippingController.getShippingAddressEntry(id2SA));
 		Set<ShippingAddress> SA2 = new HashSet<>(SA);
 		user.setShippingDetails(SA2);
 		model.addAttribute("user", user);
 		userRepository.save(user);
-		addNew = false;
-		update = false;
-		updateId = -1;
+		addNewSA = false;
+		updateSA = false;
+		updateIdSA = -1;
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
@@ -768,9 +798,9 @@ public class UserDetailsController {
 			shippingController.deleteShippingAddress(currDetails);
 		}
 		currDetails.setUser(null);
-		addNew = false;
-		update = false;
-		updateId = -1;
+		addNewSA = false;
+		updateSA = false;
+		updateIdSA = -1;
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
@@ -838,7 +868,7 @@ public class UserDetailsController {
 	public boolean cardExpired(PaymentDetails_Form details) {
 		LocalDate expirDate;
 		try {
-			expirDate = LocalDate.parse(details.getExpirationDate());
+			expirDate = LocalDate.parse(details.getExpirationDate()+"-01");
 			return expirDate.compareTo(LocalDate.now()) < 0;
 		}
 		catch (Exception e) {

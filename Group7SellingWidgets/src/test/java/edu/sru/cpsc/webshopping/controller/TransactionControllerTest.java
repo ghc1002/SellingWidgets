@@ -63,7 +63,7 @@ public class TransactionControllerTest {
 		@Test
 		public void addTransaction() {
 			String actual = null;
-			assertsEquals(Widget.addTransaction(null, true), actual);
+			assertsEquals(Widget.addTransaction(null), actual);
 		}
 		@Test
 		public void cancelTransaction() {

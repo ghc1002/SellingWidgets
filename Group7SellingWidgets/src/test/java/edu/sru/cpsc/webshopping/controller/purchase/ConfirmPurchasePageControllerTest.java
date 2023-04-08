@@ -134,7 +134,7 @@ public class ConfirmPurchasePageControllerTest {
 	 */
 	@Test
 	void OpenPage() throws Exception {
-		String result = pageController.openConfirmPurchasePage(address, newListing, trans, model, true);
+		String result = pageController.openConfirmPurchasePage(address, newListing, trans, model);
 		Assertions.assertEquals("confirmPurchase", result);
 	}
 	
@@ -152,7 +152,7 @@ public class ConfirmPurchasePageControllerTest {
 		validDetails.setPostalCode("44525");
 		validDetails.setSecurityCode("1234");
 		
-		pageController.openConfirmPurchasePage(address, newListing, trans, model, true);
+		pageController.openConfirmPurchasePage(address, newListing, trans, model);
 		
 		RequestBuilder request = MockMvcRequestBuilders.post("/confirmPurchase/submitPurchase")
 				.flashAttr("paymentDetails", validDetails)
@@ -181,7 +181,7 @@ public class ConfirmPurchasePageControllerTest {
 		details.setPostalCode("44525");
 		details.setSecurityCode("1234");
 		
-		pageController.openConfirmPurchasePage(address, newListing, trans, model, true);
+		pageController.openConfirmPurchasePage(address, newListing, trans, model);
 		
 		RequestBuilder request = MockMvcRequestBuilders.post("/confirmPurchase/submitPurchase")
 				.flashAttr("paymentDetails", details)
@@ -273,7 +273,7 @@ public class ConfirmPurchasePageControllerTest {
 		validDetails.setPaypalLogin("testemail@test.com");
 		validDetails.setPaypalPassword("passwd");
 		
-		pageController.openConfirmPurchasePage(address, newListing, trans, model, true);
+		pageController.openConfirmPurchasePage(address, newListing, trans, model);
 		
 		RequestBuilder request = MockMvcRequestBuilders.post("/confirmPurchase/submitPurchasePaypal")
 				.flashAttr("paypal", validDetails)
@@ -298,7 +298,7 @@ public class ConfirmPurchasePageControllerTest {
 		validDetails.setPaypalLogin("testemail@test.com");
 		validDetails.setPaypalPassword("passwd");
 		
-		pageController.openConfirmPurchasePage(address, newListing, trans, model, true);
+		pageController.openConfirmPurchasePage(address, newListing, trans, model);
 		
 		RequestBuilder request = MockMvcRequestBuilders.post("/confirmPurchase/submitPurchasePaypal")
 				.flashAttr("paypal", validDetails)
@@ -329,14 +329,14 @@ public class ConfirmPurchasePageControllerTest {
 	 */
 	@Test
 	public void CancelPurchase() throws Exception {
-		pageController.openConfirmPurchasePage(address, newListing, trans, model, true);
+		pageController.openConfirmPurchasePage(address, newListing, trans, model);
 		RequestBuilder request = MockMvcRequestBuilders.post("/confirmPurchase/submitPurchase")
 				.param("cancel", "true");
 		mvc.perform(request)
 			.andExpect(MockMvcResultMatchers.view().name("redirect:/viewMarketListing/" + newListing.getId()))
 			.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 		
-		pageController.openConfirmPurchasePage(address, newListing, trans, model, true);
+		pageController.openConfirmPurchasePage(address, newListing, trans, model);
 		request = MockMvcRequestBuilders.post("/confirmPurchase/submitPurchasePaypal")
 				.param("cancel", "true");
 		mvc.perform(request)

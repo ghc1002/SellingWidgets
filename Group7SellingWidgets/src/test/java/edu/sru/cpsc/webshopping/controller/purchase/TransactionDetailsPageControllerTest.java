@@ -110,7 +110,7 @@ public class TransactionDetailsPageControllerTest {
 		trans.setBuyer(buyer);
 		trans.setTotalPriceBeforeTaxes(newListing.getPricePerItem().multiply(new BigDecimal(10)));
 		trans.setShippingEntry(shippingEntry);
-		trans = transController.addTransaction(trans, true);
+		trans = transController.addTransaction(trans);
 	}
 	
 	/**
