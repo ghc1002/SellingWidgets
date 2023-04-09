@@ -45,23 +45,33 @@
 		
     <div class="card h-100 w-100">
     	<div class="card-body">
-      	<div class="card" style="margin-left: auto; margin-right: auto;">
-        	<div class="card-header d-flex" style="text-align: left; padding-left: 6px"><h4>Categories</h4></div>
+      	<div class="card" style="margin-left: auto; margin-right: auto; width: fit-content; padding-left: 10px; padding-right: 10px;">
+        	<div class="card-header d-flex" style="text-align: left; padding-left: 6px"><h4> Select Item Categories </h4></div>
         	<form action="#" th:action="@{/createWidget}" method="post">
 	        	<th:block th:each="category: ${categories}">
 		        	<label for="category"> Choose a Category </label>
 		        	<select id="cat" name="category" class="form-select form-select-lg mb-3">
-		        		<option selected value="hide"> -- Select One -- </option>
+		        		<option value="hide" selected disabled hidden> -- Select One -- </option>
 		        		<option th:text="${category.display}" th:id="${category.name}" th:value="${category.name}"></option>
 		        	</select>
 		        	<th:block th:each="subcategory: ${subcategories}">
 		        		<div id="sub" style="visibility: hidden">
 			        		<label for="subcategory"> Choose a Sub-category </label>
-				        	<select id="subcategory" name="subcategory" th:if="${subcategory.parent} == ${category.name}" class="form-select">
-				        		<option selected> -- Select One -- </option>
+				        	<select id="subcategory" name="subcategory" th:if="${subcategory.parent} == ${category.name}" class="form-select form-select-lg mb-3" required onchange="enableButton()">
+				        		<option selected disabled hidden> -- Select One -- </option>
 				        		<option th:text="${subcategory.display}" th:id="${subcategory.name}" th:value="${subcategory.name}"></option>
 				        	</select>
-				        	<input th:href="@{/subcategory.contract}" type="submit" class="btn btn-success v-25 mx-4" style="margin-left: auto; margin-right: auto;" value="Next">
+				        	<div class="card-footer justify-content-center">
+				        		<input id="nextButton" value="Next" class="btn btn-success v-25 mx-4" type="submit" th:href="@{/subcategory.contract}" style="margin-left: auto; margin-right: auto;" disabled>
+				        		<a class="btn btn-danger v-25 mx-4" href="/homePage"> Cancel </a>
+				        		<script>
+					        		function enableButton()
+											{
+					        			var btnelem = document.getElementById('nextButton');
+					        			btnelem.disabled = false;
+					        		}
+				        		</script>
+				        	</div>
 			        	</div>
 						  </th:block>
 						  <script>

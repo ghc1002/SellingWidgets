@@ -43,12 +43,10 @@
 						<div class="card-header d-flex justify-content-center">
 							<h2>Create a Listing</h2>
 						</div>
-						
-								<form action="#" th:action="@{/addListing}" th:object="${listing}" method="post" class="form" enctype="multipart/form-data">
-								<div class="card-body d-flex justify-content-center">
-									<div class="row">
+						<form action="#" th:action="@{/addListing}" th:object="${listing}" method="post" class="form" enctype="multipart/form-data">
+							<div class="card-body d-flex justify-content-center">
+								<div class="row">
 									<div class="form-group">
-									
 										<label for="price">Price</label>
 										<input class="form-control" type="text" th:field="*{pricePerItem}" id="price" placeholder="price">
 										<p th:if="${#fields.hasErrors('pricePerItem')}" th:errors="*{pricePerItem}"></p>
@@ -58,7 +56,6 @@
 										</div>
 										</th:block>
 									</div>
-									
 									<p th:if="${#fields.hasErrors('pricePerItem')}" th:errors="*{pricePerItem}"></p>
 									<div class="form-group">
 										<label for="quantity">How Many?</label>
@@ -70,16 +67,12 @@
 										</div>
 										</th:block>
 									</div>
-									
-									<p  th:if="${#fields.hasErrors('qtyAvailable')}" th:errors="*{qtyAvailable}"></p>
-									
-									
+									<p th:if="${#fields.hasErrors('qtyAvailable')}" th:errors="*{qtyAvailable}"></p>
 									<div class="form-group w-35">
 										<label for="coverImage">Choose the items cover image shown when browsing:</label>
 										<input type="file" class="form-control" id="coverImage" name="listingCoverImage" accept=".jpg,.img,.png,.jpeg" required>
-										
 										<label for="fileUpload">Choose images to upload (hold ctrl while clicking to add multiple images):</label>
-									Files:	<input type="file" class="form-control" id="fileUpload" name="imageUpload" accept=".jpg,.img,.png,.jpeg" multiple required>
+										<input type="file" class="form-control" id="fileUpload" name="imageUpload" accept=".jpg,.img,.png,.jpeg" multiple required>
 									<div id="selectedFiles"></div>
 										<script> <!-- script code to show file names from https://www.raymondcamden.com/2013/09/10/Adding-a-file-display-list-to-a-multifile-upload-HTML-control -->
 											var selDive = "";
@@ -97,39 +90,30 @@
 												selDiv.innerHTML = "";
 												
 												var files = e.target.files;
+												
 												for(var i=0; i<files.length; i++) {
 													var f = files[i];
-													
 													selDiv.innerHTML += f.name + "<br/>";
-
 												}
-												
 											}
 										</script>
 									</div>
-									</div>
-									</div>
-									<div class="card-footer d-flex justify-content-center">
-										<th:block th:switch="${page}">
-										<div th:case="error">
-										<p style="color:red">Upload at least one picture</p>
-										</div>
-										</th:block>
-									
-										
-										<a class="btn btn-danger mx-4 col-sm-3" href="/back-and-delete">Back</a>
-
-
-										
-										<a class="btn btn-danger mx-4 col-sm-3" href="/homePage">Cancel</a>
-										<input class="btn btn-success mx-4 col-sm-3" type="submit" value="Create Listing">
-										
-									</div>
-						
-								</form>
+								</div>
 							</div>
-						</div>
+							<div class="card-footer d-flex justify-content-center" style="padding-top: 10px;">
+								<th:block th:switch="${page}">
+									<div th:case="error">
+										<p style="color:red">Upload at least one picture</p>
+									</div>
+								</th:block>
+								<input class="btn btn-success v-25 mx-4" type="submit" value="Create Listing">
+								<a class="btn btn-danger v-25 mx-4" href="/back-and-delete">Back</a>
+								<a class="btn btn-danger v-25 mx-4" href="/homePage">Cancel</a>
+							</div>
+						</form>
 					</div>
 				</div>
+			</div>
+		</div>
 	</body>
 </html>
