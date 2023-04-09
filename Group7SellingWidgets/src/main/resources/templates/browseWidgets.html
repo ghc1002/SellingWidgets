@@ -51,15 +51,9 @@
 						<th colspan="2"><p class="header-browse" th:text="${searchedMarkets.widgetSold.name}" style="margin-bottom:0;"></p></th>
 					</tr>
 					<tr>
-						<td colspan="2"><img
-							th:if="${searchedMarkets.coverImage == null}"
-							style="width: 200px; height: 200px;"
-							src="https://previews.123rf.com/images/kritchanut/kritchanut1406/kritchanut140600093/29213195-.jpg?fj=1"
-							alt="Blank Listing Avatar"> <img
-							th:unless="${searchedMarkets.coverImage == null}"
-							style="width: 200px; height: 200px;"
-							th:src="@{/listingImages/{image}(image = ${searchedMarkets.coverImage})}"
-							alt="Listing Avatar" src=""></td>
+						<td colspan="2"><img th:if="${searchedMarkets.coverImage == null}" style="width: 200px; height: 200px;" src="https://previews.123rf.com/images/kritchanut/kritchanut1406/kritchanut140600093/29213195-.jpg?fj=1" alt="Blank Listing Avatar">
+							<img th:unless="${searchedMarkets.coverImage == null}" style="width: 200px; height: 200px;" th:src="@{/listingImages/{image}(image = ${searchedMarkets.coverImage})}" alt="Listing Avatar" src="">
+						</td>
 					</tr>
 					<tr>
 						<td style="background-color: #89CFF0;"><p style="margin-bottom: 0;">Quantity Available:</p></td>

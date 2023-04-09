@@ -37,6 +37,7 @@ import edu.sru.cpsc.webshopping.domain.user.User;
 // separate table
 @Inheritance(strategy=InheritanceType.JOINED)
 public class Widget {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;

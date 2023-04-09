@@ -355,7 +355,7 @@ CREATE TABLE `fields` (
 
 LOCK TABLES `fields` WRITE;
 /*!40000 ALTER TABLE `fields` DISABLE KEYS */;
-INSERT INTO `fields` VALUES ('name', 'Item Title'), ('description', 'Description'), ('model', 'Model'), ('brand', 'Brand'), ('color', 'Color'), ('madeIn', 'Made In'), ('material', 'Material'), ('warrenty', 'Warranty'), ('condition', 'Condition');
+INSERT INTO `fields` VALUES ('name', 'Item Title'), ('description', 'Description'), ('model', 'Model'), ('brand', 'Brand'), ('color', 'Color'), ('madeIn', 'Made In'), ('material', 'Material'), ('warranty', 'Warranty'), ('condition', 'Condition'), ('partName', 'Part Name');
 /*!40000 ALTER TABLE `fields` ENABLE KEYS */;
 UNLOCK TABLES;
 
