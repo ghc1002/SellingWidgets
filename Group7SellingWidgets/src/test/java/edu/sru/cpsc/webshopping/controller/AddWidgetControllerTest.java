@@ -41,7 +41,7 @@ public class AddWidgetControllerTest {
 		Widget.createVehicle(null, null);
 		Widget.createVideoGame(null, null, null);
 		Widget.createWasher(null, null, null);
-		Widget.createWidget(null, null);
+		Widget.createWidget(null, null, null);
 	
 		
 		
@@ -176,7 +176,7 @@ public class AddWidgetControllerTest {
 	@Test 
 	public void createWidget() {
 		String actual = null;
-		assertEquals(Widget.createWidget(null, actual), actual);
+		assertEquals(Widget.createWidget(null, null, null), actual);
 	}
 	
 	

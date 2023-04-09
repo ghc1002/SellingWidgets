@@ -68,6 +68,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.text.WordUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -143,7 +144,7 @@ public class AddWidgetController {
 	MarketListing marketListing;
 	private Widget widgetStorage;
 	private String category;
-	private String subCategory;
+	private String subcategory;
 	private WidgetImage tempImage = new WidgetImage();
 	private String page;
 	public String getPage() {
@@ -206,6 +207,8 @@ public class AddWidgetController {
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "addWidget";
 	}
+	
+	/*
 	@RequestMapping("/createWidget")
 	public String createWidget(Model model, @RequestParam("category") String category)
 	{
@@ -237,6 +240,43 @@ public class AddWidgetController {
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return url;
 	}
+	*/
+	
+	@RequestMapping("/createWidget") // Morrow
+	public String createWidget(@RequestParam("category") String category, @RequestParam("subcategory") String subcategory, Model model)
+	{
+		this.category = category;
+		this.subcategory = subcategory;
+		
+		String temp = WordUtils.capitalize(subcategory, '_');
+		temp = temp.replace("_", "");
+		
+		System.out.println(temp);
+		
+		String url = "redirect:add" + temp;
+		
+		model.addAttribute("subcategories", subcategories.getAllSubcategories());
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		
+		return url;
+	}
+	
+	/*
+	@RequestMapping("/createVehicleParts")
+	public String createVehicleParts(Model model, @RequestParam("subcategory") String subcategory)
+	{
+		this.subcategory = subcategory;
+		String url = "";
+		if(subcategory.contentEquals("car_parts"))
+		{
+
+			url = "redirect:addCarParts";
+		}
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return url;
+	}
+	*/
+	
 	@RequestMapping("/addAppliance")
 	public String addAppliance(Model model)
 	{
@@ -355,27 +395,27 @@ public class AddWidgetController {
 	}
 
 	@RequestMapping("/createAppliance")
-	public String createAppliance(Model model, @RequestParam("subCategory") String subCategory)
+	public String createAppliance(Model model, @RequestParam("subcategory") String subcategory)
 	{
-		this.subCategory = subCategory;
+		this.subcategory = subcategory;
 		String url = "";
-		if(subCategory.contentEquals("dryer"))
+		if(subcategory.contentEquals("dryer"))
 		{
 			url = "redirect:addDryer";
 		}
-		else if (subCategory.contentEquals("microwave"))
+		else if (subcategory.contentEquals("microwave"))
 		{
 			url = "redirect:addMicrowave";
 		}
-		else if (subCategory.contentEquals("refridgerator"))
+		else if (subcategory.contentEquals("refridgerator"))
 		{
 			url = "redirect:addFridge";
 		}
-		else if (subCategory.contentEquals("washer"))
+		else if (subcategory.contentEquals("washer"))
 		{
 			url = "redirect:addWasher";
 		}
-		else if(subCategory.contentEquals("blender"))
+		else if(subcategory.contentEquals("blender"))
 		{
 			url ="redirect:addBlender";
 		}
@@ -384,27 +424,27 @@ public class AddWidgetController {
 	}
 
 	@RequestMapping("/createApplianceParts")
-	public String createApplianceParts(Model model, @RequestParam("subCategory") String subCategory)
+	public String createApplianceParts(Model model, @RequestParam("subcategory") String subcategory)
 	{
-		this.subCategory = subCategory;
+		this.subcategory = subcategory;
 		String url = "";
-		if(subCategory.contentEquals("dryer_parts"))
+		if(subcategory.contentEquals("dryer_parts"))
 		{
 			url = "redirect:addDryerParts";
 		}
-		else if (subCategory.contentEquals("microwave_parts"))
+		else if (subcategory.contentEquals("microwave_parts"))
 		{
 			url = "redirect:addMicrowaveParts";
 		}
-		else if (subCategory.contentEquals("refrigerator_parts"))
+		else if (subcategory.contentEquals("refrigerator_parts"))
 		{
 			url = "redirect:addRefrigeratorParts";
 		}
-		else if (subCategory.contentEquals("washer_parts"))
+		else if (subcategory.contentEquals("washer_parts"))
 		{
 			url = "redirect:addWasherParts";
 		}
-		else if(subCategory.contentEquals("blender_parts"))
+		else if(subcategory.contentEquals("blender_parts"))
 		{
 			url ="redirect:addBlenderParts";
 		}
@@ -413,16 +453,16 @@ public class AddWidgetController {
 	}
 
 	@RequestMapping("/createElectronic")
-	public String createElectronic(Model model, @RequestParam("subCategory") String subCategory)
+	public String createElectronic(Model model, @RequestParam("subcategory") String subcategory)
 	{
-		this.subCategory = subCategory;
+		this.subcategory = subcategory;
 		String url = "";
 
-		if (subCategory.contentEquals("computer"))
+		if (subcategory.contentEquals("computer"))
 		{
 			url = "redirect:addComputer";
 		}
-		else if (subCategory.contentEquals("videoGame"))
+		else if (subcategory.contentEquals("videoGame"))
 		{
 			url = "redirect:addVideoGame";
 		}
@@ -431,16 +471,16 @@ public class AddWidgetController {
 	}
 
 	@RequestMapping("/createElectronicParts")
-	public String createElectronicParts(Model model, @RequestParam("subCategory") String subCategory)
+	public String createElectronicParts(Model model, @RequestParam("subcategory") String subcategory)
 	{
-		this.subCategory = subCategory;
+		this.subcategory = subcategory;
 		String url = "";
 
-		if (subCategory.contentEquals("computer_parts"))
+		if (subcategory.contentEquals("computer_parts"))
 		{
 			url = "redirect:addComputerParts";
 		}
-		else if (subCategory.contentEquals("videoGame_parts"))
+		else if (subcategory.contentEquals("videoGame_parts"))
 		{
 			url = "redirect:addVideoGameParts";
 		}
@@ -449,11 +489,11 @@ public class AddWidgetController {
 	}
 
 	@RequestMapping("/createLawnCare")
-	public String createLawnCare(Model model, @RequestParam("subCategory") String subCategory)
+	public String createLawnCare(Model model, @RequestParam("subcategory") String subcategory)
 	{
-		this.subCategory = subCategory;
+		this.subcategory = subcategory;
 		String url = "";
-		if (subCategory.contentEquals("lawnMower"))
+		if (subcategory.contentEquals("lawnMower"))
 		{
 			url = "redirect:addLawnMower";
 		}
@@ -462,11 +502,11 @@ public class AddWidgetController {
 	}
 
 	@RequestMapping("/createLawnCareParts")
-	public String createLawnCareParts(Model model, @RequestParam("subCategory") String subCategory)
+	public String createLawnCareParts(Model model, @RequestParam("subcategory") String subcategory)
 	{
-		this.subCategory = subCategory;
+		this.subcategory = subcategory;
 		String url = "";
-		if (subCategory.contentEquals("mower_parts"))
+		if (subcategory.contentEquals("mower_parts"))
 		{
 			url = "redirect:addLawnMowerParts";
 		}
@@ -475,11 +515,11 @@ public class AddWidgetController {
 	}
 
 	@RequestMapping("/createVehicle")
-	public String createVehicle(Model model, @RequestParam("subCategory") String subCategory)
+	public String createVehicle(Model model, @RequestParam("subcategory") String subcategory)
 	{
-		this.subCategory = subCategory;
+		this.subcategory = subcategory;
 		String url = "";
-		if(subCategory.contentEquals("car"))
+		if(subcategory.contentEquals("car"))
 		{
 
 			url = "redirect:addCar";
@@ -489,11 +529,11 @@ public class AddWidgetController {
 	}
 
 	@RequestMapping("/createVehicleParts")
-	public String createVehicleParts(Model model, @RequestParam("subCategory") String subCategory)
+	public String createVehicleParts(Model model, @RequestParam("subcategory") String subcategory)
 	{
-		this.subCategory = subCategory;
+		this.subcategory = subcategory;
 		String url = "";
-		if(subCategory.contentEquals("car_parts"))
+		if(subcategory.contentEquals("car_parts"))
 		{
 
 			url = "redirect:addCarParts";
@@ -770,11 +810,11 @@ public class AddWidgetController {
 
 	}
 
-	private void saveWidgetFromCSV(final MultipartFile file, final String subCategory) throws IOException {
+	private void saveWidgetFromCSV(final MultipartFile file, final String subcategory) throws IOException {
 		InputStreamReader streamReader =
 				new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8);
 		CsvToBeanBuilder<Widget> widgetsCsvBeanBuilder = new CsvToBeanBuilder<>(streamReader);
-		switch (subCategory) {
+		switch (subcategory) {
 		case "computer" -> widgetsCsvBeanBuilder.withType(Electronics_Computers.class);
 		case "videoGame" -> widgetsCsvBeanBuilder.withType(Electronics_VideoGames.class);
 		case "dryer" -> widgetsCsvBeanBuilder.withType(Appliance_Dryers.class);
@@ -798,7 +838,7 @@ public class AddWidgetController {
 		model.addAttribute("name", dryer);
 		model.addAttribute("description", dryer);
 		dryer.setCategory(category);
-		dryer.setSubCategory(subCategory);
+		dryer.setSubCategory(subcategory);
 		model.addAttribute("length", dryer);
 		model.addAttribute("width", dryer);
 		model.addAttribute("height", dryer);
@@ -821,7 +861,7 @@ public class AddWidgetController {
 		model.addAttribute("name", microwave);
 		model.addAttribute("description", microwave);
 		microwave.setCategory(category);
-		microwave.setSubCategory(subCategory);
+		microwave.setSubCategory(subcategory);
 		model.addAttribute("length", microwave);
 		model.addAttribute("width", microwave);
 		model.addAttribute("height", microwave);
@@ -844,7 +884,7 @@ public class AddWidgetController {
 		model.addAttribute("name", fridge);
 		model.addAttribute("description", fridge);
 		fridge.setCategory(category);
-		fridge.setSubCategory(subCategory);
+		fridge.setSubCategory(subcategory);
 		model.addAttribute("length", fridge);
 		model.addAttribute("width", fridge);
 		model.addAttribute("height", fridge);
@@ -867,7 +907,7 @@ public class AddWidgetController {
 		model.addAttribute("name", washer);
 		model.addAttribute("description", washer);
 		washer.setCategory(category);
-		washer.setSubCategory(subCategory);
+		washer.setSubCategory(subcategory);
 		model.addAttribute("length", washer);
 		model.addAttribute("width", washer);
 		model.addAttribute("height", washer);
@@ -890,7 +930,7 @@ public class AddWidgetController {
 		model.addAttribute("name", blender);
 		model.addAttribute("description", blender);
 		blender.setCategory(category);
-		blender.setSubCategory(subCategory);
+		blender.setSubCategory(subcategory);
 		model.addAttribute("length", blender);
 		model.addAttribute("width", blender);
 		model.addAttribute("height", blender);
@@ -913,7 +953,7 @@ public class AddWidgetController {
 		model.addAttribute("name", blenderPart);
 		model.addAttribute("description", blenderPart);
 		blenderPart.setCategory(category);
-		blenderPart.setSubCategory(subCategory);
+		blenderPart.setSubCategory(subcategory);
 		model.addAttribute("length", blenderPart);
 		model.addAttribute("width", blenderPart);
 		model.addAttribute("height", blenderPart);
@@ -936,7 +976,7 @@ public class AddWidgetController {
 		model.addAttribute("name", dryerPart);
 		model.addAttribute("description", dryerPart);
 		dryerPart.setCategory(category);
-		dryerPart.setSubCategory(subCategory);
+		dryerPart.setSubCategory(subcategory);
 		model.addAttribute("length", dryerPart);
 		model.addAttribute("width", dryerPart);
 		model.addAttribute("height", dryerPart);
@@ -959,7 +999,7 @@ public class AddWidgetController {
 		model.addAttribute("name", microwavePart);
 		model.addAttribute("description", microwavePart);
 		microwavePart.setCategory(category);
-		microwavePart.setSubCategory(subCategory);
+		microwavePart.setSubCategory(subcategory);
 		model.addAttribute("length", microwavePart);
 		model.addAttribute("width", microwavePart);
 		model.addAttribute("height", microwavePart);
@@ -982,7 +1022,7 @@ public class AddWidgetController {
 		model.addAttribute("name", refrigeratorPart);
 		model.addAttribute("description", refrigeratorPart);
 		refrigeratorPart.setCategory(category);
-		refrigeratorPart.setSubCategory(subCategory);
+		refrigeratorPart.setSubCategory(subcategory);
 		model.addAttribute("length", refrigeratorPart);
 		model.addAttribute("width", refrigeratorPart);
 		model.addAttribute("height", refrigeratorPart);
@@ -1005,7 +1045,7 @@ public class AddWidgetController {
 		model.addAttribute("name", washersPart);
 		model.addAttribute("description", washersPart);
 		washersPart.setCategory(category);
-		washersPart.setSubCategory(subCategory);
+		washersPart.setSubCategory(subcategory);
 		model.addAttribute("length", washersPart);
 		model.addAttribute("width", washersPart);
 		model.addAttribute("height", washersPart);
@@ -1028,7 +1068,7 @@ public class AddWidgetController {
 		model.addAttribute("name", computer);
 		model.addAttribute("description", computer);
 		computer.setCategory(category);
-		computer.setSubCategory(subCategory);
+		computer.setSubCategory(subcategory);
 		model.addAttribute("officeUse", computer);
 		model.addAttribute("entertainmentUse", computer);
 		model.addAttribute("memory", computer);
@@ -1050,7 +1090,7 @@ public class AddWidgetController {
 		model.addAttribute("name", computerPart);
 		model.addAttribute("description", computerPart);
 		computerPart.setCategory(category);
-		computerPart.setSubCategory(subCategory);
+		computerPart.setSubCategory(subcategory);
 		model.addAttribute("length", computerPart);
 		model.addAttribute("width", computerPart);
 		model.addAttribute("height", computerPart);
@@ -1073,7 +1113,7 @@ public class AddWidgetController {
 		model.addAttribute("name", videoGame);
 		model.addAttribute("description", videoGame);
 		videoGame.setCategory(category);
-		videoGame.setSubCategory(subCategory);
+		videoGame.setSubCategory(subcategory);
 		model.addAttribute("officeUse", videoGame);
 		model.addAttribute("entertainmentUse", videoGame);
 		model.addAttribute("developer", videoGame);
@@ -1094,7 +1134,7 @@ public class AddWidgetController {
 		model.addAttribute("name", videoGamePart);
 		model.addAttribute("description", videoGamePart);
 		videoGamePart.setCategory(category);
-		videoGamePart.setSubCategory(subCategory);
+		videoGamePart.setSubCategory(subcategory);
 		model.addAttribute("length", videoGamePart);
 		model.addAttribute("width", videoGamePart);
 		model.addAttribute("height", videoGamePart);
@@ -1117,7 +1157,7 @@ public class AddWidgetController {
 		model.addAttribute("name", mower);
 		model.addAttribute("description", mower);
 		mower.setCategory(category);
-		mower.setSubCategory(subCategory);
+		mower.setSubCategory(subcategory);
 		model.addAttribute("yardSize", mower);
 		model.addAttribute("toolType", mower);
 		model.addAttribute("brand", mower);
@@ -1137,7 +1177,7 @@ public class AddWidgetController {
 		model.addAttribute("name", mowerPart);
 		model.addAttribute("description", mowerPart);
 		mowerPart.setCategory(category);
-		mowerPart.setSubCategory(subCategory);
+		mowerPart.setSubCategory(subcategory);
 		model.addAttribute("length", mowerPart);
 		model.addAttribute("width", mowerPart);
 		model.addAttribute("height", mowerPart);
@@ -1160,7 +1200,7 @@ public class AddWidgetController {
 		model.addAttribute("name", car);
 		model.addAttribute("description", car);
 		car.setCategory(category);
-		car.setSubCategory(subCategory);
+		car.setSubCategory(subcategory);
 		model.addAttribute("terrain", car);
 		model.addAttribute("roadSafe", car);
 		model.addAttribute("itemCondition", car);
@@ -1179,12 +1219,12 @@ public class AddWidgetController {
 	}
 
 	@RequestMapping("createCarParts")
-	public String createCarParts(Model model, @ModelAttribute Vehicle_Car_Parts carPart, BindingResult result)
+	public String createCarParts(Model model, @ModelAttribute Vehicle_Car_Parts carPart, BindingResult result) // Morrow
 	{
 		model.addAttribute("name", carPart);
 		model.addAttribute("description", carPart);
 		carPart.setCategory(category);
-		carPart.setSubCategory(subCategory);
+		carPart.setSubCategory(subcategory);
 		model.addAttribute("length", carPart);
 		model.addAttribute("width", carPart);
 		model.addAttribute("height", carPart);
@@ -1208,7 +1248,7 @@ public class AddWidgetController {
 		model.addAttribute("pricePerItem", marketListing.getPricePerItem());
 		model.addAttribute("qtyAvailable", marketListing.getQtyAvailable());
 		model.addAttribute("listing", marketListing);
-		model.addAttribute("subCategory", subCategory);
+		model.addAttribute("subcategory", subcategory);
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "createListing";
 	}
@@ -1269,18 +1309,18 @@ public class AddWidgetController {
 		model.addAttribute("pricePerItem", marketListing);
 		model.addAttribute("qtyAvailable", marketListing.getQtyAvailable());
 		model.addAttribute("listing", marketListing);
-		model.addAttribute("subCategory", subCategory);
+		model.addAttribute("subcategory", subcategory);
 		marketListing.setSeller(userController.getCurrently_Logged_In());
 		marketListing.setWidgetSold(widget);
 		marketListing.setDeleted(false);
 		//code basis found at https://attacomsian.com/blog/spring-boot-thymeleaf-file-upload
 
-			marketListing.setCoverImage(marketListing.getSeller().getId() + StringUtils.cleanPath(coverImage.getOriginalFilename()));
-			marketListingController.addMarketListing(marketListing);
-			tempImage.setImageName(marketListing.getSeller().getId() + StringUtils.cleanPath(coverImage.getOriginalFilename()));
-			tempImage.setMarketListing(marketListing);
-			widgetImageController.addWidgetImage(tempImage);
-			listingImages.add(tempImage);
+		marketListing.setCoverImage(marketListing.getSeller().getId() + StringUtils.cleanPath(coverImage.getOriginalFilename()));
+		marketListingController.addMarketListing(marketListing);
+		tempImage.setImageName(marketListing.getSeller().getId() + StringUtils.cleanPath(coverImage.getOriginalFilename()));
+		tempImage.setMarketListing(marketListing);
+		widgetImageController.addWidgetImage(tempImage);
+		listingImages.add(tempImage);
 		/*if(marketListing.getImages().size() == 0) {
 			setPage("error");
 			result.addError(
@@ -1316,7 +1356,7 @@ public class AddWidgetController {
 			model.addAttribute("pricePerItem", marketListing);
 			model.addAttribute("qtyAvailable", marketListing.getQtyAvailable());
 			model.addAttribute("listing", marketListing);
-			model.addAttribute("subCategory", subCategory);
+			model.addAttribute("subcategory", subcategory);
 			return "createListing" ;
 		}
 		
