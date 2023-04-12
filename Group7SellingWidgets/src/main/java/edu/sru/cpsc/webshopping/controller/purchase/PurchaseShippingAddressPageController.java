@@ -1,5 +1,8 @@
 package edu.sru.cpsc.webshopping.controller.purchase;
 
+import java.io.IOException;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -20,6 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.smartystreets.api.exceptions.SmartyException;
+import com.smartystreets.api.us_street.Candidate;
+import com.smartystreets.api.us_street.Client;
+import com.smartystreets.api.us_street.ClientBuilder;
+import com.smartystreets.api.us_street.Lookup;
 
 import edu.sru.cpsc.webshopping.controller.ShippingAddressDomainController;
 import edu.sru.cpsc.webshopping.controller.ShippingDomainController;
@@ -126,9 +135,12 @@ public class PurchaseShippingAddressPageController {
 	@RequestMapping(value = "/confirmShipping/submitAddress", method = RequestMethod.POST, params = "submit")
 	public String submitAddress(@Validated @ModelAttribute("shippingAddress") ShippingAddress_Form address, BindingResult result, @RequestParam("stateId") String stateId, Model model) {
 		// If there are errors, then refresh the page
-		if (result.hasErrors()) {
+		address.setState(stateDetailsController.getState(stateId));
+		if (result.hasErrors() || shippingAddressConstraintsFailed(address)) {
 			model.addAttribute("shippingAddress", new ShippingAddress_Form());
 			model.addAttribute("states", states);	
+			if(!result.hasErrors() && shippingAddressConstraintsFailed(address))
+				model.addAttribute("shippingError", "Address does not exist");
 			// Add errors to model
 			User user = userController.getCurrently_Logged_In();
 			model.addAttribute("user", user);
@@ -286,6 +298,55 @@ public class PurchaseShippingAddressPageController {
 		System.out.println(passwordEncoder.matches(password, user.getPassword()));
 		if(username.equals(user.getUsername()) && passwordEncoder.matches(password, user.getPassword()))
 			return true;
+		
+		return false;
+	}
+	
+	/**
+	 * pass the shipping address to the address validation method
+	 * @param form
+	 * @return
+	 */
+	public boolean shippingAddressConstraintsFailed(ShippingAddress_Form form) {
+		return addressExists(form);
+	}
+	
+	/**
+	 * use the smartystreets api to verify if the passed address exists
+	 * @param shipping
+	 * @return
+	 */
+	public boolean addressExists(ShippingAddress_Form shipping)
+	{
+		Client client = new ClientBuilder("15c052fe-6a81-8841-3359-59658192ff8e", "9d48LSyfCFhlZolc0gi6").build();
+		
+		Lookup lookup = new Lookup();
+		lookup.setAddressee(shipping.getRecipient());
+		lookup.setStreet(shipping.getStreetAddress());
+		lookup.setCity(shipping.getCity());
+		lookup.setState(shipping.getState().getStateName());
+		lookup.setZipCode(shipping.getPostalCode());
+		System.out.println(lookup.getAddressee());
+		System.out.println(lookup.getStreet());
+		System.out.println(lookup.getCity());
+		System.out.println(lookup.getState());
+		System.out.println(lookup.getZipCode());
+		
+		try {
+			client.send(lookup);
+		}
+		catch(SmartyException | IOException ex) {
+			System.out.println(ex.getMessage());
+			ex.printStackTrace();
+		}
+		
+		List<Candidate> results = lookup.getResult();
+		
+		if(results.isEmpty())
+		{
+			System.out.println("cannot find address");
+			return true;
+		}
 		
 		return false;
 	}

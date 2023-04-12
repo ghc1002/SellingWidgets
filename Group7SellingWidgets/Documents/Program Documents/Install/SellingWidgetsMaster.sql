@@ -663,7 +663,7 @@ CREATE TABLE `shipping_address` (
 
 LOCK TABLES `shipping_address` WRITE;
 /*!40000 ALTER TABLE `shipping_address` DISABLE KEYS */;
-INSERT INTO `shipping_address` VALUES (54,'05212','Jacob','152 Street','apt 123','Leads','Arkansas',1),(74,'55442','Jacob','1st Road',NULL,'Tymle','Arkansas',NULL),(79,'54667','Jacob','1st Road','suite 12','Letier','Hawaii',1),(86,'43415','new user','2nd Road','apt 76','Wyming','California',NULL),(91,'12345','fdsa','fdas',NULL,'Zora','Alabama',NULL),(159,'16057','Billy Bob','1 Morrow Way',NULL,'Slippery Rock','Pennsylvania',NULL);
+INSERT INTO `shipping_address` VALUES (54,'98109','Jacob','1735 Main Street','apt 123','Seattle','Washington',1),(74,'55442','Jacob','1st Road',NULL,'Tymle','Arkansas',NULL),(79,'10011','Jacob','2690 Stanley Avenue','suite 12','New York','New York',1),(86,'43415','new user','2nd Road','apt 76','Wyming','California',NULL),(91,'12345','fdsa','fdas',NULL,'Zora','Alabama',NULL),(159,'16057','Billy Bob','1 Morrow Way',NULL,'Slippery Rock','Pennsylvania',NULL);
 /*!40000 ALTER TABLE `shipping_address` ENABLE KEYS */;
 UNLOCK TABLES;
 

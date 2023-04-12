@@ -34,7 +34,6 @@ public class PaymentDetails_Form {
 	@Size(min = 5, max = 5, message = "Postal Code must be 5 characters")
 	private String postalCode;
 	
-	private int Ex = LocalDate.now().getYear();
 
 	public String getCardType() {
 		return cardType;

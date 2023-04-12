@@ -53,7 +53,7 @@
 		
 		<div id="page">
 		
-			<div style="width:33%;" class="card mx-auto h-auto mw-30">
+			<div style="width:33%;" class="card mx-auto mh-auto mw-30 overflow-auto">
 				<div class="card-header d-flex justify-content-center">
 					<h1>Confirm Purchase</h1>
 				</div>
@@ -170,7 +170,7 @@
 										</div>
 											<div class="mb-3 col-sm-4 justify-content-center">
 												<label for="securityCode" class="form-label ">Security Code for Confirmation</label>
-												<input type="number" class="form-control" name="existingSecurityCode" id="securityCode" th:value="${existingSecurityCode}"></input>
+												<input type="text" class="form-control" name="existingSecurityCode" id="securityCode" th:value="${existingSecurityCode}"></input>
 												<p th:text="${exSecurityCodeErr}" th:if="${exSecurityCodeErr != null}"></p>
 											</div>
 
@@ -235,7 +235,7 @@
 												<td><input type="month" class="form-control" th:field="*{expirationDate}"></input>
 												<p th:text="${expirationDateErr}" th:if="${expirationDateErr != null}"></p>
 												<p th:if="${cardError}" th:text="${cardError}"></p></td>
-												<td><input type="number" class="form-control" name="securityCode" id="securityCode" th:field="*{securityCode}"></input>
+												<td><input type="text" class="form-control" name="securityCode" id="securityCode" th:field="*{securityCode}"></input>
 												<p th:text="${securityCodeErr}" th:if="${securityCodeErr != null}"></p></td>
 												<td><input type="number" class="form-control" name="postalCode" id="postalCode" th:field="*{postalCode}"></input>
 												<p th:text="${postalCodeErr}" th:if="${postalCodeErr != null}"></p>
