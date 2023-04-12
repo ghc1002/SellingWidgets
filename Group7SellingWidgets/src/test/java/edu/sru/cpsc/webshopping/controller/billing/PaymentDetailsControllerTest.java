@@ -1,5 +1,6 @@
 package edu.sru.cpsc.webshopping.controller.billing;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 
 import static org.hamcrest.Matchers.containsString;
@@ -7,6 +8,7 @@ import org.jboss.logging.Logger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,19 +40,31 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.sru.cpsc.webshopping.domain.billing.PaymentDetails;
 import edu.sru.cpsc.webshopping.repository.billing.PaymentDetailsRepository;
 
-@WebMvcTest(PaymentDetailsController.class)
+@SpringBootTest(classes = {PaymentDetailsController.class})
 public class PaymentDetailsControllerTest {
 	
 	@MockBean
 	private PaymentDetailsRepository paymentDetailsRepository;
 	
+	@MockBean
+	private PasswordEncoder passwordEncoder;
+	
+	@MockBean
+	private EntityManager entityManager;
+	
+	@MockBean
+	private EntityManagerFactory EMF;
+	
 	@Autowired
-	private MockMvc mvc;
+	PaymentDetailsController controller;
 	
 	/*@Before
 	public void setUp()
@@ -66,23 +80,21 @@ public class PaymentDetailsControllerTest {
 	}*/
 	
 	/*@Test
-	public void contextLoads()
+	public void contextLoads() throws Exception
 	{
-		assertThat(paymentDetailsController).isNotNull();
+		mvc.perform(get("/get-all-payment-details"))
+		.andExpect(status().isOk());
 	}*/
 
 @Test
 public void getPaymentDetails() throws Exception
 {
-	PaymentDetails details = new PaymentDetails();
-	details.setCardholderName("tyler");
-	details.setId(0L);
-	System.out.println(details.getId());
-	when(paymentDetailsRepository.findById(details.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid ID passed to find a user"))).thenReturn(details);
-	this.mvc.perform(get("/get-payment-detail/0"))
-	.andDo(print())
-	.andExpect(status().isOk())
-	.andExpect(content().string(containsString(details.toString())));
+	PaymentDetails testDetails = new PaymentDetails();
+	testDetails.setCardholderName("tyler");
+	testDetails.setId(0L);
+	System.out.println(testDetails.getId());
+	when(paymentDetailsRepository.findById(testDetails.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid ID passed to find a user"))).thenReturn(testDetails);
+	assertThat(controller.getPaymentDetail(0L, null)).isEqualTo(testDetails);
 }
 
 /*@Test

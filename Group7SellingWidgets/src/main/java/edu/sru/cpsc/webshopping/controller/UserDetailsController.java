@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.Proxy;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -21,6 +22,10 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import com.smartystreets.api.StaticCredentials;
+import com.smartystreets.api.exceptions.SmartyException;
+import com.smartystreets.api.us_street.*;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -661,11 +666,13 @@ public class UserDetailsController {
 	@PostMapping(value = "/submitShippingAddressAction", params="submit")
 	public String createShippingDetails(@Validated @ModelAttribute("shippingDetails") ShippingAddress_Form details, BindingResult result, @RequestParam("stateId") String stateId, Model model) {
 		selectedMenu = SUB_MENU.SHIPPING_DETAILS;
+		details.setState(stateDetailsController.getState(stateId));
 		model.addAttribute("selectedMenu", selectedMenu);
 		if (result.hasErrors() || shippingAddressConstraintsFailed(details)) {
 			// Add error messages
 			User user = userController.getCurrently_Logged_In();
-			model.addAttribute("shippingError", "Address does not exist");
+			if(!result.hasErrors() && shippingAddressConstraintsFailed(details))
+				model.addAttribute("shippingError", "Address does not exist");
 			model.addAttribute("shippingDetails", new ShippingAddress_Form());
 			model.addAttribute("user", user);
 			model.addAttribute("states", stateDetailsController.getAllStates());
@@ -712,12 +719,14 @@ public class UserDetailsController {
 	@PostMapping(value = "/submitShippingAddressAction", params="update")
 	public String sendUpdateSA(@Validated @ModelAttribute("shippingDetail") ShippingAddress_Form details, BindingResult result, @RequestParam("stateId") String stateId, Model model) {
 		selectedMenu = SUB_MENU.SHIPPING_DETAILS;
+		details.setState(stateDetailsController.getState(stateId));
 		model.addAttribute("selectedMenu", selectedMenu);
 		ShippingAddress currDetails = shippingController.getShippingAddressEntry(id2SA);
 		if (result.hasErrors() || shippingAddressConstraintsFailed(details)) {
 			// Add error messages
 			User user = userController.getCurrently_Logged_In();
-			model.addAttribute("shippingError", "Address does not exist");
+			if(shippingAddressConstraintsFailed(details))
+				model.addAttribute("shippingError", "Address does not exist");
 			model.addAttribute("shippingDetails", new ShippingAddress_Form());
 			model.addAttribute("user", user);
 			model.addAttribute("states", stateDetailsController.getAllStates());
@@ -840,12 +849,53 @@ public class UserDetailsController {
 		return cardExpired(form);
 	}
 	
+	/**
+	 * send the address details to the validation method
+	 * @param form
+	 * @return
+	 */
 	public boolean shippingAddressConstraintsFailed(ShippingAddress_Form form) {
 		return addressExists(form);
 	}
 	
+	
+	/**
+	 * use the smartstreets api to check if the address passed exists
+	 * @param shipping
+	 * @return
+	 */
 	public boolean addressExists(ShippingAddress_Form shipping)
 	{
+		Client client = new ClientBuilder("15c052fe-6a81-8841-3359-59658192ff8e", "9d48LSyfCFhlZolc0gi6").build();
+		
+		Lookup lookup = new Lookup();
+		lookup.setAddressee(shipping.getRecipient());
+		lookup.setStreet(shipping.getStreetAddress());
+		lookup.setCity(shipping.getCity());
+		lookup.setState(shipping.getState().getStateName());
+		lookup.setZipCode(shipping.getPostalCode());
+		System.out.println(lookup.getAddressee());
+		System.out.println(lookup.getStreet());
+		System.out.println(lookup.getCity());
+		System.out.println(lookup.getState());
+		System.out.println(lookup.getZipCode());
+		
+		try {
+			client.send(lookup);
+		}
+		catch(SmartyException | IOException ex) {
+			System.out.println(ex.getMessage());
+			ex.printStackTrace();
+		}
+		
+		List<Candidate> results = lookup.getResult();
+		
+		if(results.isEmpty())
+		{
+			System.out.println("cannot find address");
+			return true;
+		}
+		
 		return false;
 	}
 	
