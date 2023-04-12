@@ -736,23 +736,30 @@
           </div>
 
           <div th:case="widgetsInfoSubCategory">
-            <table class="center">
-              <form action="#" th:action="@{/updateWidgetsInfo}" th:object="${widgetsInfos}"
-                    method="post">
-                <tr>
-                  <th colspan="3">Widget Sub Category Details</th>
-                </tr>
-              </form>
-              <tr>
-                <td><p>Download Data File</p></td>
-                <form method="get" th:action="@{/downloadDataFile}" enctype="multipart/form-data">
-                  <input hidden type="text" th:name="subCategory" th:value="${subCategory}">
-                  <td colspan="2">
-                    <button class="button button4" type="submit" th:text="'Download ' + ${subCategory} + ' Data File'"></button>
-                  </td>
-                </form>
-              </tr>
-            </table>
+          	<div class ="card h-100 w-100">
+              	<div class="card-body" style="padding-top: 24px;">
+              		<div class="card" style="width: fit-content; height: fit-content; margin-left: auto; margin-right: auto;">
+              			<table class="uniTableForm">
+              				<tbody>
+              					<form action="#" th:action="@{/updateWidgetsInfo}" th:object="${widgetsInfos}" method="post">
+					                <tr>
+					                  <th colspan="3">Widget Sub Category Details</th>
+					                </tr>
+					            </form>
+				              	<tr>
+				                	<td><p>Download Data File</p></td>
+				                	<form method="get" th:action="@{/downloadDataFile}" enctype="multipart/form-data">
+				                  	<input hidden type="text" th:name="subCategory" th:value="${subCategory}">
+				                  	<td colspan="2">
+				                    	<button class="button button4" type="submit" th:text="'Download ' + ${subCategory} + ' Data File'"></button>
+				                  	</td>
+				                	</form>
+				              	</tr>
+              				</tbody>
+              			</table>
+              		</div>
+              	</div>
+            </div>
           </div>
 
           <div th:case="search">
@@ -765,7 +772,16 @@
               				</tr>
               				<tr>
                 				<form th:action="@{/searchUser}" method="post">
-                  					<td colspan="2"><label for="userName">Search By Username</label></td>
+                  					<td colspan="2"><label for="userName">Search By:</label>
+                  					<div>
+   										<input type="radio" value="name" name="filterUser" id="name" checked>
+   										<label for="name">Name</label>
+   									</div>
+   									<div>
+   										<input type="radio" value="email" name="filterUser" id="email">
+   										<label for="email">Email</label>
+   									</div>
+                  					</td>
                   					<td colspan="3"><input type="text" id="nameInput" name="userName" style="width: 97%"></td>
                   					<td colspan="2"><input type="submit" class="buttonSearchUser" value="Search"></td>
                 				</form>
@@ -801,14 +817,23 @@
           <div th:case="userSearchfailed">
             <div class ="card h-100 w-100">
               	<div class="card-body" style="padding-top: 24px;">
-              		<div class="card" style="width: fit-content; height: fit-content; float:left">
+              		<div class="card" style="width: fit-content; height: fit-content; margin-left: auto; margin-right: auto;">
               			<table class="uniTableForm">
               				<tr>
 				            	<td colspan="7" style="background-color:#D3D3D3"><h2>Search Returned No Results</h2></td>
 				            </tr>
 				            <tr>
 				            	<form th:action="@{/searchUser}" method="post">
-				                	<td colspan="2"><label for="userName">Search Again</label></td>
+				                	<td colspan="2"><label for="userName">Search Again</label>
+				                	<div>
+   										<input type="radio" value="name" name="filterUser" id="name" checked>
+   										<label for="name">Name</label>
+   									</div>
+   									<div>
+   										<input type="radio" value="email" name="filterUser" id="email">
+   										<label for="email">Email</label>
+   									</div>
+				                	</td>
 				                	<td colspan="2" style="padding-right: 8px;"><input id="nameInput" type="text" name="userName"></td>
 				                	<td colspan="2"><input type="submit" class="buttonSearchUser" value="Search"></td>
 				                	<td colspan="1"><button class="buttonSearchUser" type="button" onclick="location.href='/searchButton'">Go Back</button></td>
@@ -821,14 +846,23 @@
           <div th:case="userResult">
 			<div class ="card h-100 w-100">
               	<div class="card-body" style="padding-top: 24px;">
-              		<div class="card" style="width: fit-content; height: fit-content; float:left">
+              		<div class="card" style="width: fit-content; height: fit-content; margin-left: auto; margin-right: auto;">
               			<table class="uniTableForm">
               				<tr>
 				                <td colspan="7" style="background-color:#D3D3D3"><h2>Searched For User's Information</h2></td>
 				            </tr>
 				            <tr>
 				                <form th:action="@{/searchUser}" method="post">
-				                	<td colspan="2"><label for="userName">Search Again</label></td>
+				                	<td colspan="2"><label for="userName">Search Again</label>
+				                	<div>
+   										<input type="radio" value="name" name="filterUser" id="name" checked>
+   										<label for="name">Name</label>
+   									</div>
+   									<div>
+   										<input type="radio" value="email" name="filterUser" id="email">
+   										<label for="email">Email</label>
+   									</div>
+				                	</td>
 				                	<td colspan="2"><input id="nameInput" type="text" name="userName"></td>
 				                	<td colspan="2"><input type="submit" class="buttonSearchUser" value="Search"></td>
 				                	<td colspan="1"><button class="buttonSearchUser" type="button" onclick="location.href='/searchButton'">Go Back</button></td>
