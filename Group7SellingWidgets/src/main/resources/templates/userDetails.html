@@ -283,7 +283,7 @@
 												<p th:if="${#fields.hasErrors('expirationDate')}" th:errors="*{expirationDate}">
 												</p>
 												<p th:if="${cardError}" th:text="${cardError}"></p></td>
-												<td><input type="number" class="form-control" name="securityCode" id="securityCode" th:field="*{securityCode}"></input>
+												<td><input type="text" class="form-control" name="securityCode" id="securityCode" th:field="*{securityCode}"></input>
 												<p th:if="${#fields.hasErrors('securityCode')}" th:errors="*{securityCode}">
 												</p></td>
 												<td><input type="number" class="form-control" name="postalCode" id="postalCode" th:field="*{postalCode}"></input>
@@ -431,6 +431,10 @@
 					<div class="d-flex justify-content-center">
 						<h2 th:if="${!update}">Add New Shipping Details</h2>
 						<h2 th:unless="${!update}">Update Shipping Details</h2>
+					</div>
+					
+					<div style="width:20vw; justify-content:center; margin-left:auto; margin-right:auto;"  th:if="${shippingError != null}" class="alert alert-danger d-flex justify-content-center">
+						<h2 th:text="${shippingError}"></h2>
 					</div>
 					
 					<table style="width:20vw; justify-content:center; margin-left:auto; margin-right:auto;" class="uniTableForm">

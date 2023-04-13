@@ -626,8 +626,7 @@ public class EmployeeController {
   }
 
   @PostMapping({"/widgetsInfoSubCategory"})
-  public String widgetsInfoSubCategory(
-      @RequestParam("subCategory") String subCategory, Model model) {
+  public String widgetsInfoSubCategory(@RequestParam("subCategory") String subCategory, Model model) {  
     setMasterPage("query");
     model.addAttribute("masterPage", getMasterPage());
     User user = userController.getCurrently_Logged_In();
@@ -1508,7 +1507,7 @@ public class EmployeeController {
   }
 
   @RequestMapping({"/searchUser"})
-  public String searchuser(@RequestParam("userName") String userName, Model model) {
+  public String searchuser(@RequestParam("userName") String userName, @RequestParam("filterUser") String filterUser, Model model) {
     String[] allusernames = new String[getAllUsers().size()];
     for (int i = 0; i < allusernames.length; i++) {
       allusernames[i] = getAllUsers().get(i).getUsername();
@@ -1542,12 +1541,19 @@ public class EmployeeController {
     }
 
     int count = 0;
-    for (int i = 0; i < getAllUsers().size(); i++) {
-      if (getAllUsers().get(i).getUsername().contains(userName)) {
-        count++;
-      }
-    }
-    if (count == 0) {
+    if(filterUser.equals("name")) {
+	    for (int i = 0; i < getAllUsers().size(); i++) {
+	      if (getAllUsers().get(i).getUsername().contains(userName)) {
+	        count++;
+	      }
+	    }
+    }else if(filterUser.equals("email")) {
+    	for (int i = 0; i < getAllUsers().size(); i++) {
+  	      if (getAllUsers().get(i).getEmail().contains(userName)) {
+  	        count++;
+  	      }
+    	}
+    }else if (count == 0) {
       setPage("userSearchfailed");
       model.addAttribute("user", user);
       model.addAttribute("page", page);
@@ -1559,16 +1565,23 @@ public class EmployeeController {
     User[] searchedUsers = new User[count];
     setMyUserSearch(searchedUsers);
     count = 0;
-    for (int i = 0; i < getAllUsers().size(); i++) {
-      if (getAllUsers().get(i).getUsername().contains(userName)) {
-        searchedUsers[count] = getAllUsers().get(i);
-        count++;
-      }
+    if(filterUser.equals("name")) {
+	    for (int i = 0; i < getAllUsers().size(); i++) {
+	      if (getAllUsers().get(i).getUsername().contains(userName)) {
+	        searchedUsers[count] = getAllUsers().get(i);
+	        count++;
+	      }
+	    }
+    }else if(filterUser.equals("email")) {
+    	for (int i = 0; i < getAllUsers().size(); i++) {
+  	      if (getAllUsers().get(i).getEmail().contains(userName)) {
+  	        searchedUsers[count] = getAllUsers().get(i);
+  	        count++;
+  	      }
+  	    }
     }
     count = 0;
-
     setMyUserSearch(searchedUsers);
-    setSearchedUser(searchedUsers[0]);
     model.addAttribute("user", user);
     setPage("userResult");
     User useradd = new User();

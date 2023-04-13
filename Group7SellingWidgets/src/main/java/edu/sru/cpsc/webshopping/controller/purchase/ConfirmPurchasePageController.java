@@ -5,8 +5,15 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.validation.Valid;
+
+import com.taxjar.Taxjar;
+import com.taxjar.exception.TaxjarException;
+import com.taxjar.model.rates.RateResponse;
+import com.taxjar.model.taxes.TaxResponse;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -68,6 +75,7 @@ public class ConfirmPurchasePageController {
 	private boolean modifyPayment = false;
 	private PaymentDetails validatedDetails;
 	private boolean toShipping = false;
+	private Taxjar client = new Taxjar("639588118ed6ccfd8af4d3a26ad50970");
 
 	ConfirmPurchasePageController(MarketListingDomainController marketListingController, UserController userController,
 			TransactionController transController, UserDetailsController userDetController,
@@ -86,6 +94,7 @@ public class ConfirmPurchasePageController {
 	@RequestMapping("/initializePurchasePage")
 	public String initializePurchasePage(ShippingAddress address, MarketListing prevListing, Transaction purchaseOrder,
 			Model model) {
+		
 		// Setup purchase with total price and profit
 		if(purchaseOrder != null)
 			this.purchase = purchaseOrder;
@@ -97,15 +106,19 @@ public class ConfirmPurchasePageController {
 		modifyPayment = false;
 		allSelected = false;
 		
-		if(this.address != null)
+		if(this.address != null) //use the taxjar api to get the state and local sales tax information
 		{
-			BigDecimal salesTaxPercentage = this.address.getState().getSalesTaxRate().divide(new BigDecimal(100));
-			BigDecimal afterSalesTax = purchase.getTotalPriceBeforeTaxes()
-					.add(salesTaxPercentage.multiply(purchase.getTotalPriceBeforeTaxes())).setScale(2, RoundingMode.UP);
-			purchase.setTotalPriceAfterTaxes(afterSalesTax);
-			BigDecimal finalSellerProfit = afterSalesTax
-					.subtract(afterSalesTax.multiply(Transaction.WEBSITE_CUT_PERCENTAGE));
-			purchase.setSellerProfit(finalSellerProfit);
+			try
+			{
+				RateResponse res = client.ratesForLocation(this.address.getPostalCode());
+				
+				purchase.setTotalPriceAfterTaxes(purchase.getTotalPriceBeforeTaxes().add(purchase.getTotalPriceBeforeTaxes().multiply(new BigDecimal(res.rate.getCombinedRate().toString())).setScale(2, RoundingMode.UP)));
+				purchase.setSellerProfit(purchase.getTotalPriceAfterTaxes().subtract(purchase.getTotalPriceAfterTaxes().multiply(Transaction.WEBSITE_CUT_PERCENTAGE)));
+			}
+			catch(TaxjarException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		details = new PaymentDetails();
@@ -156,15 +169,19 @@ public class ConfirmPurchasePageController {
 			this.address = address;
 		
 		//set the amount before and after tax for the user to see (must have a location to know the tax)
-		if(this.address != null)
+		if(this.address != null)//use the taxjar api to get the state and local sales tax information
 		{
-			BigDecimal salesTaxPercentage = this.address.getState().getSalesTaxRate().divide(new BigDecimal(100));
-			BigDecimal afterSalesTax = purchase.getTotalPriceBeforeTaxes()
-					.add(salesTaxPercentage.multiply(purchase.getTotalPriceBeforeTaxes())).setScale(2, RoundingMode.UP);
-			purchase.setTotalPriceAfterTaxes(afterSalesTax);
-			BigDecimal finalSellerProfit = afterSalesTax
-					.subtract(afterSalesTax.multiply(Transaction.WEBSITE_CUT_PERCENTAGE));
-			purchase.setSellerProfit(finalSellerProfit);
+			try
+			{
+				RateResponse res = client.ratesForLocation(this.address.getPostalCode());
+				
+				purchase.setTotalPriceAfterTaxes(purchase.getTotalPriceBeforeTaxes().multiply(new BigDecimal(res.rate.getCombinedRate().toString())).setScale(2, RoundingMode.UP));
+				purchase.setSellerProfit(purchase.getTotalPriceAfterTaxes().subtract(purchase.getTotalPriceAfterTaxes().multiply(Transaction.WEBSITE_CUT_PERCENTAGE)));
+			}
+			catch(TaxjarException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		// Prepare a form for verifying the user's payment details
@@ -213,7 +230,16 @@ public class ConfirmPurchasePageController {
 	 * @param model
 	 * @return
 	 */
-
+	
+	
+	/**
+	 * Confirm the existing card that the user wishes to use by asking for the cards security code and verifying it
+	 * @param id
+	 * @param existingSecurityCode
+	 * @param result
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/confirmPurchase/existingCard", method = RequestMethod.POST, params = "submit")
 	public String submitPurchaseExistingCard(@Validated @ModelAttribute("selected_payment_details") Long id,
 			@Validated @ModelAttribute("existingSecurityCode") String existingSecurityCode, BindingResult result,
