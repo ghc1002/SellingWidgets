@@ -46,16 +46,16 @@
 						<div class="card-body d-flex justify-content-center">
 							<div class="row">
 								<div class="row">
-									<th:block th:each="field: ${fields}">
+									<th:block th:each="field : ${fields}">
 										<div class="form-group col-sm-6" style="padding-bottom: 25px;">
 											<p th:text="${field.display}" style="margin-bottom: 0rem;"></p>
-											<input type="text" th:id="${field.name}" class="form-control" th:name="${field.name}" required>
+											<input type="text" class="form-control" th:id="${field.name}" th:name="${field.name}" required>
 										</div>
 									</th:block>
 								</div>
-								<div class="card-footer d-flex justify-content-center" style="padding-top: 10px;">
+								<div class="card-footer" style="display: flex; justify-content: center; align-items: center; padding-top: 15px;">
 									<input class="btn btn-success v-25 mx-4" type="submit" value="Submit">
-									<a class="btn btn-danger v-25 mx-4" href="/addWidgets">Back</a>
+									<a class="btn btn-danger v-25 mx-4" href="/addWidget">Back</a>
 									<a class="btn btn-danger v-25 mx-4" href="/homePage">Cancel</a>
 								</div>
 							</div>
@@ -64,5 +64,6 @@
 				</div>
 			</div>
 		</div>
+		
 	</body>
 </html>

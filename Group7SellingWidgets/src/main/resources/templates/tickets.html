@@ -31,12 +31,15 @@
   <div th:insert="navBar :: navBar"></div>
   <!-- END SIDEBAR -->
 
-	<div class="d-flex">
+	<div>
 	  <th:block th:switch="${page}">
 	    <!-- MY TICKETS -->
 	    <div th:case="tickets">
-	      <table class="ticketTableForm" style="margin-top: 20px; margin-left:10px">
+	      <table class="ticketTableForm" style="margin-top: 20px; margin-left: auto; margin-right: auto; width: 90%;">
 	        <thead>
+	        <tr>
+	        	<td colspan="18" style="background-color:#89CFF0; text-align: center;"><h4> My Tickets </h4></td>
+	        </tr>
 	        <tr style="background-color:#89CFF0">
 	          <td colspan="2">Ticket ID</td>
 	          <td colspan="4">Subject</td>
@@ -50,16 +53,13 @@
 	        </thead>
 	        <th:block th:each="ticket: ${tickets}">
 	          <tr>
-	            <td colspan="2"><a th:href="@{/tickets/{id}(id = ${ticket.id})}"
-	                               th:text="${ticket.id}"></a></td>
+	            <td colspan="2"><a th:href="@{/tickets/{id}(id = ${ticket.id})}" th:text="${ticket.id}"></a></td>
 	            <td colspan="4"><p th:text="${ticket.subject}"></p></td>
 	            <td colspan="2"><p th:text="${ticket.state}"></p></td>
 	            <td colspan="2"><p th:text="${ticket.createdAt}"></p></td>
-	            <td colspan="2"><p th:text="${ticket.assignedAt} ? ${ticket.assignedAt} : 'NULL'"></p>
-	            </td>
+	            <td colspan="2"><p th:text="${ticket.assignedAt} ? ${ticket.assignedAt} : 'NULL'"></p></td>
 	            <td colspan="2"><p th:text="${ticket.updatedAt}"></p></td>
-	            <td colspan="2"><p th:text="${ticket.resolvedAt} ? ${ticket.resolvedAt} : 'NULL'"></p>
-	            </td>
+	            <td colspan="2"><p th:text="${ticket.resolvedAt} ? ${ticket.resolvedAt} : 'NULL'"></p></td>
 	            <td colspan="2">
 	              <th:block th:if="${ticket.isResolved()}">
 	                <form method="post" th:action="@{/reopenTicket/{id}(id = ${ticket.id})}">
@@ -76,36 +76,40 @@
 	    <!-- CREATE TICKETS -->
 	    <div th:case="createTickets">
 	      <form th:action="@{/createTickets}" th:object="${ticket}" method="post">
-	        <table class="ticketTableForm" style="margin-top: 20px; margin-left:10px">
-	          <tr>
-	            <td colspan="2" style="background-color:#89CFF0"><h4>Create a Ticket</h4></td>
-	          </tr>
-	          <tr>
-	            <td style="background-color:#d3d3d3"><label for="subject">Ticket Subject : </label></td>
-	            <td><input type="text" th:field="*{subject}" id="subject"/></td>
-	          </tr>
-	          <!-- For Nested Objects Binding in form input https://stackoverflow.com/questions/38635850/nested-objects-in-thymeleaf -->
-	          <tr>
-	            <td style="background-color:#d3d3d3"><label for="message">Ticket Description : </label></td>
-	            <td>
-	              <th:block th:each="message, stat : *{messages}">
-	              <textarea th:field="*{messages[__${stat.index}__].content}"
-	                        id="message"></textarea>
-	              </th:block>
-	            </td>
-	          </tr>
-	          <tr>
-	            <td><input type="submit" class="btn btn-primary btn-sm" value="Create Ticket"></td>
-	            <td><a class="btn btn-danger btn-sm" th:href="@{/tickets}"><span>Cancel Ticket</span></a>
-	            </td>
-	          </tr>
+	        <table class="ticketTableForm" style="margin-top: 20px; margin-left: auto; margin-right: auto; width: 60%;">
+	          <thead>
+		          <tr>
+		            <td colspan="2" style="background-color:#89CFF0; text-align: center;"><h4> Create a Ticket </h4></td>
+		          </tr>
+		          <tr>
+		            <td style="background-color:#d3d3d3"><label for="subject"> Ticket Subject: </label></td>
+		            <td><input type="text" th:field="*{subject}" id="subject" cols="90"/></td>
+		          </tr>
+		          <!-- For Nested Objects Binding in form input https://stackoverflow.com/questions/38635850/nested-objects-in-thymeleaf -->
+		          <tr>
+		            <td style="background-color:#d3d3d3"><label for="message"> Ticket Description: </label></td>
+		            <td>
+		              <th:block th:each="message, stat : *{messages}">
+		              	<textarea th:field="*{messages[__${stat.index}__].content}" id="message" rows="4" cols="90"></textarea>
+		              </th:block>
+		            </td>
+		          </tr>
+	          </thead>
+	          <tbody>
+	          	<tr>
+		          	<td colspan="2" class="justify-content-center">
+		            	<input type="submit" class="btn btn-primary btn-sm" value="Create Ticket">
+		            	<a class="btn btn-danger btn-sm" th:href="@{/tickets}"><span>Cancel Ticket</span></a>
+		            </td>
+	            </tr>
+	          </tbody>
 	        </table>
 	      </form>
 	    </div>
 	
 	    <div th:case="ticketdetails">
-	      <table class="table table-bordered d-flex justify-content-center">
-	        <tr class="table-primary" style="border: 1px solid black">
+	      <table class="table table-bordered d-flex justify-content-center" style="margin-top: 20px; margin-left: auto; margin-right: auto; width: 90%;">
+	        <tr class="table-primary" style="background-color: #89CFF0; border: 1px solid black">
 	          <th colspan="2">Ticket Details</th>
 	        </tr>
 	        <th:block th:object="${ticketdetail}">

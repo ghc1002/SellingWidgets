@@ -147,6 +147,7 @@ public class AddWidgetController {
 	private String subcategory;
 	private WidgetImage tempImage = new WidgetImage();
 	private String page;
+	
 	public String getPage() {
 		return page;
 	}
@@ -208,41 +209,7 @@ public class AddWidgetController {
 		return "addWidget";
 	}
 	
-	/*
 	@RequestMapping("/createWidget")
-	public String createWidget(Model model, @RequestParam("category") String category)
-	{
-		this.category = category;
-		String url = "";
-		if(category.contentEquals("appliance")) {
-			url = "redirect:addAppliance";
-		} else if(category.contentEquals("appliance_parts")) {
-			url = "redirect:addApplianceParts";
-		}
-		else if (category.contentEquals("electronic"))
-		{
-			url = "redirect:addElectronic";
-		} else if (category.contentEquals("electronic_parts")) {
-			url = "redirect:addElectronicParts";
-		}
-		else if (category.contentEquals("lawnCare"))
-		{
-			url = "redirect:addLawnCare";
-		} else if (category.contentEquals("lawnCare_parts")) {
-			url = "redirect:addLawnCareParts";
-		}
-		else if (category.contentEquals("vehicle"))
-		{
-			url = "redirect:addVehicle";
-		} else if (category.contentEquals("vehicle_parts")) {
-			url = "redirect:addVehicleParts";
-		}
-		model.addAttribute("user", userController.getCurrently_Logged_In());
-		return url;
-	}
-	*/
-	
-	@RequestMapping("/createWidget") // Morrow
 	public String createWidget(@RequestParam("category") String category, @RequestParam("subcategory") String subcategory, Model model)
 	{
 		this.category = category;
@@ -250,8 +217,6 @@ public class AddWidgetController {
 		
 		String temp = WordUtils.capitalize(subcategory, '_');
 		temp = temp.replace("_", "");
-		
-		System.out.println(temp);
 		
 		String url = "redirect:add" + temp;
 		
@@ -261,21 +226,44 @@ public class AddWidgetController {
 		return url;
 	}
 	
-	/*
-	@RequestMapping("/createVehicleParts")
-	public String createVehicleParts(Model model, @RequestParam("subcategory") String subcategory)
+	@RequestMapping("createCarParts")
+	public String createCarParts(Model model, @ModelAttribute Vehicle_Car_Parts carPart, BindingResult result)
 	{
-		this.subcategory = subcategory;
-		String url = "";
-		if(subcategory.contentEquals("car_parts"))
-		{
-
-			url = "redirect:addCarParts";
-		}
+		model.addAttribute("name", carPart);
+		model.addAttribute("description", carPart);
+		carPart.setCategory(category);
+		carPart.setSubCategory(subcategory);
+		model.addAttribute("length", carPart);
+		model.addAttribute("width", carPart);
+		model.addAttribute("height", carPart);
+		model.addAttribute("color", carPart);
+		model.addAttribute("itemCondition", carPart);
+		model.addAttribute("model", carPart);
+		model.addAttribute("brand", carPart);
+		model.addAttribute("material", carPart);
+		widgetController.addCarParts(carPart, result);
+		this.carPart = carPart;
+		widget = carPart;
+		model.addAttribute("createCarPart", true);
 		model.addAttribute("user", userController.getCurrently_Logged_In());
-		return url;
+		return "redirect:createListing";
 	}
-	*/
+
+	@RequestMapping("/createListing")
+	public String createListing(Model model)
+	{
+		marketListing = new MarketListing();
+		model.addAttribute("pricePerItem", marketListing.getPricePerItem());
+		model.addAttribute("qtyAvailable", marketListing.getQtyAvailable());
+		model.addAttribute("listing", marketListing);
+		model.addAttribute("subcategory", subcategory);
+		model.addAttribute("user", userController.getCurrently_Logged_In());
+		return "createListing";
+	}
+	
+	/*
+	 *  Editing code above to remove hard code
+	 */
 	
 	@RequestMapping("/addAppliance")
 	public String addAppliance(Model model)
@@ -523,20 +511,6 @@ public class AddWidgetController {
 		{
 
 			url = "redirect:addCar";
-		}
-		model.addAttribute("user", userController.getCurrently_Logged_In());
-		return url;
-	}
-
-	@RequestMapping("/createVehicleParts")
-	public String createVehicleParts(Model model, @RequestParam("subcategory") String subcategory)
-	{
-		this.subcategory = subcategory;
-		String url = "";
-		if(subcategory.contentEquals("car_parts"))
-		{
-
-			url = "redirect:addCarParts";
 		}
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return url;
@@ -1216,41 +1190,6 @@ public class AddWidgetController {
 		model.addAttribute("createCar", true);
 		model.addAttribute("user", userController.getCurrently_Logged_In());
 		return "redirect:createListing";
-	}
-
-	@RequestMapping("createCarParts")
-	public String createCarParts(Model model, @ModelAttribute Vehicle_Car_Parts carPart, BindingResult result) // Morrow
-	{
-		model.addAttribute("name", carPart);
-		model.addAttribute("description", carPart);
-		carPart.setCategory(category);
-		carPart.setSubCategory(subcategory);
-		model.addAttribute("length", carPart);
-		model.addAttribute("width", carPart);
-		model.addAttribute("height", carPart);
-		model.addAttribute("color", carPart);
-		model.addAttribute("itemCondition", carPart);
-		model.addAttribute("model", carPart);
-		model.addAttribute("brand", carPart);
-		model.addAttribute("material", carPart);
-		widgetController.addCarParts(carPart, result);
-		this.carPart = carPart;
-		widget = carPart;
-		model.addAttribute("createCarPart", true);
-		model.addAttribute("user", userController.getCurrently_Logged_In());
-		return "redirect:createListing";
-	}
-
-	@RequestMapping("/createListing")
-	public String createListing(Model model)
-	{
-		marketListing = new MarketListing();
-		model.addAttribute("pricePerItem", marketListing.getPricePerItem());
-		model.addAttribute("qtyAvailable", marketListing.getQtyAvailable());
-		model.addAttribute("listing", marketListing);
-		model.addAttribute("subcategory", subcategory);
-		model.addAttribute("user", userController.getCurrently_Logged_In());
-		return "createListing";
 	}
 	
 	/**

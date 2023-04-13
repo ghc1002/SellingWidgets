@@ -5,288 +5,84 @@
 	</head>
 	
 	<nav th:fragment="navBar" class="navbar navbar-dark bg-dark">
-		<th:block th:switch="${user.role}">
-			
-			<div th:case="ROLE_USER">
-				<ul class="nav nav-pills">
-					<li class="nav-item">
-						<a th:if="${page == 'home'}" th:href="@{/homePage}" class="submit4 nav-link active"><span>Home</span></a>
-						<a th:unless="${page == 'home'}" th:href="@{/homePage}" class="submit4"><span>Home</span></a>
-					</li>
-					<li class="nav-item">
-						<a th:if="${page == 'searchWidgetSellerMarketListing'}" th:href="@{/BrowseWidgetsButton}" class="submit4 nav-link active"><span>Browse All Items</span></a>
-						<a th:unless="${page == 'searchWidgetSellerMarketListing'}" th:href="@{/BrowseWidgetsButton}" class="submit4"><span>Browse All Items</span></a>
-					</li>
-					<li class="nav-item">
-						<a th:if="${page == 'widgets'}" th:href="@{/addWidget}" class="submit4 nav-link active"><span>Sell an Item</span></a>
-						<a th:unless="${page == 'widgets'}" th:href="@{/addWidget}" class="submit4"><span>Sell an Item</span></a>
-					</li>
-					<li class="nav-item">
-						<a th:if="${page == 'friends'}" th:href="@{/friends}" class="submit4 nav-link active">Social</a>
-						<a th:unless="${page == 'friends'}" th:href="@{/friends}" class="submit4">Social</a>
-					</li>
-					<li class="nav-item">
-						<a th:if="${page == 'messages'}" th:href="@{/messages}" class="submit4 nav-link active"><span>My Messages</span></a>
-						<a th:unless="${page == 'messages'}" th:href="@{/messages}" class="submit4"><span>My Messages</span></a>
-					</li>
-					<li class="nav-item pointer" style="position: relative; z-index: 10;">
-						<a th:if="${page == 'tickets' || page == 'createTickets'}" class="submit4 nav-link dropdown-toggle active" data-bs-toggle="dropdown"><span>Need Help?</span></a>
-						<a th:unless="${page == 'tickets' || page == 'createTickets'}" class="submit4 nav-link dropdown-toggle" data-bs-toggle="dropdown"><span>Need Help?</span></a>
-						<div class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
-							<a th:if="${page == 'tickets'}" class="submit4 nav-link active" th:href="@{/tickets}"><span>My Tickets</span></a>
-		        	<a th:unless="${page == 'tickets'}" class="submit4" th:href="@{/tickets}"><span>My Tickets</span></a>
-							<a th:if="${page == 'createTickets'}" class="submit4 nav-link active" th:href="@{/createTickets}"><span>Add Ticket</span></a>
-							<a th:unless="${page == 'createTickets'}" class="submit4" th:href="@{/createTickets}"><span>Add Ticket</span></a>
-						</div>
-					</li>
-					<li th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}" class="nav-item">
-						<a th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}" th:href="@{/userDetails/paymentDetails}" class="submit4 nav-link dropdown-toggle active">Card Info</a>
-						<a th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}" th:href="@{/userDetails/paymentDetails}" class="submit4">Card Info</a>
-					</li>
-					<li th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}" class="nav-item">
-						<a th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}" th:href="@{/userDetails/depositDetails}" class="submit4 nav-link dropdown-toggle active">Direct Deposit</a>
-						<a th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}" th:href="@{/userDetails/depositDetails}" class="submit4">Direct Deposit</a>
-					</li>
-				</ul>
-			</div>
-			
-			<div th:case="ROLE_ADMIN">
-				<ul class="nav nav-pills">
-					<li class="nav-item">
-						<a th:if="${page == 'begin'}" class="submit4 nav-link active" th:href="@{/employee}"><span>Employee Home</span></a>
-						<a th:unless="${page == 'begin'}" class="submit4" th:href="@{/employee}"><span>Employee Home</span></a>
-					</li>
-					<li class="nav-item">
-						<a th:if="${page == 'search'}" class="submit4 nav-link active" th:href="@{/searchButton}"><span>View Users</span></a>
-						<a th:unless="${page == 'search'}" class="submit4" th:href="@{/searchButton}"><span>View Users</span></a>
-					</li>
-					<!-- Messages can be viewed through View User's, determine later if this is needed at all. 
-					<li class="nav-item">
-						<a th:if="${page == 'searchMessage'}" class="submit4 nav-link active" th:href="@{/searchMessageButton}"><span>View User's Messages</span></a>
-						<a th:unless="${page == 'searchMessage'}" class="submit4" th:href="@{/searchMessageButton}"><span>View User's Messages</span></a>
-					</li>
-					<!--  -->
-					<li class="nav-item">
-						<a th:if="${page == 'ticket'}" class="submit4 nav-link active" th:href="@{/searchTickets}"><span>View User Tickets</span></a>
-						<a th:unless="${page == 'ticket'}" class="submit4" th:href="@{/searchTickets}"><span>View User Tickets</span></a>
-					</li>
-					<li class="nav-item">
-						<a th:if="${page =='searchWidgetSellerMarketListing'}" class="submit4 nav-link active" th:href="@{/searchWidgetButton}"><span>Browse Items</span></a>
-						<a th:unless="${page =='searchWidgetSellerMarketListing'}" class="submit4" th:href="@{/searchWidgetButton}"><span>Browse Items</span></a>
-					</li>
-					<li class="nav-item">
-						<a th:if="${page == 'widgetsInfo'}" class="submit4 nav-link active" th:href="@{/widgetsInfo}"><span>Items Details</span></a>
-						<a th:unless="${page == 'widgetsInfo'}" class="submit4" th:href="@{/widgetsInfo}"><span>Items Details</span></a>
-					</li>
-					<li class="nav-item">
-						<a th:if="${page == 'create'}" class="submit4 nav-link active" th:href="@{/createButton}"><span>Add Account</span></a>
-						<a th:unless="${page == 'create'}" class="submit4" th:href="@{/createButton}"><span>Add Account</span></a>
-					</li>
-					<li class="nav-item">
-						<a th:if="${page == 'messages'}" class="submit4 nav-link active" th:href="@{/messages}"><span>My Messages</span></a>
-						<a th:unless="${page == 'messages'}" class="submit4" th:href="@{/messages}"><span>My Messages</span></a>
-					</li>
-				</ul>
-			</div>
-				
-			<div th:case="ROLE_ADMIN_SHADOW">
-				<ul>
-					<li>
-						<a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
-					</li>
-					<li>
-						<a class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a><br>
-					</li>
-					<li>
-						<a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br>
-					</li>
-					<li>
-						<a class="submit4" th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br>
-					</li>
-					<li>
-						<a class="submit4" th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br>
-						</li>
-					<li>
-						<a class="submit4" th:href="@{/searchMessageButton}"><span>View a Message</span></a><br>
-					</li>
-					<li>
-						<a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br>
-					</li>
-	      </ul>
-	    </div>
-	    
-	    <div th:case="ROLE_TECHNICALSERVICE">
-	    	<div class="grid-item item3">
-	    		<ul>
-	    			<li>
-	    				<a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchMessageButton}"><span>View a Message</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br>
-	    			</li>
-	    		</ul>
-	    	</div>
-	    </div>
-	    
-	    <div th:case="ROLE_CUSTOMERSERVICE">
-	    	<div class="grid-item item3">
-	    		<ul>
-	    			<li>
-	    				<a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchMessageButton}"><span>View a Message</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br>
-	    			</li>
-	    		</ul>
-	    	</div>
-	    </div>
-	    
-	    <div th:case="ROLE_SECURITY">
-	    	<div class="grid-item item3">
-	    		<ul>
-	    			<li>
-	    				<a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br></li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br></li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchMessageButton}"><span>View a Message</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br>
-	    			</li>
-	    		</ul>
-	    	</div>
-	    </div>
-	    
-	    <div th:case="ROLE_SALES">
-	    	<div class="grid-item item3">
-	    		<ul>
-	    			<li>
-	    				<a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/statButton}"><span>Statistics</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br>\
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br>
-	    			</li>
-	    		</ul>
-	    	</div>
-	    </div>
-	    
-	    <div th:case="ROLE_HIRINGMANAGER">
-	    	<div class="grid-item item3">
-	    		<ul>
-	    			<li>
-	    				<a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchApplicationsButton(id = ${1})}"><span>New Applications</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/searchApplicationsButton(id = ${2})}"><span>Reviewed Applications</span></a><br>
-	    			</li>
-	    			<li>
-	    				<a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br>
-	    			</li>
-	    		</ul>
-	    	</div>
-	    </div>
-	    
-	    <div th:case="ROLE_HELPDESK_ADMIN">
-	    	<div class="grid-item item3">
-	    		<ul>
-	    			<li>
-	    				<a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
-	    			</li>
-	          <li><a class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a><br>
-	          </li>
-	          <li>
-	          	<a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br>
-	          </li>
-	          <li>
-	          	<a class="submit4"th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br>
-	          </li>
-	          <li>
-	          	<a class="submit4"th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br>
-	          </li>
-	          <li>
-	          	<a class="submit4"th:href="@{/searchMessageButton}"><span>View a Message</span></a><br>
-	          </li>
-	          <li>
-	          	<a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br>
-	          </li>
-	         </ul>
-	        </div>
-	       </div>
-	     
-	     <div th:case="ROLE_HELPDESK_REGULAR">
-	      <div class="grid-item item3">
-	        <ul>
-	          <li><a class="submit4" style="color:white;font-size:12px"><span>World of Widgets Employee Home Page</span></a><br>
-	          </li>
-	          <li><a class="submit4" th:href="@{/searchTickets}"><span>Search Tickets</span></a><br>
-	          </li>
-	          <li><a class="submit4" th:href="@{/searchButton}"><span>Search Users</span></a><br></li>
-	          <li><a class="submit4"
-	                 th:href="@{/searchWidgetButton}"><span>Search Widgets</span></a><br></li>
-	          <li><a class="submit4"
-	                 th:href="@{/widgetsInfo}"><span>Widgets Info</span></a><br></li>
-	          <li><a class="submit4"
-	                 th:href="@{/searchMessageButton}"><span>View a Message</span></a><br></li>
-	          <li><a class="submit4" th:href="@{/messages}"><span>My Messages</span></a><br></li>
-	          <!--  <li><a class="submit4" th:href="@{/do_the_logout}" ><span>Logout</span></a><br></li> -->
-	        </ul>
-	      </div>
-	    </div>
-		</th:block>
+		
+		<div th:if="${user.role} == ROLE_USER">
+			<ul class="nav nav-pills">
+				<li class="nav-item">
+					<a th:if="${page == 'home'}" th:href="@{/homePage}" class="submit4 nav-link active"><span>Home</span></a>
+					<a th:unless="${page == 'home'}" th:href="@{/homePage}" class="submit4"><span>Home</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page == 'searchWidgetSellerMarketListing'}" th:href="@{/BrowseWidgetsButton}" class="submit4 nav-link active"><span>Browse All Items</span></a>
+					<a th:unless="${page == 'searchWidgetSellerMarketListing'}" th:href="@{/BrowseWidgetsButton}" class="submit4"><span>Browse All Items</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page == 'widgets'}" th:href="@{/addWidget}" class="submit4 nav-link active"><span>Sell an Item</span></a>
+					<a th:unless="${page == 'widgets'}" th:href="@{/addWidget}" class="submit4"><span>Sell an Item</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page == 'friends'}" th:href="@{/friends}" class="submit4 nav-link active">Social</a>
+					<a th:unless="${page == 'friends'}" th:href="@{/friends}" class="submit4">Social</a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page == 'messages'}" th:href="@{/messages}" class="submit4 nav-link active"><span>My Messages</span></a>
+					<a th:unless="${page == 'messages'}" th:href="@{/messages}" class="submit4"><span>My Messages</span></a>
+				</li>
+				<li class="nav-item pointer" style="position: relative; z-index: 10;">
+					<a th:if="${page == 'tickets' || page == 'createTickets'}" class="submit4 nav-link dropdown-toggle active" data-bs-toggle="dropdown"><span>Need Help?</span></a>
+					<a th:unless="${page == 'tickets' || page == 'createTickets'}" class="submit4 nav-link dropdown-toggle" data-bs-toggle="dropdown"><span>Need Help?</span></a>
+					<div class="dropdown-menu dropdown-menu-end dropdown-menu-dark" style="text-align: center;">
+						<a th:if="${page == 'tickets'}" class="submit4 nav-link active" th:href="@{/tickets}"><span>My Tickets</span></a>
+	        	<a th:unless="${page == 'tickets'}" class="submit4" th:href="@{/tickets}"><span>My Tickets</span></a>
+						<a th:if="${page == 'createTickets'}" class="submit4 nav-link active" th:href="@{/createTickets}"><span>Add Ticket</span></a>
+						<a th:unless="${page == 'createTickets'}" class="submit4" th:href="@{/createTickets}"><span>Add Ticket</span></a>
+					</div>
+				</li>
+				<li th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}" class="nav-item">
+					<a th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}" th:href="@{/userDetails/paymentDetails}" class="submit4 nav-link dropdown-toggle active">Card Info</a>
+					<a th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).PAYMENT_DETAILS}" th:href="@{/userDetails/paymentDetails}" class="submit4">Card Info</a>
+				</li>
+				<li th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}" class="nav-item">
+					<a th:if="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}" th:href="@{/userDetails/depositDetails}" class="submit4 nav-link dropdown-toggle active">Direct Deposit</a>
+					<a th:unless="${selectedMenu == T(edu.sru.cpsc.webshopping.controller.SUB_MENU).DEPOSIT_DETAILS}" th:href="@{/userDetails/depositDetails}" class="submit4">Direct Deposit</a>
+				</li>
+			</ul>
+		</div>
+		
+		<div th:if="${user.role} == ROLE_ADMIN">
+			<ul class="nav nav-pills">
+				<li class="nav-item">
+					<a th:if="${page == 'begin'}" class="submit4 nav-link active" th:href="@{/employee}"><span>Employee Home</span></a>
+					<a th:unless="${page == 'begin'}" class="submit4" th:href="@{/employee}"><span>Employee Home</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page == 'search'}" class="submit4 nav-link active" th:href="@{/searchButton}"><span>View Users</span></a>
+					<a th:unless="${page == 'search'}" class="submit4" th:href="@{/searchButton}"><span>View Users</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page == 'ticket'}" class="submit4 nav-link active" th:href="@{/searchTickets}"><span>View User Tickets</span></a>
+					<a th:unless="${page == 'ticket'}" class="submit4" th:href="@{/searchTickets}"><span>View User Tickets</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page =='searchWidgetSellerMarketListing'}" class="submit4 nav-link active" th:href="@{/searchWidgetButton}"><span>View User Items</span></a>
+					<a th:unless="${page =='searchWidgetSellerMarketListing'}" class="submit4" th:href="@{/searchWidgetButton}"><span>View User Items</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page == 'widgetsInfo'}" class="submit4 nav-link active" th:href="@{/widgetsInfo}"><span>Items Details</span></a>
+					<a th:unless="${page == 'widgetsInfo'}" class="submit4" th:href="@{/widgetsInfo}"><span>Items Details</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page == 'create'}" class="submit4 nav-link active" th:href="@{/createButton}"><span>Add Account</span></a>
+					<a th:unless="${page == 'create'}" class="submit4" th:href="@{/createButton}"><span>Add Account</span></a>
+				</li>
+				<li class="nav-item">
+					<a th:if="${page == 'messages'}" class="submit4 nav-link active" th:href="@{/messages}"><span>My Messages</span></a>
+					<a th:unless="${page == 'messages'}" class="submit4" th:href="@{/messages}"><span>My Messages</span></a>
+				</li>
+			</ul>
+		</div>
+		
+		<!-- Create navBar for other employees roles when needed -->
+		
 	</nav>
 </html>
