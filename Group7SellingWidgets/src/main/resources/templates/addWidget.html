@@ -25,12 +25,52 @@
 				background-color:white;
 				border-radius:10px;
 			}
+			
 			a.subcat{
 				text-decoration:none;
 				padding-left: 20px;
 			}
 			
 		</style>
+		<script>
+			function enableSubcatDropdown()
+			{
+				var firstDrop = document.getElementById("category");
+				var secondDrop = document.getElementById("subcategory");
+				
+				var firstValue = firstDrop.value;
+				var secondValue, i;
+				
+				if(secondDrop.disabled)
+				{
+				secondDrop.disabled = false;
+				}
+				
+				for(i = 0; i < secondDrop.length; i++)
+				{
+					secondValue = secondDrop[i].id;
+					if(firstValue == secondValue)
+					{
+						secondDrop[i].hidden = false;
+					}
+					else
+					{
+						secondDrop[i].hidden = true;
+					}
+				}
+			}
+		</script>
+		<script>
+			function enableNextButton()
+			{
+				var btnelem = document.getElementById("nextButton");
+				
+				if(btnelem.disabled)
+				{
+				btnelem.disabled = false;
+				}
+			}
+		</script>
 	</head>
 
 	<body>
@@ -45,48 +85,27 @@
 		
     <div class="card h-100 w-100">
     	<div class="card-body">
-      	<div class="card" style="margin-left: auto; margin-right: auto; width: fit-content; padding-left: 10px; padding-right: 10px;">
-        	<div class="card-header d-flex" style="text-align: left; padding-left: 6px"><h4> Select Item Categories </h4></div>
+      	<div class="card" style="margin-left: auto; margin-right: auto; width: 20%;">
+        	<div class="card-header" style="text-align: center;"><h4> Select Item Categories </h4></div>
         	<form action="#" th:action="@{/createWidget}" method="post">
-	        	<th:block th:each="category: ${categories}">
-		        	<label for="category"> Choose a Category </label>
-		        	<select id="cat" name="category" class="form-select form-select-lg mb-3">
-		        		<option value="hide" selected disabled hidden> -- Select One -- </option>
-		        		<option th:text="${category.display}" th:id="${category.name}" th:value="${category.name}"></option>
+	        	<div>
+		        	<label for="category" style="text-align: center;"> Choose a Category </label>
+		        	<select id="category" name="category" class="form-select form-select-lg mb-3" required onchange="enableSubcatDropdown()">
+		        		<option selected disabled hidden> -- Select One -- </option>
+		        		<option th:each="category : ${categories}" th:text="${category.display}" th:id="${category.name}" th:value="${category.name}"></option>
 		        	</select>
-		        	<th:block th:each="subcategory: ${subcategories}">
-		        		<div id="sub" style="visibility: hidden">
-			        		<label for="subcategory"> Choose a Sub-category </label>
-				        	<select id="subcategory" name="subcategory" th:if="${subcategory.parent} == ${category.name}" class="form-select form-select-lg mb-3" required onchange="enableButton()">
-				        		<option selected disabled hidden> -- Select One -- </option>
-				        		<option th:text="${subcategory.display}" th:id="${subcategory.name}" th:value="${subcategory.name}"></option>
-				        	</select>
-				        	<div class="card-footer justify-content-center">
-				        		<input id="nextButton" value="Next" class="btn btn-success v-25 mx-4" type="submit" th:href="@{/subcategory.contract}" style="margin-left: auto; margin-right: auto;" disabled>
-				        		<a class="btn btn-danger v-25 mx-4" href="/homePage"> Cancel </a>
-				        		<script>
-					        		function enableButton()
-											{
-					        			var btnelem = document.getElementById('nextButton');
-					        			btnelem.disabled = false;
-					        		}
-				        		</script>
-				        	</div>
-			        	</div>
-						  </th:block>
-						  <script>
-								var z = document.getElementById('cat');
-								var x = document.getElementById('sub');
-								
-								z.addEventListener('change', function handleChange(event){
-									if (event.target.value === 'hide'){
-										x.style.visibility = 'hidden';
-									}else{
-										x.style.visibility = 'visible';
-									}
-								});
-					  	</script>
-		      	</th:block>
+		        	
+	        		<label for="subcategory" style="text-align: center;"> Choose a Sub-category </label>
+		        	<select id="subcategory" name="subcategory" class="form-select form-select-lg mb-3" required onchange="enableNextButton()" disabled>
+		        		<option selected disabled hidden> -- Select One -- </option>
+		        		<option th:each="subcategory : ${subcategories}" th:text="${subcategory.display}" th:id="${subcategory.parent}" th:value="${subcategory.name}"></option>
+		        	</select>
+		        	
+		        	<div class="card-footer" style="display: flex; justify-content: center; align-items: center;">
+		        		<input class="btn btn-success v-25 mx-4" type="submit" th:href="@{/subcategory.contract}" id="nextButton" value="Next" disabled>
+		        		<a class="btn btn-danger v-25 mx-4" href="/homePage"> Cancel </a>
+		        	</div>
+		        </div>
 	      	</form>
       	</div>
     	</div>

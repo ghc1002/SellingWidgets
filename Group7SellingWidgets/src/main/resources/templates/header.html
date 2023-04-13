@@ -11,14 +11,12 @@
 			<div class="container-fluid">
 				
 				<!-- Unbiased Left Justified Unordered List -->
-				<th:block th:switch="${user.role}">
-					<ul class="navbar-nav">
-						<li class="nav-item">
-							<a th:case="ROLE_USER" class="navbar-brand" th:href="@{/homePage}"><img src="/images/pseudo_ebay_icon.png" alt="Home" style="width:64px; height:64px;"></img></a>
-							<a th:case="ROLE_ADMIN" class="navbar-brand" th:href="@{/employee}"><img src="/images/pseudo_ebay_icon.png" alt="Home" style="width:64px; height:64px;"></img></a>
-						</li>
-					</ul>
-				</th:block>
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a th:if="${user.role} == ROLE_USER" class="navbar-brand" th:href="@{/homePage}"><img src="/images/pseudo_ebay_icon.png" alt="Home" style="width:64px; height:64px;"></img></a>
+						<a th:if="${user.role} == ROLE_ADMIN" class="navbar-brand" th:href="@{/employee}"><img src="/images/pseudo_ebay_icon.png" alt="Home" style="width:64px; height:64px;"></img></a>
+					</li>
+				</ul>
 				<!-- End Unbiased Left Justified Unordered List -->
 					
 				<!-- No Logged In User Right Justified Unordered List -->
@@ -33,12 +31,13 @@
 				<!-- End No Logged In User Right Justified Unordered List -->
 				
 				<!-- Basic User Right Justified Unordered List -->
-				<ul th:if="${user.role} == ROLE_USER" class="navbar-nav ms-md-auto">
-					<li class="nav-item pointer" style="position: relative; z-index: 10;">
+				<ul th:if="${user.role} == ROLE_USER" class="navbar-nav ms-md-auto" style="position: relative; z-index: 10; padding-right: 10px;">
+					<li class="nav-item pointer">
 						<div class="dropdown">
 							<a class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-								<img th:if="${user.userImage != null}" th:src="@{/images/userImages/{icon}(icon = ${user.userImage})}" th:text=" ${user.username}" style="width:50px; height:50px; padding-right:15px;"></img>
-								<img th:unless="${user.userImage != null}" th:src="@{/images/userImages/default_user_icon.png}" th:text=" ${user.username}" style="width:50px; height:50px; padding-right:15px;"></img>
+								<img th:if="${user.userImage == null}" th:src="@{/images/userImages/default_user_icon.png}" style="width:50px; height:50px;"></img>
+								<img th:if="${user.userImage != null}" th:src="@{/images/userImages/{icon}(icon = ${user.userImage})}" style="width:50px; height:50px;"></img>
+								<span th:text="${user.username}"></span>
 							</a>
 							<ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
 								<li><h5 class="dropdown-header">My Account</h5></li>
@@ -61,7 +60,7 @@
 				</ul>
 				<!-- End Admin/Employee Right Justified Unordered List -->
 				
-				<!-- Need to add ul tag element or edit above ul tag for other employee users -->
+				<!-- Create header for other employee roles when needed -->
 				
 			</div>
 		</nav>
