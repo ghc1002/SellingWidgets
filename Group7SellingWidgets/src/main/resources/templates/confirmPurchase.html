@@ -191,17 +191,24 @@
 								</div>
 							</div>
 						</div>
-						<div class="accordion-item">
-							<h2 class="accordion-header">
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#creditAccordion">
+							<h2>
+								<button id="paymentModalButton" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#creditAccordion">
 									Pay via Credit Card
 								</button>
 							</h2>
-							<div id="creditAccordion" class="accordion-collapse collapse" th:classappend="${allDetails == null || useThis != null || relogin == false || loginEr == true ? 'show' : ''}" data-bs-parent="#payment-methods">
-								<div class="accordion-body">
+							<div id="creditAccordion" class="modal fade" data-bs-parent="#payment-methods" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered" role="document">
+								<div class="modal-content">
+								<div class="modal-header">
+									<h2>Use New Credit Card</h2>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+								</div>
 									<form method="post" action="#" class="row g-3 d-flex justify-content-center my-2"
 										th:action="@{/confirmPurchase/submitPurchase}"  th:object="${paymentDetails}">
 										<div th:if="${relogin == false}">
+										<div class="modal-body">
 									<table style="width:20vw; justify-content:center; margin-left:auto; margin-right:auto;" class="uniTableForm">
 										<thead>
 											<tr>
@@ -253,6 +260,7 @@
 													th:if="${currUser.directDepositDetails == null}">No Deposit Details Added</button></div> -->
 										</tbody>
 									</table>
+									
 
 										<!-- Purchase decisions -->
 										<div class="d-flex justify-content-center mb-3">
@@ -260,6 +268,7 @@
 											<button style="margin-right:100px;" class="btn btn-primary btn-lg"
 												 type="submit" name="submit">Confirm</button>
 											
+										</div>
 										</div>
 										</div>
 										<div th:if="${relogin}">
