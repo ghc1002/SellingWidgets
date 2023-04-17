@@ -784,7 +784,7 @@ public class LandingPageController {
       model.addAttribute(entry.getKey(), entry.getValue());
     }
     model.addAttribute("lawnMowerPart", lawnMowerParts);
-
+    model.addAttribute("user", userController.getCurrently_Logged_In());
     model.addAttribute("car", widgetController.getAllCars());
     model.addAttribute("lawnMower", widgetController.getAllMowers());
     model.addAttribute("computer", widgetController.getAllComputers());
@@ -3251,6 +3251,7 @@ public class LandingPageController {
       }
       System.out.println(tempWidget.getId());
     }
+    
     return widgets;
   }
 

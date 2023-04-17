@@ -67,19 +67,20 @@
 									Use Existing Shipping Address
 								</button>
 							</h2>
-							<div id="existingAccordion" class="accordion-collapse collapse" th:classappend="${relogin == true && loginEr == false ? 'show' : ''}" data-bs-parent="#shipping-details">
+							<div id="existingAccordion" class="accordion-collapse collapse" th:classappend="${update == false && relogin == true && loginEr == false ? 'show' : ''}" data-bs-parent="#shipping-details">
 								<div class="accordion-body">
 									<div class="d-flex justify-content-center">
 									<h2>Current Shipping Details</h2>
 								</div>
 								<form method="post" action="#" class="row g-3 d-flex justify-content-center my-2"
 										th:action="@{/confirmShipping/existingAddress}">
-								<ul>
+								<ul class="radio-button">
 								<li th:if="${defaultShippingDetails != null}" class="d-flex justify-content-center">
 									<input type="radio" th:id="${defaultShippingDetails.id}" name="selected_shipping_details" th:value="${defaultShippingDetails.id}" checked>
 									<label style="font-size: 1.17em; font-weight: bolder;" th:for="${defaultShippingDetails.id}" th:inline="text">
 									Default:&nbspAddress:&nbsp[[${defaultShippingDetails.streetAddress}]],&nbsp[[${defaultShippingDetails.city}]],&nbsp[[${defaultShippingDetails.state.stateName}]],&nbsp[[${defaultShippingDetails.postalCode}]]							
 									</label>
+									<a style="margin-left:5px; margin-right: 5px;" class="btn btn-lg btn-success" th:href="@{/confirmShipping/updateShippingDetails/{id}(id = ${defaultShippingDetails.id})}">Edit</a>
 								</li>
 								<th:block th:if="${defaultShippingDetails == null}">
 								<li th:each="detail: ${savedShippingDetails}" class="d-flex justify-content-center">
@@ -87,6 +88,7 @@
 									<label style="font-size: 1.17em; font-weight: bolder;" th:for="${detail.id}" th:inline="text">
 									Address:&nbsp[[${detail.streetAddress}]],&nbsp[[${detail.city}]],&nbsp[[${detail.state.stateName}]],&nbsp[[${detail.postalCode}]]							
 									</label>
+									<a style="margin-left:5px; margin-right: 5px;" class="btn btn-lg btn-success" th:href="@{/confirmShipping/updateShippingDetails/{id}(id = ${detail.id})}">Edit</a>
 								</li>
 								</th:block>
 								
@@ -97,6 +99,7 @@
 									<label style="font-size: 1.17em; font-weight: bolder;" th:for="${detail.id}" th:inline="text">
 									Address:&nbsp[[${detail.streetAddress}]],&nbsp[[${detail.city}]],&nbsp[[${detail.state.stateName}]],&nbsp[[${detail.postalCode}]]							
 									</label>
+									<a style="margin-left:5px; margin-right: 5px;" class="btn btn-lg btn-success" th:href="@{/confirmShipping/updateShippingDetails/{id}(id = ${detail.id})}">Edit</a>
 								</th:block>
 								</li>
 								</th:block>
@@ -114,16 +117,20 @@
 						</div>
 						<div class="accordion-item">
 							<h2 class="accordion-header">
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#creditAccordion">
+								<button th:if="${update == false}" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#creditAccordion">
 									Use New Shipping Address
 								</button>
+								<button th:unless="${update == false}" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#creditAccordion">
+									Update Shipping Address
+								</button>
 							</h2>
-							<div id="creditAccordion" class="accordion-collapse collapse" th:classappend="${relogin == false || loginEr == true || savedShippingDetails == null ? 'show' : ''}" data-bs-parent="#shipping-details">
+							<div id="creditAccordion" class="accordion-collapse collapse" th:classappend="${update == true || relogin == false || loginEr == true || savedShippingDetails == null ? 'show' : ''}" data-bs-parent="#shipping-details">
 								<div class="accordion-body">
 									<form method="post" action="#" class="row g-3 d-flex justify-content-center my-2"
 										th:action="@{/confirmShipping/submitAddress}"  th:object="${shippingAddress}">
 										<div class="d-flex justify-content-center ">
-											<h2>Shipping Details</h2>
+											<h2 th:if="${update == false}">Add New Shipping Address</h2>
+											<h2 th:unless="${update == false}">Update Shipping Address</h2>
 										</div>
 										
 										<div style="width:20vw; justify-content:center; margin-left:auto; margin-right:auto;"  th:if="${shippingError != null}" class="alert alert-danger d-flex justify-content-center">
@@ -176,8 +183,10 @@
 										<!-- Shipping decisions -->
 										<div style="margin-top:5px;" class="d-flex justify-content-evenly mb-3">
 											<button class="btn btn-danger btn-lg" type="submit" name="cancel">Cancel</button>
-											<button class="btn btn-primary btn-lg"
+											<button th:if="${update == false}" class="btn btn-primary btn-lg"
 												 type="submit" name="submit">Confirm</button>
+											<button th:unless="${update == false}" class="btn btn-primary btn-lg"
+												 type="submit" name="update">Confirm</button>
 											
 										</div>
 										</div>
