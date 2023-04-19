@@ -102,10 +102,9 @@ public class PurchaseShippingAddressPageController {
 	 */
 	@RequestMapping("/confirmShipping")
 	public String openConfirmShippingPage(Boolean relogin, MarketListing prevListing, Transaction purchaseOrder, PaymentDetails details, Model model) {
-		System.out.println("shipping test");
 		if(relogin != null)
 			this.relogin = relogin;
-		if(details != null)
+		if(details != null && details.getCardNumber() != null && !details.getCardNumber().isEmpty() && !details.getCardNumber().isBlank())
 			this.details = details;
 		if(purchaseOrder.getTotalPriceBeforeTaxes() != null)
 			this.purchaseOrder = purchaseOrder;
@@ -114,7 +113,10 @@ public class PurchaseShippingAddressPageController {
 		model.addAttribute("shippingAddress", new ShippingAddress_Form());
 		User user = userController.getCurrently_Logged_In();
 		model.addAttribute("user", user);
-		model.addAttribute("selectedPayment", details);
+		if(this.details != null && this.details.getCardNumber() != null && !this.details.getCardNumber().isEmpty() && !this.details.getCardNumber().isBlank())
+			model.addAttribute("selectedPayment", this.details);
+		else
+			model.addAttribute("selectedPayment", null);
 		model.addAttribute("allSelected", allSelected);
 		model.addAttribute("marketListing", this.prevListing);
 		model.addAttribute("widget", this.prevListing.getWidgetSold());
@@ -137,6 +139,14 @@ public class PurchaseShippingAddressPageController {
 		model.addAttribute("update", updateSA);
 		return "confirmPurchase";
 	}
+	
+	/**
+	 * collect all the information necessary to update shipping details and to control the html to
+	 * allow users to input updated information
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	
 	@RequestMapping("/confirmShipping/updateShippingDetails/{id}")
 	public String updateShipping(@PathVariable("id") long id, Model model)
@@ -207,6 +217,14 @@ public class PurchaseShippingAddressPageController {
 		return this.purchasePageController.initializePurchasePage(validatedAddress, prevListing, purchaseOrder, model);
 	}
 	
+	/**
+	 * collects the updated address information from the purchase page
+	 * @param address
+	 * @param result
+	 * @param stateId
+	 * @param model
+	 * @return
+	 */
 	@PostMapping(value = "/confirmShipping/submitAddress", params="update")
 	public String updateAddress(@Validated @ModelAttribute("shippingAddress") ShippingAddress_Form address, BindingResult result, @RequestParam("stateId") String stateId, Model model) {
 		address.setState(stateDetailsController.getState(stateId));
@@ -331,7 +349,10 @@ public class PurchaseShippingAddressPageController {
 			Model model) {
 		relogin = true;
 		loginEr = false;
-		return this.purchasePageController.initializePurchasePage(userController.getCurrently_Logged_In().getDefaultShipping(), prevListing, purchaseOrder, model);
+		addNewSA = false;
+		updateSA = false;
+		updateIdSA = -1;
+		return "redirect:/confirmShipping";
 	}
 	
 	/**
@@ -373,6 +394,10 @@ public class PurchaseShippingAddressPageController {
 		return "redirect:/confirmShipping";
 	}
 	
+	/**
+	 * persists the passed shipping address
+	 * @param address
+	 */
 	public void persistAddress(ShippingAddress address)
 	{
 		address.setUser(userController.getCurrently_Logged_In());

@@ -97,6 +97,16 @@ public class ConfirmPurchasePageController {
 		this.shippingController = shippingController;
 	}
 	
+	/**
+	 * initializes the purchase page by setting the variables to there defaults
+	 * used when the page is reopened from anywhere but itself
+	 * @param address
+	 * @param prevListing
+	 * @param purchaseOrder
+	 * @param model
+	 * @return
+	 */
+	
 	@RequestMapping("/initializePurchasePage")
 	public String initializePurchasePage(ShippingAddress address, MarketListing prevListing, Transaction purchaseOrder,
 			Model model) {
@@ -227,23 +237,15 @@ public class ConfirmPurchasePageController {
 		model.addAttribute("existingSecurityCode", new String());
 		return "confirmPurchase";
 	}
-
-	/**
-	 * Allow the user to use their currently saved Card details by validating using
-	 * the security code If successful, the associated Transaction is saved to the
-	 * database, and the number of available items for the MarketListing is
-	 * decreased by the number of purchased items The variables are passed by
-	 * dependency injection
-	 * 
-	 * @param existingSecurityCode the existing security code
-	 * @param result               BindingResult associated with the form
-	 * @param model
-	 * @return
-	 */
 	
 	
 	/**
 	 * Confirm the existing card that the user wishes to use by asking for the cards security code and verifying it
+	 *  Allow the user to use their currently saved Card details by validating using
+	 * the security code If successful, the associated Transaction is saved to the
+	 * database, and the number of available items for the MarketListing is
+	 * decreased by the number of purchased items The variables are passed by
+	 * dependency injection
 	 * @param id
 	 * @param existingSecurityCode
 	 * @param result
@@ -260,7 +262,7 @@ public class ConfirmPurchasePageController {
 		allSelected = false;
 		// Test that payment details are valid
 		System.out.println(id);
-		if (id != null && payDetController.matchExistingCard(existingSecurityCode, payDetRepository.findById(id).get()) || payDetRepository.findById(id).get() == userController.getCurrently_Logged_In().getDefaultPaymentDetails()) {
+		if (id != null && payDetController.matchExistingCard(existingSecurityCode, payDetRepository.findById(id).get()) || id == userController.getCurrently_Logged_In().getDefaultPaymentDetails().getId()) {
 			validatedDetails = payDetRepository.findById(id).get();
 			if(this.address != null && validatedDetails != null)
 				allSelected = true;
@@ -340,6 +342,7 @@ public class ConfirmPurchasePageController {
 			if (address != null)
 				allSelected = true;
 			modifyPayment = false;
+			relogin = true;
 			validatedDetails = currDetails;
 			return "redirect:/confirmPurchase";
 		}
@@ -498,11 +501,12 @@ public class ConfirmPurchasePageController {
 	 */
 	@RequestMapping(value = "/modifyPayment")
 	public String modifyPayment(Model model) {
+		toShipping = false;
 		modifyPayment = true;
 		User user = userController.getCurrently_Logged_In();
 		if(validatedDetails == null)
 			validatedDetails = user.getDefaultPaymentDetails();
-		if (address == null)
+		if (address == null || address.getUser() != user)
 			model.addAttribute("selectedAddress", null);
 		else
 			model.addAttribute("selectedAddress", this.address);
@@ -594,6 +598,14 @@ public class ConfirmPurchasePageController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	/**
+	 * checks the users login info when they add, update, or delete a card
+	 * @param username
+	 * @param password
+	 * @param model
+	 * @return
+	 */
+	
 	@PostMapping(value = "/confirmPurchase/submitPurchase", params="loginInfo")
 	public String relogin(@RequestParam("usernamePD") String username, @RequestParam("passwordPD") String password, Model model) {
 		if(!validateLoginInfo(username, password))
@@ -607,6 +619,12 @@ public class ConfirmPurchasePageController {
 		return "redirect:/confirmPurchase";
 	}
 	
+	/**
+	 * validates the users login information
+	 * @param username
+	 * @param password
+	 * @return
+	 */
 	public boolean validateLoginInfo(String username, String password)
 	{
 		User user = userController.getCurrently_Logged_In();
@@ -640,15 +658,15 @@ public class ConfirmPurchasePageController {
 		if (form.getExpirationDate() == null || form.getExpirationDate().length() == 0)
 			return false;
 		// Check if current date is on or past the expiration date
-		System.out.println("before parse");
-		System.out.println(form.getExpirationDate());
-		LocalDate expirDate = LocalDate.parse(form.getExpirationDate()+"-01");
-		System.out.println("after parse");
-		if (expirDate.compareTo(LocalDate.now()) < 0)
-			return true;
-
-		// No errors found
-		return false;
+		LocalDate expirDate;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM yyyy dd");
+		try {
+			expirDate = LocalDate.parse(form.getExpirationDate()+" 01", formatter);
+			return expirDate.compareTo(LocalDate.now()) < 0;
+		}
+		catch (Exception e) {
+			return false;
+		}
 	}
 
 }

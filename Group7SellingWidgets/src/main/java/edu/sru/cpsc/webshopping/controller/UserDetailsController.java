@@ -10,7 +10,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Proxy;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -136,7 +139,12 @@ public class UserDetailsController {
 		this.shippingController = shippingController;
 		this.stateDetailsController = stateDetailsController;
 	}
-
+	
+	/**
+	 * add the required attributes for displaying the userdetails page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/userDetails")
 	public String userDetails(Model model)
 	{
@@ -157,6 +165,12 @@ public class UserDetailsController {
 		return "userDetails";
 	}
 	
+	/**
+	 * initialize the payment details page (used when opening payment details page from another page)
+	 * resets login information so the user must do it again
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/userDetails/initializePaymentDetails")
 	public String initializePaymentDetails(Model model) {
 		loadUserData(model);
@@ -195,6 +209,11 @@ public class UserDetailsController {
 		return "userDetails";
 	}
 	
+	/**
+	 * sets up the userdetails payment details page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/userDetails/paymentDetails")
 	public String openPaymentDetails(Model model) {
 		loadUserData(model);
@@ -228,6 +247,12 @@ public class UserDetailsController {
 		return "userDetails";
 	}
 	
+	/**
+	 * initializes necessary information for the shipping details page as well as
+	 * making it necessary for a user to relogin when modifying or adding details
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/userDetails/initializeShippingDetails")
 	public String initializeShippingDetails(Model model) {
 		addNewSA = false;
@@ -260,6 +285,11 @@ public class UserDetailsController {
 		return "userDetails";
 	}
 	
+	/**
+	 * Set up the necessary attributes for the shipping details page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/userDetails/shippingDetails")
 	public String openShippingDetails(Model model) {
 		loadUserData(model);
@@ -286,6 +316,12 @@ public class UserDetailsController {
 		return "userDetails";
 	}
 	
+	/**
+	 * sets the necessary variables for adding shipping details
+	 * @param model
+	 * @return
+	 */
+	
 	@RequestMapping("/addShippingDetails")
 	public String addShippingDetails(Model model)
 	{
@@ -297,6 +333,12 @@ public class UserDetailsController {
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
+	/**
+	 * sets the necessary variables for adding new CC details
+	 * @param model
+	 * @return
+	 */
+	
 	@RequestMapping("/addNewCard")
 	public String addNewCard(Model model)
 	{
@@ -307,6 +349,11 @@ public class UserDetailsController {
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
+	/**
+	 * resets necessary variables when returning to the payment details page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/goBackToMainPD")
 	public String backToMainPD(Model model)
 	{
@@ -320,6 +367,11 @@ public class UserDetailsController {
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
+	/**
+	 * resets the necessary variables when returning to the shipping details page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/goBackToMainSD")
 	public String backToMainSD(Model model)
 	{
@@ -333,6 +385,12 @@ public class UserDetailsController {
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
+	/**
+	 * collects the necessary information for updating payment details
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/updatePaymentDetails/{id}")
 	public String updateCard(@PathVariable("id") long id, Model model)
 	{
@@ -363,6 +421,11 @@ public class UserDetailsController {
 		return "userDetails";
 	}
 	
+	/**
+	 * sets up the needed attributes for displaying the deposit details page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/userDetails/depositDetails")
 	public String openDepositDetails(Model model) {
 		loadUserData(model);
@@ -382,6 +445,17 @@ public class UserDetailsController {
 		return "userDetails";
 	}
 	
+	/**
+	 * Collects and updates the current user's user details based on passed information
+	 * @param model
+	 * @param file
+	 * @param attributes
+	 * @param username
+	 * @param description
+	 * @param displayName
+	 * @param email
+	 * @return
+	 */
 	@RequestMapping("/updateUser")
 	public String updateUser(Model model, @RequestParam("imageName") MultipartFile file, RedirectAttributes attributes, @RequestParam("username") String username, @RequestParam("description") String description, @RequestParam("displayName") String displayName, @RequestParam("email") String email)
 	{
@@ -487,8 +561,16 @@ public class UserDetailsController {
 		DirectDepositDetails deposit = new DirectDepositDetails();
 		deposit.buildFromForm(details);
 		this.userController.updateDirectDepositDetails(deposit);
-		return "redirect:/userDetails";
+		return "redirect:/userDetails/depositDetails";
 	}
+	
+	/**
+	 * deletes the users deposit details
+	 * @param details
+	 * @param result
+	 * @param model
+	 * @return
+	 */
 	
 	@RequestMapping(value = "/submitDepositDetailsAction", 
 			method = RequestMethod.POST, params="delete")
@@ -506,7 +588,7 @@ public class UserDetailsController {
 			return "userDetails";
 		}
 		this.userController.deleteDirectDepositDetails();
-		return "redirect:/userDetails";
+		return "redirect:/userDetails/depositDetails";
 	}
 	
 	/**
@@ -623,6 +705,11 @@ public class UserDetailsController {
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
+	/**
+	 * sets up the necessary variable states for deleting payment details
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/deleteExistingPaymentDetails/{id}")
 	public String setUpDeletePaymentDetails(@PathVariable("id") long id)
 	{
@@ -752,6 +839,12 @@ public class UserDetailsController {
 		return "redirect:/userDetails";
 	}
 	
+	/**
+	 * sets up necessary variables for updating shipping information
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/updateShippingDetails/{id}")
 	public String updateShipping(@PathVariable("id") long id, Model model)
 	{
@@ -763,6 +856,11 @@ public class UserDetailsController {
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
+	/**
+	 * sets up necessary variables for deleting shippping information
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/deleteExistingShippingDetails/{id}")
 	public String setUpDeleteShipping(@PathVariable("id") long id)
 	{
@@ -772,6 +870,15 @@ public class UserDetailsController {
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
+	/**
+	 * takes the passed shipping address details and creates a new shipping address to be associated
+	 * with the user
+	 * @param details
+	 * @param result
+	 * @param stateId
+	 * @param model
+	 * @return
+	 */
 	@PostMapping(value = "/submitShippingAddressAction", params="submit")
 	public String createShippingDetails(@Validated @ModelAttribute("shippingDetails") ShippingAddress_Form details, BindingResult result, @RequestParam("stateId") String stateId, Model model) {
 		selectedMenu = SUB_MENU.SHIPPING_DETAILS;
@@ -822,7 +929,7 @@ public class UserDetailsController {
 	
 	
 	/**
-	 * Creates or updates the PaymentDetails associated with the logged in user
+	 * updates the users existing shipping address information for a single address
 	 * @param details the filled out PaymentDetails from the page's form
 	 * @return 	a redirection string pointing to the userDetails page
 	 */
@@ -890,6 +997,13 @@ public class UserDetailsController {
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
+	/**
+	 * deletes an existing shipping address associated with the user
+	 * @param username
+	 * @param password
+	 * @param model
+	 * @return
+	 */
 	@Transactional
 	@PostMapping(value = "/submitShippingAddressAction", params="delete")
 	public String deleteExistingShipping(@RequestParam("usernameSA") String username, @RequestParam("passwordSA") String password, Model model) {
@@ -939,6 +1053,11 @@ public class UserDetailsController {
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
+	/**
+	 * sets the details of the passed id to be the users default shipping details
+	 * @param id
+	 * @return
+	 */
 	@Transactional
 	@RequestMapping(value = "/makeDefaultShippingDetails/{id}")
 	public String makeDefaultShippingDetails(@PathVariable("id") long id) {
@@ -954,6 +1073,14 @@ public class UserDetailsController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	/**
+	 * takes the users login info to verify if the user is the one trying to add the details
+	 * prevent outsiders from trying to use someone else's account / card
+	 * @param username
+	 * @param password
+	 * @param model
+	 * @return
+	 */
 	@PostMapping(value = "/submitShippingAddressAction", params="loginInfo")
 	public String reloginSA(@RequestParam("usernameSA") String username, @RequestParam("passwordSA") String password, Model model) {
 		if(!validateLoginInfo(username, password))
@@ -971,6 +1098,13 @@ public class UserDetailsController {
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
+	/**
+	 * use login info to verify that the one attempting to add or modify CC information is the accounts owner
+	 * @param username
+	 * @param password
+	 * @param model
+	 * @return
+	 */
 	@PostMapping(value = "/submitPaymentDetailsAction", params="loginInfo")
 	public String reloginPD(@RequestParam("usernamePD") String username, @RequestParam("passwordPD") String password, Model model) {
 		if(!validateLoginInfo(username, password))
@@ -1047,6 +1181,12 @@ public class UserDetailsController {
 		return false;
 	}
 	
+	/**
+	 * validates that the passed login information is the users login information
+	 * @param username
+	 * @param password
+	 * @return
+	 */
 	public boolean validateLoginInfo(String username, String password)
 	{
 		User user = userController.getCurrently_Logged_In();
@@ -1065,8 +1205,10 @@ public class UserDetailsController {
 	 */
 	public boolean cardExpired(PaymentDetails_Form details) {
 		LocalDate expirDate;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM yyyy dd");
 		try {
-			expirDate = LocalDate.parse(details.getExpirationDate()+"-01");
+			expirDate = LocalDate.parse(details.getExpirationDate()+" 01", formatter);
+			System.out.println(expirDate.toString() + " to s exp date");
 			return expirDate.compareTo(LocalDate.now()) < 0;
 		}
 		catch (Exception e) {
@@ -1082,7 +1224,7 @@ public class UserDetailsController {
 	public boolean cardFarFuture(PaymentDetails_Form details) {
 		int thisYear = LocalDate.now().getYear();
 		try {
-			int year = Integer.parseInt(details.getExpirationDate().substring(0, 4));
+			int year = Integer.parseInt(details.getExpirationDate().substring(4, 8));
 			if((thisYear + 5) >= year)
 				return false;
 			return true;
