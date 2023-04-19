@@ -1,7 +1,10 @@
 package edu.sru.cpsc.webshopping.controller.purchase;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -44,6 +47,7 @@ import edu.sru.cpsc.webshopping.domain.market.Shipping;
 import edu.sru.cpsc.webshopping.domain.market.Transaction;
 import edu.sru.cpsc.webshopping.domain.user.User;
 import edu.sru.cpsc.webshopping.repository.billing.ShippingAddressRepository;
+import edu.sru.cpsc.webshopping.repository.user.UserRepository;
 
 /**
  * Manages the functionality of the confirmShipping page
@@ -60,24 +64,31 @@ public class PurchaseShippingAddressPageController {
 	private ConfirmPurchasePageController purchasePageController;
 	private UserController userController;
 	private ShippingAddressDomainController shippingController;
+	private UserRepository userRepository;
 	private boolean relogin = true;
 	private boolean loginEr = false;
 	private boolean toShipping = true;
 	private boolean allSelected = false;
 	private PaymentDetails details;
 	private boolean modifyPayment = false;
+	private boolean addNewSA = false;
+	private boolean updateSA = false;
+	private long updateIdSA = -1;
+	private long id2SA;
 	private ShippingAddressRepository addressRepository;
 	
 	public PurchaseShippingAddressPageController(StateDetailsController stateDetailsController,
 												@Lazy ConfirmPurchasePageController purchasePageController,
 												UserController userController,
 												ShippingAddressDomainController shippingController,
-												ShippingAddressRepository addressRepository) {
+												ShippingAddressRepository addressRepository,
+												UserRepository userRepository) {
 		this.stateDetailsController = stateDetailsController;
 		this.purchasePageController = purchasePageController;
 		this.userController = userController;
 		this.shippingController = shippingController;
 		this.addressRepository = addressRepository;
+		this.userRepository = userRepository;
 	}
 	
 
@@ -91,10 +102,9 @@ public class PurchaseShippingAddressPageController {
 	 */
 	@RequestMapping("/confirmShipping")
 	public String openConfirmShippingPage(Boolean relogin, MarketListing prevListing, Transaction purchaseOrder, PaymentDetails details, Model model) {
-		System.out.println("shipping test");
 		if(relogin != null)
 			this.relogin = relogin;
-		if(details != null)
+		if(details != null && details.getCardNumber() != null && !details.getCardNumber().isEmpty() && !details.getCardNumber().isBlank())
 			this.details = details;
 		if(purchaseOrder.getTotalPriceBeforeTaxes() != null)
 			this.purchaseOrder = purchaseOrder;
@@ -103,7 +113,10 @@ public class PurchaseShippingAddressPageController {
 		model.addAttribute("shippingAddress", new ShippingAddress_Form());
 		User user = userController.getCurrently_Logged_In();
 		model.addAttribute("user", user);
-		model.addAttribute("selectedPayment", details);
+		if(this.details != null && this.details.getCardNumber() != null && !this.details.getCardNumber().isEmpty() && !this.details.getCardNumber().isBlank())
+			model.addAttribute("selectedPayment", this.details);
+		else
+			model.addAttribute("selectedPayment", null);
 		model.addAttribute("allSelected", allSelected);
 		model.addAttribute("marketListing", this.prevListing);
 		model.addAttribute("widget", this.prevListing.getWidgetSold());
@@ -121,7 +134,29 @@ public class PurchaseShippingAddressPageController {
 			model.addAttribute("savedShippingDetails", null);
 		else
 			model.addAttribute("savedShippingDetails", shippingController.getShippingDetailsByUser(user));
+		model.addAttribute("addNew", addNewSA);
+		model.addAttribute("updateId", updateIdSA);
+		model.addAttribute("update", updateSA);
 		return "confirmPurchase";
+	}
+	
+	/**
+	 * collect all the information necessary to update shipping details and to control the html to
+	 * allow users to input updated information
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	
+	@RequestMapping("/confirmShipping/updateShippingDetails/{id}")
+	public String updateShipping(@PathVariable("id") long id, Model model)
+	{
+		updateSA = true;
+		this.id2SA = id;
+		addNewSA = false;
+		updateIdSA = id;
+		relogin = true;
+		return "redirect:/confirmShipping";
 	}
 	
 	/**
@@ -165,6 +200,9 @@ public class PurchaseShippingAddressPageController {
 			for (FieldError error : result.getFieldErrors()) {
 				model.addAttribute(error.getField() + "Err", error.getDefaultMessage());
 			}
+			model.addAttribute("addNew", addNewSA);
+			model.addAttribute("updateId", updateIdSA);
+			model.addAttribute("update", updateSA);
 			return "confirmPurchase";
 		}
 		StateDetails selectedState = stateDetailsController.getState(stateId);
@@ -177,6 +215,74 @@ public class PurchaseShippingAddressPageController {
 		relogin = false;
 		this.persistAddress(validatedAddress);
 		return this.purchasePageController.initializePurchasePage(validatedAddress, prevListing, purchaseOrder, model);
+	}
+	
+	/**
+	 * collects the updated address information from the purchase page
+	 * @param address
+	 * @param result
+	 * @param stateId
+	 * @param model
+	 * @return
+	 */
+	@PostMapping(value = "/confirmShipping/submitAddress", params="update")
+	public String updateAddress(@Validated @ModelAttribute("shippingAddress") ShippingAddress_Form address, BindingResult result, @RequestParam("stateId") String stateId, Model model) {
+		address.setState(stateDetailsController.getState(stateId));
+		ShippingAddress currDetails = shippingController.getShippingAddressEntry(id2SA);
+		if (result.hasErrors() || shippingAddressConstraintsFailed(address)) {
+			model.addAttribute("shippingAddress", new ShippingAddress_Form());
+			model.addAttribute("states", states);	
+			if(!result.hasErrors() && shippingAddressConstraintsFailed(address))
+				model.addAttribute("shippingError", "Address does not exist");
+			// Add errors to model
+			User user = userController.getCurrently_Logged_In();
+			model.addAttribute("user", user);
+			model.addAttribute("relogin", relogin);
+			model.addAttribute("loginEr", loginEr);
+			model.addAttribute("modifyPayment", modifyPayment);
+			model.addAttribute("allSelected", allSelected);
+			model.addAttribute("purchase", purchaseOrder);
+			model.addAttribute("marketListing", this.prevListing);
+			model.addAttribute("toShipping", toShipping);
+			model.addAttribute("widget", this.prevListing.getWidgetSold());
+			model.addAttribute("selectedPayment", details);
+			model.addAttribute("states", stateDetailsController.getAllStates());
+			if(user.getDefaultShipping() != null)
+				model.addAttribute("defaultShippingDetails", user.getDefaultShipping());
+			else
+				model.addAttribute("defaultShippingDetails", null);
+			if(user.getShippingDetails() != null && user.getShippingDetails().isEmpty())
+				model.addAttribute("savedShippingDetails", null);
+			else
+				model.addAttribute("savedShippingDetails", shippingController.getShippingDetailsByUser(user));
+			for (FieldError error : result.getFieldErrors()) {
+				model.addAttribute(error.getField() + "Err", error.getDefaultMessage());
+			}
+			model.addAttribute("addNew", addNewSA);
+			model.addAttribute("updateId", updateIdSA);
+			model.addAttribute("update", updateSA);
+			return "confirmPurchase";
+		}
+		ShippingAddress shipping = new ShippingAddress();
+		address.setState(stateDetailsController.getState(stateId));
+		shipping.buildFromForm(address);
+		shippingController.updateShippingAddress(shipping, currDetails);
+		User user = userController.getCurrently_Logged_In();		
+		Set<ShippingAddress> sAddress = user.getShippingDetails();
+		List<ShippingAddress> SA = new ArrayList<>(sAddress);
+		for(ShippingAddress details : SA)
+			if(details.getId() == id2SA)
+				currDetails = details;
+		SA.remove(SA.indexOf(currDetails));
+		SA.add(shippingController.getShippingAddressEntry(id2SA));
+		Set<ShippingAddress> SA2 = new HashSet<>(SA);
+		user.setShippingDetails(SA2);
+		model.addAttribute("user", user);
+		userRepository.save(user);
+		addNewSA = false;
+		updateSA = false;
+		updateIdSA = -1;
+		return this.purchasePageController.initializePurchasePage(shipping, prevListing, purchaseOrder, model);
 	}
 	
 	/**
@@ -218,6 +324,9 @@ public class PurchaseShippingAddressPageController {
 			for (FieldError error : result.getFieldErrors()) {
 				model.addAttribute(error.getField() + "Err", error.getDefaultMessage());
 			}
+			model.addAttribute("addNew", addNewSA);
+			model.addAttribute("updateId", updateIdSA);
+			model.addAttribute("update", updateSA);
 			return "confirmPurchase";
 		}
 		relogin = true;
@@ -240,7 +349,10 @@ public class PurchaseShippingAddressPageController {
 			Model model) {
 		relogin = true;
 		loginEr = false;
-		return this.purchasePageController.initializePurchasePage(userController.getCurrently_Logged_In().getDefaultShipping(), prevListing, purchaseOrder, model);
+		addNewSA = false;
+		updateSA = false;
+		updateIdSA = -1;
+		return "redirect:/confirmShipping";
 	}
 	
 	/**
@@ -251,6 +363,9 @@ public class PurchaseShippingAddressPageController {
 	public String backAddress() {
 		relogin = true;
 		loginEr = false;
+		addNewSA = false;
+		updateSA = false;
+		updateIdSA = -1;
 		return "redirect:/confirmShipping";
 	}
 	
@@ -279,6 +394,10 @@ public class PurchaseShippingAddressPageController {
 		return "redirect:/confirmShipping";
 	}
 	
+	/**
+	 * persists the passed shipping address
+	 * @param address
+	 */
 	public void persistAddress(ShippingAddress address)
 	{
 		address.setUser(userController.getCurrently_Logged_In());
@@ -326,11 +445,6 @@ public class PurchaseShippingAddressPageController {
 		lookup.setCity(shipping.getCity());
 		lookup.setState(shipping.getState().getStateName());
 		lookup.setZipCode(shipping.getPostalCode());
-		System.out.println(lookup.getAddressee());
-		System.out.println(lookup.getStreet());
-		System.out.println(lookup.getCity());
-		System.out.println(lookup.getState());
-		System.out.println(lookup.getZipCode());
 		
 		try {
 			client.send(lookup);

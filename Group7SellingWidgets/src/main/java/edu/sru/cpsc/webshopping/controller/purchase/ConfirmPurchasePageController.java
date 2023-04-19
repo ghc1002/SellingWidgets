@@ -15,7 +15,9 @@ import com.taxjar.exception.TaxjarException;
 import com.taxjar.model.rates.RateResponse;
 import com.taxjar.model.taxes.TaxResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,8 +26,10 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -73,6 +77,8 @@ public class ConfirmPurchasePageController {
 	private UserDetailsController userDetController;
 	private boolean allSelected = false;
 	private boolean modifyPayment = false;
+	private boolean relogin = true;
+	private boolean loginEr = false;
 	private PaymentDetails validatedDetails;
 	private boolean toShipping = false;
 	private Taxjar client = new Taxjar("639588118ed6ccfd8af4d3a26ad50970");
@@ -91,6 +97,16 @@ public class ConfirmPurchasePageController {
 		this.shippingController = shippingController;
 	}
 	
+	/**
+	 * initializes the purchase page by setting the variables to there defaults
+	 * used when the page is reopened from anywhere but itself
+	 * @param address
+	 * @param prevListing
+	 * @param purchaseOrder
+	 * @param model
+	 * @return
+	 */
+	
 	@RequestMapping("/initializePurchasePage")
 	public String initializePurchasePage(ShippingAddress address, MarketListing prevListing, Transaction purchaseOrder,
 			Model model) {
@@ -105,6 +121,8 @@ public class ConfirmPurchasePageController {
 		toShipping = false;
 		modifyPayment = false;
 		allSelected = false;
+		relogin = true;
+		loginEr = false;
 		
 		if(this.address != null) //use the taxjar api to get the state and local sales tax information
 		{
@@ -140,6 +158,8 @@ public class ConfirmPurchasePageController {
 		model.addAttribute("selectedPayment", validatedDetails);
 		model.addAttribute("toShipping", toShipping);
 		model.addAttribute("allSelected", allSelected);
+		model.addAttribute("relogin", relogin);
+		model.addAttribute("loginEr", loginEr);
 		model.addAttribute("user", user);
 		model.addAttribute("defaultDetails", user.getDefaultPaymentDetails());
 		if (user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty())
@@ -196,8 +216,6 @@ public class ConfirmPurchasePageController {
 			model.addAttribute("selectedAddress", null);
 		else
 			model.addAttribute("selectedAddress", this.address);
-		if(this.address != null && validatedDetails != null)
-			allSelected = true;
 		model.addAttribute("purchase", purchase);
 		model.addAttribute("marketListing", this.prevListing);
 		model.addAttribute("widget", this.prevListing.getWidgetSold());
@@ -208,6 +226,8 @@ public class ConfirmPurchasePageController {
 		model.addAttribute("selectedPayment", validatedDetails);
 		model.addAttribute("toShipping", toShipping);
 		model.addAttribute("allSelected", allSelected);
+		model.addAttribute("relogin", relogin);
+		model.addAttribute("loginEr", loginEr);
 		model.addAttribute("user", user);
 		model.addAttribute("defaultDetails", user.getDefaultPaymentDetails());
 		if (user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty())
@@ -217,23 +237,15 @@ public class ConfirmPurchasePageController {
 		model.addAttribute("existingSecurityCode", new String());
 		return "confirmPurchase";
 	}
-
-	/**
-	 * Allow the user to use their currently saved Card details by validating using
-	 * the security code If successful, the associated Transaction is saved to the
-	 * database, and the number of available items for the MarketListing is
-	 * decreased by the number of purchased items The variables are passed by
-	 * dependency injection
-	 * 
-	 * @param existingSecurityCode the existing security code
-	 * @param result               BindingResult associated with the form
-	 * @param model
-	 * @return
-	 */
 	
 	
 	/**
 	 * Confirm the existing card that the user wishes to use by asking for the cards security code and verifying it
+	 *  Allow the user to use their currently saved Card details by validating using
+	 * the security code If successful, the associated Transaction is saved to the
+	 * database, and the number of available items for the MarketListing is
+	 * decreased by the number of purchased items The variables are passed by
+	 * dependency injection
 	 * @param id
 	 * @param existingSecurityCode
 	 * @param result
@@ -250,9 +262,9 @@ public class ConfirmPurchasePageController {
 		allSelected = false;
 		// Test that payment details are valid
 		System.out.println(id);
-		if (id != null && payDetController.matchExistingCard(existingSecurityCode, payDetRepository.findById(id).get())) {
+		if (id != null && payDetController.matchExistingCard(existingSecurityCode, payDetRepository.findById(id).get()) || id == userController.getCurrently_Logged_In().getDefaultPaymentDetails().getId()) {
 			validatedDetails = payDetRepository.findById(id).get();
-
+			if(this.address != null && validatedDetails != null)
 				allSelected = true;
 			modifyPayment = false;
 			return "redirect:/confirmPurchase";
@@ -279,6 +291,8 @@ public class ConfirmPurchasePageController {
 			model.addAttribute("paymentDetails", details);
 			model.addAttribute("cardTypes", cardController.getAllCardTypes());
 			model.addAttribute("user", user);
+			model.addAttribute("relogin", relogin);
+			model.addAttribute("loginEr", loginEr);
 			model.addAttribute("modifyPayment", modifyPayment);
 			model.addAttribute("toShipping", toShipping);
 			model.addAttribute("allSelected", allSelected);
@@ -328,6 +342,7 @@ public class ConfirmPurchasePageController {
 			if (address != null)
 				allSelected = true;
 			modifyPayment = false;
+			relogin = true;
 			validatedDetails = currDetails;
 			return "redirect:/confirmPurchase";
 		}
@@ -361,6 +376,8 @@ public class ConfirmPurchasePageController {
 			model.addAttribute("selectedPayment", validatedDetails);
 			model.addAttribute("toShipping", toShipping);
 			model.addAttribute("useThis", true);
+			model.addAttribute("relogin", relogin);
+			model.addAttribute("loginEr", loginEr);
 			model.addAttribute("allSelected", allSelected);
 			model.addAttribute("cardTypes", cardController.getAllCardTypes());
 			model.addAttribute("user", user);
@@ -387,6 +404,8 @@ public class ConfirmPurchasePageController {
 		allSelected = false;
 		modifyPayment = false;
 		toShipping = false;
+		relogin = true;
+		loginEr = false;
 		return "redirect:/confirmPurchase";
 	}
 
@@ -482,11 +501,12 @@ public class ConfirmPurchasePageController {
 	 */
 	@RequestMapping(value = "/modifyPayment")
 	public String modifyPayment(Model model) {
+		toShipping = false;
 		modifyPayment = true;
 		User user = userController.getCurrently_Logged_In();
 		if(validatedDetails == null)
 			validatedDetails = user.getDefaultPaymentDetails();
-		if (address == null)
+		if (address == null || address.getUser() != user)
 			model.addAttribute("selectedAddress", null);
 		else
 			model.addAttribute("selectedAddress", this.address);
@@ -502,6 +522,8 @@ public class ConfirmPurchasePageController {
 		model.addAttribute("toShipping", toShipping);
 		model.addAttribute("allSelected", allSelected);
 		model.addAttribute("user", user);
+		model.addAttribute("relogin", relogin);
+		model.addAttribute("loginEr", loginEr);
 		model.addAttribute("defaultDetails", user.getDefaultPaymentDetails());
 		if (user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty())
 			model.addAttribute("allDetails", null);
@@ -561,6 +583,8 @@ public class ConfirmPurchasePageController {
 			model.addAttribute("allSelected", allSelected);
 			model.addAttribute("cardTypes", cardController.getAllCardTypes());
 			model.addAttribute("user", user);
+			model.addAttribute("relogin", relogin);
+			model.addAttribute("loginEr", loginEr);
 			model.addAttribute("defaultDetails", userController.getCurrently_Logged_In().getDefaultPaymentDetails());
 			if (user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty())
 				model.addAttribute("allDetails", null);
@@ -569,6 +593,47 @@ public class ConfirmPurchasePageController {
 			model.addAttribute("existingSecurityCode", new String());
 			return "confirmPurchase";
 		}
+	}
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	/**
+	 * checks the users login info when they add, update, or delete a card
+	 * @param username
+	 * @param password
+	 * @param model
+	 * @return
+	 */
+	
+	@PostMapping(value = "/confirmPurchase/submitPurchase", params="loginInfo")
+	public String relogin(@RequestParam("usernamePD") String username, @RequestParam("passwordPD") String password, Model model) {
+		if(!validateLoginInfo(username, password))
+		{
+			loginEr = true;
+			model.addAttribute("loginError", "Incorrect Username or Password Entered");
+			return "redirect:/confirmPurchase";
+		}
+		relogin = false;
+		loginEr = false;
+		return "redirect:/confirmPurchase";
+	}
+	
+	/**
+	 * validates the users login information
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	public boolean validateLoginInfo(String username, String password)
+	{
+		User user = userController.getCurrently_Logged_In();
+		System.out.println(username.equals(user.getUsername()));
+		System.out.println(passwordEncoder.matches(password, user.getPassword()));
+		if(username.equals(user.getUsername()) && passwordEncoder.matches(password, user.getPassword()))
+			return true;
+		
+		return false;
 	}
 
 	/**
@@ -593,15 +658,15 @@ public class ConfirmPurchasePageController {
 		if (form.getExpirationDate() == null || form.getExpirationDate().length() == 0)
 			return false;
 		// Check if current date is on or past the expiration date
-		System.out.println("before parse");
-		System.out.println(form.getExpirationDate());
-		LocalDate expirDate = LocalDate.parse(form.getExpirationDate()+"-01");
-		System.out.println("after parse");
-		if (expirDate.compareTo(LocalDate.now()) < 0)
-			return true;
-
-		// No errors found
-		return false;
+		LocalDate expirDate;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM yyyy dd");
+		try {
+			expirDate = LocalDate.parse(form.getExpirationDate()+" 01", formatter);
+			return expirDate.compareTo(LocalDate.now()) < 0;
+		}
+		catch (Exception e) {
+			return false;
+		}
 	}
 
 }

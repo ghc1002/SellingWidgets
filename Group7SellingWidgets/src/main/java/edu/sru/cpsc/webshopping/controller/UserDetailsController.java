@@ -10,7 +10,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Proxy;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -91,10 +94,8 @@ public class UserDetailsController {
 	private EntityManager entityManager;
 	private UserRepository userRepository;
 	private UserController userController;
-	private UserDetailsServiceImpl userDetails;
 	private TransactionController transController;
 	private CardTypeController cardController;
-	private SellerRatingController ratingController;
 	private String userName;
 	private String displayName;
 	private String creationDate;
@@ -104,17 +105,21 @@ public class UserDetailsController {
 	private boolean updatePD = false;
 	private boolean addNewSA = false;
 	private boolean updateSA = false;
-	private boolean relogin = false;
-	private boolean loginError = false;
+	private boolean reloginSA = false;
+	private boolean loginErrorSA = false;
+	private boolean reloginPD = false;
+	private boolean loginErrorPD = false;
+	private boolean delSA = false;
+	private boolean delPD = false;
 	private long id2PD;
 	private long updateIdPD = -1;
 	private long id2SA;
 	private long updateIdSA = -1;
-	private PaymentDetailsRepository payDetRepo;
+	private long shippingDelId = -1;
+	private long paymentDelId = -1;
 	private PaymentDetailsController payDetCont;
 	private SUB_MENU selectedMenu;
 	private ShippingAddressDomainController shippingController;
-	private ShippingAddressRepository shippingRepository;
 	private StateDetailsController stateDetailsController;
 	
 
@@ -122,21 +127,24 @@ public class UserDetailsController {
 
 	public UserDetailsController(UserController userController, UserRepository userRepository, 
 			TransactionController transController, CardTypeController cardController,
-			SellerRatingController ratingController, PaymentDetailsRepository payDetRepo,
+			PaymentDetailsRepository payDetRepo,
 			PaymentDetailsController payDetCont, ShippingAddressDomainController shippingController,
-			ShippingAddressRepository shippingRepository, StateDetailsController stateDetailsController)
+			StateDetailsController stateDetailsController)
 	{
 		this.userController = userController;
 		this.userRepository = userRepository;
 		this.cardController = cardController;
-		this.payDetRepo = payDetRepo;
 		this.payDetCont = payDetCont;
 		this.transController = transController;
 		this.shippingController = shippingController;
-		this.shippingRepository = shippingRepository;
 		this.stateDetailsController = stateDetailsController;
 	}
-
+	
+	/**
+	 * add the required attributes for displaying the userdetails page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/userDetails")
 	public String userDetails(Model model)
 	{
@@ -157,6 +165,55 @@ public class UserDetailsController {
 		return "userDetails";
 	}
 	
+	/**
+	 * initialize the payment details page (used when opening payment details page from another page)
+	 * resets login information so the user must do it again
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/userDetails/initializePaymentDetails")
+	public String initializePaymentDetails(Model model) {
+		loadUserData(model);
+		addNewPD = false;
+		updatePD = false;
+		updateIdPD = -1;
+		reloginPD = false;
+		delPD = false;
+		// Model for updating Paypal details
+		model.addAttribute("paypalDetails", new Paypal_Form());
+		// Model for updating Payment Details
+		model.addAttribute("paymentDetails", new PaymentDetails_Form());
+		model.addAttribute("cardTypes", cardController.getAllCardTypes());
+		// Model for updating Direct Deposit Details
+		DirectDepositDetails_Form details = new DirectDepositDetails_Form();
+		model.addAttribute("directDepositDetails", details);
+		User user  = new User();
+		user = userController.getCurrently_Logged_In();
+		model.addAttribute("user", user);
+		if(user.getDefaultPaymentDetails() != null)
+			model.addAttribute("defaultPaymentDetails", payDetCont.getPaymentDetail(user.getDefaultPaymentDetails().getId(), null));
+		else
+			model.addAttribute("defaultPaymentDetails", null);
+		if(user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty())
+			model.addAttribute("savedDetails", null);
+		else
+			model.addAttribute("savedDetails", payDetCont.getPaymentDetailsByUser(user));
+		model.addAttribute("addNew", addNewPD);
+		model.addAttribute("updateId", updateIdPD);
+		model.addAttribute("update", updatePD);
+		model.addAttribute("relogin", reloginPD);
+		model.addAttribute("delete", delPD);
+		model.addAttribute("loginError", loginErrorPD);
+		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
+		model.addAttribute("selectedMenu", selectedMenu);
+		return "userDetails";
+	}
+	
+	/**
+	 * sets up the userdetails payment details page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/userDetails/paymentDetails")
 	public String openPaymentDetails(Model model) {
 		loadUserData(model);
@@ -182,15 +239,30 @@ public class UserDetailsController {
 		model.addAttribute("addNew", addNewPD);
 		model.addAttribute("updateId", updateIdPD);
 		model.addAttribute("update", updatePD);
+		model.addAttribute("relogin", reloginPD);
+		model.addAttribute("delete", delPD);
+		model.addAttribute("loginError", loginErrorPD);
 		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
 		model.addAttribute("selectedMenu", selectedMenu);
 		return "userDetails";
 	}
 	
-	@RequestMapping("/userDetails/shippingDetails")
-	public String openShippingDetails(Model model) {
+	/**
+	 * initializes necessary information for the shipping details page as well as
+	 * making it necessary for a user to relogin when modifying or adding details
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/userDetails/initializeShippingDetails")
+	public String initializeShippingDetails(Model model) {
+		addNewSA = false;
+		updateSA = false;
+		updateIdSA = -1;
+		delSA = false;
+		reloginSA = false;
+		
 		loadUserData(model);
-		model.addAttribute("loginError", loginError);
+		model.addAttribute("loginError", loginErrorSA);
 		model.addAttribute("shippingDetails", new ShippingAddress_Form());
 		User user = userController.getCurrently_Logged_In();
 		model.addAttribute("user", user);
@@ -208,53 +280,122 @@ public class UserDetailsController {
 		model.addAttribute("addNew", addNewSA);
 		model.addAttribute("updateId", updateIdSA);
 		model.addAttribute("update", updateSA);
-		model.addAttribute("relogin", relogin);
+		model.addAttribute("relogin", reloginSA);
+		model.addAttribute("delete", delSA);
 		return "userDetails";
 	}
+	
+	/**
+	 * Set up the necessary attributes for the shipping details page
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/userDetails/shippingDetails")
+	public String openShippingDetails(Model model) {
+		loadUserData(model);
+		model.addAttribute("loginError", loginErrorSA);
+		model.addAttribute("shippingDetails", new ShippingAddress_Form());
+		User user = userController.getCurrently_Logged_In();
+		model.addAttribute("user", user);
+		selectedMenu = SUB_MENU.SHIPPING_DETAILS;
+		model.addAttribute("selectedMenu", selectedMenu);
+		model.addAttribute("states", stateDetailsController.getAllStates());
+		if(user.getDefaultShipping() != null)
+			model.addAttribute("defaultShippingDetails", user.getDefaultShipping());
+		else
+			model.addAttribute("defaultShippingDetails", null);
+		if(user.getShippingDetails() != null && user.getShippingDetails().isEmpty())
+			model.addAttribute("savedShippingDetails", null);
+		else
+			model.addAttribute("savedShippingDetails", shippingController.getShippingDetailsByUser(user));
+		model.addAttribute("addNew", addNewSA);
+		model.addAttribute("updateId", updateIdSA);
+		model.addAttribute("update", updateSA);
+		model.addAttribute("relogin", reloginSA);
+		model.addAttribute("delete", delSA);
+		return "userDetails";
+	}
+	
+	/**
+	 * sets the necessary variables for adding shipping details
+	 * @param model
+	 * @return
+	 */
 	
 	@RequestMapping("/addShippingDetails")
 	public String addShippingDetails(Model model)
 	{
-		relogin = true;
+		System.out.println("add ship det");
+		reloginSA = true;
 		updateSA = false;
 		addNewSA = true;
 		updateIdSA = -1;
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
+	/**
+	 * sets the necessary variables for adding new CC details
+	 * @param model
+	 * @return
+	 */
+	
 	@RequestMapping("/addNewCard")
 	public String addNewCard(Model model)
 	{
+		reloginPD = true;
 		updatePD = false;
 		addNewPD = true;
 		updateIdPD = -1;
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
+	/**
+	 * resets necessary variables when returning to the payment details page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/goBackToMainPD")
 	public String backToMainPD(Model model)
 	{
 		updatePD = false;
 		addNewPD = false;
+		reloginPD = false;
+		loginErrorPD = false;
+		delPD = false;
+		paymentDelId = -1;
 		updateIdPD = -1;
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
+	/**
+	 * resets the necessary variables when returning to the shipping details page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/goBackToMainSD")
 	public String backToMainSD(Model model)
 	{
-		loginError = false;
+		loginErrorSA = false;
 		updateSA = false;
 		addNewSA = false;
 		updateIdSA = -1;
-		relogin = false;
+		reloginSA = false;
+		delSA = false;
+		shippingDelId = -1;
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
+	/**
+	 * collects the necessary information for updating payment details
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/updatePaymentDetails/{id}")
 	public String updateCard(@PathVariable("id") long id, Model model)
 	{
 		updatePD = true;
+		reloginPD = true;
 		this.id2PD = id;
 		addNewPD = false;
 		updateIdPD = id;
@@ -280,6 +421,11 @@ public class UserDetailsController {
 		return "userDetails";
 	}
 	
+	/**
+	 * sets up the needed attributes for displaying the deposit details page
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/userDetails/depositDetails")
 	public String openDepositDetails(Model model) {
 		loadUserData(model);
@@ -299,6 +445,17 @@ public class UserDetailsController {
 		return "userDetails";
 	}
 	
+	/**
+	 * Collects and updates the current user's user details based on passed information
+	 * @param model
+	 * @param file
+	 * @param attributes
+	 * @param username
+	 * @param description
+	 * @param displayName
+	 * @param email
+	 * @return
+	 */
 	@RequestMapping("/updateUser")
 	public String updateUser(Model model, @RequestParam("imageName") MultipartFile file, RedirectAttributes attributes, @RequestParam("username") String username, @RequestParam("description") String description, @RequestParam("displayName") String displayName, @RequestParam("email") String email)
 	{
@@ -404,8 +561,16 @@ public class UserDetailsController {
 		DirectDepositDetails deposit = new DirectDepositDetails();
 		deposit.buildFromForm(details);
 		this.userController.updateDirectDepositDetails(deposit);
-		return "redirect:/userDetails";
+		return "redirect:/userDetails/depositDetails";
 	}
+	
+	/**
+	 * deletes the users deposit details
+	 * @param details
+	 * @param result
+	 * @param model
+	 * @return
+	 */
 	
 	@RequestMapping(value = "/submitDepositDetailsAction", 
 			method = RequestMethod.POST, params="delete")
@@ -423,7 +588,7 @@ public class UserDetailsController {
 			return "userDetails";
 		}
 		this.userController.deleteDirectDepositDetails();
-		return "redirect:/userDetails";
+		return "redirect:/userDetails/depositDetails";
 	}
 	
 	/**
@@ -458,6 +623,8 @@ public class UserDetailsController {
 			model.addAttribute("addNew", addNewPD);
 			model.addAttribute("updateId", updateIdPD);
 			model.addAttribute("update", updatePD);
+			model.addAttribute("relogin", reloginPD);
+			model.addAttribute("delete", delPD);
 			loadUserData(model);
 			return "/userDetails";
 		}
@@ -512,6 +679,8 @@ public class UserDetailsController {
 			model.addAttribute("addNew", addNewPD);
 			model.addAttribute("updateId", updateIdPD);
 			model.addAttribute("update", updatePD);
+			model.addAttribute("relogin", reloginPD);
+			model.addAttribute("delete", delPD);
 			loadUserData(model);
 			return "/userDetails";
 		}
@@ -535,6 +704,20 @@ public class UserDetailsController {
 		updateIdPD = -1;
 		return "redirect:/userDetails/paymentDetails";
 	}
+	
+	/**
+	 * sets up the necessary variable states for deleting payment details
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteExistingPaymentDetails/{id}")
+	public String setUpDeletePaymentDetails(@PathVariable("id") long id)
+	{
+		paymentDelId = id;
+		reloginPD = true;
+		delPD = true;
+		return "redirect:/userDetails/paymentDetails";
+	}
 
 	/**
 	 * deletes the existing payment details of a user
@@ -544,14 +727,16 @@ public class UserDetailsController {
 	 * @return
 	 */
 	@Transactional
-	@RequestMapping(value = "/deleteExistingPaymentDetails/{id}")
-	public String deleteExisting(@PathVariable("id") long id) {
+	@PostMapping(value = "/submitPaymentDetailsAction", params="delete")
+	public String deleteExisting(@RequestParam("usernamePD") String username, @RequestParam("passwordPD") String password, Model model) {
 		System.out.println("entered udcont");
+		if(reloginPD(username, password, model).equals("false"))
+			return "redirect:/userDetails/paymentDetails";
 		User user = userController.getCurrently_Logged_In();
 		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
 		int index = -1;
-		System.out.println(id);
-		PaymentDetails currDetails = payDetCont.getPaymentDetail(id, null);
+		System.out.println(paymentDelId);
+		PaymentDetails currDetails = payDetCont.getPaymentDetail(paymentDelId, null);
 		if(user.getDefaultPaymentDetails() != null && currDetails.getId() == user.getDefaultPaymentDetails().getId())
 		{
 			System.out.println("detached");
@@ -583,6 +768,8 @@ public class UserDetailsController {
 		addNewPD = false;
 		updatePD = false;
 		updateIdPD = -1;
+		paymentDelId = -1;
+		delPD = false;
 		return "redirect:/userDetails/paymentDetails";
 	}
 	
@@ -652,6 +839,12 @@ public class UserDetailsController {
 		return "redirect:/userDetails";
 	}
 	
+	/**
+	 * sets up necessary variables for updating shipping information
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/updateShippingDetails/{id}")
 	public String updateShipping(@PathVariable("id") long id, Model model)
 	{
@@ -659,10 +852,33 @@ public class UserDetailsController {
 		this.id2SA = id;
 		addNewSA = false;
 		updateIdSA = id;
-		relogin = true;
+		reloginSA = true;
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
+	/**
+	 * sets up necessary variables for deleting shippping information
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteExistingShippingDetails/{id}")
+	public String setUpDeleteShipping(@PathVariable("id") long id)
+	{
+		shippingDelId = id;
+		reloginSA = true;
+		delSA = true;
+		return "redirect:/userDetails/shippingDetails";
+	}
+	
+	/**
+	 * takes the passed shipping address details and creates a new shipping address to be associated
+	 * with the user
+	 * @param details
+	 * @param result
+	 * @param stateId
+	 * @param model
+	 * @return
+	 */
 	@PostMapping(value = "/submitShippingAddressAction", params="submit")
 	public String createShippingDetails(@Validated @ModelAttribute("shippingDetails") ShippingAddress_Form details, BindingResult result, @RequestParam("stateId") String stateId, Model model) {
 		selectedMenu = SUB_MENU.SHIPPING_DETAILS;
@@ -690,7 +906,8 @@ public class UserDetailsController {
 			model.addAttribute("addNew", addNewSA);
 			model.addAttribute("updateId", updateIdSA);
 			model.addAttribute("update", updateSA);
-			model.addAttribute("relogin", relogin);
+			model.addAttribute("relogin", reloginSA);
+			model.addAttribute("delete", delSA);
 			loadUserData(model);
 			return "/userDetails";
 		}
@@ -712,7 +929,7 @@ public class UserDetailsController {
 	
 	
 	/**
-	 * Creates or updates the PaymentDetails associated with the logged in user
+	 * updates the users existing shipping address information for a single address
 	 * @param details the filled out PaymentDetails from the page's form
 	 * @return 	a redirection string pointing to the userDetails page
 	 */
@@ -722,10 +939,11 @@ public class UserDetailsController {
 		details.setState(stateDetailsController.getState(stateId));
 		model.addAttribute("selectedMenu", selectedMenu);
 		ShippingAddress currDetails = shippingController.getShippingAddressEntry(id2SA);
+		
 		if (result.hasErrors() || shippingAddressConstraintsFailed(details)) {
 			// Add error messages
 			User user = userController.getCurrently_Logged_In();
-			if(shippingAddressConstraintsFailed(details))
+			if(!result.hasErrors() && shippingAddressConstraintsFailed(details))
 				model.addAttribute("shippingError", "Address does not exist");
 			model.addAttribute("shippingDetails", new ShippingAddress_Form());
 			model.addAttribute("user", user);
@@ -734,20 +952,26 @@ public class UserDetailsController {
 				model.addAttribute("defaultShippingDetails", user.getDefaultShipping());
 			else
 				model.addAttribute("defaultShippingDetails", null);
+			
 			if(user.getShippingDetails() != null && user.getShippingDetails().isEmpty())
 				model.addAttribute("savedShippingDetails", null);
 			else
 				model.addAttribute("savedShippingDetails", shippingController.getShippingDetailsByUser(user));
+			
 			for (FieldError error : result.getFieldErrors()) {
 				model.addAttribute(error.getField() + "Err", error.getDefaultMessage());
 			}
+			
 			model.addAttribute("addNew", addNewSA);
 			model.addAttribute("updateId", updateIdSA);
 			model.addAttribute("update", updateSA);
-			model.addAttribute("relogin", relogin);
+			model.addAttribute("relogin", reloginSA);
+			model.addAttribute("delete", delSA);
 			loadUserData(model);
+			
 			return "/userDetails";
 		}
+		
 		ShippingAddress shipping = new ShippingAddress();
 		details.setState(stateDetailsController.getState(stateId));
 		shipping.buildFromForm(details);
@@ -755,9 +979,11 @@ public class UserDetailsController {
 		User user = userController.getCurrently_Logged_In();		
 		Set<ShippingAddress> sAddress = user.getShippingDetails();
 		List<ShippingAddress> SA = new ArrayList<>(sAddress);
+		
 		for(ShippingAddress address : SA)
 			if(address.getId() == id2SA)
 				currDetails = address;
+		
 		SA.remove(SA.indexOf(currDetails));
 		SA.add(shippingController.getShippingAddressEntry(id2SA));
 		Set<ShippingAddress> SA2 = new HashSet<>(SA);
@@ -767,18 +993,30 @@ public class UserDetailsController {
 		addNewSA = false;
 		updateSA = false;
 		updateIdSA = -1;
+		
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
+	/**
+	 * deletes an existing shipping address associated with the user
+	 * @param username
+	 * @param password
+	 * @param model
+	 * @return
+	 */
 	@Transactional
-	@RequestMapping(value = "/deleteExistingShippingDetails/{id}")
-	public String deleteExistingShipping(@PathVariable("id") long id) {
+	@PostMapping(value = "/submitShippingAddressAction", params="delete")
+	public String deleteExistingShipping(@RequestParam("usernameSA") String username, @RequestParam("passwordSA") String password, Model model) {
 		System.out.println("entered udcont");
+		if(this.reloginSA(username, password, model).equals("false"))
+		{
+			return "redirect:/userDetails/shippingDetails";
+		}
 		User user = userController.getCurrently_Logged_In();
 		selectedMenu = SUB_MENU.SHIPPING_DETAILS;
 		int index = -1;
-		System.out.println(id);
-		ShippingAddress currDetails = shippingController.getShippingAddressEntry(id);
+		System.out.println(shippingDelId);
+		ShippingAddress currDetails = shippingController.getShippingAddressEntry(shippingDelId);
 		if(user.getDefaultShipping() != null && currDetails.getId() == user.getDefaultShipping().getId())
 		{
 			System.out.println("detached");
@@ -810,9 +1048,16 @@ public class UserDetailsController {
 		addNewSA = false;
 		updateSA = false;
 		updateIdSA = -1;
+		delSA = false;
+		shippingDelId = -1;
 		return "redirect:/userDetails/shippingDetails";
 	}
 	
+	/**
+	 * sets the details of the passed id to be the users default shipping details
+	 * @param id
+	 * @return
+	 */
 	@Transactional
 	@RequestMapping(value = "/makeDefaultShippingDetails/{id}")
 	public String makeDefaultShippingDetails(@PathVariable("id") long id) {
@@ -828,16 +1073,53 @@ public class UserDetailsController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	/**
+	 * takes the users login info to verify if the user is the one trying to add the details
+	 * prevent outsiders from trying to use someone else's account / card
+	 * @param username
+	 * @param password
+	 * @param model
+	 * @return
+	 */
 	@PostMapping(value = "/submitShippingAddressAction", params="loginInfo")
-	public String relogin(@RequestParam("usernameSA") String username, @RequestParam("passwordSA") String password, Model model) {
+	public String reloginSA(@RequestParam("usernameSA") String username, @RequestParam("passwordSA") String password, Model model) {
 		if(!validateLoginInfo(username, password))
 		{
-			loginError = true;
+			if(delSA == true)
+			{
+				loginErrorSA = true;
+				return "false";
+			}
+			loginErrorSA = true;
 			return "redirect:/userDetails/shippingDetails";
 		}
-		loginError = false;
-		relogin = false;
+		loginErrorSA = false;
+		reloginSA = false;
 		return "redirect:/userDetails/shippingDetails";
+	}
+	
+	/**
+	 * use login info to verify that the one attempting to add or modify CC information is the accounts owner
+	 * @param username
+	 * @param password
+	 * @param model
+	 * @return
+	 */
+	@PostMapping(value = "/submitPaymentDetailsAction", params="loginInfo")
+	public String reloginPD(@RequestParam("usernamePD") String username, @RequestParam("passwordPD") String password, Model model) {
+		if(!validateLoginInfo(username, password))
+		{
+			if(delPD == true)
+			{
+				loginErrorPD = true;
+				return "false";
+			}
+			loginErrorPD = true;
+			return "redirect:/userDetails/paymentDetails";
+		}
+		loginErrorPD = false;
+		reloginPD = false;
+		return "redirect:/userDetails/paymentDetails";
 	}
 	
 	/**
@@ -899,6 +1181,12 @@ public class UserDetailsController {
 		return false;
 	}
 	
+	/**
+	 * validates that the passed login information is the users login information
+	 * @param username
+	 * @param password
+	 * @return
+	 */
 	public boolean validateLoginInfo(String username, String password)
 	{
 		User user = userController.getCurrently_Logged_In();
@@ -917,8 +1205,10 @@ public class UserDetailsController {
 	 */
 	public boolean cardExpired(PaymentDetails_Form details) {
 		LocalDate expirDate;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM yyyy dd");
 		try {
-			expirDate = LocalDate.parse(details.getExpirationDate()+"-01");
+			expirDate = LocalDate.parse(details.getExpirationDate()+" 01", formatter);
+			System.out.println(expirDate.toString() + " to s exp date");
 			return expirDate.compareTo(LocalDate.now()) < 0;
 		}
 		catch (Exception e) {
@@ -934,7 +1224,7 @@ public class UserDetailsController {
 	public boolean cardFarFuture(PaymentDetails_Form details) {
 		int thisYear = LocalDate.now().getYear();
 		try {
-			int year = Integer.parseInt(details.getExpirationDate().substring(0, 4));
+			int year = Integer.parseInt(details.getExpirationDate().substring(4, 8));
 			if((thisYear + 5) >= year)
 				return false;
 			return true;
