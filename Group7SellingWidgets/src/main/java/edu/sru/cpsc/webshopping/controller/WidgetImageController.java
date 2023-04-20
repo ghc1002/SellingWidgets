@@ -56,4 +56,10 @@ public class WidgetImageController {
 		widgetImage.setMarketListing(marketListing);
 		return widgetImageRepository.save(widgetImage);
 	}
+	
+	@Transactional
+	public void deleteWidgetImage(long id)
+	{
+		widgetImageRepository.delete(getWidgetImage(id));
+	}
 }

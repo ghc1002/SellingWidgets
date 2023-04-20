@@ -6,6 +6,7 @@ import edu.sru.cpsc.webshopping.domain.user.Statistics;
 import edu.sru.cpsc.webshopping.domain.user.Statistics.Category;
 import edu.sru.cpsc.webshopping.domain.user.User;
 import edu.sru.cpsc.webshopping.domain.widgets.Widget;
+import edu.sru.cpsc.webshopping.domain.widgets.WidgetImage;
 import edu.sru.cpsc.webshopping.repository.market.MarketListingRepository;
 import edu.sru.cpsc.webshopping.repository.widgets.WidgetRepository;
 import edu.sru.cpsc.webshopping.util.PreLoad;
@@ -27,15 +28,18 @@ public class MarketListingDomainController {
 	private MarketListingRepository marketRepository;
 	private WidgetRepository widgetRepository;
 	private StatisticsDomainController statControl;
+	private WidgetImageController imageController;
 	@PersistenceContext private EntityManager entityManager;
 
 	MarketListingDomainController(
 			MarketListingRepository marketRepository,
 			WidgetRepository widgetRepository,
-			StatisticsDomainController statControl) {
+			StatisticsDomainController statControl,
+			WidgetImageController imageController) {
 		this.marketRepository = marketRepository;
 		this.widgetRepository = widgetRepository;
 		this.statControl = statControl;
+		this.imageController = imageController;
 	}
 
 	/**
@@ -207,6 +211,11 @@ public class MarketListingDomainController {
 	@PostMapping("/delete-market-listing/{id}")
 	public void deleteMarketListing(@PathVariable long id) {
 		System.out.println(id);
+		for(WidgetImage image : imageController.getwidgetImageByMarketListing(getMarketListing(id)))
+		{
+			imageController.deleteWidgetImage(image.getId());
+		}
+		entityManager.detach(getMarketListing(id));
 		marketRepository.deleteById(id);
 	}
 }
