@@ -57,9 +57,8 @@
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-		        <form method="post" action="#"
-		              th:action="@{/viewMarketListing/deleteListing/{listingId}(listingId=${currListing.id})}" th:object="${paymentDetails}">
-		          <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+		        <form method="post" action="#" th:action="@{/viewMarketListing/deleteListing/{listingId}(listingId=${currListing.id})}" th:object="${paymentDetails}">
+		          <button type="submit" class="btn btn-danger" name="delete"> Delete </button>
 		        </form>
 		      </div>
 		    </div>
@@ -84,7 +83,6 @@
 							    var image = document.querySelector('#showWidget');
 							    var len = /*[[${images.length}]]*/ '0';
 							    const images = /*[[${images}]]*/ 'd';
-							    console.log(images);
 							    var x = images.indexOf(/*[[${currListing.coverImage}]]*/);
 							    
 							    function changeImageForward()
@@ -541,33 +539,25 @@
 		        <input type="hidden" th:field="*{id}">
 		        <!--  default price must be set to current listing price -->
 		        <div class="row d-flex justify-content-center">
-		          <a class="btn btn-danger col-sm-1" data-bs-toggle="modal"
-		             data-bs-target="#deletePopup">
-		            Delete Listing
-		          </a>
+		          <a class="btn btn-danger col-sm-1" data-bs-toggle="modal" data-bs-target="#deletePopup"> Delete Listing </a>
 		          <div class="col-sm-1">
 		            <label for="pricePerItem" class="col-form-label">New Price</label>
 		          </div>
 		          <div class="col-sm-2">
-		            <input id="pricePerItem" class="form-control" name="pricePerItem"
-		                   th:field="*{pricePerItem}" type="number" placeholder="New Price" min="0.0"
-		                   value="0.0" step="0.01" required></input>
+		            <input id="pricePerItem" class="form-control" name="pricePerItem" th:field="*{pricePerItem}" type="number" placeholder="New Price" min="0.0" value="0.0" step="0.01" required></input>
 		          </div>
 		          <div class="col-sm-1">
 		            <label for="qtyAvailable" class="col-form-label">New Quantity</label>
 		          </div>
 		          <div class="col-sm-2">
-		            <input id="qtyAvailable" class="form-control" name="qtyAvailable"
-		                   th:field="*{qtyAvailable}" type="number" placeholder="New Quantity" min="0"
-		                   value="0" required></input>
+		            <input id="qtyAvailable" class="form-control" name="qtyAvailable" th:field="*{qtyAvailable}" type="number" placeholder="New Quantity" min="0" value="0" required></input>
 		          </div>
 		          <!--  default quantity must be set to current listing quantity -->
 		          <div class="col-sm-2">
-		            <input class="btn btn-primary" id="updateListing" name="updateListing" type="submit"
-		                   value="Update">
+		            <input class="btn btn-primary" id="updateListing" name="updateListing" type="submit" value="Update">
 		          </div>
 			        <div class="col-sm-2">
-			          <a class="btn btn-danger" href="/BrowseWidgetsButton">Back</a>
+			          <a class="btn btn-danger" href="/BrowseWidgetsButton"> Back </a>
 			        </div>
 			    </div>
 		      </form>
