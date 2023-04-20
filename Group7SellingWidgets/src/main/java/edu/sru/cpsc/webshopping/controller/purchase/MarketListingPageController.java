@@ -258,24 +258,30 @@ public class MarketListingPageController {
    * @return the viewMarketListing page string
    */
   @RequestMapping({"/viewMarketListing/{marketListingId}"})
-  public String viewMarketListingPage(
-      @PathVariable("marketListingId") long marketListingId, Model model) {
+  public String viewMarketListingPage(@PathVariable("marketListingId") long marketListingId, Model model)
+  {
     heldListing = marketListingController.getMarketListing(marketListingId);
     WidgetImage [] widgetImages = widgetImageController.getwidgetImageByMarketListing(heldListing);
+    
     // TODO: Open an error page
     // TODO: Set user status by reading from a User server
+    
     if(heldListing == null || heldListing.isDeleted() || heldListing.getQtyAvailable() == 0)
     {
     	return "redirect:/homePage";
     }
-    if (heldListing.isDeleted()) {
-      throw new IllegalArgumentException("Attempted to access an invalid Market Listing");
+    
+    if (heldListing.isDeleted())
+    {
+      throw new IllegalArgumentException("Attempted to access an invalid Market Listing!");
     }
+    
     User user = userController.getCurrently_Logged_In();
     UserList myList = new UserList();
     myList.setOwner(user);
     
     String [] widgetNames = new String [widgetImages.length];
+    
     for(int x = 0; x < widgetImages.length; x++)
     	widgetNames[x] = widgetImages[x].getImageName();
 

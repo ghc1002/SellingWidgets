@@ -29,7 +29,6 @@ public class WidgetImage {
 	@ManyToOne(cascade = CascadeType.MERGE)
 	private MarketListing marketListing;
 
-
 	public Long getId() {
 		return id;
 	}
