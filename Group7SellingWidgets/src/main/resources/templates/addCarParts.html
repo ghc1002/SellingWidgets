@@ -22,6 +22,17 @@
 				font-size: 12px;
 			}
 		</style>
+		<script>
+			function enableNextButton()
+			{
+				var btnelem = document.getElementById("nextButton");
+				
+				if(btnelem.disabled)
+				{
+				btnelem.disabled = false;
+				}
+			}
+		</script>
 	</head>
 	
 	<body>
@@ -45,12 +56,59 @@
 									<th:block th:each="field : ${fields}">
 										<div class="form-group col-sm-6" style="padding-bottom: 25px;">
 											<p th:text="${field.display}" style="margin-bottom: 0rem;"></p>
-											<input type="text" class="form-control" th:id="${field.name}" th:name="${field.name}" required>
+											<select th:if="${field.display == 'Brand'}" class="form-select mb-3" th:id="${field.name}" th:name="${field.name}" required onchange="enableNextButton()">
+												<option selected disabled hidden> -- Select a Make --</option>
+												<option value="ACURA">ACURA</option>
+												<option value="ASTON MARTIN">ASTON MARTIN</option>
+												<option value="AUDI">AUDI</option>
+												<option value="BENTLEY">BENTLEY</option>
+												<option value="BMW">BMW</option>
+												<option value="BUICK">BUICK</option>
+												<option value="CADILLAC">CADILLAC</option>
+												<option value="CHEVROLET">CHEVROLET</option>
+												<option value="CHRYSLER">CHRYSLER</option>
+												<option value="DODGE">DODGE</option>
+												<option value="FERRARI">FERRARI</option>
+												<option value="FORD">FORD</option>
+												<option value="GMC">GMC</option>
+												<option value="HONDA">HONDA</option>
+												<option value="HUMMER">HUMMER</option>
+												<option value="HYUNDAI">HYUNDAI</option>
+												<option value="INFINITI">INFINITI</option>
+												<option value="ISUZU">ISUZU</option>
+												<option value="JAGUAR">JAGUAR</option>
+												<option value="JEEP">JEEP</option>
+												<option value="KIA">KIA</option>
+												<option value="LAMBORGHINI">LAMBORGHINI</option>
+												<option value="LAND ROVER">LAND ROVER</option>
+												<option value="LEXUS">LEXUS</option>
+												<option value="LINCOLN">LINCOLN</option>
+												<option value="LOTUS">LOTUS</option>
+												<option value="MASERATI">MASERATI</option>
+												<option value="MAYBACH">MAYBACH</option>
+												<option value="MAZDA">MAZDA</option>
+												<option value="MERCEDES-BENZ">MERCEDES-BENZ</option>
+												<option value="MERCURY">MERCURY</option>
+												<option value="MINI">MINI</option>
+												<option value="MITSUBISHI">MITSUBISHI</option>
+												<option value="NISSAN">NISSAN</option>
+												<option value="PONTIAC">PONTIAC</option>
+												<option value="PORSCHE">PORSCHE</option>
+												<option value="ROLLS-ROYCE">ROLLS-ROYCE</option>
+												<option value="SAAB">SAAB</option>
+												<option value="SATURN">SATURN</option>
+												<option value="SUBARU">SUBARU</option>
+												<option value="SUZUKI">SUZUKI</option>
+												<option value="TOYOTA">TOYOTA</option>
+												<option value="VOLKSWAGEN">VOLKSWAGEN</option>
+												<option value="VOLVO">VOLVO</option>
+											</select>
+											<input th:unless="${field.display == 'Brand'}" type="text" class="form-control" th:id="${field.name}" th:name="${field.name}" required>
 										</div>
 									</th:block>
 								</div>
 								<div class="card-footer" style="display: flex; justify-content: center; align-items: center; padding-top: 15px;">
-									<input class="btn btn-success v-25 mx-4" type="submit" value="Next">
+									<input id="nextButton" class="btn btn-success v-25 mx-4" type="submit" value="Next" disabled>
 									<a class="btn btn-danger v-25 mx-4" href="/addWidget">Back</a>
 									<a class="btn btn-danger v-25 mx-4" href="/homePage">Cancel</a>
 								</div>
