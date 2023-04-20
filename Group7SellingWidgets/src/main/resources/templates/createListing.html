@@ -21,6 +21,33 @@
 				font-size: 12px;
 			}
 		</style>
+		<!-- script code to show file names from https://www.raymondcamden.com/2013/09/10/Adding-a-file-display-list-to-a-multifile-upload-HTML-control -->
+		<script>
+			var selDive = "";
+			document.addEventListener("DOMContentLoaded", init, false);
+			
+			function init()
+			{
+				document.querySelector('#fileUpload').addEventListener('change', handleFileSelect, false);
+				selDiv = document.querySelector("#selectedFiles");
+			}
+				
+			function handleFileSelect(e)
+			{
+				
+				if(!e.target.files || e.target.files.length == 1) return;
+				
+				selDiv.innerHTML = "";
+				
+				var files = e.target.files;
+				
+				for(var i=0; i<files.length; i++)
+				{
+					var f = files[i];
+					selDiv.innerHTML += f.name + "<br/>";
+				}
+			}
+		</script>
 	</head>
 	
 	<body class="pageBody">
@@ -73,30 +100,7 @@
 										<input type="file" class="form-control" id="coverImage" name="listingCoverImage" accept=".jpg,.img,.png,.jpeg" required>
 										<label for="fileUpload">Choose images to upload (hold ctrl while clicking to add multiple images):</label>
 										<input type="file" class="form-control" id="fileUpload" name="imageUpload" accept=".jpg,.img,.png,.jpeg" multiple required>
-									<div id="selectedFiles"></div>
-										<script> <!-- script code to show file names from https://www.raymondcamden.com/2013/09/10/Adding-a-file-display-list-to-a-multifile-upload-HTML-control -->
-											var selDive = "";
-											document.addEventListener("DOMContentLoaded", init, false);
-											
-											function init() {
-												document.querySelector('#fileUpload').addEventListener('change', handleFileSelect, false);
-												selDiv = document.querySelector("#selectedFiles");
-											}
-												
-											function handleFileSelect(e) {
-												
-												if(!e.target.files || e.target.files.length == 1) return;
-												
-												selDiv.innerHTML = "";
-												
-												var files = e.target.files;
-												
-												for(var i=0; i<files.length; i++) {
-													var f = files[i];
-													selDiv.innerHTML += f.name + "<br/>";
-												}
-											}
-										</script>
+										<div id="selectedFiles"></div>
 									</div>
 								</div>
 							</div>
@@ -107,8 +111,8 @@
 									</div>
 								</th:block>
 								<input class="btn btn-success v-25 mx-4" type="submit" value="Create Listing">
-								<a class="btn btn-danger v-25 mx-4" href="/back-and-delete">Back</a>
-								<a class="btn btn-danger v-25 mx-4" href="/homePage">Cancel</a>
+								<a class="btn btn-danger v-25 mx-4" th:href="@{/back-and-delete}"> Back </a>
+								<a class="btn btn-danger v-25 mx-4" href="/homePage"> Cancel </a>
 							</div>
 						</form>
 					</div>

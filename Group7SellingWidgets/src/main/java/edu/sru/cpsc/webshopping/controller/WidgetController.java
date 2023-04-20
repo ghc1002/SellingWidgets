@@ -158,19 +158,17 @@ public class WidgetController {
 
   @GetMapping({"delete-widget/{id}"})
   public void deleteWidget(@PathVariable("id") long id) {
-    Widget widget =
-        widgetRepository
-            .findById(id)
-            .orElseThrow(
-                () -> new IllegalArgumentException("Invalid ID provided for deleting widget."));
+    Widget widget = widgetRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid ID provided for deleting widget."));
     widgetRepository.delete(widget);
   }
 
   @GetMapping({"add-dryer"})
   public void addDryer(@Validated Appliance_Dryers dryer, BindingResult result) {
-    if (result.hasErrors()) {
+    if (result.hasErrors())
+    {
       throw new IllegalArgumentException("Error adding new widget in WidgetController.addWidget");
     }
+    
     dryerRepository.save(dryer);
   }
 
