@@ -246,6 +246,7 @@ public class AddWidgetController
 		model.addAttribute("model", carPart);
 		model.addAttribute("brand", carPart);
 		model.addAttribute("material", carPart);
+		model.addAttribute("year", carPart);
 		widgetController.addCarParts(carPart, result);
 		this.carPart = carPart;
 		widget = carPart;

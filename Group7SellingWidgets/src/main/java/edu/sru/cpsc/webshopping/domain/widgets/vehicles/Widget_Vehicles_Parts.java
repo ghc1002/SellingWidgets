@@ -44,6 +44,10 @@ public class Widget_Vehicles_Parts extends Widget {
   @Column(name = "`made_in`")
   private String madeIn;
   
+  @NonNull
+  @Column(name = "`year`")
+  private int year;
+  
   public String getPartName()
   {
 	  return partName;
@@ -92,5 +96,15 @@ public class Widget_Vehicles_Parts extends Widget {
   public void setMadeIn(String madeIn)
   {
 	  this.madeIn = madeIn;
+  }
+  
+  public int getYear()
+  {
+	  return year;
+  }
+  
+  public void setYear(int year)
+  {
+	  this.year = year;
   }
 }
