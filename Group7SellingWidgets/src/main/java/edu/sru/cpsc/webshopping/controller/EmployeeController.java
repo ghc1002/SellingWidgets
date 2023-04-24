@@ -76,6 +76,8 @@ public class EmployeeController {
   private final UserRepository userRepository;
   private final EmailController emailController;
   private final WidgetRepository<Widget> widgetRepository;
+  private final CategoryController categories;
+  private final SubcategoryController subcategories;
   private String page;
   private String mailboxPage;
   private String page2;
@@ -595,6 +597,7 @@ public class EmployeeController {
     setPage("widgetsInfo");
     model.addAttribute("page", getPage());
     model.addAttribute("user", user);
+    model.addAttribute("categories", categories.getAllCategories());
     return "employee";
   }
 
@@ -617,6 +620,9 @@ public class EmployeeController {
       model.addAttribute("user", user);
       return "employee";
     }
+    
+    model.addAttribute("categories", categories.getAllCategories());
+    model.addAttribute("subcategories", subcategories.getAllSubcategories());
     setPage("widgetsInfoCategory");
     setPage2(category);
     model.addAttribute("page", getPage());
@@ -644,6 +650,8 @@ public class EmployeeController {
       model.addAttribute("user", user);
       return "employee";
     }
+    
+    model.addAttribute("subcategories", subcategories.getAllSubcategories());
     setPage("widgetsInfoSubCategory");
     setPage2(subCategory);
     model.addAttribute("page", getPage());
@@ -698,57 +706,9 @@ public class EmployeeController {
     List<Widget> widgets = widgetRepository.findBySubCategory(subCategory);
 
     switch (subCategory) {
-      case "computer":
-        widgets =
-            widgets.stream()
-                .filter(Electronics_Computers.class::isInstance)
-                .collect(Collectors.toList());
-        break;
-      case "videoGame":
-        widgets =
-            widgets.stream()
-                .filter(Electronics_VideoGames.class::isInstance)
-                .collect(Collectors.toList());
-        break;
-      case "dryer":
-        widgets =
-            widgets.stream()
-                .filter(Appliance_Dryers.class::isInstance)
-                .collect(Collectors.toList());
-        break;
-      case "blender":
-        widgets =
-            widgets.stream()
-                .filter(Appliance_Blender.class::isInstance)
-                .collect(Collectors.toList());
-        break;
-      case "microwave":
-        widgets =
-            widgets.stream()
-                .filter(Appliance_Microwave.class::isInstance)
-                .collect(Collectors.toList());
-        break;
-      case "refrigerator":
-        widgets =
-            widgets.stream()
-                .filter(Appliance_Refrigerator.class::isInstance)
-                .collect(Collectors.toList());
-        break;
-      case "washer":
-        widgets =
-            widgets.stream()
-                .filter(Appliance_Washers.class::isInstance)
-                .collect(Collectors.toList());
-        break;
-      case "car":
+      case "car_parts":
         widgets =
             widgets.stream().filter(Vehicle_Car.class::isInstance).collect(Collectors.toList());
-        break;
-      case "lawnMower":
-        widgets =
-            widgets.stream()
-                .filter(LawnCare_LawnMower.class::isInstance)
-                .collect(Collectors.toList());
         break;
     }
 

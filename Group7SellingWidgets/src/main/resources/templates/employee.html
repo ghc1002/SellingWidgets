@@ -583,33 +583,16 @@
                       			<h2>Select a Widget Category</h2>
                     		</div>
                     	<div class="card-body">
-                    	<th:block>
+                    	<th:block th:each="category: ${categories}">
                     		<div class="col">
-                        		<input type="radio" class="btn-check" name="category" id="electronic" value="electronic" checked>
-	              				<label class="btn btn-outline-primary w-100 mb-2" for="electronic">Electronics</label>
+                        		<input type="radio" class="btn-check" name="category" th:id="category.name" th:value="${category.name}" checked>
+	              				<label class="btn btn-outline-primary w-100 mb-2" for="${category.name}" th:text="${category.display}"></label>
                         	</div>
                         </th:block>
                         <th:block>
-                        	<div class="col">
-            					<input type="radio" class="btn-check" name="category" id="appliance_parts" value="appliance">
-            					<label class="btn btn-outline-primary w-100 mb-2" for="appliance_parts">Appliances Parts</label>
-            				</div>
-                        </th:block>
-                        <th:block>
-                        	<div class="col">
-            					<input type="radio" class="btn-check" name="category" id="vehicle_parts" value="vehicle">
-            					<label class="btn btn-outline-primary w-100 mb-2" for="vehicle_parts">Vehicles Parts</label>
-	            			</div>
-                        </th:block>
-                        <th:block>
-                        	<div class="col" style="margin-bottom: 16px;">
-                        		<input type="radio" class="btn-check" name="category" id="lawnCare_parts" value="lawnCare">
-            					<label class="btn btn-outline-primary w-100 mb-2" for="lawnCare_parts">Lawn Care Parts</label>
-                       		</div>
-                        </th:block>
-                        <th:block>
                         	<div class="d-flex justify-content-center">
-               					<input type="submit" class="btn btn-success" value="Next">
+               					<button class="btn btn-outline-danger" type="button" onclick="location.href='/employee'" style="float:left; margin-right:16px;">Home</button>
+               					<input type="submit" class="btn btn-outline-success" value="Next" style="float:left;">
                				</div>
                         </th:block>
                         </div>
@@ -620,109 +603,30 @@
           </div>
 
           <div th:case="widgetsInfoCategory">
-          		<div class="card h-100 w-100">
-                	<div class="card-body d-flex justify-content-center">
-                		<th:block th:switch="${page2}">
-                			<div class="card" style="width: fit-content; height: fit-content; margin-left: auto; margin-right: auto;">
-                				<div class="card-header d-flex justify-content-center">
-                      				<h2>Select a Widget Subcategory</h2>
-                    			</div>
-                    			<form action="#" th:action="@{/widgetsInfoSubCategory}" method="post" class="form">
-                				<div th:case="electronic" class="card-body">
-                						<th:block>
-                							<div class="col">
-                								<input type="radio" class="btn-check" name="subCategory" id="computer" value="computer" checked>
-                          						<label class="btn btn-outline-primary w-100 mb-2" for="computer" >Computer</label>
-                							</div>
-                						</th:block>
-                						<th:block>
-                							<div class="col" style="margin-bottom: 16px;">
-                								<input type="radio" class="btn-check" name="subCategory" id="videoGame" value="videoGame">
-                          						<label class="btn btn-outline-primary w-100 mb-2" for="videoGame">Video Game</label>	
-                							</div>
-                						</th:block>
-                						 <th:block>
+          	<div class="card h-100 w-100">
+                <div class="card-body d-flex justify-content-center">
+                	<th:block th:switch="${page2}">
+                		<div class="card" style="width: fit-content; height: fit-content; margin-left: auto; margin-right: auto;">
+                			<div class="card-header d-flex justify-content-center">
+                      			<h2>Select a Widget Subcategory</h2>
+                    		</div>	                			
+                			<form action="#" th:action="@{/widgetsInfoSubCategory}" method="post" class="form">
+	                			<th:block th:each="category: ${categories}">
+	                				<div th:case="${category.name}" class="card-body">
+	                					<th:block th:each="subcategory: ${subcategories}">
+	                						<div class="col">
+	                							<input type="radio" class="btn-check" name="subCategory" th:id="${subcategory.name}" th:value="${subcategory.name}" checked>
+	                          					<label class="btn btn-outline-primary w-100 mb-2" for="${subcategory.name}" th:text="${subcategory.display}"></label>
+	                						</div>
+	                					</th:block>
+	                					<th:block>
 				                        	<div class="d-flex justify-content-center">
-				               					<button class="btn btn-danger" type="button" onclick="location.href='/widgetsInfo'" style="float:left; margin-right:16px;">Back</button>
-				               					<input type="submit" class="btn btn-success" value="Next" style="float:left;">
+				               					<button class="btn btn-outline-danger" type="button" onclick="location.href='/widgetsInfo'" style="float:left; margin-right:16px;">Back</button>
+				               					<input type="submit" class="btn btn-outline-success" value="Next" style="float:left;">
 				               				</div>
 				                        </th:block>
-                				</div>
-                			</form>
-                			
-                			<form action="#" th:action="@{/widgetsInfoSubCategory}" method="post" class="form">
-                				<div th:case="appliance" class="card-body">
-                					<th:block>
-                						<div class="col">
-                							<input type="radio" class="btn-check" name="subCategory" id="dryer" value="dryer" checked>
-                          					<label class="btn btn-outline-primary w-100 mb-2" for="dryer">Dryer</label>
-                						</div>
-                					</th:block>
-                					<th:block>
-                						<div class="col">
-                							<input type="radio" class="btn-check" name="subCategory" id="blender" value="blender">
-                          					<label class="btn btn-outline-primary w-100 mb-2" for="blender">Blender</label>
-                						</div>
-                					</th:block>
-                					<th:block>
-                						<div class="col">
-                							<input type="radio" class="btn-check" name="subCategory" id="microwave" value="microwave">
-                          					<label class="btn btn-outline-primary w-100 mb-2" for="microwave">Microwave</label>
-                						</div>
-                					</th:block>
-                					<th:block>
-                						<div class="col">
-                							<input type="radio" class="btn-check" name="subCategory" id="refrigerator" value="refrigerator">
-                          					<label class="btn btn-outline-primary w-100 mb-2" for="refrigerator">Refrigerator</label>
-                						</div>
-                					</th:block>
-                					<th:block>
-                						<div class="col" style="margin-bottom: 16px;">
-                							<input type="radio" class="btn-check" name="subCategory" id="washer" value="washer">
-                          					<label class="btn btn-outline-primary w-100 mb-2" for="washer">Washer</label>
-                						</div>
-                					</th:block>
-                					 <th:block>
-			                        	<div class="d-flex justify-content-center">
-			               					<button class="btn btn-danger" type="button" onclick="location.href='/widgetsInfo'" style="float:left; margin-right:16px;">Back</button>
-			               					<input type="submit" class="btn btn-success" value="Next" style="float:left;">
-			               				</div>
-			                        </th:block>
-                				</div>
-                			</form>
-                			
-                			<form action="#" th:action="@{/widgetsInfoSubCategory}" method="post" class="form">
-                				<div th:case="vehicle" class="card-body">
-                					<th:block>
-                						<div class="col" style="margin-bottom: 16px;">
-                							<input type="radio" class="btn-check" name="subCategory" id="car" value="car" checked>
-                          					<label class="btn btn-outline-primary w-100 mb-2" for="car">Car</label>
-                						</div>
-                					</th:block>
-                					 <th:block>
-			                        	<div class="d-flex justify-content-center">
-			               					<button class="btn btn-danger" type="button" onclick="location.href='/widgetsInfo'" style="float:left; margin-right:16px;">Back</button>
-			               					<input type="submit" class="btn btn-success" value="Next" style="float:left;">
-			               				</div>
-			                        </th:block>
-                				</div>
-                			</form>
-                			
-                			<form action="#" th:action="@{/widgetsInfoSubCategory}" method="post" class="form">
-                				<div th:case="lawnCare" class="card-body">
-                					<th:block>
-                						<div class="col" style="margin-bottom: 16px;">
-                							<input type="radio" class="btn-check" name="subCategory" id="lawnMower" value="lawnMower" checked>
-                          					<label class="btn btn-outline-primary w-100 mb-2" for="lawnMower">Lawn Mower</label>
-                						</div>
-                					</th:block>
-                					 <th:block>
-			                        	<div class="d-flex justify-content-center">
-			               					<button class="btn btn-danger" type="button" onclick="location.href='/widgetsInfo'" style="float:left; margin-right:16px;">Back</button>
-			               					<input type="submit" class="btn btn-success" value="Next" style="float:left;">
-			               				</div>
-			                        </th:block>
-                				</div>
+	                				</div>
+                				</th:block>
                 			</form>
                 		</div>
                 	</div>
