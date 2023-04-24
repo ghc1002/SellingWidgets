@@ -48,6 +48,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -81,6 +83,8 @@ public class MarketListingPageController {
   WidgetController widgetController;
   private String page;
   private Widget tempWidget;
+  @PersistenceContext
+  EntityManager entityManager;
 
   public MarketListingPageController(
       MarketListingDomainController marketListingController,
@@ -317,6 +321,7 @@ public class MarketListingPageController {
       return "viewMarketListing";
     }
     User user = userController.getCurrently_Logged_In();
+    ShippingAddress address;
     Transaction purchaseAttempt = new Transaction();
     purchaseAttempt.setBuyer(userController.getCurrently_Logged_In());
     purchaseAttempt.setSeller(heldListing.getSeller());
@@ -327,7 +332,7 @@ public class MarketListingPageController {
     // Add shipping entry if user confirms purchase on next page
     purchaseAttempt.setShippingEntry(null);
     model.addAttribute("user", userController.getCurrently_Logged_In());
-    return this.purchaseController.initializePurchasePage(user.getDefaultShipping(), heldListing, purchaseAttempt, model);
+    return this.purchaseController.initializePurchasePage(heldListing, purchaseAttempt, model);
   }
 
   /**

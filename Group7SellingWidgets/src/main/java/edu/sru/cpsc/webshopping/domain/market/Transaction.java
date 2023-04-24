@@ -24,6 +24,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.lang.NonNull;
 
 import edu.sru.cpsc.webshopping.domain.user.User;
+import edu.sru.cpsc.webshopping.domain.billing.DirectDepositDetails;
 import edu.sru.cpsc.webshopping.domain.billing.PaymentDetails;
 
 
@@ -78,6 +79,10 @@ public class Transaction {
 	@NonNull
 	@ManyToOne
 	private PaymentDetails paymentDetails;
+	
+	@NonNull
+	@ManyToOne
+	private DirectDepositDetails depositDetails;
 
 
 	public long getId() {
@@ -166,5 +171,13 @@ public class Transaction {
 
 	public void setPaymentDetails(PaymentDetails paymentDetails) {
 		this.paymentDetails = paymentDetails;
+	}
+
+	public DirectDepositDetails getDepositDetails() {
+		return depositDetails;
+	}
+
+	public void setDepositDetails(DirectDepositDetails depositDetails) {
+		this.depositDetails = depositDetails;
 	}
 }
