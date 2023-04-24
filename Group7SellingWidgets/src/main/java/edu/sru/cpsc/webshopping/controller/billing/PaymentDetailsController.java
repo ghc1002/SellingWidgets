@@ -79,6 +79,8 @@ public class PaymentDetailsController {
 	
 	@RequestMapping("/get-payment-details-by-user") 
 	public PaymentDetails[] getPaymentDetailsByUser(@PathVariable("user") User user) {
+		if(user.getPaymentDetails() == null || user.getPaymentDetails().isEmpty())
+			return null;
 		return paymentDetailsRepository.findAllByUser(user).toArray(PaymentDetails[]::new);
 	}
 	

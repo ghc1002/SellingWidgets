@@ -65,7 +65,6 @@ CREATE TABLE `appliance_dryers` (
 
 LOCK TABLES `appliance_dryers` WRITE;
 /*!40000 ALTER TABLE `appliance_dryers` DISABLE KEYS */;
-INSERT INTO `appliance_dryers` VALUES ('old','old','old',39),('LG','Steel','1234',165);
 /*!40000 ALTER TABLE `appliance_dryers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,7 +91,6 @@ CREATE TABLE `appliance_microwave` (
 
 LOCK TABLES `appliance_microwave` WRITE;
 /*!40000 ALTER TABLE `appliance_microwave` DISABLE KEYS */;
-INSERT INTO `appliance_microwave` VALUES ('new','new','new',41),('N/A','N/A','N/A',69),('LG','aluminum','Microwave',154);
 /*!40000 ALTER TABLE `appliance_microwave` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -119,7 +117,6 @@ CREATE TABLE `appliance_refrigerator` (
 
 LOCK TABLES `appliance_refrigerator` WRITE;
 /*!40000 ALTER TABLE `appliance_refrigerator` DISABLE KEYS */;
-INSERT INTO `appliance_refrigerator` VALUES ('new','new','new',44);
 /*!40000 ALTER TABLE `appliance_refrigerator` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -275,7 +272,7 @@ CREATE TABLE `direct_deposit_details` (
 
 LOCK TABLES `direct_deposit_details` WRITE;
 /*!40000 ALTER TABLE `direct_deposit_details` DISABLE KEYS */;
-INSERT INTO `direct_deposit_details` VALUES (63,'$2a$10$M5k.Kf9dVVkA5Ffny3yLG.tUgBVRwWJJFLH23dGSjWgLuM2R.UeUW','$2a$10$j4pV8Lx0tNFCgZKrNqK5EuTqahJM6rXW0HscUphZp4s.cXld42Qmi','$2a$10$UaL5SO6oNcjaG0NHtXxIMu4R35LQQJ2.egzohr6KKoep8AoNmY2jC','$2a$10$r/LZq70b/2zIjswVUxQKNOyvg9dVh1tvQACuJIDOzytqRbSKTdH3m');
+INSERT INTO `direct_deposit_details` VALUES (1,'$2a$10$M5k.Kf9dVVkA5Ffny3yLG.tUgBVRwWJJFLH23dGSjWgLuM2R.UeUW','$2a$10$j4pV8Lx0tNFCgZKrNqK5EuTqahJM6rXW0HscUphZp4s.cXld42Qmi','$2a$10$UaL5SO6oNcjaG0NHtXxIMu4R35LQQJ2.egzohr6KKoep8AoNmY2jC','$2a$10$r/LZq70b/2zIjswVUxQKNOyvg9dVh1tvQACuJIDOzytqRbSKTdH3m');
 /*!40000 ALTER TABLE `direct_deposit_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,7 +300,6 @@ CREATE TABLE `electronics_computers` (
 
 LOCK TABLES `electronics_computers` WRITE;
 /*!40000 ALTER TABLE `electronics_computers` DISABLE KEYS */;
-INSERT INTO `electronics_computers` VALUES ('None','8','AMD','50GB',35),('Integrated','12','i7','500GB',65);
 /*!40000 ALTER TABLE `electronics_computers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -331,7 +327,6 @@ CREATE TABLE `electronics_video_games` (
 
 LOCK TABLES `electronics_video_games` WRITE;
 /*!40000 ALTER TABLE `electronics_video_games` DISABLE KEYS */;
-INSERT INTO `electronics_video_games` VALUES ('ps2','Insomniac','good','Ratchet and clank',37),('nintendo64','nintendo','mint','Mario 64',143);
 /*!40000 ALTER TABLE `electronics_video_games` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -355,7 +350,7 @@ CREATE TABLE `fields` (
 
 LOCK TABLES `fields` WRITE;
 /*!40000 ALTER TABLE `fields` DISABLE KEYS */;
-INSERT INTO `fields` VALUES ('name', 'Item Title'), ('description', 'Description'), ('model', 'Model'), ('brand', 'Brand'), ('color', 'Color'), ('madeIn', 'Made In'), ('material', 'Material'), ('warranty', 'Warranty'), ('condition', 'Condition'), ('partName', 'Part Name');
+INSERT INTO fields VALUES ('name', 'Item Title'), ('description', 'Description'), ('model', 'Model'), ('brand', 'Brand'), ('color', 'Color'), ('madeIn', 'Made In'), ('material', 'Material'), ('warranty', 'Warranty'), ('condition', 'Condition'), ('partName', 'Part Name'), ('year', 'Year');
 /*!40000 ALTER TABLE `fields` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -405,7 +400,6 @@ CREATE TABLE `lawn_care_lawn_mower` (
 
 LOCK TABLES `lawn_care_lawn_mower` WRITE;
 /*!40000 ALTER TABLE `lawn_care_lawn_mower` DISABLE KEYS */;
-INSERT INTO `lawn_care_lawn_mower` VALUES ('12 inches','yamaha','electric',48),('12 inches','yamaha','electric',49);
 /*!40000 ALTER TABLE `lawn_care_lawn_mower` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -438,7 +432,7 @@ CREATE TABLE `market_listing` (
 
 LOCK TABLES `market_listing` WRITE;
 /*!40000 ALTER TABLE `market_listing` DISABLE KEYS */;
-INSERT INTO `market_listing` VALUES (3,_binary '',500.00,40,1,2,NULL),(5,_binary '',50.20,50,1,4,NULL),(7,_binary '',70.00,27,1,6,NULL),(25,_binary '',10.00,410,20,24,NULL),(36,_binary '\0',250.00,0,34,35,'34oldmac.jpeg'),(38,_binary '\0',20.00,0,34,37,'34ratechetandclank.jpg'),(40,_binary '\0',500.00,1,34,39,'34broken dryer.jpeg'),(42,_binary '\0',50.00,1,34,41,'34brand new microwave.jpeg'),(45,_binary '\0',500.00,1,43,44,'43new fridge.jpeg'),(47,_binary '\0',2000.00,0,43,46,'43oldford.jpeg'),(49,_binary '\0',300.00,1,43,48,'43teslamower.jpeg'),(144,_binary '\0',50.00,2,1,143,'11mario64box.jpg'),(155,_binary '\0',50.00,1,1,154,'1microwave.jpeg'),(166,_binary '\0',500.00,25,1,165,'1dryer.jpeg');
+INSERT INTO `market_listing` VALUES (2,_binary '\0',5.00,1,20,1,'1bumpercover.jpg'),(3,_binary '\0',99.00,1,1,2,'1Porsche_3512_engine_rear-left_2019_Prototyp_Museum.jpg'),(4,_binary '\0',20.20,1,1,3,'171uiS6IPljL._AC_SL1500_.jpg'),(5,_binary '\0',503.00,1,1,4,'1exhaustSystem.jpg'),(6,_binary '\0',154.00,2,1,5,'1frontofWheel.jpg'),(7,_binary '\0',75000.00,0,20,6,'1hondadoorcover.jpg');
 /*!40000 ALTER TABLE `market_listing` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -513,7 +507,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (131,'<no content>','04/25 05:42','userName','userName','Hello',NULL,NULL,_binary '',NULL,'userName','Spam','none',NULL,NULL,NULL,NULL,'2022-04-25 05:43:07.315081',NULL,NULL,NULL,_binary '\0',_binary '\0',_binary '\0',_binary '\0','userName',1,NULL,1,1,1,NULL,NULL),(133,'<no content>','04/25 05:42','userName','userName','Hello',NULL,NULL,_binary '',NULL,'userName','Spam','none',NULL,NULL,NULL,NULL,'2022-04-25 05:42:37.252601',NULL,NULL,NULL,_binary '\0',_binary '\0',_binary '\0',_binary '\0','userName',1,NULL,1,1,1,NULL,NULL),(135,'howdy','04/25 05:42','userName','userName','test',NULL,NULL,_binary '',NULL,'userName','Spam','none',NULL,NULL,NULL,NULL,'2022-04-25 05:42:37.268559',NULL,NULL,NULL,_binary '\0',_binary '\0',_binary '\0',_binary '\0','userName',1,NULL,1,1,1,NULL,NULL),(163,'hello there','04/25 16:09','testAcc','userName','buy item',1,34,_binary '\0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,_binary '\0',_binary '\0',_binary '\0',_binary '\0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(182,'<no content>','04/25 05:42','userName','userName','Hello',NULL,NULL,_binary '\0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2022-04-25 05:42:50.903531','2022-04-25 05:42:50.903531','2022-05-25 05:42:50.903531','2022-05-25 05:42:50.903531',_binary '\0',_binary '\0',_binary '\0',_binary '\0',NULL,NULL,NULL,1,1,NULL,NULL,NULL);
+INSERT INTO `message` VALUES (8,'<no content>','04/25 05:42','userName','userName','Hello',NULL,NULL,_binary '',NULL,'userName','Spam','none',NULL,NULL,NULL,NULL,'2022-04-25 05:43:07.315081',NULL,NULL,NULL,_binary '\0',_binary '\0',_binary '\0',_binary '\0','userName',1,NULL,1,1,1,NULL,NULL),(9,'<no content>','04/25 05:42','userName','userName','Hello',NULL,NULL,_binary '',NULL,'userName','Spam','none',NULL,NULL,NULL,NULL,'2022-04-25 05:42:37.252601',NULL,NULL,NULL,_binary '\0',_binary '\0',_binary '\0',_binary '\0','userName',1,NULL,1,1,1,NULL,NULL),(135,'howdy','04/25 05:42','userName','userName','test',NULL,NULL,_binary '',NULL,'userName','Spam','none',NULL,NULL,NULL,NULL,'2022-04-25 05:42:37.268559',NULL,NULL,NULL,_binary '\0',_binary '\0',_binary '\0',_binary '\0','userName',1,NULL,1,1,1,NULL,NULL),(10,'hello there','04/25 16:09','testAcc','userName','buy item',1,34,_binary '\0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,_binary '\0',_binary '\0',_binary '\0',_binary '\0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(182,'<no content>','04/25 05:42','userName','userName','Hello',NULL,NULL,_binary '\0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2022-04-25 05:42:50.903531','2022-04-25 05:42:50.903531','2022-05-25 05:42:50.903531','2022-05-25 05:42:50.903531',_binary '\0',_binary '\0',_binary '\0',_binary '\0',NULL,NULL,NULL,1,1,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -546,7 +540,7 @@ CREATE TABLE `payment_details` (
 
 LOCK TABLES `payment_details` WRITE;
 /*!40000 ALTER TABLE `payment_details` DISABLE KEYS */;
-INSERT INTO `payment_details` VALUES (50,'$2a$10$09ypOr42CfFtWpi/Et3rEe4UxVsZM2GolpocSCNz55X3269XVJxcO','Visa','$2a$10$0zZ1oxlPTfDNaGHGNIaXC.DDq7xHhq5nU2Cq2WxPBXeAed1qSY2wi','$2a$10$bJQN2nWtCVkdqR7LvRdoXOayJ2ga8.BN9vZTtMPV6SfllqO9UQyNq','$2a$10$k2kbId2Xgw7uObVoYA/KgeeI3owqmXZctLJj4PqVFxfcTF/UjDUwG','$2a$10$AE/ALheJ9zrx0IDrD67NVuEUeCKmyR2cYxc74acfvWhuyi27hRpJC', '7892', '1'), (200, '$2a$10$ob3d2tdTwg5GjPo6nkDJB.hDQWCxjnwDnor8KWnt85afrvz0bFxwK', 'Discover', '$2a$10$Jl2uXVgDd0FPGTu.HBQxgOYP5IkORtD2AJV91MLpw.LtsXZTmOSH.', '$2a$10$VxQTYA7ajXPI0XGZuDOLJ.6oGeX0ChCHXnMgBHF7JWZMzocZlgEIO', '$2a$10$VW.fM.cJ7Vdzwlkvys726u/s4nwtL1FMZjUobVPenGbASmXJAdQpG', '$2a$10$40BJideDH0sEo6r3xr4hdO4hUYELIl7NJSNnOJ4pyVSfNbHvIhp6S', '1234', '1');
+INSERT INTO `payment_details` VALUES (11,'$2a$10$09ypOr42CfFtWpi/Et3rEe4UxVsZM2GolpocSCNz55X3269XVJxcO','Visa','$2a$10$0zZ1oxlPTfDNaGHGNIaXC.DDq7xHhq5nU2Cq2WxPBXeAed1qSY2wi','$2a$10$bJQN2nWtCVkdqR7LvRdoXOayJ2ga8.BN9vZTtMPV6SfllqO9UQyNq','$2a$10$k2kbId2Xgw7uObVoYA/KgeeI3owqmXZctLJj4PqVFxfcTF/UjDUwG','$2a$10$AE/ALheJ9zrx0IDrD67NVuEUeCKmyR2cYxc74acfvWhuyi27hRpJC', '7892', '1'), (12, '$2a$10$ob3d2tdTwg5GjPo6nkDJB.hDQWCxjnwDnor8KWnt85afrvz0bFxwK', 'Discover', '$2a$10$Jl2uXVgDd0FPGTu.HBQxgOYP5IkORtD2AJV91MLpw.LtsXZTmOSH.', '$2a$10$VxQTYA7ajXPI0XGZuDOLJ.6oGeX0ChCHXnMgBHF7JWZMzocZlgEIO', '$2a$10$VW.fM.cJ7Vdzwlkvys726u/s4nwtL1FMZjUobVPenGbASmXJAdQpG', '$2a$10$40BJideDH0sEo6r3xr4hdO4hUYELIl7NJSNnOJ4pyVSfNbHvIhp6S', '1234', '1');
 /*!40000 ALTER TABLE `payment_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -571,7 +565,7 @@ CREATE TABLE `paypal` (
 
 LOCK TABLES `paypal` WRITE;
 /*!40000 ALTER TABLE `paypal` DISABLE KEYS */;
-INSERT INTO `paypal` VALUES (71,'$2a$10$kVZYBQuU.RQXG6i6Ux6orOgVmj2kxopb/mshmpMhvlDCP08rd0NnW','$2a$10$hPm6kOLKFNjU6VGwK/mjb.alUX7k2WtqCfs4ge0lQ2SDS6Zmz0mxu'),(83,'$2a$10$auAOmAJTwwIb/swpt0wI6.paLALzoMzRzj0xrKvR5.cHuWOtsvd3u','$2a$10$SvXl9P1wUct6dF68U7XK7uhL1PMXM9svmSX/ga5JhXG2j4uuTbI1.');
+INSERT INTO `paypal` VALUES (13,'$2a$10$kVZYBQuU.RQXG6i6Ux6orOgVmj2kxopb/mshmpMhvlDCP08rd0NnW','$2a$10$hPm6kOLKFNjU6VGwK/mjb.alUX7k2WtqCfs4ge0lQ2SDS6Zmz0mxu'),(14,'$2a$10$auAOmAJTwwIb/swpt0wI6.paLALzoMzRzj0xrKvR5.cHuWOtsvd3u','$2a$10$SvXl9P1wUct6dF68U7XK7uhL1PMXM9svmSX/ga5JhXG2j4uuTbI1.');
 /*!40000 ALTER TABLE `paypal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -597,7 +591,7 @@ CREATE TABLE `seller_rating` (
 
 LOCK TABLES `seller_rating` WRITE;
 /*!40000 ALTER TABLE `seller_rating` DISABLE KEYS */;
-INSERT INTO `seller_rating` VALUES (500,'Very Poor',0.2,0),(501,'Poor',0.4,0.2),(502,'Mixed',0.6,0.4),(503,'Good',0.8,0.6),(504,'Very Good',1,0.8);
+INSERT INTO `seller_rating` VALUES (14,'Very Poor',0.2,0),(15,'Poor',0.4,0.2),(16,'Mixed',0.6,0.4),(17,'Good',0.8,0.6),(18,'Very Good',1,0.8);
 /*!40000 ALTER TABLE `seller_rating` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -629,7 +623,7 @@ CREATE TABLE `shipping` (
 
 LOCK TABLES `shipping` WRITE;
 /*!40000 ALTER TABLE `shipping` DISABLE KEYS */;
-INSERT INTO `shipping` VALUES (55,'2022-03-30','USPS','2022-03-23',56,54),(75,NULL,NULL,NULL,76,74),(80,NULL,NULL,NULL,81,79),(87,'2022-04-30','USPS','2022-04-24',88,86),(160,NULL,NULL,NULL,161,159);
+INSERT INTO `shipping` VALUES (19,NULL,'USPS','2023-04-23',65,20);
 /*!40000 ALTER TABLE `shipping` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -663,7 +657,7 @@ CREATE TABLE `shipping_address` (
 
 LOCK TABLES `shipping_address` WRITE;
 /*!40000 ALTER TABLE `shipping_address` DISABLE KEYS */;
-INSERT INTO `shipping_address` VALUES (54,'98109','Jacob','1735 Main Street','apt 123','Seattle','Washington',1),(74,'55442','Jacob','1st Road',NULL,'Tymle','Arkansas',NULL),(79,'10011','Jacob','2690 Stanley Avenue','suite 12','New York','New York',1),(86,'43415','new user','2nd Road','apt 76','Wyming','California',NULL),(91,'12345','fdsa','fdas',NULL,'Zora','Alabama',NULL),(159,'16057','Billy Bob','1 Morrow Way',NULL,'Slippery Rock','Pennsylvania',NULL);
+INSERT INTO `shipping_address` VALUES (20,'98109','Jacob','1735 Main Street','apt 123','Seattle','Washington',1),(21,'55442','Jacob','1st Road',NULL,'Tymle','Arkansas',NULL),(22,'10011','Jacob','2690 Stanley Avenue','suite 12','New York','New York',1),(23,'43415','new user','2nd Road','apt 76','Wyming','California',NULL),(24,'12345','fdsa','fdas',NULL,'Zora','Alabama',NULL),(159,'16057','Billy Bob','1 Morrow Way',NULL,'Slippery Rock','Pennsylvania',NULL);
 /*!40000 ALTER TABLE `shipping_address` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -715,7 +709,7 @@ CREATE TABLE `statistics` (
 
 LOCK TABLES `statistics` WRITE;
 /*!40000 ALTER TABLE `statistics` DISABLE KEYS */;
-INSERT INTO `statistics` VALUES (60,3,'2022-04-24 23:09:08.553963',23,1,'userName logged in'),(61,3,'2022-04-24 23:09:18.172234',23,1,'jacobh logged in'),(62,3,'2022-04-24 23:09:51.626640',23,1,'userName logged in'),(67,3,'2022-04-24 23:17:04.969431',23,1,'jacobh logged in'),(68,3,'2022-04-24 23:17:13.483161',23,1,'userName logged in'),(72,0,'2022-04-24 23:21:53.142007',23,250,'1 old mac(s) were sold for a total of: $250.0'),(73,1,'2022-04-24 23:21:53.142007',23,1,'old mac: was sold'),(77,0,'2022-04-24 23:22:33.453194',23,20,'1 Ratchet and clank(s) were sold for a total of: $20.0'),(78,1,'2022-04-24 23:22:33.453194',23,1,'Ratchet and clank: was sold'),(82,3,'2022-04-24 23:22:58.032446',23,1,'jacobh logged in'),(84,0,'2022-04-24 23:23:53.456184',23,800,'20 Microwave(s) were sold for a total of: $800.0'),(85,1,'2022-04-24 23:23:53.456184',23,1,'Microwave: was sold'),(89,0,'2022-04-24 23:24:30.695826',23,500,'1 new fridge(s) were sold for a total of: $500.0'),(90,1,'2022-04-24 23:24:30.695826',23,1,'new fridge: was sold'),(94,3,'2022-04-24 23:25:33.337768',23,1,'userName logged in'),(95,3,'2022-04-24 23:28:48.879033',23,1,'jacobh logged in'),(96,3,'2022-04-24 23:29:32.654930',23,1,'jacobh logged in'),(97,3,'2022-04-24 23:29:45.955869',23,1,'userName logged in'),(98,3,'2022-04-24 23:29:52.841450',23,1,'jacobh logged in'),(99,3,'2022-04-24 23:29:59.835775',23,1,'userName logged in'),(100,3,'2022-04-24 23:33:11.226786',23,1,'jacobh logged in'),(101,3,'2022-04-24 23:33:27.075162',23,1,'userName logged in'),(102,3,'2022-04-24 23:36:38.305220',23,1,'userName logged in'),(103,3,'2022-04-24 23:39:40.713885',23,1,'jacobh logged in'),(104,3,'2022-04-25 05:09:51.369693',5,1,'useradminwidget logged in'),(105,2,'2022-04-25 05:10:22.380454',5,1,'Account with username: usercustomerwidget was created'),(107,2,'2022-04-25 05:10:42.521861',5,1,'Account with username: usertechwidget was created'),(109,2,'2022-04-25 05:11:06.956125',5,1,'Account with username: userhiringwidget was created'),(111,2,'2022-04-25 05:11:26.734849',5,1,'Account with username: usersaleswidget was created'),(113,2,'2022-04-25 05:11:47.696475',5,1,'Account with username: usersecuritywidget was created'),(115,3,'2022-04-25 05:15:32.097605',5,1,'useradminwidget logged in'),(116,3,'2022-04-25 05:15:48.483730',5,1,'useradminwidget logged in'),(119,2,'2022-04-25 05:24:56.419927',5,1,'Account with username: timadminwidget2 was created'),(121,2,'2022-04-25 05:26:15.227354',5,1,'Account with username: timuser was created'),(123,3,'2022-04-25 05:27:14.682885',5,1,'timuser logged in'),(126,3,'2022-04-25 05:38:23.234024',5,1,'usersaleswidget logged in'),(127,3,'2022-04-25 05:41:54.570823',5,1,'userName logged in'),(128,5,'2022-04-25 05:42:08.593940',5,1,'userName sent a message to: userName'),(130,5,'2022-04-25 05:42:15.823626',5,1,'userName sent a message to: userName'),(132,5,'2022-04-25 05:42:20.553705',5,1,'userName sent a message to: userName'),(134,5,'2022-04-25 05:42:28.881710',5,1,'userName sent a message to: userName'),(142,3,'2022-04-25 06:51:06.572558',6,1,'userName logged in'),(145,3,'2022-04-25 12:51:00.441625',12,1,'userName logged in'),(147,3,'2022-04-25 15:46:57.636544',15,1,'userName logged in'),(148,3,'2022-04-25 15:49:29.426450',15,1,'userName logged in'),(149,3,'2022-04-25 15:49:35.084905',15,1,'userName logged in'),(150,3,'2022-04-25 15:51:27.159338',15,1,'userName logged in'),(151,3,'2022-04-25 15:56:09.035482',15,1,'userName logged in'),(152,3,'2022-04-25 15:57:22.437542',15,1,'userName logged in'),(153,3,'2022-04-25 15:57:27.433463',15,1,'userName logged in'),(156,3,'2022-04-25 16:02:02.645956',16,1,'userName logged in'),(157,0,'2022-04-25 16:06:28.594888',16,2000,'1 old ford(s) were sold for a total of: $2000.0'),(158,1,'2022-04-25 16:06:28.594888',16,1,'old ford: was sold'),(162,5,'2022-04-25 16:09:06.593906',16,1,'userName sent a message to: testAcc'),(164,3,'2022-04-25 16:10:17.686348',16,1,'userName logged in'),(167,3,'2022-04-25 16:18:00.806168',16,1,'userName logged in'),(168,3,'2022-04-25 16:18:04.998566',16,1,'userName logged in'),(169,3,'2022-04-25 16:20:33.070467',16,1,'userName logged in'),(170,3,'2022-04-25 16:21:04.426163',16,1,'userName logged in'),(171,3,'2022-04-25 16:21:08.697657',16,1,'userName logged in'),(172,3,'2022-04-25 16:22:38.436909',16,1,'userName logged in'),(173,3,'2022-04-25 16:23:27.491320',16,1,'userName logged in'),(174,3,'2022-04-25 16:41:30.360903',16,1,'userName logged in'),(175,3,'2022-04-25 16:43:53.901467',16,1,'userName logged in'),(176,3,'2022-04-25 16:43:58.160599',16,1,'userName logged in'),(177,3,'2022-04-25 16:44:57.419965',16,1,'userName logged in'),(178,3,'2022-04-25 16:45:39.250830',16,1,'userName logged in'),(179,3,'2022-04-25 16:46:26.019067',16,1,'userName logged in'),(180,3,'2022-09-10 20:03:17.135480',20,1,'useradminwidget logged in'),(181,3,'2022-09-10 20:04:08.161176',20,1,'userName logged in'),(183,3,'2022-09-10 20:06:46.854370',20,1,'userName logged in'),(184,3,'2022-10-01 20:49:33.340090',20,1,'userName logged in'),(185,3,'2022-10-19 22:43:17.449114',22,1,'userName logged in'),(186,3,'2022-10-19 23:20:47.647511',23,1,'userName logged in'),(187,3,'2022-10-20 00:15:39.793020',0,1,'userName logged in'),(188,3,'2022-10-20 00:16:51.028041',0,1,'userName logged in'),(189,3,'2022-10-20 00:27:06.907368',0,1,'userName logged in'),(190,3,'2022-11-02 03:04:16.748764',3,1,'userName logged in');
+INSERT INTO `statistics` VALUES (25,3,'2022-04-24 23:09:08.553963',23,1,'userName logged in'),(26,3,'2022-04-24 23:09:18.172234',23,1,'jacobh logged in'),(27,3,'2022-04-24 23:09:51.626640',23,1,'userName logged in'),(28,3,'2022-04-24 23:17:04.969431',23,1,'jacobh logged in'),(29,3,'2022-04-24 23:17:13.483161',23,1,'userName logged in'),(30,0,'2022-04-24 23:21:53.142007',23,250,'1 old mac(s) were sold for a total of: $250.0'),(31,1,'2022-04-24 23:21:53.142007',23,1,'old mac: was sold'),(32,0,'2022-04-24 23:22:33.453194',23,20,'1 Ratchet and clank(s) were sold for a total of: $20.0'),(33,1,'2022-04-24 23:22:33.453194',23,1,'Ratchet and clank: was sold'),(34,3,'2022-04-24 23:22:58.032446',23,1,'jacobh logged in'),(35,0,'2022-04-24 23:23:53.456184',23,800,'20 Microwave(s) were sold for a total of: $800.0'),(36,1,'2022-04-24 23:23:53.456184',23,1,'Microwave: was sold'),(37,0,'2022-04-24 23:24:30.695826',23,500,'1 new fridge(s) were sold for a total of: $500.0'),(38,1,'2022-04-24 23:24:30.695826',23,1,'new fridge: was sold'),(39,3,'2022-04-24 23:25:33.337768',23,1,'userName logged in'),(40,3,'2022-04-24 23:28:48.879033',23,1,'jacobh logged in'),(41,3,'2022-04-24 23:29:32.654930',23,1,'jacobh logged in'),(42,3,'2022-04-24 23:29:45.955869',23,1,'userName logged in'),(43,3,'2022-04-24 23:29:52.841450',23,1,'jacobh logged in'),(44,3,'2022-04-24 23:29:59.835775',23,1,'userName logged in'),(45,3,'2022-04-24 23:33:11.226786',23,1,'jacobh logged in'),(46,3,'2022-04-24 23:33:27.075162',23,1,'userName logged in'),(47,3,'2022-04-24 23:36:38.305220',23,1,'userName logged in'),(48,3,'2022-04-24 23:39:40.713885',23,1,'jacobh logged in'),(49,3,'2022-04-25 05:09:51.369693',5,1,'useradminwidget logged in'),(50,2,'2022-04-25 05:10:22.380454',5,1,'Account with username: usercustomerwidget was created'),(51,2,'2022-04-25 05:10:42.521861',5,1,'Account with username: usertechwidget was created'),(52,2,'2022-04-25 05:11:06.956125',5,1,'Account with username: userhiringwidget was created'),(53,2,'2022-04-25 05:11:26.734849',5,1,'Account with username: usersaleswidget was created'),(54,2,'2022-04-25 05:11:47.696475',5,1,'Account with username: usersecuritywidget was created'),(55,3,'2022-04-25 05:15:32.097605',5,1,'useradminwidget logged in'),(56,3,'2022-04-25 05:15:48.483730',5,1,'useradminwidget logged in'),(57,2,'2022-04-25 05:24:56.419927',5,1,'Account with username: timadminwidget2 was created'),(58,2,'2022-04-25 05:26:15.227354',5,1,'Account with username: timuser was created'),(59,3,'2022-04-25 05:27:14.682885',5,1,'timuser logged in'),(60,3,'2022-04-25 05:38:23.234024',5,1,'usersaleswidget logged in'),(61,3,'2022-04-25 05:41:54.570823',5,1,'userName logged in'),(62,3,'2022-11-02 03:04:16.748764',3,1,'userName logged in'),(63,0,'2023-04-22 11:34:45.952468',11,75000,'1 Driver Rear Side Door Sedan Electric Fits 06-11 CIVIC 250908(s) were sold for a total of: $75000.0'),(64,1,'2023-04-22 11:34:45.952468',11,1,'Driver Rear Side Door Sedan Electric Fits 06-11 CIVIC 250908: was sold');
 /*!40000 ALTER TABLE `statistics` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -825,6 +819,7 @@ CREATE TABLE `transaction` (
   `total_price_before_taxes` decimal(10,2) DEFAULT NULL,
   `seller_id` bigint DEFAULT NULL,
   `payment_details_id` bigint DEFAULT NULL,
+  `deposit_details_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKosd6qqlkyqp8gk4gjisggqev0` (`buyer_id`),
   KEY `FKmoxh3homji0gvlfcw51kuc5w5` (`market_listing_id`),
@@ -834,7 +829,8 @@ CREATE TABLE `transaction` (
   CONSTRAINT `FKmoxh3homji0gvlfcw51kuc5w5` FOREIGN KEY (`market_listing_id`) REFERENCES `market_listing` (`id`),
   CONSTRAINT `FKosd6qqlkyqp8gk4gjisggqev0` FOREIGN KEY (`buyer_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FKs37irexq9hyvl7pqyqya2i0dn` FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`),
-  CONSTRAINT `FK4v8i3wqtpv6b2b0u6heymi5kp` FOREIGN KEY (`payment_details_id`) REFERENCES `payment_details` (id)
+  CONSTRAINT `FK4v8i3wqtpv6b2b0u6heymi5kp` FOREIGN KEY (`payment_details_id`) REFERENCES `payment_details` (id),
+  CONSTRAINT `FKxx5phgq7wl3rumsl7ipnm7gn` FOREIGN KEY (`payment_details_id`) REFERENCES `direct_deposit_details` (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -844,7 +840,7 @@ CREATE TABLE `transaction` (
 
 LOCK TABLES `transaction` WRITE;
 /*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
-INSERT INTO `transaction` VALUES (56,'2022-03-06',50,NULL,1,25,55,NULL,532.50,500.00,20,50),(76,'2022-04-24',1,NULL,1,36,75,226.31,266.25,250.00,34,50),(81,'2022-04-24',1,NULL,1,38,80,17.68,20.80,20.00,34,50),(161,'2022-04-25',1,NULL,1,47,160,1802.00,2120.00,2000.00,43,50);
+INSERT INTO `transaction` VALUES (65,'2023-04-22',1,NULL,1,7,19,67893.75,79875.00,75000.00,20,11,NULL);
 /*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -912,7 +908,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,_binary '\0',_binary '\0','2022-02-20',_binary '\0',_binary '\0','','test@tester.com','fqdqmdyoha',_binary '','$2a$10$yynCjuGntBkkX2m859LnBeYyJ9TS5N6ryrZ2lO.OOBuq5jR1Bzkzq','ROLE_USER','userDeschere','userName',NULL,NULL,50,54,0,NULL,NULL,63,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1default-avatar-icon-of-social-media-user-vector.jpg',71),(8,_binary '\0',_binary '\0','2022-02-20',_binary '\0',_binary '\0',NULL,'tewatwe@test.com','xowotnxnvu',_binary '','$2a$10$FnrxvrCjxbBjjl5XWI2nCOUpqvTlCp2LVpIsfhbSq0U60B5xuHxRK','ROLE_USER','tewatwaetwedesc','newUser',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(19,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0',NULL,'test@tester.com','gxfoqjzfoa',_binary '','$2a$10$Z1nwcoVJZGu2ZBeZzLdbQeo9/OzpANnt9a8OgwTaCPGdN5J3sk6K6','ROLE_USER','Nicholas','nickd',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(20,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0','Jacob_Tester','test@tester.com','lhglseppzh',_binary '','$2a$10$gDzbpcKSKRDQh6mS.e0hr.vtcfg.oNmg.nd8JJlgiZqKwlF2EwWHy','ROLE_USER','Jacob','userName2',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,83),(21,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0',NULL,'namer@name.com','ghkkllstnu',_binary '','$2a$10$.pRuDcQzwJxBzLsgjRmTNeqPIJ4Ncc2zSgEhCWvMNg3ZQwQM3rzJW','ROLE_USER','Timothy','timd',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(34,_binary '\0',_binary '\0','2022-03-06',_binary '\0',_binary '\0',NULL,'mtest9293@gmail.com','zihbbotswb',_binary '','$2a$10$ebFOJs88r6QnskKpSnDYpuG9NaHEno0b2xkjI1worC.MR3AUbDkFO','ROLE_USER','','testAcc',NULL,NULL,NULL,NULL,200,'password',_binary '�\�\0ur\0[Ljava.lang.String;�\�V\�\�{G\0\0xp\0\0\0pppppppppppppppppppp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(43,_binary '\0',_binary '\0','2022-03-06',_binary '\0',_binary '\0',NULL,'mtest9293@gmail.com','lxbgkkmlva',_binary '','$2a$10$WH1rexv507TIwZ2RCSevf.t7Xj9ks7NdUEzDG4NMp7sfWXDp.P8V.','ROLE_USER','','nickTest',NULL,NULL,NULL,NULL,200,'password',_binary '�\�\0ur\0[Ljava.lang.String;�\�V\�\�{G\0\0xp\0\0\0pppppppppppppppppppp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(58,_binary '\0',_binary '\0','2022-03-07',_binary '\0',_binary '\0',NULL,'tmd1021@sru.edu',NULL,_binary '','$2a$10$YjpI0ak3J9eKKHjlii0heevip93h9NDOtqAxacc0v.D8x2xlgKuJy','ROLE_ADMIN','','useradminwidget',NULL,NULL,NULL,NULL,200,'useradmin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(59,_binary '\0',_binary '\0','2022-03-07',_binary '\0',_binary '\0',NULL,'test@test.com',NULL,_binary '','$2a$10$.GndlDgEzXtOTmOYpDHlVO9GSwKbU5QdHZLGg6j9.ar4Ba/H/KnE2','ROLE_USER',NULL,'testuser',NULL,NULL,NULL,NULL,200,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(106,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'taddamd1021@sru.edu',NULL,_binary '','$2a$10$4rVpuQuJCO7h.ksC36YWp.87jvj5OpHKDsTXgtf4Nb9ei57uSNb9G','ROLE_CUSTOMERSERVICE',NULL,'usercustomerwidget',NULL,NULL,NULL,NULL,200,'pethfexgpd',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(108,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tmsddawd1021@sru.edu',NULL,_binary '','$2a$10$2gMfUVv/rmUV8M0cDk5bjOeh8A2j0bQXL3x3TgHHDk8H7UHLab4LS','ROLE_TECHNICALSERVICE',NULL,'usertechwidget',NULL,NULL,NULL,NULL,200,'qgghmmftrb',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(110,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tdsdmsdad1021@sru.edu',NULL,_binary '','$2a$10$Oaoq39cwIcN14Ais2oe5xe.1HpLg9rIREn5EXLVfwUIdPAhpGFes2','ROLE_HIRINGMANAGER',NULL,'userhiringwidget',NULL,NULL,NULL,NULL,200,'xplsbsuloo',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(112,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tsdmsadwdsdwa1021@sru.edu',NULL,_binary '','$2a$10$PY6jwIQfE5cRJVfUXdxaQOB.1wqqnbmj1.edNMKtUAwdqZ8PALDkC','ROLE_SALES',NULL,'usersaleswidget',NULL,NULL,NULL,NULL,200,'ejvemzxkzs',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(114,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tasdwmdawd1021@sru.edu',NULL,_binary '','$2a$10$6Hoouh4QNJ7SthcQCTf3qOLdhMscfoPxDSkXwQjB0u/Yqb7997xZu','ROLE_SECURITY',NULL,'usersecuritywidget',NULL,NULL,NULL,NULL,200,'viqxomlryx',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(122,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'dougherty.tdoc@gmail.com','uygchacaey',_binary '','$2a$10$Conjpd7KR1GQI/Ik2GtguON8G2.9WB1y0hiDEBdy7KyYSkG/ks/IW','ROLE_USER','','timuser',NULL,NULL,NULL,NULL,200,'mvarjpzssz',NULL,NULL,'Timothy','Dougherty','+14127124259','+1       USA','What is your mother\'s maiden name?','What is your favorite band?','What is your favorite beverage?','peterson','rush','sprite',NULL,NULL);
+INSERT INTO `user` VALUES (1,_binary '\0',_binary '\0','2022-02-20',_binary '\0',_binary '\0','','test@tester.com','fqdqmdyoha',_binary '','$2a$10$yynCjuGntBkkX2m859LnBeYyJ9TS5N6ryrZ2lO.OOBuq5jR1Bzkzq','ROLE_USER','userDeschere','userName',NULL,NULL,11,20,0,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1default-avatar-icon-of-social-media-user-vector.jpg',13),(8,_binary '\0',_binary '\0','2022-02-20',_binary '\0',_binary '\0',NULL,'tewatwe@test.com','xowotnxnvu',_binary '','$2a$10$FnrxvrCjxbBjjl5XWI2nCOUpqvTlCp2LVpIsfhbSq0U60B5xuHxRK','ROLE_USER','tewatwaetwedesc','newUser',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(19,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0',NULL,'test@tester.com','gxfoqjzfoa',_binary '','$2a$10$Z1nwcoVJZGu2ZBeZzLdbQeo9/OzpANnt9a8OgwTaCPGdN5J3sk6K6','ROLE_USER','Nicholas','nickd',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(20,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0','Jacob_Tester','test@tester.com','lhglseppzh',_binary '','$2a$10$gDzbpcKSKRDQh6mS.e0hr.vtcfg.oNmg.nd8JJlgiZqKwlF2EwWHy','ROLE_USER','Jacob','userName2',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,14),(21,_binary '\0',_binary '\0','2022-02-21',_binary '\0',_binary '\0',NULL,'namer@name.com','ghkkllstnu',_binary '','$2a$10$.pRuDcQzwJxBzLsgjRmTNeqPIJ4Ncc2zSgEhCWvMNg3ZQwQM3rzJW','ROLE_USER','Timothy','timd',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(34,_binary '\0',_binary '\0','2022-03-06',_binary '\0',_binary '\0',NULL,'mtest9293@gmail.com','zihbbotswb',_binary '','$2a$10$ebFOJs88r6QnskKpSnDYpuG9NaHEno0b2xkjI1worC.MR3AUbDkFO','ROLE_USER','','testAcc',NULL,NULL,NULL,NULL,200,'password',_binary '�\�\0ur\0[Ljava.lang.String;�\�V\�\�{G\0\0xp\0\0\0pppppppppppppppppppp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(43,_binary '\0',_binary '\0','2022-03-06',_binary '\0',_binary '\0',NULL,'mtest9293@gmail.com','lxbgkkmlva',_binary '','$2a$10$WH1rexv507TIwZ2RCSevf.t7Xj9ks7NdUEzDG4NMp7sfWXDp.P8V.','ROLE_USER','','nickTest',NULL,NULL,NULL,NULL,200,'password',_binary '�\�\0ur\0[Ljava.lang.String;�\�V\�\�{G\0\0xp\0\0\0pppppppppppppppppppp',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(58,_binary '\0',_binary '\0','2022-03-07',_binary '\0',_binary '\0',NULL,'tmd1021@sru.edu',NULL,_binary '','$2a$10$YjpI0ak3J9eKKHjlii0heevip93h9NDOtqAxacc0v.D8x2xlgKuJy','ROLE_ADMIN','','useradminwidget',NULL,NULL,NULL,NULL,200,'useradmin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(59,_binary '\0',_binary '\0','2022-03-07',_binary '\0',_binary '\0',NULL,'test@test.com',NULL,_binary '','$2a$10$.GndlDgEzXtOTmOYpDHlVO9GSwKbU5QdHZLGg6j9.ar4Ba/H/KnE2','ROLE_USER',NULL,'testuser',NULL,NULL,NULL,NULL,200,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(106,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'taddamd1021@sru.edu',NULL,_binary '','$2a$10$4rVpuQuJCO7h.ksC36YWp.87jvj5OpHKDsTXgtf4Nb9ei57uSNb9G','ROLE_CUSTOMERSERVICE',NULL,'usercustomerwidget',NULL,NULL,NULL,NULL,200,'pethfexgpd',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(108,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tmsddawd1021@sru.edu',NULL,_binary '','$2a$10$2gMfUVv/rmUV8M0cDk5bjOeh8A2j0bQXL3x3TgHHDk8H7UHLab4LS','ROLE_TECHNICALSERVICE',NULL,'usertechwidget',NULL,NULL,NULL,NULL,200,'qgghmmftrb',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(110,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tdsdmsdad1021@sru.edu',NULL,_binary '','$2a$10$Oaoq39cwIcN14Ais2oe5xe.1HpLg9rIREn5EXLVfwUIdPAhpGFes2','ROLE_HIRINGMANAGER',NULL,'userhiringwidget',NULL,NULL,NULL,NULL,200,'xplsbsuloo',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(112,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tsdmsadwdsdwa1021@sru.edu',NULL,_binary '','$2a$10$PY6jwIQfE5cRJVfUXdxaQOB.1wqqnbmj1.edNMKtUAwdqZ8PALDkC','ROLE_SALES',NULL,'usersaleswidget',NULL,NULL,NULL,NULL,200,'ejvemzxkzs',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(114,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'tasdwmdawd1021@sru.edu',NULL,_binary '','$2a$10$6Hoouh4QNJ7SthcQCTf3qOLdhMscfoPxDSkXwQjB0u/Yqb7997xZu','ROLE_SECURITY',NULL,'usersecuritywidget',NULL,NULL,NULL,NULL,200,'viqxomlryx',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(122,_binary '\0',_binary '\0','2022-04-25',_binary '\0',_binary '\0',NULL,'dougherty.tdoc@gmail.com','uygchacaey',_binary '','$2a$10$Conjpd7KR1GQI/Ik2GtguON8G2.9WB1y0hiDEBdy7KyYSkG/ks/IW','ROLE_USER','','timuser',NULL,NULL,NULL,NULL,200,'mvarjpzssz',NULL,NULL,'Timothy','Dougherty','+14127124259','+1       USA','What is your mother\'s maiden name?','What is your favorite band?','What is your favorite beverage?','peterson','rush','sprite',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -999,8 +995,34 @@ CREATE TABLE `vehicle_car` (
 
 LOCK TABLES `vehicle_car` WRITE;
 /*!40000 ALTER TABLE `vehicle_car` DISABLE KEYS */;
-INSERT INTO `vehicle_car` VALUES ('ranger','ford','Automatic','Two Wheel Drive',1980,46);
 /*!40000 ALTER TABLE `vehicle_car` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `vehicle_car_parts`
+--
+
+DROP TABLE IF EXISTS `vehicle_car_parts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `vehicle_car_parts` (
+  `condition` varchar(255) DEFAULT NULL,
+  `material` varchar(255) DEFAULT NULL,
+  `warranty` varchar(255) DEFAULT NULL,
+  `id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `FKsduhgid5rsfnrudn71ckgpedo` FOREIGN KEY (`id`) REFERENCES `widget_vehicles_parts` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `vehicle_car_parts`
+--
+
+LOCK TABLES `vehicle_car_parts` WRITE;
+/*!40000 ALTER TABLE `vehicle_car_parts` DISABLE KEYS */;
+INSERT INTO `vehicle_car_parts` VALUES ('Used','Plastic','None',1),('Bad','Metal','None',2),('Used','Radiator','None',3),('New','Metal','90 Day Money Back',4),('Used','VINYL','None',5),('Used','Door','None',6);
+/*!40000 ALTER TABLE `vehicle_car_parts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1053,7 +1075,7 @@ CREATE TABLE `widget` (
 
 LOCK TABLES `widget` WRITE;
 /*!40000 ALTER TABLE `widget` DISABLE KEYS */;
-INSERT INTO `widget` VALUES (2,'desc','name','appliance',NULL,'microwave'),(4,'test','newWidget','appliance',NULL,'dryer'),(6,'desc','newName','appliance',NULL,'washer'),(22,'Bicycle','Jacob\'s Widget','vehicle',NULL,'car'),(24,'Dishwasher Dial','Jacob\'s Widget','appliance',NULL,'washer'),(35,'an old mac','old mac','electronic',NULL,'computer'),(37,'a ps2 game','Ratchet and clank','electronic',NULL,'videoGame'),(39,'dont buy this dryer','old dryer','appliance',NULL,'dryer'),(41,'it mostly works','a new microwave','appliance',NULL,'microwave'),(44,'it keeps things cold','new fridge','appliance',NULL,'fridge'),(46,'its an old truck','old ford','vehicle',NULL,'car'),(48,'its a new mower','new mower','lawnCare',NULL,'lawnMower'),(65,'','Laptop','electronic',NULL,'computer'),(69,'','Microwave','appliance',NULL,'microwave'),(143,'old video game','Mario 64','electronic',NULL,'videoGame'),(154,'just a microwave','microwave','appliance',NULL,'microwave'),(165,'an old old dryer','old dryer','appliance',NULL,'dryer');
+INSERT INTO `widget` VALUES (1,'A BMW E36 M3 Coupe Rear Bumper','BMW E36 M3 Coupe Convertible Sedan Rear Bumper Cover Assembly','vehicle_parts',NULL,'car_parts'),(2,'A strong motor','Good Motor','vehicle_parts',NULL,'car_parts'),(3,'A Radiator for a Ford Focus','A Radiator for a 2000-2004 Ford Focus','vehicle_parts',NULL,'car_parts'),(4,'New Exhaust Pipe System','New Exhaust Pipe System with California Emissions for Saturn 1.9L 2000-2002','vehicle_parts',NULL,'car_parts'),(5,'A Mitsubishi Lancer Steering Wheel','2007-2017 Mitsubishi Lancer steering wheel USED 4400A234XA','vehicle_parts',NULL,'car_parts'),(6,'The Driver side Passenger side door of a 2006 Honda Civic','Driver Rear Side Door Sedan Electric Fits 06-11 CIVIC 250908','vehicle_parts',NULL,'car_parts');
 /*!40000 ALTER TABLE `widget` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1082,7 +1104,6 @@ CREATE TABLE `widget_appliance` (
 
 LOCK TABLES `widget_appliance` WRITE;
 /*!40000 ALTER TABLE `widget_appliance` DISABLE KEYS */;
-INSERT INTO `widget_appliance` VALUES ('green',30,'good',24,36,39),('black',16,'ok',15,15,41),('white',65,'ok',20,37,44),('Blue',20,'Almost new',20,20,69),('White',12,'good',22,12,154),('Black',24,'Moderate',36,36,165);
 /*!40000 ALTER TABLE `widget_appliance` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1108,7 +1129,6 @@ CREATE TABLE `widget_electronics` (
 
 LOCK TABLES `widget_electronics` WRITE;
 /*!40000 ALTER TABLE `widget_electronics` DISABLE KEYS */;
-INSERT INTO `widget_electronics` VALUES (35,'1','Yes'),(37,'Yes','Yes'),(65,'1','Yes'),(143,'Yes','No');
 /*!40000 ALTER TABLE `widget_electronics` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1135,7 +1155,7 @@ CREATE TABLE `widget_image` (
 
 LOCK TABLES `widget_image` WRITE;
 /*!40000 ALTER TABLE `widget_image` DISABLE KEYS */;
-INSERT INTO `widget_image` VALUES (36,'34oldmac.jpeg',36),(37,'34DestroyedDryer.jpg',40),(38,'34ratechetandclank.jpg',38),(40,'34broken dryer.jpeg',40),(42,'34brand new microwave.jpeg',42),(45,'43new fridge.jpeg',45),(47,'43oldford.jpeg',47),(49,'43teslamower.jpeg',49),(144,'11mario64box.jpg',144),(155,'1microwave.jpeg',155),(166,'1dryer.jpeg',166);
+INSERT INTO `widget_image` VALUES (1,'1Porsche_3512_engine_rear-left_2019_Prototyp_Museum.jpg',3),(2,'13.4-flat-six-1998.jpg',3),(3,'1234708_Engine_Web.jpg',3),(4,'171uiS6IPljL._AC_SL1500_.jpg',4),(5,'161dGDnOMC2L._AC_SL1500_.jpg',4),(6,'161LtONoXgmL._AC_SL1500_.jpg',4),(7,'161vqIXK-edL._AC_SL1500_.jpg',4),(8,'171uiS6IPljL._AC_SL1500_.jpg',4),(9,'1exhaustSystem.jpg',5),(10,'1exhaustSystem.jpg',5),(11,'1Merica.jpg',5),(12,'1frontofWheel.jpg',6),(13,'1backofWheel.jpg',6),(14,'1frontofWheel.jpg',6),(15,'1hondadoorcover.jpg',7),(16,'1hondaback.jpg',7),(17,'1hondadoorcover.jpg',7),(18,'1hondafront.jpg',7),(19,'1hondaleftside.jpg',7),(20,'1hondarightside.jpg',7),(21,'1bumpercover.jpg',2),(22,'1bigbumper.jpg',2),(23,'1bumpercover.jpg',2),(24,'1closesidebumper.jpg',2),(25,'1closeupinbumper.jpg',2),(26,'1directinbumper.jpg',2),(27,'1oncarbumper.jpg',2),(28,'1sidebumper.jpg',2);
 /*!40000 ALTER TABLE `widget_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1161,7 +1181,6 @@ CREATE TABLE `widget_lawn_care` (
 
 LOCK TABLES `widget_lawn_care` WRITE;
 /*!40000 ALTER TABLE `widget_lawn_care` DISABLE KEYS */;
-INSERT INTO `widget_lawn_care` VALUES ('mower','large',48),('mower','large',49);
 /*!40000 ALTER TABLE `widget_lawn_care` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1188,8 +1207,37 @@ CREATE TABLE `widget_vehicles` (
 
 LOCK TABLES `widget_vehicles` WRITE;
 /*!40000 ALTER TABLE `widget_vehicles` DISABLE KEYS */;
-INSERT INTO `widget_vehicles` VALUES ('Good: Rust Free','Off Road',46,'Yes');
 /*!40000 ALTER TABLE `widget_vehicles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `widget_vehicles_parts`
+--
+
+DROP TABLE IF EXISTS `widget_vehicles_parts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `widget_vehicles_parts` (
+  `brand` varchar(255) DEFAULT NULL,
+  `color` varchar(255) DEFAULT NULL,
+  `made_in` varchar(255) DEFAULT NULL,
+  `model` varchar(255) DEFAULT NULL,
+  `part_name` varchar(255) DEFAULT NULL,
+  `year` int DEFAULT NULL,
+  `id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `FKany0kjvx1ybkismrdrbbqinim` FOREIGN KEY (`id`) REFERENCES `widget` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `widget_vehicles_parts`
+--
+
+LOCK TABLES `widget_vehicles_parts` WRITE;
+/*!40000 ALTER TABLE `widget_vehicles_parts` DISABLE KEYS */;
+INSERT INTO `widget_vehicles_parts` VALUES ('BMW','Yellow','Europe','BMW E36 M3','Rear Bumper',1995,1),('PORSCHE','Grey','Europe','911 2001','Engine',2001,2),('FORD','Grey','USA','2000-2004 Ford Focus','Radiator',2002,3),('SATURN','Metallic','USA','2001 SC1','Exhaust Pipe System',2016,4),('Mitsubishi','Black','Japan','2007-2017 Mitsubishi Lancer','Steering Wheel',2008,5),('HONDA','Red','China','2006 CIVIC','Rear Driver Side Door',2006,6);
+/*!40000 ALTER TABLE `widget_vehicles_parts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1215,7 +1263,6 @@ CREATE TABLE `widget_wishlist_entry` (
 
 LOCK TABLES `widget_wishlist_entry` WRITE;
 /*!40000 ALTER TABLE `widget_wishlist_entry` DISABLE KEYS */;
-INSERT INTO `widget_wishlist_entry` VALUES (8,6);
 /*!40000 ALTER TABLE `widget_wishlist_entry` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1242,7 +1289,6 @@ CREATE TABLE `widgets_info` (
 
 LOCK TABLES `widgets_info` WRITE;
 /*!40000 ALTER TABLE `widgets_info` DISABLE KEYS */;
-INSERT INTO `widgets_info` VALUES (1,'entertainment_use','computer','widget_electronics',_binary ''),(2,'office_use','computer','widget_electronics',_binary ''),(3,'gpu','computer','electronics_computers',_binary ''),(4,'memory','computer','electronics_computers',_binary ''),(5,'processor','computer','electronics_computers',_binary ''),(6,'storage','computer','electronics_computers',_binary ''),(7,'entertainment_use','videoGame','widget_electronics',_binary ''),(8,'office_use','videoGame','widget_electronics',_binary ''),(9,'console','videoGame','electronics_video_games',_binary ''),(10,'developer','videoGame','electronics_video_games',_binary ''),(11,'item_condition','videoGame','electronics_video_games',_binary ''),(12,'title','videoGame','electronics_video_games',_binary ''),(13,'color','dryer','widget_appliance',_binary ''),(14,'height','dryer','widget_appliance',_binary ''),(15,'item_condition','dryer','widget_appliance',_binary ''),(16,'length','dryer','widget_appliance',_binary ''),(17,'width','dryer','widget_appliance',_binary ''),(18,'brand','dryer','appliance_dryers',_binary ''),(19,'material','dryer','appliance_dryers',_binary ''),(20,'model','dryer','appliance_dryers',_binary ''),(21,'color','blender','widget_appliance',_binary ''),(22,'height','blender','widget_appliance',_binary ''),(23,'item_condition','blender','widget_appliance',_binary ''),(24,'length','blender','widget_appliance',_binary ''),(25,'width','blender','widget_appliance',_binary ''),(26,'brand','blender','appliance_blender',_binary ''),(27,'material','blender','appliance_blender',_binary ''),(28,'model','blender','appliance_blender',_binary ''),(29,'capacity','blender','appliance_blender',_binary ''),(30,'color','microwave','widget_appliance',_binary ''),(31,'height','microwave','widget_appliance',_binary ''),(32,'item_condition','microwave','widget_appliance',_binary ''),(33,'length','microwave','widget_appliance',_binary ''),(34,'width','microwave','widget_appliance',_binary ''),(35,'brand','microwave','appliance_microwave',_binary ''),(36,'material','microwave','appliance_microwave',_binary ''),(37,'model','microwave','appliance_microwave',_binary ''),(38,'color','refrigerator','widget_appliance',_binary ''),(39,'height','refrigerator','widget_appliance',_binary ''),(40,'item_condition','refrigerator','widget_appliance',_binary ''),(41,'length','refrigerator','widget_appliance',_binary ''),(42,'width','refrigerator','widget_appliance',_binary ''),(43,'brand','refrigerator','appliance_refrigerator',_binary ''),(44,'material','refrigerator','appliance_refrigerator',_binary ''),(45,'model','refrigerator','appliance_refrigerator',_binary ''),(46,'color','washer','widget_appliance',_binary ''),(47,'height','washer','widget_appliance',_binary ''),(48,'item_condition','washer','widget_appliance',_binary ''),(49,'length','washer','widget_appliance',_binary ''),(50,'width','washer','widget_appliance',_binary ''),(51,'brand','washer','appliance_washers',_binary ''),(52,'material','washer','appliance_washers',_binary ''),(53,'model','washer','appliance_washers',_binary ''),(54,'item_condition','car','widget_vehicles',_binary ''),(55,'terrain','car','widget_vehicles',_binary ''),(56,'road_safe','car','widget_vehicles',_binary ''),(57,'make','car','vehicle_car',_binary ''),(58,'model','car','vehicle_car',_binary ''),(59,'transmission_type','car','vehicle_car',_binary ''),(60,'wheel_drive','car','vehicle_car',_binary ''),(61,'year','car','vehicle_car',_binary ''),(62,'tool_type','lawnMower','widget_lawn_care',_binary ''),(63,'yard_size','lawnMower','widget_lawn_care',_binary ''),(64,'blade_width','lawnMower','lawn_care_lawn_mower',_binary ''),(65,'brand','lawnMower','lawn_care_lawn_mower',_binary '');
 /*!40000 ALTER TABLE `widgets_info` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

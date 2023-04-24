@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import com.taxjar.Taxjar;
@@ -78,6 +79,7 @@ public class ConfirmPurchasePageController {
 	private boolean allSelected = false;
 	private boolean modifyPayment = false;
 	private boolean relogin = true;
+	private boolean depositPicked = false;
 	private boolean loginEr = false;
 	private PaymentDetails validatedDetails;
 	private boolean toShipping = false;
@@ -108,23 +110,27 @@ public class ConfirmPurchasePageController {
 	 */
 	
 	@RequestMapping("/initializePurchasePage")
-	public String initializePurchasePage(ShippingAddress address, MarketListing prevListing, Transaction purchaseOrder,
-			Model model) {
+	public String initializePurchasePage(MarketListing prevListing, Transaction purchaseOrder, Model model) {
 		
+		System.out.println(address);
 		// Setup purchase with total price and profit
 		if(purchaseOrder != null)
 			this.purchase = purchaseOrder;
-		if (address != null && address.getState() != null)
-			this.address = address;
 		if(prevListing != null)
 			this.prevListing = prevListing;
-		toShipping = false;
+		toShipping = false; //resets all variables to there default
 		modifyPayment = false;
 		allSelected = false;
 		relogin = true;
 		loginEr = false;
 		
-		if(this.address != null) //use the taxjar api to get the state and local sales tax information
+		User user = userController.getCurrently_Logged_In();
+		if(user.getDefaultShipping() != null) //when the page is initialized then use the users default if it exists
+	    	address = user.getDefaultShipping();
+	    else
+	    	address = null;
+		
+		if(this.address != null) //use the taxjar api to get the state and local sales tax information (if there is an address than tax information can be calculated)
 		{
 			try
 			{
@@ -141,10 +147,9 @@ public class ConfirmPurchasePageController {
 		
 		details = new PaymentDetails();
 		paypal = new Paypal_Form();
-		User user = userController.getCurrently_Logged_In();
 		if(validatedDetails == null)
 			validatedDetails = user.getDefaultPaymentDetails();
-		if (address == null)
+		if (this.address == null)
 			model.addAttribute("selectedAddress", null);
 		else
 			model.addAttribute("selectedAddress", this.address);
@@ -154,6 +159,7 @@ public class ConfirmPurchasePageController {
 		model.addAttribute("paymentDetails", details);
 		model.addAttribute("cardTypes", cardController.getAllCardTypes());
 		model.addAttribute("paypal", paypal);
+		model.addAttribute("depositPicked", depositPicked);
 		model.addAttribute("modifyPayment", modifyPayment);
 		model.addAttribute("selectedPayment", validatedDetails);
 		model.addAttribute("toShipping", toShipping);
@@ -162,7 +168,7 @@ public class ConfirmPurchasePageController {
 		model.addAttribute("loginEr", loginEr);
 		model.addAttribute("user", user);
 		model.addAttribute("defaultDetails", user.getDefaultPaymentDetails());
-		if (user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty())
+		if ((user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty()) || user.getPaymentDetails() == null)
 			model.addAttribute("allDetails", null);
 		else
 			model.addAttribute("allDetails", payDetController.getPaymentDetailsByUser(user));
@@ -184,25 +190,14 @@ public class ConfirmPurchasePageController {
 			Model model) {
 		// Setup purchase with total price and profit
 		toShipping = false;
+		System.out.println(address);
 		
 		if(address != null && address.getState() != null)
 			this.address = address;
+		else if(prevListing != null && address == null)
+			this.address = null;
 		
-		//set the amount before and after tax for the user to see (must have a location to know the tax)
-		if(this.address != null)//use the taxjar api to get the state and local sales tax information
-		{
-			try
-			{
-				RateResponse res = client.ratesForLocation(this.address.getPostalCode());
-				
-				purchase.setTotalPriceAfterTaxes(purchase.getTotalPriceBeforeTaxes().multiply(new BigDecimal(res.rate.getCombinedRate().toString())).setScale(2, RoundingMode.UP));
-				purchase.setSellerProfit(purchase.getTotalPriceAfterTaxes().subtract(purchase.getTotalPriceAfterTaxes().multiply(Transaction.WEBSITE_CUT_PERCENTAGE)));
-			}
-			catch(TaxjarException e)
-			{
-				e.printStackTrace();
-			}
-		}
+
 		
 		// Prepare a form for verifying the user's payment details
 		details = new PaymentDetails();
@@ -210,9 +205,9 @@ public class ConfirmPurchasePageController {
 		User user = userController.getCurrently_Logged_In();
 		if(validatedDetails == null)
 			validatedDetails = user.getDefaultPaymentDetails();
-		if(user.getDefaultShipping() == null && address == null)
+		if(user.getDefaultShipping() == null && this.address == null)
 			this.address = null;
-		if (address == null)
+		if (this.address == null)
 			model.addAttribute("selectedAddress", null);
 		else
 			model.addAttribute("selectedAddress", this.address);
@@ -222,6 +217,7 @@ public class ConfirmPurchasePageController {
 		model.addAttribute("paymentDetails", details);
 		model.addAttribute("cardTypes", cardController.getAllCardTypes());
 		model.addAttribute("paypal", paypal);
+		model.addAttribute("depositPicked", depositPicked);
 		model.addAttribute("modifyPayment", modifyPayment);
 		model.addAttribute("selectedPayment", validatedDetails);
 		model.addAttribute("toShipping", toShipping);
@@ -292,6 +288,7 @@ public class ConfirmPurchasePageController {
 			model.addAttribute("cardTypes", cardController.getAllCardTypes());
 			model.addAttribute("user", user);
 			model.addAttribute("relogin", relogin);
+			model.addAttribute("depositPicked", depositPicked);
 			model.addAttribute("loginEr", loginEr);
 			model.addAttribute("modifyPayment", modifyPayment);
 			model.addAttribute("toShipping", toShipping);
@@ -376,6 +373,7 @@ public class ConfirmPurchasePageController {
 			model.addAttribute("selectedPayment", validatedDetails);
 			model.addAttribute("toShipping", toShipping);
 			model.addAttribute("useThis", true);
+			model.addAttribute("depositPicked", depositPicked);
 			model.addAttribute("relogin", relogin);
 			model.addAttribute("loginEr", loginEr);
 			model.addAttribute("allSelected", allSelected);
@@ -489,6 +487,9 @@ public class ConfirmPurchasePageController {
 	public String toShipping(Model model) {
 		PaymentDetails details = null;
 		allSelected = false;
+		toShipping = true;
+		depositPicked = false;
+		allSelected = false;
 		if (userController.getCurrently_Logged_In().getDefaultPaymentDetails() != null)
 			details = userController.getCurrently_Logged_In().getDefaultPaymentDetails();
 		return this.shippingController.openConfirmShippingPage(true, prevListing, purchase, details, model);
@@ -502,36 +503,10 @@ public class ConfirmPurchasePageController {
 	@RequestMapping(value = "/modifyPayment")
 	public String modifyPayment(Model model) {
 		toShipping = false;
+		depositPicked = false;
+		allSelected = false;
 		modifyPayment = true;
-		User user = userController.getCurrently_Logged_In();
-		if(validatedDetails == null)
-			validatedDetails = user.getDefaultPaymentDetails();
-		if (address == null || address.getUser() != user)
-			model.addAttribute("selectedAddress", null);
-		else
-			model.addAttribute("selectedAddress", this.address);
-		if(this.address != null && validatedDetails != null)
-			allSelected = true;
-		model.addAttribute("purchase", purchase);
-		model.addAttribute("marketListing", this.prevListing);
-		model.addAttribute("widget", this.prevListing.getWidgetSold());
-		model.addAttribute("paymentDetails", details);
-		model.addAttribute("cardTypes", cardController.getAllCardTypes());
-		model.addAttribute("paypal", paypal);
-		model.addAttribute("selectedPayment", validatedDetails);
-		model.addAttribute("toShipping", toShipping);
-		model.addAttribute("allSelected", allSelected);
-		model.addAttribute("user", user);
-		model.addAttribute("relogin", relogin);
-		model.addAttribute("loginEr", loginEr);
-		model.addAttribute("defaultDetails", user.getDefaultPaymentDetails());
-		if (user.getPaymentDetails() != null && user.getPaymentDetails().isEmpty())
-			model.addAttribute("allDetails", null);
-		else
-			model.addAttribute("allDetails", payDetController.getPaymentDetailsByUser(user));
-		model.addAttribute("existingSecurityCode", new String());
-		model.addAttribute("modifyPayment", modifyPayment);
-		return "confirmPurchase";
+		return this.openConfirmPurchasePage(address, prevListing, purchase, model);
 	}
 	
 	
@@ -540,9 +515,10 @@ public class ConfirmPurchasePageController {
 	 * @param model
 	 * @return
 	 */
+	@Transactional
 	@RequestMapping(value = "/attemptPurchase")
 	public String attemptPurchase(Model model) {
-		if (address != null && validatedDetails != null) {
+		if ((address != null && validatedDetails != null) || (address != null && depositPicked == true)) {
 			BigDecimal salesTaxPercentage = this.address.getState().getSalesTaxRate().divide(new BigDecimal(100));
 			BigDecimal afterSalesTax = purchase.getTotalPriceBeforeTaxes()
 					.add(salesTaxPercentage.multiply(purchase.getTotalPriceBeforeTaxes())).setScale(2, RoundingMode.UP);
@@ -558,6 +534,10 @@ public class ConfirmPurchasePageController {
 			shipping.setTransaction(purchase);
 			shipping.setAddress(address);
 			purchase.setShippingEntry(shipping);
+			if(!depositPicked)
+				purchase.setPaymentDetails(validatedDetails);
+			else
+				purchase.setDepositDetails(userController.getCurrently_Logged_In().getDirectDepositDetails());
 			transController.addTransaction(purchase);
 			return "redirect:/homePage";
 		} else {
@@ -580,6 +560,7 @@ public class ConfirmPurchasePageController {
 			model.addAttribute("selectedPayment", validatedDetails);
 			model.addAttribute("toShipping", toShipping);
 			model.addAttribute("useThis", true);
+			model.addAttribute("depositPicked", depositPicked);
 			model.addAttribute("allSelected", allSelected);
 			model.addAttribute("cardTypes", cardController.getAllCardTypes());
 			model.addAttribute("user", user);
@@ -593,6 +574,21 @@ public class ConfirmPurchasePageController {
 			model.addAttribute("existingSecurityCode", new String());
 			return "confirmPurchase";
 		}
+	}
+	
+	/**
+	 * Set up the purchase page for using direct deposit to pay
+	 * @param model
+	 * @return
+	 */
+	
+	@RequestMapping(value = "/useDepositDetails")
+	public String payWithDepositDetails(Model model) {
+		depositPicked = true;
+		modifyPayment = false;
+		if(address != null)
+			allSelected = true;
+		return "redirect:/confirmPurchase";
 	}
 	
 	@Autowired

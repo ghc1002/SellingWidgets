@@ -69,7 +69,8 @@ public class PurchaseShippingAddressPageController {
 	private boolean loginEr = false;
 	private boolean toShipping = true;
 	private boolean allSelected = false;
-	private PaymentDetails details;
+	private boolean depositPicked = false;
+	private PaymentDetails details = null;
 	private boolean modifyPayment = false;
 	private boolean addNewSA = false;
 	private boolean updateSA = false;
@@ -106,6 +107,8 @@ public class PurchaseShippingAddressPageController {
 			this.relogin = relogin;
 		if(details != null && details.getCardNumber() != null && !details.getCardNumber().isEmpty() && !details.getCardNumber().isBlank())
 			this.details = details;
+		else
+			this.details = null;
 		if(purchaseOrder.getTotalPriceBeforeTaxes() != null)
 			this.purchaseOrder = purchaseOrder;
 		if(prevListing.getPricePerItem() != null)
@@ -123,6 +126,7 @@ public class PurchaseShippingAddressPageController {
 		model.addAttribute("relogin", this.relogin);
 		model.addAttribute("purchase", this.purchaseOrder);
 		model.addAttribute("loginEr", loginEr);
+		model.addAttribute("depositPicked", depositPicked);
 		model.addAttribute("modifyPayment", modifyPayment);
 		model.addAttribute("toShipping", toShipping);
 		model.addAttribute("states", stateDetailsController.getAllStates());
@@ -130,7 +134,7 @@ public class PurchaseShippingAddressPageController {
 			model.addAttribute("defaultShippingDetails", user.getDefaultShipping());
 		else
 			model.addAttribute("defaultShippingDetails", null);
-		if(user.getShippingDetails() != null && user.getShippingDetails().isEmpty())
+		if((user.getShippingDetails() != null && user.getShippingDetails().isEmpty()) || user.getShippingDetails() == null)
 			model.addAttribute("savedShippingDetails", null);
 		else
 			model.addAttribute("savedShippingDetails", shippingController.getShippingDetailsByUser(user));
@@ -184,6 +188,7 @@ public class PurchaseShippingAddressPageController {
 			model.addAttribute("modifyPayment", modifyPayment);
 			model.addAttribute("allSelected", allSelected);
 			model.addAttribute("purchase", purchaseOrder);
+			model.addAttribute("depositPicked", depositPicked);
 			model.addAttribute("marketListing", this.prevListing);
 			model.addAttribute("toShipping", toShipping);
 			model.addAttribute("widget", this.prevListing.getWidgetSold());
@@ -214,7 +219,7 @@ public class PurchaseShippingAddressPageController {
 		shippingController.addShippingAddress(validatedAddress);
 		relogin = false;
 		this.persistAddress(validatedAddress);
-		return this.purchasePageController.initializePurchasePage(validatedAddress, prevListing, purchaseOrder, model);
+		return this.purchasePageController.openConfirmPurchasePage(validatedAddress, prevListing, purchaseOrder, model);
 	}
 	
 	/**
@@ -243,6 +248,7 @@ public class PurchaseShippingAddressPageController {
 			model.addAttribute("allSelected", allSelected);
 			model.addAttribute("purchase", purchaseOrder);
 			model.addAttribute("marketListing", this.prevListing);
+			model.addAttribute("depositPicked", depositPicked);
 			model.addAttribute("toShipping", toShipping);
 			model.addAttribute("widget", this.prevListing.getWidgetSold());
 			model.addAttribute("selectedPayment", details);
@@ -282,7 +288,7 @@ public class PurchaseShippingAddressPageController {
 		addNewSA = false;
 		updateSA = false;
 		updateIdSA = -1;
-		return this.purchasePageController.initializePurchasePage(shipping, prevListing, purchaseOrder, model);
+		return this.purchasePageController.openConfirmPurchasePage(shipping, prevListing, purchaseOrder, model);
 	}
 	
 	/**
@@ -306,6 +312,7 @@ public class PurchaseShippingAddressPageController {
 			model.addAttribute("relogin", relogin);
 			model.addAttribute("loginEr", loginEr);
 			model.addAttribute("modifyPayment", modifyPayment);
+			model.addAttribute("depositPicked", depositPicked);
 			model.addAttribute("purchase", purchaseOrder);
 			model.addAttribute("marketListing", this.prevListing);
 			model.addAttribute("toShipping", toShipping);
@@ -331,7 +338,7 @@ public class PurchaseShippingAddressPageController {
 		}
 		relogin = true;
 		ShippingAddress validatedAddress = shippingController.getShippingAddressEntry(id);
-		return this.purchasePageController.initializePurchasePage(validatedAddress, prevListing, purchaseOrder, model);
+		return this.purchasePageController.openConfirmPurchasePage(validatedAddress, prevListing, purchaseOrder, model);
 	}
 	
 	/**
