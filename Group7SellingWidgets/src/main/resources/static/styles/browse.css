@@ -105,6 +105,7 @@ background-color: #ced4da;
 	margin: 5rem auto;
 	display: grid;
   	grid-template-columns: 25% 25% 25% 25%;
+  	/*grid template for browse utilized source within reference document*/
 }
 
 .submit {
