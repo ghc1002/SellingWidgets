@@ -77,11 +77,11 @@ public class Transaction {
 	private Shipping shippingEntry;
 	
 	@NonNull
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private PaymentDetails paymentDetails;
 	
 	@NonNull
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private DirectDepositDetails depositDetails;
 
 

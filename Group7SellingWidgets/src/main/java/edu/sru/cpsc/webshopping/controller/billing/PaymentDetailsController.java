@@ -67,6 +67,7 @@ public class PaymentDetailsController {
 		details.setPostalCode(passwordEncoder.encode(details.getPostalCode()));
 		details.setSecurityCode(passwordEncoder.encode(details.getSecurityCode()));
 		// No assigned details - add to user
+		paymentDetailsRepository.save(details);
 			entityManager.persist(details);
 		
 	}
