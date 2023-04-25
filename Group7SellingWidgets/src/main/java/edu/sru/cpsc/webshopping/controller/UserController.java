@@ -329,7 +329,7 @@ public class UserController {
 		userRepository.save(user);
 	}
 	
-	@PostMapping("/delete-user/{id}") 
+	@PostMapping("/delete-user/{id}")
 	public void deleteUser(@PathVariable("id") long id, Model model) {
 		User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid ID passed to delete a User"));
 		Statistics stats = new Statistics(Category.ACCOUNTDELETED,1);

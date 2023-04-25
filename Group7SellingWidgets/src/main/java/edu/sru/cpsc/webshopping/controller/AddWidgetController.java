@@ -316,12 +316,6 @@ public class AddWidgetController
 		widgetImageController.addWidgetImage(tempImage);
 		listingImages.add(tempImage);
 		
-		/*if(marketListing.getImages().size() == 0) {
-			setPage("error");
-			result.addError(
-					new FieldError("pricePerItem", "pricePerItem", "Upload at least one image"));	    	
-		}*/
-		
 		BigDecimal oneCent = new BigDecimal("0.01");
 		
 		if(marketListing.getPricePerItem() == null)
