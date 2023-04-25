@@ -69,10 +69,10 @@
 									</div>
 									<p th:if="${#fields.hasErrors('qtyAvailable')}" th:errors="*{qtyAvailable}"></p>
 									<div class="form-group w-35" style="padding-bottom: 15px;">
-										<label for="coverImage">Choose the items cover image shown when browsing:</label>
-										<input type="file" class="form-control" id="coverImage" name="listingCoverImage" accept=".jpg,.img,.png,.jpeg" required>
-										<label for="fileUpload">Choose images to upload (hold ctrl while clicking to add multiple images):</label>
-										<input type="file" class="form-control" id="fileUpload" name="imageUpload" accept=".jpg,.img,.png,.jpeg" multiple required>
+										<label for="coverImage"> Choose the Cover Image (Add File to next Upload as Well): </label>
+										<input type="file" class="form-control" id="coverImage" name="listingCoverImage" accept="image/*" required>
+										<label for="fileUpload"> Choose Listing Images (Hold shift or ctrl while clicking to add multiple images): </label>
+										<input type="file" class="form-control" id="fileUpload" name="imageUpload" accept="image/*" multiple required>
 										<div id="selectedFiles"></div>
 									</div>
 								</div>

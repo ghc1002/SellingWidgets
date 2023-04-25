@@ -53,13 +53,13 @@
 		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      </div>
 		      <div class="modal-body">
-		        <p>This will delete your listing - are you sure?
+		        <p>This will delete your listing - are you sure?</p>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-		        <form method="post" action="#" th:action="@{/viewMarketListing/deleteListing/{listingId}(listingId=${currListing.id})}" th:object="${paymentDetails}">
+		      	<form method="post" action="#" th:action="@{/viewMarketListing/deleteListing/{listingId}(listingId=${currListing.id})}" th:object="${paymentDetails}">
 		          <button type="submit" class="btn btn-danger" name="delete"> Delete </button>
 		        </form>
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 		      </div>
 		    </div>
 		  </div>
