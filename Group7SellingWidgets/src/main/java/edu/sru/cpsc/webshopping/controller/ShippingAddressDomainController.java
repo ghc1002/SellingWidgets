@@ -37,6 +37,7 @@ public class ShippingAddressDomainController {
 			System.out.println("add shipping details database function called");
 				if(userController.getCurrently_Logged_In().getDefaultShipping() == null)
 					userController.getCurrently_Logged_In().setDefaultShipping(details);
+				shippingAddressRepository.save(details);
 				entityManager.persist(details);
 			
 		}

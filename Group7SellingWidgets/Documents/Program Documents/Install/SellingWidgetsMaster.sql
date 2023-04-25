@@ -825,12 +825,14 @@ CREATE TABLE `transaction` (
   KEY `FKmoxh3homji0gvlfcw51kuc5w5` (`market_listing_id`),
   KEY `FKaasul5qbkvi7jujotj7rgst7l` (`shipping_entry_id`),
   KEY `FKs37irexq9hyvl7pqyqya2i0dn` (`seller_id`),
+  KEY `FK4v8i3wqtpv6b2b0u6heymi5kp` (`payment_details_id`),
+  KEY `FKxx5phgq7wl3rumsl7ipnm7gn` (`deposit_details_id`),
   CONSTRAINT `FKaasul5qbkvi7jujotj7rgst7l` FOREIGN KEY (`shipping_entry_id`) REFERENCES `shipping` (`id`),
   CONSTRAINT `FKmoxh3homji0gvlfcw51kuc5w5` FOREIGN KEY (`market_listing_id`) REFERENCES `market_listing` (`id`),
   CONSTRAINT `FKosd6qqlkyqp8gk4gjisggqev0` FOREIGN KEY (`buyer_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FKs37irexq9hyvl7pqyqya2i0dn` FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FK4v8i3wqtpv6b2b0u6heymi5kp` FOREIGN KEY (`payment_details_id`) REFERENCES `payment_details` (id),
-  CONSTRAINT `FKxx5phgq7wl3rumsl7ipnm7gn` FOREIGN KEY (`payment_details_id`) REFERENCES `direct_deposit_details` (id)
+  CONSTRAINT `FKxx5phgq7wl3rumsl7ipnm7gn` FOREIGN KEY (`deposit_details_id`) REFERENCES `direct_deposit_details` (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

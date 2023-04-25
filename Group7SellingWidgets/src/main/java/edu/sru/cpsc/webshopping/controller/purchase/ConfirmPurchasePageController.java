@@ -6,7 +6,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -67,6 +69,7 @@ public class ConfirmPurchasePageController {
 	private PaymentDetailsRepository payDetRepository;
 	private ShippingAddress address;
 	private Paypal_Form paypal;
+	
 	@Lazy
 	private PurchaseShippingAddressPageController shippingController;
 	// SQL Controllers
@@ -317,6 +320,7 @@ public class ConfirmPurchasePageController {
 	 * @return a redirection to index, if purchase is successful, or the same page,
 	 *         if verification fails
 	 */
+	@Transactional
 	@RequestMapping(value = "/confirmPurchase/submitPurchase", method = RequestMethod.POST, params = "submit")
 	public String submitPurchase(@Validated @ModelAttribute("paymentDetails") PaymentDetails_Form paymentDetails,
 			BindingResult result, Model model) {
@@ -330,7 +334,7 @@ public class ConfirmPurchasePageController {
 		if (!paymentDetailsInvalid(paymentDetails) && !result.hasErrors()) {
 			// add the card to the database if it's new
 			if (!payDetController.checkDuplicateCard(currDetails)) {
-				userDetController.createDetails(paymentDetails, result, model);
+				payDetController.addPaymentDetails(currDetails);
 				System.out.println("option 1");
 			} else {
 				currDetails = payDetController.getPaymentDetailsByCardNumberAndExpirationDate(currDetails);
@@ -338,6 +342,17 @@ public class ConfirmPurchasePageController {
 			}
 			if (address != null)
 				allSelected = true;
+			
+			User user = userController.getCurrently_Logged_In();
+			Set<PaymentDetails> PD = user.getPaymentDetails();
+			if(PD == null)
+				PD = new HashSet<PaymentDetails>();
+			PD.add(currDetails);
+			user.setPaymentDetails(PD);
+			if(user.getDefaultPaymentDetails() == null)
+				user.setDefaultPaymentDetails(currDetails);
+			currDetails.setUser(user);
+			payDetController.addPaymentDetails(currDetails);
 			modifyPayment = false;
 			relogin = true;
 			validatedDetails = currDetails;
@@ -534,7 +549,7 @@ public class ConfirmPurchasePageController {
 			shipping.setTransaction(purchase);
 			shipping.setAddress(address);
 			purchase.setShippingEntry(shipping);
-			if(!depositPicked)
+			if(depositPicked == false)
 				purchase.setPaymentDetails(validatedDetails);
 			else
 				purchase.setDepositDetails(userController.getCurrently_Logged_In().getDirectDepositDetails());

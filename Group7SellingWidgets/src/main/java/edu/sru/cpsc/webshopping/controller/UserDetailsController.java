@@ -596,6 +596,7 @@ public class UserDetailsController {
 	 * @param details the filled out PaymentDetails from the page's form
 	 * @return 	a redirection string pointing to the userDetails page
 	 */
+	@Transactional
 	@PostMapping(value = "/submitPaymentDetailsAction", params="submit")
 	public String createDetails(@Validated @ModelAttribute("paymentDetails") PaymentDetails_Form details, BindingResult result, Model model) {
 		selectedMenu = SUB_MENU.PAYMENT_DETAILS;
